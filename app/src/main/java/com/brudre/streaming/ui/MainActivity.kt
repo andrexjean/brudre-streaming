@@ -93,6 +93,7 @@ fun BruDreRoot(vm: MainViewModel) {
     val online by vm.online.collectAsStateWithLifecycle()
     val playFocus = remember { FocusRequester() }
     var lastBack by remember { mutableLongStateOf(0L) }
+    var hasFocus by remember { mutableStateOf(false) }
 
     val toast: (String) -> Unit = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
     val playTitle: (Title) -> Unit = { t ->
@@ -101,7 +102,7 @@ fun BruDreRoot(vm: MainViewModel) {
     val open: (Title) -> Unit = { t -> vm.openDetails(t) }
 
     AppBackground {
-        Column(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize().onFocusChanged { hasFocus = it.hasFocus }) {
             TopBar(section, online) { section = it }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (section) {
@@ -137,10 +138,12 @@ fun BruDreRoot(vm: MainViewModel) {
     }
 
     // Foco inicial no "Assistir Agora". Repete algumas vezes porque o herói pode compor depois.
+    // Para assim que algo recebe foco, para não "puxar de volta" o usuário que já navegou.
     LaunchedEffect(Unit) {
-        repeat(6) {
+        repeat(8) {
+            if (hasFocus) return@LaunchedEffect
             delay(350)
-            runCatching { playFocus.requestFocus() }
+            if (!hasFocus) runCatching { playFocus.requestFocus() }
         }
     }
 
