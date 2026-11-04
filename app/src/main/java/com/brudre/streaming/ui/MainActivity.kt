@@ -48,6 +48,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -93,7 +94,7 @@ fun BruDreRoot(vm: MainViewModel) {
     val online by vm.online.collectAsStateWithLifecycle()
     val playFocus = remember { FocusRequester() }
     var lastBack by remember { mutableLongStateOf(0L) }
-    var hasFocus by remember { mutableStateOf(false) }
+    var userNavigated by remember { mutableStateOf(false) }
 
     val toast: (String) -> Unit = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
     val playTitle: (Title) -> Unit = { t ->
@@ -102,7 +103,7 @@ fun BruDreRoot(vm: MainViewModel) {
     val open: (Title) -> Unit = { t -> vm.openDetails(t) }
 
     AppBackground {
-        Column(Modifier.fillMaxSize().onFocusChanged { hasFocus = it.hasFocus }) {
+        Column(Modifier.fillMaxSize().onPreviewKeyEvent { userNavigated = true; false }) {
             TopBar(section, online) { section = it }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (section) {
@@ -138,12 +139,12 @@ fun BruDreRoot(vm: MainViewModel) {
     }
 
     // Foco inicial no "Assistir Agora". Repete algumas vezes porque o herói pode compor depois.
-    // Para assim que algo recebe foco, para não "puxar de volta" o usuário que já navegou.
+    // Foco inicial no "Assistir Agora"; para assim que o usuário aperta uma tecla, para não puxá-lo de volta.
     LaunchedEffect(Unit) {
         repeat(8) {
-            if (hasFocus) return@LaunchedEffect
             delay(350)
-            if (!hasFocus) runCatching { playFocus.requestFocus() }
+            if (userNavigated) return@LaunchedEffect
+            runCatching { playFocus.requestFocus() }
         }
     }
 
