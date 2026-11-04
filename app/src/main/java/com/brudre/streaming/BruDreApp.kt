@@ -1,0 +1,116 @@
+package com.brudre.streaming
+
+import android.app.Application
+import android.content.ComponentCallbacks2
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
+import com.brudre.streaming.data.AppSettings
+import com.brudre.streaming.data.CatalogRepository
+import com.brudre.streaming.data.CuratedCatalog
+import com.brudre.streaming.data.LibraryRepository
+import com.brudre.streaming.data.db.BruDreDatabase
+import com.brudre.streaming.torrent.CacheManager
+import com.brudre.streaming.torrent.TorrentEngine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import okhttp3.Cache
+import okhttp3.OkHttpClient
+import java.io.File
+import java.util.concurrent.TimeUnit
+
+class BruDreApp : Application(), ImageLoaderFactory {
+
+    lateinit var services: Services
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+        services = Services(this)
+    }
+
+    override fun newImageLoader(): ImageLoader = services.imageLoader
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
+            services.releaseMemory()
+            Log.i("BruDre", "Memória baixa (nível $level): caches liberados")
+        }
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        services.releaseMemory()
+    }
+
+    companion object {
+        fun services(context: Context): Services = (context.applicationContext as BruDreApp).services
+    }
+}
+
+/** Dependências do app (sem framework de injeção: mais leve e simples de manter). */
+class Services(private val app: Context) {
+
+    val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    val http: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .callTimeout(60, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
+        .cache(Cache(File(app.cacheDir, "http"), 8L * 1024 * 1024))
+        .build()
+
+    val settings = AppSettings(app)
+    val database: BruDreDatabase by lazy { BruDreDatabase.create(app) }
+    val curated: CuratedCatalog by lazy { CuratedCatalog(app.assets.open("authorized_sources.json").bufferedReader().use { it.readText() }) }
+    val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline) }
+    val library: LibraryRepository by lazy { LibraryRepository(database) }
+    val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
+
+    val imageCacheDir: File get() = File(app.cacheDir, "images")
+
+    val imageLoader: ImageLoader by lazy {
+        ImageLoader.Builder(app)
+            .okHttpClient(http)
+            .memoryCache { MemoryCache.Builder(app).maxSizePercent(0.12).build() }
+            .diskCache { DiskCache.Builder().directory(imageCacheDir).maxSizeBytes(48L * 1024 * 1024).build() }
+            .allowRgb565(true)
+            .crossfade(180)
+            .respectCacheHeaders(false)
+            .build()
+    }
+
+    fun isOnline(): Boolean {
+        val cm = app.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return true
+        val caps = cm.getNetworkCapabilities(cm.activeNetwork ?: return false) ?: return false
+        return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    fun releaseMemory() {
+        imageLoader.memoryCache?.clear()
+        catalog.trimMemory()
+    }
+
+    /** Limpa dados temporários: vídeo do torrent (exceto o que estiver tocando), imagens e catálogo. */
+    suspend fun clearTemporaryData(): Long {
+        val torrentBytes = CacheManager.clearDir(torrent.saveDir)
+        val imageBytes = CacheManager.dirSize(imageCacheDir)
+        imageLoader.diskCache?.clear()
+        imageLoader.memoryCache?.clear()
+        val httpBytes = CacheManager.dirSize(File(app.cacheDir, "http"))
+        runCatching { http.cache?.evictAll() }
+        catalog.clearCache()
+        return torrentBytes + imageBytes + httpBytes
+    }
+
+    fun cacheUsage(): Long =
+        CacheManager.dirSize(torrent.saveDir) + CacheManager.dirSize(imageCacheDir) + CacheManager.dirSize(File(app.cacheDir, "http"))
+}

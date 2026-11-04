@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brudre_bg">#FF050814</color>
+    <style name="Theme.BruDre" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/brudre_bg</item>
+        <item name="android:colorBackground">@color/brudre_bg</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@color/brudre_bg</item>
+        <item name="android:navigationBarColor">@color/brudre_bg</item>
+        <item name="android:colorAccent">#FF37D8FF</item>
+    </style>
+    <style name="Theme.BruDre.Player">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>
