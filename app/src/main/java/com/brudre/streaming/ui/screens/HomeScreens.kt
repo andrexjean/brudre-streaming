@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
@@ -142,6 +143,7 @@ fun Hero(
         }
     }
     val current = items[safeIndex]
+    val detailsFocus = remember { FocusRequester() }
     Box(
         Modifier
             .fillMaxWidth()
@@ -223,6 +225,7 @@ fun Hero(
                     primary = true,
                     modifier = Modifier
                         .focusRequester(playFocus)
+                        .focusProperties { right = detailsFocus }
                         .testTag("hero_play")
                         .onPreviewKeyEvent { e ->
                             if (e.type == KeyEventType.KeyDown && e.key == Key.DirectionLeft && items.size > 1) {
@@ -234,6 +237,8 @@ fun Hero(
                     "Mais Detalhes",
                     icon = Icons.Filled.Info,
                     modifier = Modifier
+                        .focusRequester(detailsFocus)
+                        .focusProperties { left = playFocus }
                         .testTag("hero_details")
                         .onPreviewKeyEvent { e ->
                             if (e.type == KeyEventType.KeyDown && e.key == Key.DirectionRight && items.size > 1) {
