@@ -12,6 +12,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.libtorrent4j.AnnounceEntry
 import org.libtorrent4j.Priority
 import org.libtorrent4j.SessionHandle
 import org.libtorrent4j.SessionManager
@@ -57,6 +58,7 @@ class TorrentEngine(
             .uploadRateLimit(128 * 1024)
             .maxPeerlistSize(500)
             .maxQueuedDiskBytes(4 * 1024 * 1024)
+        pack.setDhtBootstrapNodes(DHT_BOOTSTRAP)
         val s = SessionManager(false)
         s.start(SessionParams(pack))
         session = s
@@ -105,6 +107,7 @@ class TorrentEngine(
             delay(100)
         }
         val th = handle ?: throw TorrentException("Não foi possível iniciar o torrent")
+        addSources(th, ref)
         th.resume()
 
         val stream = TorrentStream(
@@ -119,6 +122,20 @@ class TorrentEngine(
         TorrentStreams.register(stream)
         Log.i(TAG, "Torrent pronto: ${files.fileName(index)} (${CacheManager.formatBytes(size)}), peças=${ti.numPieces()}")
         stream
+    }
+
+    /**
+     * Garante que o torrent tenha como encontrar dados: trackers e web seeds do magnet oficial
+     * (o .torrent publicado pode trazer só trackers WebRTC, inúteis fora do navegador)
+     * e trackers públicos de apoio. Web seed = servidor HTTP do próprio titular.
+     */
+    private fun addSources(th: TorrentHandle, ref: TorrentRef) {
+        val magnet = ref.magnet?.let { MagnetLink.parse(it) }
+        val trackers = (magnet?.trackers.orEmpty().filter { it.startsWith("udp://") || it.startsWith("http") } + FALLBACK_TRACKERS).distinct()
+        trackers.forEach { url -> runCatching { th.addTracker(AnnounceEntry(url)) } }
+        magnet?.webSeeds.orEmpty().forEach { url -> runCatching { th.addUrlSeed(url) } }
+        runCatching { th.forceReannounce() }
+        Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers, ${magnet?.webSeeds?.size ?: 0} web seeds")
     }
 
     private suspend fun loadTorrentBytes(s: SessionManager, ref: TorrentRef): ByteArray {
@@ -182,6 +199,14 @@ class TorrentEngine(
         private const val MAGNET_TIMEOUT_S = 30
         private const val MAX_TORRENT_BYTES = 16 * 1024 * 1024
         private const val FREE_SPACE_MARGIN = 64L * 1024 * 1024
+        private const val DHT_BOOTSTRAP =
+            "dht.libtorrent.org:25401,router.bittorrent.com:6881,router.utorrent.com:6881,dht.transmissionbt.com:6881"
+        private val FALLBACK_TRACKERS = listOf(
+            "udp://tracker.opentrackr.org:1337/announce",
+            "udp://open.stealth.si:80/announce",
+            "udp://tracker.torrent.eu.org:451/announce",
+            "udp://exodus.desync.com:6969/announce",
+        )
         private val VIDEO_EXT = listOf(".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi")
 
         fun pickFile(ti: TorrentInfo, hint: String?): Int? {
@@ -202,6 +227,21 @@ class TorrentEngine(
                 if (size > bestSize) { best = i; bestSize = size }
             }
             return best
+        }
+    }
+}
+
+/** Leitura dos parâmetros de um link magnet (BEP 9). */
+data class MagnetLink(val infoHash: String?, val trackers: List<String>, val webSeeds: List<String>) {
+    companion object {
+        fun parse(uri: String): MagnetLink? {
+            if (!uri.startsWith("magnet:?")) return null
+            val params = uri.removePrefix("magnet:?").split('&').mapNotNull { part ->
+                val i = part.indexOf('=')
+                if (i <= 0) null else part.substring(0, i) to java.net.URLDecoder.decode(part.substring(i + 1), "UTF-8")
+            }
+            val hash = params.firstOrNull { it.first == "xt" }?.second?.removePrefix("urn:btih:")?.lowercase()
+            return MagnetLink(hash, params.filter { it.first == "tr" }.map { it.second }, params.filter { it.first == "ws" }.map { it.second })
         }
     }
 }

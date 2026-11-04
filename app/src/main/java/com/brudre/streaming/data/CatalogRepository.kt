@@ -44,7 +44,7 @@ class CatalogRepository(
                 return@withContext Title.listFromJson(cached!!.json).also { memory[key] = it }
             }
             try {
-                val list = parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(spec.query, spec.sort, spec.rows)), spec.kind) }
+                val list = parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(spec.query, spec.sort, spec.rows)), spec.kind) }.filter { ArchiveParser.isFamilySafe(it) }
                 memory[key] = list
                 db.catalogCache().put(CatalogCacheEntity(key, Title.listToJson(list), System.currentTimeMillis()))
                 list
@@ -71,9 +71,9 @@ class CatalogRepository(
         val terms = clean.split(' ').filter { it.length > 1 }.ifEmpty { listOf(clean) }
         val byTitle = terms.joinToString(" AND ") { "title:($it*)" }
         val bySubject = terms.joinToString(" AND ") { "subject:($it)" }
-        val q = "(($byTitle) OR ($bySubject)) AND mediatype:(movies) AND collection:($SEARCH_COLLECTIONS)$NOT_RESTRICTED"
+        val q = "(($byTitle) OR ($bySubject)) AND collection:($SEARCH_COLLECTIONS)$NOT_RESTRICTED"
         val remote = withContext(Dispatchers.IO) {
-            parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40)), Kind.MOVIE) }
+            parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40)), Kind.MOVIE) }.filter { ArchiveParser.isFamilySafe(it) }
         }
         return (local + remote).distinctBy { it.id }
     }
@@ -90,7 +90,7 @@ class CatalogRepository(
             )
             entry?.archiveId != null -> {
                 val json = metadataJson(entry.archiveId)
-                val playables = ArchiveParser.buildPlayables(entry.archiveId, json, settings.current.quality)
+                val playables = ArchiveParser.buildPlayables(entry.archiveId, json, settings.current.quality, entry.title.kind)
                 TitleDetails(entry.title, playables, sourceLabelFor(playables))
             }
             entry != null -> TitleDetails(entry.title, emptyList(), "Sem fonte autorizada cadastrada")
@@ -98,7 +98,7 @@ class CatalogRepository(
                 val id = title.archiveId!!
                 val json = metadataJson(id)
                 val enriched = parseOrThrow { ArchiveParser.enrichTitle(title, json) }
-                val playables = parseOrThrow { ArchiveParser.buildPlayables(id, json, settings.current.quality) }
+                val playables = parseOrThrow { ArchiveParser.buildPlayables(id, json, settings.current.quality, title.kind) }
                 TitleDetails(enriched, playables, sourceLabelFor(playables))
             }
             else -> TitleDetails(title, emptyList(), "Sem fonte autorizada cadastrada")
@@ -164,24 +164,34 @@ class CatalogRepository(
     companion object {
         const val USER_AGENT = "BruDreStreaming/6.0 (Android TV; uso domestico)"
         private const val CACHE_TTL_MS = 6 * 60 * 60 * 1000L
-        private const val NOT_RESTRICTED = " AND -access-restricted-item:(true)"
+        /**
+         * Filtros de segurança aplicados a toda consulta ao Internet Archive:
+         * só itens com licença declarada (domínio público ou Creative Commons),
+         * sem acesso restrito e sem conteúdo adulto/explícito.
+         */
+        private const val NOT_RESTRICTED =
+            " AND mediatype:(movies)" +
+                " AND licenseurl:(*publicdomain* OR *creativecommons*)" +
+                " AND -access-restricted-item:(true)" +
+                " AND -title:(sex OR sexy OR nude OR nudist OR naked OR erotic OR erotica OR porn OR xxx OR madness OR bait OR orgy OR lust OR striptease OR burlesque OR concentration)" +
+                " AND -subject:(sex OR sexploitation OR nudity OR erotic OR erotica OR adult OR porn OR exploitation OR atrocities)"
         const val SEARCH_COLLECTIONS =
-            "feature_films OR classic_tv OR classic_cartoons OR animationandcartoons OR SciFi_Horror OR film_noir OR comedy_films OR silent_films"
+            "feature_films OR classic_tv OR classic_cartoons OR animationandcartoons OR SciFi_Horror OR Film_Noir OR Comedy_Films OR silent_films"
 
-        private fun ia(collection: String) = "collection:($collection) AND mediatype:(movies)$NOT_RESTRICTED"
+        private fun ia(collection: String, extra: String = "") = "collection:($collection)$extra$NOT_RESTRICTED"
 
         val ROWS: Map<String, RowSpec> = listOf(
             RowSpec("curated_featured", "Destaques", null, "", Kind.MOVIE),
             RowSpec("curated_torrent", "Filmes abertos via torrent", null, "", Kind.MOVIE),
             RowSpec("curated_kids", "Animações abertas", null, "", Kind.KIDS),
             RowSpec("featured", "Filmes em Destaque", ia("feature_films"), "downloads desc", Kind.MOVIE),
-            RowSpec("recent", "Adicionados Recentemente", ia("feature_films"), "addeddate desc", Kind.MOVIE),
+            RowSpec("recent", "Adicionados Recentemente", ia("feature_films", " AND year:[1910 TO 1963]"), "publicdate desc", Kind.MOVIE),
             RowSpec("scifi", "Ficção Científica e Terror", ia("SciFi_Horror"), "downloads desc", Kind.MOVIE),
-            RowSpec("noir", "Film Noir", ia("film_noir"), "downloads desc", Kind.MOVIE),
-            RowSpec("comedy", "Comédia", ia("comedy_films"), "downloads desc", Kind.MOVIE),
+            RowSpec("noir", "Film Noir", ia("Film_Noir"), "downloads desc", Kind.MOVIE),
+            RowSpec("comedy", "Comédia", ia("Comedy_Films"), "downloads desc", Kind.MOVIE),
             RowSpec("silent", "Cinema Mudo", ia("silent_films"), "downloads desc", Kind.MOVIE),
             RowSpec("series", "Séries Clássicas", ia("classic_tv"), "downloads desc", Kind.SERIES),
-            RowSpec("series_recent", "Séries Adicionadas Recentemente", ia("classic_tv"), "addeddate desc", Kind.SERIES),
+            RowSpec("series_recent", "Séries Adicionadas Recentemente", ia("classic_tv"), "publicdate desc", Kind.SERIES),
             RowSpec("kids", "Desenhos Clássicos", ia("classic_cartoons"), "downloads desc", Kind.KIDS),
             RowSpec("kids_animation", "Animação", ia("animationandcartoons"), "downloads desc", Kind.KIDS),
         ).associateBy { it.key }

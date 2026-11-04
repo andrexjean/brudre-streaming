@@ -14,6 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -135,9 +136,12 @@ fun BruDreRoot(vm: MainViewModel) {
         )
     }
 
+    // Foco inicial no "Assistir Agora". Repete algumas vezes porque o herói pode compor depois.
     LaunchedEffect(Unit) {
-        delay(400)
-        runCatching { playFocus.requestFocus() }
+        repeat(6) {
+            delay(350)
+            runCatching { playFocus.requestFocus() }
+        }
     }
 
     BackHandler(enabled = detailsTitle == null) {
@@ -156,6 +160,15 @@ fun BruDreRoot(vm: MainViewModel) {
 
 @Composable
 private fun TopBar(section: Section, online: Boolean, onSelect: (Section) -> Unit) {
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // Em telas com menos de ~900 dp (TVs 720p, alguns sticks) só o item ativo/focado mostra o texto.
+        val compact = maxWidth < 900.dp
+        TopBarContent(section, online, compact, onSelect)
+    }
+}
+
+@Composable
+private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, onSelect: (Section) -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -163,14 +176,14 @@ private fun TopBar(section: Section, online: Boolean, onSelect: (Section) -> Uni
             .testTag("topbar"),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        BruLogo()
-        Spacer(Modifier.width(24.dp))
+        BruLogo(scale = if (compact) 0.85f else 1f)
+        Spacer(Modifier.width(if (compact) 12.dp else 24.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            NavItem(Section.HOME, Icons.Filled.Home, section, onSelect)
-            NavItem(Section.MOVIES, BruIcons.Movie, section, onSelect)
-            NavItem(Section.SERIES, BruIcons.Layers, section, onSelect)
-            NavItem(Section.KIDS, Icons.Filled.Face, section, onSelect)
-            NavItem(Section.MY_LIST, BruIcons.Bookmark, section, onSelect)
+            NavItem(Section.HOME, Icons.Filled.Home, section, compact, onSelect)
+            NavItem(Section.MOVIES, BruIcons.Movie, section, compact, onSelect)
+            NavItem(Section.SERIES, BruIcons.Layers, section, compact, onSelect)
+            NavItem(Section.KIDS, Icons.Filled.Face, section, compact, onSelect)
+            NavItem(Section.MY_LIST, BruIcons.Bookmark, section, compact, onSelect)
         }
         Spacer(Modifier.weight(1f))
         if (!online) {
@@ -195,7 +208,7 @@ private fun TopBar(section: Section, online: Boolean, onSelect: (Section) -> Uni
 }
 
 @Composable
-private fun NavItem(target: Section, icon: ImageVector, current: Section, onSelect: (Section) -> Unit) {
+private fun NavItem(target: Section, icon: ImageVector, current: Section, compact: Boolean, onSelect: (Section) -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val selected = current == target
     val scale by animateFloatAsState(if (focused) 1.06f else 1f, tween(140), label = "nav")
@@ -219,15 +232,17 @@ private fun NavItem(target: Section, icon: ImageVector, current: Section, onSele
             .testTag("nav_${target.name}"),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, null, tint = if (selected || focused) Color.White else BruColors.TextDim, modifier = Modifier.size(20.dp))
-        Spacer(Modifier.width(6.dp))
-        Text(
-            target.label,
-            color = if (selected || focused) Color.White else BruColors.TextDim,
-            fontSize = 15.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
-            maxLines = 1,
-        )
+        Icon(icon, target.label, tint = if (selected || focused) Color.White else BruColors.TextDim, modifier = Modifier.size(20.dp))
+        if (!compact || selected || focused) {
+            Spacer(Modifier.width(6.dp))
+            Text(
+                target.label,
+                color = if (selected || focused) Color.White else BruColors.TextDim,
+                fontSize = 15.sp,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                maxLines = 1,
+            )
+        }
     }
 }
 

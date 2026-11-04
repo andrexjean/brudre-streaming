@@ -10,6 +10,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isFocused
+import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -20,6 +22,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.brudre.streaming.ui.MainActivity
 import com.brudre.streaming.ui.MainViewModel
 import kotlinx.coroutines.runBlocking
@@ -39,14 +42,34 @@ class UiFlowTest {
         it.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
     }
 
-    private fun waitTag(tag: String, timeout: Long = 30_000) =
+    private fun diagnose(what: String, block: () -> Unit) {
+        try {
+            block()
+        } catch (e: Throwable) {
+            TestUtil.log("FALHA esperando $what — árvore de semântica:")
+            runCatching { rule.onAllNodes(isRoot()).fetchSemanticsNodes().size.let { TestUtil.log("raízes: $it") } }
+            runCatching { rule.onAllNodes(isRoot())[0].printToLog("BruDreTest") }
+            throw e
+        }
+    }
+
+    private fun waitTag(tag: String, timeout: Long = 30_000) = diagnose(tag) {
         rule.waitUntil(timeout) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, tag)).fetchSemanticsNodes().isNotEmpty() }
+    }
 
-    private fun waitPrefix(prefix: String, timeout: Long = 60_000) =
+    private fun waitPrefix(prefix: String, timeout: Long = 60_000) = diagnose(prefix) {
         rule.waitUntil(timeout) { rule.onAllNodes(tagPrefix(prefix)).fetchSemanticsNodes().isNotEmpty() }
+    }
 
-    @Before fun clean() = runBlocking {
-        TestUtil.services.library.removeFavorite("cur:sintel")
+    private fun waitFocused(tag: String, timeout: Long = 8_000) = diagnose("foco em $tag") {
+        rule.waitUntil(timeout) { runCatching { rule.onNodeWithTag(tag).assertIsFocused(); true }.getOrDefault(false) }
+    }
+
+    @Before fun setUp() {
+        runBlocking { TestUtil.services.library.removeFavorite("cur:sintel") }
+        // Android TV não tem tela de toque: simula esse modo (sem "touch mode") como no Mi Stick.
+        InstrumentationRegistry.getInstrumentation().setInTouchMode(false)
+        rule.activityRule.scenario.recreate()
     }
 
     @Test fun t01_launchShowsBrandHeroAndFocus() {
@@ -54,19 +77,19 @@ class UiFlowTest {
         rule.onNodeWithTag("topbar").assertIsDisplayed()
         rule.onNodeWithTag("hero_title").assertIsDisplayed()
         rule.onNodeWithTag("nav_HOME").assertIsDisplayed()
-        rule.waitUntil(5_000) { runCatching { rule.onNodeWithTag("hero_play").assertIsFocused(); true }.getOrDefault(false) }
+        waitFocused("hero_play")
     }
 
     @Test fun t02_remoteControlNavigation() {
         waitTag("hero_play")
-        rule.waitUntil(5_000) { runCatching { rule.onNodeWithTag("hero_play").assertIsFocused(); true }.getOrDefault(false) }
+        waitFocused("hero_play")
         rule.onRoot().performKeyInput { pressKey(Key.DirectionRight) }
         rule.waitForIdle()
         rule.onNodeWithTag("hero_details").assertIsFocused()
         rule.onRoot().performKeyInput { pressKey(Key.DirectionUp) }
         rule.waitForIdle()
         // foco subiu para a barra superior
-        rule.waitUntil(3_000) { rule.onAllNodes(tagPrefix("nav_").and(isFocused())).fetchSemanticsNodes().isNotEmpty() }
+        diagnose("foco na barra superior") { rule.waitUntil(3_000) { rule.onAllNodes(tagPrefix("nav_").and(isFocused())).fetchSemanticsNodes().isNotEmpty() } }
         // OK sobre "Filmes" troca de seção
         rule.onNodeWithTag("nav_MOVIES").performClick()
         waitTag("movies")

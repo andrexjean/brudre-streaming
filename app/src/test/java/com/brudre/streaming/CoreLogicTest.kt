@@ -86,4 +86,14 @@ class CoreLogicTest {
         assertEquals("512 B", CacheManager.formatBytes(512))
         dir.deleteRecursively()
     }
+
+    @Test fun magnetLinkParsesTrackersAndWebSeeds() {
+        val m = com.brudre.streaming.torrent.MagnetLink.parse(
+            "magnet:?xt=urn:btih:08ADA5A7A6183AAE1E09D831DF6748D566095A10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=wss%3A%2F%2Ftracker.webtorrent.dev&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F"
+        )!!
+        assertEquals("08ada5a7a6183aae1e09d831df6748d566095a10", m.infoHash)
+        assertEquals(listOf("udp://explodie.org:6969", "wss://tracker.webtorrent.dev"), m.trackers)
+        assertEquals(listOf("https://webtorrent.io/torrents/"), m.webSeeds)
+        assertEquals(null, com.brudre.streaming.torrent.MagnetLink.parse("https://x"))
+    }
 }

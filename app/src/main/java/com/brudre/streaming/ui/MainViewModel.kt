@@ -61,6 +61,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
+                android.util.Log.w("BruDre", "Falha ao carregar a linha $key", e)
                 Load.Error(e.message ?: "Falha ao carregar")
             }
             if (key == "featured") rebuildHero()

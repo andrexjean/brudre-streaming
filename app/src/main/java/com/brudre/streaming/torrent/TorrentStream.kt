@@ -110,6 +110,6 @@ class TorrentStream(
         private const val READ_AHEAD_BYTES = 12L * 1024 * 1024
         private const val DEADLINE_BASE_MS = 300
         private const val DEADLINE_STEP_MS = 250
-        const val PIECE_TIMEOUT_MS = 60_000L
+        const val PIECE_TIMEOUT_MS = 30_000L
     }
 }

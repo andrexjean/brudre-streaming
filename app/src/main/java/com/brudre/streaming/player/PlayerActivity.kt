@@ -69,6 +69,7 @@ class PlayerActivity : ComponentActivity() {
     private var openJob: Job? = null
     private var watchdogJob: Job? = null
     private var tickerJob: Job? = null
+    private var stallJob: Job? = null
     private var resumeMs = 0L
     private var hasBeenReady = false
     private var errorDialog: AlertDialog? = null
@@ -185,7 +186,18 @@ class PlayerActivity : ComponentActivity() {
                 if (state == Player.STATE_READY) {
                     hasBeenReady = true
                     watchdogJob?.cancel()
+                    stallJob?.cancel()
                     if (currentAttempt !is SourceAttempt.Torrent) showStatus(null)
+                }
+                if (state == Player.STATE_BUFFERING && hasBeenReady) {
+                    // Travou no meio: se não voltar em pouco tempo, troca de fonte.
+                    stallJob?.cancel()
+                    stallJob = lifecycleScope.launch {
+                        delay(if (currentAttempt is SourceAttempt.Torrent) TORRENT_STALL_MS else DIRECT_STALL_MS)
+                        if (player?.playbackState == Player.STATE_BUFFERING) {
+                            failCurrent("A fonte parou de enviar dados.", true)
+                        }
+                    }
                 }
                 if (state == Player.STATE_ENDED) {
                     saveProgress(completed = true)
@@ -210,6 +222,7 @@ class PlayerActivity : ComponentActivity() {
         currentAttempt = attempt
         openJob?.cancel()
         watchdogJob?.cancel()
+        stallJob?.cancel()
         releaseTorrent()
         lastErrorMessage = null
 
@@ -397,6 +410,7 @@ class PlayerActivity : ComponentActivity() {
         errorDialog = null
         openJob?.cancel()
         watchdogJob?.cancel()
+        stallJob?.cancel()
         tickerJob?.cancel()
         player?.release()
         player = null
@@ -454,7 +468,9 @@ class PlayerActivity : ComponentActivity() {
 
     companion object {
         private const val TAG = "BruDrePlayer"
-        private const val TORRENT_START_TIMEOUT_MS = 120_000L
+        private const val TORRENT_START_TIMEOUT_MS = 90_000L
+        private const val TORRENT_STALL_MS = 45_000L
+        private const val DIRECT_STALL_MS = 60_000L
         const val EXTRA_TITLE = "title"
         const val EXTRA_PLAYABLE = "playable"
         const val EXTRA_START_MS = "start"
