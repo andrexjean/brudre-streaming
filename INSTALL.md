@@ -31,7 +31,7 @@ Guia para quem não programa. Leva cerca de 10 minutos na primeira vez.
    https://github.com/andrexjean/brudre-streaming/releases/latest/download/BruDre-Streaming.apk
    ```
 
-3. Pressione **Go**. O download tem cerca de 30 MB.
+3. Pressione **Go**. O download tem cerca de 22 MB.
 4. Quando aparecer a tela de instalação, escolha **Instalar**.
 5. Ao terminar, escolha **Concluído**. O Downloader pergunta se quer apagar o arquivo baixado: escolha **Excluir** para liberar espaço.
 

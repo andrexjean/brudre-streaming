@@ -118,7 +118,8 @@ jobs:
 
   release:
     needs: [build, instrumented]
-    if: always() && needs.build.result == 'success'
+    # Só publica para a TV quando compilação E testes no emulador passaram.
+    if: needs.build.result == 'success' && needs.instrumented.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -132,7 +133,7 @@ jobs:
           make_latest: "true"
           body: |
             APK para Android TV (Xiaomi Mi TV Stick e compatíveis).
-            Testes instrumentados: ${{ needs.instrumented.result }}.
+            Compilado e aprovado nos testes unitários e instrumentados (emulador). Relatório: TEST_REPORT.md.
             Download direto na TV: https://github.com/${{ github.repository }}/releases/latest/download/BruDre-Streaming.apk
           files: |
             BruDre-Streaming.apk
