@@ -99,6 +99,7 @@ class Services(private val app: Context) {
         catalog.trimMemory()
     }
 
+    @OptIn(coil.annotation.ExperimentalCoilApi::class)
     /** Limpa dados temporários: vídeo do torrent (exceto o que estiver tocando), imagens e catálogo. */
     suspend fun clearTemporaryData(): Long {
         val torrentBytes = CacheManager.clearDir(torrent.saveDir)
