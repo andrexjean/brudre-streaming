@@ -1,9 +1,8 @@
 package com.brudre.streaming
 
-import androidx.compose.ui.input.key.Key
+import android.view.KeyEvent
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -14,12 +13,10 @@ import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.performScrollToKey
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.pressKey
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -32,7 +29,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /** Testes 1 (inicialização), 2 (controle remoto), 3 (catálogo), 4 (pesquisa) e 5 (Minha Lista) pela interface. */
-@OptIn(ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
 class UiFlowTest {
 
@@ -65,6 +61,12 @@ class UiFlowTest {
         rule.waitUntil(timeout) { runCatching { rule.onNodeWithTag(tag).assertIsFocused(); true }.getOrDefault(false) }
     }
 
+    /** Envia uma tecla pelo caminho real de entrada (janela → Compose), como o controle do Mi Stick. */
+    private fun remote(keyCode: Int) {
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(keyCode)
+        rule.waitForIdle()
+    }
+
     @Before fun setUp() {
         runBlocking { TestUtil.services.library.removeFavorite("cur:sintel") }
         // Android TV não tem tela de toque: simula esse modo (sem "touch mode") como no Mi Stick.
@@ -83,18 +85,29 @@ class UiFlowTest {
     @Test fun t02_remoteControlNavigation() {
         waitTag("hero_play")
         waitFocused("hero_play")
-        rule.onRoot().performKeyInput { pressKey(Key.DirectionRight) }
-        rule.waitForIdle()
-        rule.onNodeWithTag("hero_details").assertIsFocused()
-        rule.onRoot().performKeyInput { pressKey(Key.DirectionUp) }
-        rule.waitForIdle()
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT)
+        waitFocused("hero_details")
+        remote(KeyEvent.KEYCODE_DPAD_UP)
         // foco subiu para a barra superior
         diagnose("foco na barra superior") { rule.waitUntil(3_000) { rule.onAllNodes(tagPrefix("nav_").and(isFocused())).fetchSemanticsNodes().isNotEmpty() } }
-        // OK sobre "Filmes" troca de seção
-        rule.onNodeWithTag("nav_MOVIES").performClick()
+        // OK sobre "Filmes" troca de seção (sem toque: só controle remoto)
+        rule.onNodeWithTag("nav_MOVIES").requestFocus()
+        remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("movies")
-        rule.onRoot().performKeyInput { pressKey(Key.DirectionDown) }
-        rule.waitForIdle()
+        rule.waitUntil(90_000) { rule.onAllNodes(tagPrefix("card_")).fetchSemanticsNodes().isNotEmpty() }
+        var tries = 0
+        while (tries++ < 4 && rule.onAllNodes(tagPrefix("card_").and(isFocused())).fetchSemanticsNodes().isEmpty()) {
+            remote(KeyEvent.KEYCODE_DPAD_DOWN)
+        }
+        diagnose("foco em um card após descer") { rule.waitUntil(3_000) { rule.onAllNodes(tagPrefix("card_").and(isFocused())).fetchSemanticsNodes().isNotEmpty() } }
+        // OK abre os detalhes; Voltar fecha
+        remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("details")
+        Thread.sleep(500)
+        remote(KeyEvent.KEYCODE_BACK)
+        diagnose("detalhes fechados pelo Voltar") {
+            rule.waitUntil(5_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "details")).fetchSemanticsNodes().isEmpty() }
+        }
     }
 
     @Test fun t03_catalogLoadsAutomatically() {
@@ -102,9 +115,14 @@ class UiFlowTest {
         rule.onNodeWithTag("home").performScrollToKey("featured")
         waitPrefix("card_featured_ia:", 90_000)
         rule.onNodeWithTag("nav_SERIES").performClick()
+        waitTag("series")
+        rule.onNodeWithTag("series").performScrollToKey("series")
         waitPrefix("card_series_ia:", 90_000)
         rule.onNodeWithTag("nav_KIDS").performClick()
+        waitTag("kids")
+        rule.onNodeWithTag("kids").performScrollToKey("curated_kids")
         waitPrefix("card_curated_kids_cur:", 10_000)
+        rule.onNodeWithTag("kids").performScrollToKey("kids")
         waitPrefix("card_kids_ia:", 90_000)
     }
 
@@ -117,7 +135,7 @@ class UiFlowTest {
         waitPrefix("result_", 90_000)
         rule.onNodeWithTag("search_count").assertIsDisplayed()
         // índice curado também entra na busca
-        rule.onNodeWithTag("suggest_Chaplin").performClick()
+        rule.onNodeWithTag("suggest_horror").performClick()
         waitPrefix("result_", 90_000)
     }
 
