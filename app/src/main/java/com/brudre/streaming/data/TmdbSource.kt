@@ -48,7 +48,8 @@ class TmdbSource(
         val ids = if (useMine) myProviderIds() else emptySet()
         if (key in MINE_ROWS && ids.isEmpty()) return emptyList()
 
-        val (path, media, params) = if (spec.trending && ids.isEmpty()) {
+        // "Em Alta" puro não respeita classificação; com controle dos pais ativo usa a lista filtrada.
+        val (path, media, params) = if (spec.trending && ids.isEmpty() && s.maxRating == "18") {
             Triple<String, String?, Map<String, String>>("trending/all/week", null, emptyMap())
         } else {
             val media = spec.media

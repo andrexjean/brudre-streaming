@@ -86,7 +86,7 @@ fun DetailsDialog(
     onPlay: (Title, Playable?, Boolean, TitleDetails?) -> Unit,
     onProvider: (Title, WatchProvider) -> Unit = { _, _ -> },
 ) {
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         val state by vm.details.collectAsStateWithLifecycle()
         val favoriteFlow = remember(title.id) { vm.isFavorite(title.id) }
         val isFavorite by favoriteFlow.collectAsStateWithLifecycle(initialValue = false)
