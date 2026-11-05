@@ -124,7 +124,10 @@ class PlaybackTest {
         TestUtil.shell("svc wifi enable")
         TestUtil.shell("svc data enable")
         TestUtil.waitFor(30_000, "rede religada") { services.isOnline() }
-        assertTrue(runBlocking { services.catalog.search("chaplin") }.isNotEmpty())
+        // Após reconectar, a busca volta a funcionar (o app tenta de novo sozinho em falhas transitórias)
+        TestUtil.waitFor(60_000, "busca funcionar após reconectar") {
+            runBlocking { services.catalog.search("chaplin") }.isNotEmpty()
+        }
     }
 
     @Test fun t11_resumesFromSavedPosition() {

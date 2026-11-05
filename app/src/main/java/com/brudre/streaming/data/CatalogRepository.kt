@@ -138,19 +138,25 @@ class CatalogRepository(
             fields + "&sort%5B%5D=${URLEncoder.encode(sort, "UTF-8")}&rows=$rows&page=1&output=json"
     }
 
+    /** GET com uma nova tentativa em falha de rede (Wi-Fi instável ou recém-reconectado). */
     private fun get(url: String): String {
         if (!isOnline()) throw CatalogException("Sem conexão com a internet")
         val req = Request.Builder().url(url).header("User-Agent", USER_AGENT).build()
-        try {
-            http.newCall(req).execute().use { resp ->
-                if (!resp.isSuccessful) throw CatalogException("Servidor do catálogo respondeu ${resp.code}")
-                return resp.body?.string() ?: throw CatalogException("Resposta vazia do catálogo")
+        var last: IOException? = null
+        repeat(3) { attempt ->
+            if (attempt > 0) Thread.sleep(1500L * attempt)
+            try {
+                http.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) throw CatalogException("Servidor do catálogo respondeu ${resp.code}")
+                    return resp.body?.string() ?: throw CatalogException("Resposta vazia do catálogo")
+                }
+            } catch (e: CatalogException) {
+                throw e
+            } catch (e: IOException) {
+                last = e
             }
-        } catch (e: CatalogException) {
-            throw e
-        } catch (e: IOException) {
-            throw CatalogException(if (isOnline()) "Falha de rede ao consultar o catálogo" else "Sem conexão com a internet", e)
         }
+        throw CatalogException(if (isOnline()) "Falha de rede ao consultar o catálogo" else "Sem conexão com a internet", last)
     }
 
     private inline fun <T> parseOrThrow(block: () -> T): T = try {
