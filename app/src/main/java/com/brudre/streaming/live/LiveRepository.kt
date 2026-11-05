@@ -39,7 +39,7 @@ class LiveRepository(
     private val settings: AppSettings,
     private val board: StatusBoard,
     private val isOnline: () -> Boolean,
-    private val store: com.brudre.streaming.sources.SourceStore,
+    private val sources: com.brudre.streaming.sources.SourceStore,
 ) {
     private val memory = ConcurrentHashMap<String, List<LiveChannel>>()
     private val locks = ConcurrentHashMap<String, Mutex>()
@@ -60,21 +60,21 @@ class LiveRepository(
     fun refreshRegistry() {
         board.register(PROVIDER_ID, "TV ao Vivo (iptv-org)", "Canais abertos de listas públicas; canais pagos e adultos são removidos", enabled)
         val custom = customLists()
-        custom.forEach { l -> board.register(l.id, "Lista: ${l.name}", l.url, store.get(l.id)?.enabled == true, removable = true) }
+        custom.forEach { l -> board.register(l.id, "Lista: ${l.name}", l.url, sources.get(l.id)?.enabled == true, removable = true) }
         board.all.value.filter { it.id.startsWith(CUSTOM_PREFIX) && custom.none { c -> c.id == it.id } }.forEach { board.unregister(it.id) }
     }
 
     fun builtInLists(): List<LiveList> = BUILT_IN
 
     /** Playlists M3U cadastradas em Gerenciar fontes, na ordem de prioridade. */
-    fun customLists(): List<LiveList> = store.ofType(com.brudre.streaming.sources.SourceType.M3U)
+    fun customLists(): List<LiveList> = sources.ofType(com.brudre.streaming.sources.SourceType.M3U)
         .filter { UrlGuard.isAllowed(it.url) }
         .map { LiveList(it.id, it.name, it.url, builtIn = false) }
 
     fun list(id: String): LiveList? = (BUILT_IN + customLists()).firstOrNull { it.id == id }
 
     fun isListEnabled(l: LiveList): Boolean =
-        if (l.builtIn) enabled else store.get(l.id)?.enabled == true
+        if (l.builtIn) enabled else sources.get(l.id)?.enabled == true
 
     suspend fun channels(listId: String, force: Boolean = false): List<LiveChannel> {
         val l = list(listId) ?: throw CatalogException("Lista não encontrada")
@@ -145,14 +145,14 @@ class LiveRepository(
         val r = try { fetch(clean, "custom") } catch (e: IllegalArgumentException) { throw CatalogException(e.message ?: "Arquivo inválido") }
         if (r.channels.isEmpty()) throw CatalogException("Nenhum canal HLS válido nessa lista (${r.total} itens analisados)")
         val id = com.brudre.streaming.sources.UserSource.idFor(com.brudre.streaming.sources.SourceType.M3U, clean)
-        store.put(com.brudre.streaming.sources.UserSource(id, name.trim().ifBlank { "Minha lista" }.take(60), clean, com.brudre.streaming.sources.SourceType.M3U,
-            priority = store.current.size, lastTest = com.brudre.streaming.sources.SourceTest(true, System.currentTimeMillis(), "${r.channels.size} canais", r.channels.size)))
+        sources.put(com.brudre.streaming.sources.UserSource(id, name.trim().ifBlank { "Minha lista" }.take(60), clean, com.brudre.streaming.sources.SourceType.M3U,
+            priority = sources.current.size, lastTest = com.brudre.streaming.sources.SourceTest(true, System.currentTimeMillis(), "${r.channels.size} canais", r.channels.size)))
         refreshRegistry()
         r.channels.size
     }
 
     fun removeCustomList(id: String) {
-        store.remove(id)
+        sources.remove(id)
         memory.remove(id)
         File(dir, "$id.json").delete()
         refreshRegistry()
@@ -160,7 +160,7 @@ class LiveRepository(
 
     fun setListEnabled(id: String, on: Boolean) {
         if (id == PROVIDER_ID) settings.update { s -> s.copy(disabledSources = if (on) s.disabledSources - id else s.disabledSources + id) }
-        else store.setEnabled(id, on)
+        else sources.setEnabled(id, on)
         memory.remove(id)
         refreshRegistry()
     }
