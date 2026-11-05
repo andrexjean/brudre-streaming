@@ -203,4 +203,25 @@ class PlaybackTest {
         val found = runBlocking { services.catalog.search("Divertida Mente") }
         assertTrue("busca sem lançamentos", found.any { it.isTmdb })
     }
+
+    @Test fun t16_inAppUpdatePipeline() = runBlocking {
+        val up = services.updater
+        val state = up.check(force = true)
+        TestUtil.log("Atualização: $state (build atual ${up.currentBuild})")
+        assertTrue("verificação falhou: $state", state !is com.brudre.streaming.update.UpdateState.Error)
+        // Baixa o APK da release publicada e passa pela validação (pacote, versão, assinatura)
+        val json = InstrumentationRegistry.getInstrumentation().targetContext.getSharedPreferences("brudre_update", 0).getString("lastRelease", null)!!
+        val release = com.brudre.streaming.update.UpdateManager.parseRelease(json)
+        val file = java.io.File(ctx.cacheDir, "updates/teste.apk").apply { parentFile!!.mkdirs() }
+        services.http.newCall(okhttp3.Request.Builder().url(release.apkUrl).build()).execute().use { r ->
+            assertTrue("download HTTP ${r.code}", r.isSuccessful)
+            file.outputStream().use { r.body!!.byteStream().copyTo(it) }
+        }
+        val problem = up.validate(file, release)
+        TestUtil.log("Validação da release ${release.tag}: ${problem ?: "aceita"}")
+        // A release publicada é mais antiga que este build de teste: deve recusar o "downgrade", nunca aceitar outro app
+        assertTrue(problem == null || problem.contains("já tem"))
+        file.delete()
+        Unit
+    }
 }

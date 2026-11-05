@@ -16,6 +16,7 @@ import com.brudre.streaming.data.TitleDetails
 import com.brudre.streaming.data.db.FavoriteEntity
 import com.brudre.streaming.data.db.ProgressEntity
 import com.brudre.streaming.player.PlayerActivity
+import com.brudre.streaming.update.UpdateState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -197,6 +198,33 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return list.firstOrNull { it.offer == Offer.SUBSCRIPTION && StreamingApps.canonical(it.name) in mine }
             ?: list.firstOrNull { (it.offer == Offer.FREE || it.offer == Offer.ADS) }
             ?: list.firstOrNull { it.offer == Offer.SUBSCRIPTION && mine.isEmpty() }
+    }
+
+    // ------------------------------------------------------------ atualização
+    val update: StateFlow<UpdateState> = services.updater.state
+
+    fun checkUpdate(force: Boolean = false) {
+        viewModelScope.launch { services.updater.check(force) }
+    }
+
+    fun startUpdate() {
+        when (val s = update.value) {
+            is UpdateState.Available -> viewModelScope.launch { services.updater.downloadAndInstall(s.release) }
+            is UpdateState.ReadyToInstall -> services.updater.install(s.release, s.file)
+            is UpdateState.NeedsPermission -> services.updater.openPermissionSettings()
+            is UpdateState.Error, UpdateState.Idle, UpdateState.UpToDate -> checkUpdate(force = true)
+            else -> Unit
+        }
+    }
+
+    /** Ao voltar da tela de permissão do Android, tenta instalar de novo. */
+    fun resumeUpdateIfPending() {
+        val s = update.value
+        if (s is UpdateState.NeedsPermission) services.updater.install(s.release, s.file)
+    }
+
+    init {
+        checkUpdate()
     }
 
     // ------------------------------------------------------- controle dos pais

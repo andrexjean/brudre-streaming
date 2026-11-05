@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
@@ -64,7 +65,9 @@ import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.TitleDetails
 import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.ui.components.AppBackground
+import com.brudre.streaming.ui.components.BruButton
 import com.brudre.streaming.ui.components.BruLogo
+import com.brudre.streaming.update.UpdateState
 import com.brudre.streaming.ui.screens.BrowseScreen
 import com.brudre.streaming.ui.screens.DetailsDialog
 import com.brudre.streaming.ui.screens.HomeScreen
@@ -78,6 +81,12 @@ import com.brudre.streaming.ui.theme.BruIcons
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    override fun onResume() {
+        super.onResume()
+        // Voltando da tela "instalar apps desconhecidos": retoma a atualização.
+        androidx.lifecycle.ViewModelProvider(this)[MainViewModel::class.java].resumeUpdateIfPending()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -95,6 +104,7 @@ fun BruDreRoot(vm: MainViewModel) {
     var section by rememberSaveable { mutableStateOf(Section.HOME) }
     val detailsTitle by vm.detailsTitle.collectAsStateWithLifecycle()
     val online by vm.online.collectAsStateWithLifecycle()
+    val update by vm.update.collectAsStateWithLifecycle()
     val playFocus = remember { FocusRequester() }
     var lastBack by remember { mutableLongStateOf(0L) }
     var userNavigated by remember { mutableStateOf(false) }
@@ -113,7 +123,7 @@ fun BruDreRoot(vm: MainViewModel) {
 
     AppBackground {
         Column(Modifier.fillMaxSize().onPreviewKeyEvent { userNavigated = true; false }) {
-            TopBar(section, online) { section = it }
+            TopBar(section, online, update, onUpdate = { vm.startUpdate() }) { section = it }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (section) {
                     Section.HOME -> HomeScreen(vm, playFocus, open, playTitle)
@@ -181,16 +191,29 @@ fun BruDreRoot(vm: MainViewModel) {
 }
 
 @Composable
-private fun TopBar(section: Section, online: Boolean, onSelect: (Section) -> Unit) {
+private fun TopBar(section: Section, online: Boolean, update: UpdateState, onUpdate: () -> Unit, onSelect: (Section) -> Unit) {
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         // Em telas com menos de ~900 dp (TVs 720p, alguns sticks) só o item ativo/focado mostra o texto.
         val compact = maxWidth < 900.dp
-        TopBarContent(section, online, compact, onSelect)
+        TopBarContent(section, online, compact, update, onUpdate, onSelect)
     }
 }
 
 @Composable
-private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, onSelect: (Section) -> Unit) {
+private fun UpdateBadge(update: UpdateState, onClick: () -> Unit) {
+    val label = when (update) {
+        is UpdateState.Available -> "Atualizar"
+        is UpdateState.Downloading -> "Baixando ${update.percent}%"
+        is UpdateState.NeedsPermission -> "Permitir atualização"
+        is UpdateState.ReadyToInstall -> "Instalar"
+        else -> return
+    }
+    BruButton(label, icon = Icons.Filled.Refresh, primary = true, modifier = Modifier.testTag("update_badge"), onClick = onClick)
+    Spacer(Modifier.width(10.dp))
+}
+
+@Composable
+private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, update: UpdateState, onUpdate: () -> Unit, onSelect: (Section) -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -223,6 +246,7 @@ private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, o
             }
             Spacer(Modifier.width(10.dp))
         }
+        UpdateBadge(update, onUpdate)
         NavIcon(Section.SEARCH, Icons.Filled.Search, section, onSelect)
         Spacer(Modifier.width(8.dp))
         NavIcon(Section.SETTINGS, Icons.Filled.Settings, section, onSelect)

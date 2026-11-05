@@ -69,6 +69,7 @@ import com.brudre.streaming.ui.components.SectionHeader
 import com.brudre.streaming.ui.components.TitleCard
 import com.brudre.streaming.ui.theme.BruColors
 import com.brudre.streaming.ui.theme.BruIcons
+import com.brudre.streaming.update.UpdateState
 
 // ------------------------------------------------------------ Minha Lista
 
@@ -310,6 +311,21 @@ fun SettingsScreen(vm: MainViewModel) {
             SettingRow("Conexões BitTorrent", "${s.torrentConnections}", "Menos conexões = menos memória (vale na próxima reprodução)", "set_connections") {
                 vm.updateSettings { it.copy(torrentConnections = next(LanguageChoices.connections, it.torrentConnections)) }
             }
+        }
+        item {
+            val upd by vm.update.collectAsStateWithLifecycle()
+            val (value, hint) = when (val u = upd) {
+                is UpdateState.Available -> "Atualizar para ${u.release.tag}" to "Nova versão disponível. OK baixa e abre a instalação."
+                is UpdateState.Downloading -> "Baixando ${u.percent}%" to "Aguarde o download terminar"
+                is UpdateState.NeedsPermission -> "Permitir" to "O Android pede para liberar \"instalar apps desconhecidos\" para o BruDre (só na primeira vez). Depois volte e aperte OK."
+                is UpdateState.ReadyToInstall -> "Instalar" to "Confirme \"Atualizar\" na tela do Android"
+                UpdateState.Checking -> "Verificando…" to "Consultando a última versão"
+                UpdateState.UpToDate -> "Atualizado" to "Você já tem a versão mais recente. OK verifica de novo."
+                is UpdateState.Error -> "Tentar de novo" to u.message
+                UpdateState.Idle -> "Verificar" to "OK procura uma versão nova"
+            }
+            Spacer(Modifier.height(16.dp))
+            SettingRow("Atualização do app (versão ${BuildConfig.VERSION_NAME})", value, hint, "set_update") { vm.startUpdate() }
         }
         item {
             Spacer(Modifier.height(16.dp))

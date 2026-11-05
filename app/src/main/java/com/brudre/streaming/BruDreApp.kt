@@ -74,6 +74,7 @@ class Services(private val app: Context) {
     val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline, BuildConfig.TMDB_API_KEY) }
     val library: LibraryRepository by lazy { LibraryRepository(database) }
     val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
+    val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 
     val imageCacheDir: File get() = File(app.cacheDir, "images")
 

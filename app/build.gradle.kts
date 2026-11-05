@@ -32,8 +32,12 @@ android {
         applicationId = "com.brudre.streaming"
         minSdk = 24
         targetSdk = 35
-        versionCode = 7
-        versionName = "7.0"
+        // Número do build do GitHub Actions: cada release tem versionCode maior (permite atualizar por cima).
+        val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
+        versionCode = 70000 + buildNumber
+        versionName = "7.0.$buildNumber"
+        buildConfigField("int", "BUILD_NUMBER", buildNumber.toString())
+        buildConfigField("String", "UPDATE_REPO", "\"andrexjean/brudre-streaming\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
     }
