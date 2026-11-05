@@ -222,25 +222,38 @@ class UiFlowTest {
     }
 
     private fun introFlow() {
-        com.brudre.streaming.ui.components.IntroState.shown = false
-        rule.activityRule.scenario.recreate()
-        waitTag("intro", 5_000)
-        Thread.sleep(700); TestUtil.shot("intro_1")
-        Thread.sleep(700); TestUtil.shot("intro_2")
-        Thread.sleep(700); TestUtil.shot("intro_3")
-        Thread.sleep(700); TestUtil.shot("intro_4")
-        diagnose("abertura terminar sozinha") {
-            rule.waitUntil(8_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty() }
+        // O relógio do teste do Compose acelera animações; aqui ele é controlado quadro a quadro.
+        rule.mainClock.autoAdvance = false
+        try {
+            com.brudre.streaming.ui.components.IntroState.shown = false
+            rule.activityRule.scenario.recreate()
+            waitTag("intro", 5_000)
+            for (i in 1..4) {
+                rule.mainClock.advanceTimeBy(750)
+                rule.waitForIdle()
+                Thread.sleep(250)
+                TestUtil.shot("intro_$i")
+            }
+            rule.mainClock.advanceTimeBy(1_500)
+            rule.waitForIdle()
+            diagnose("abertura terminar sozinha") {
+                check(rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty()) { "abertura ainda visível" }
+            }
+            // Qualquer tecla pula a abertura
+            com.brudre.streaming.ui.components.IntroState.shown = false
+            rule.activityRule.scenario.recreate()
+            waitTag("intro", 5_000)
+            rule.mainClock.advanceTimeBy(500)
+            remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            rule.mainClock.advanceTimeBy(600)
+            rule.waitForIdle()
+            diagnose("abertura pulada pela tecla") {
+                check(rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty()) { "abertura não foi pulada" }
+            }
+        } finally {
+            rule.mainClock.autoAdvance = true
         }
-        Thread.sleep(2_500); TestUtil.shot("home")
-        // Qualquer tecla pula a abertura
-        com.brudre.streaming.ui.components.IntroState.shown = false
-        rule.activityRule.scenario.recreate()
-        waitTag("intro", 5_000)
-        remote(KeyEvent.KEYCODE_DPAD_CENTER)
-        diagnose("abertura pulada pela tecla") {
-            rule.waitUntil(3_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty() }
-        }
+        Thread.sleep(3_000); TestUtil.shot("home")
         // Telas principais para validação visual
         rule.onNodeWithTag("nav_MOVIES").performClick(); Thread.sleep(4_000); TestUtil.shot("filmes")
         rule.onNodeWithTag("nav_SETTINGS").performClick(); Thread.sleep(1_500); TestUtil.shot("configuracoes")
