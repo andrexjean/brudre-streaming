@@ -21,4 +21,13 @@ object TestUtil {
     }
 
     fun log(msg: String) = android.util.Log.i("BruDreTest", msg)
+
+    /** Captura a tela do emulador (validação visual). Feita pelo shell para sobreviver à desinstalação do app de teste. */
+    fun shot(name: String) {
+        runCatching {
+            shell("mkdir -p /sdcard/brudre_shots")
+            shell("screencap -p /sdcard/brudre_shots/$name.png")
+            log("screenshot: $name")
+        }.onFailure { log("screenshot falhou: $name ${it.message}") }
+    }
 }

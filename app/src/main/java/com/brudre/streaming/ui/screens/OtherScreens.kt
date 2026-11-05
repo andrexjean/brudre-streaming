@@ -281,6 +281,11 @@ fun SettingsScreen(vm: MainViewModel) {
             ) { vm.updateSettings { it.copy(onlyMine = !it.onlyMine) } }
         }
         item {
+            SettingRow("Abertura animada", if (s.intro) "Ligada" else "Desligada", "Animação do logo ao abrir o app (qualquer tecla pula)", "set_intro") {
+                vm.updateSettings { it.copy(intro = !it.intro) }
+            }
+        }
+        item {
             SettingRow("Fonte de reprodução", s.sourceMode.label, s.sourceMode.description, "set_source") {
                 vm.updateSettings { it.copy(sourceMode = next(SourceMode.entries.toList(), it.sourceMode)) }
             }

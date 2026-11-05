@@ -101,6 +101,7 @@ jobs:
           arch: x86_64
           target: google_apis
           ram-size: 2048M
+          profile: tv_1080p
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: ./ci/run-instrumented.sh
@@ -110,6 +111,7 @@ jobs:
         run: |
           mkdir -p /tmp/res
           cp instrumented.log logcat.txt meminfo.txt instrumented.exit /tmp/res/ 2>/dev/null || true
+          cp -r shots /tmp/res/ 2>/dev/null || true
           cp -r app/build/outputs/androidTest-results /tmp/res/ 2>/dev/null || true
           cp -r app/build/reports/androidTests /tmp/res/reports 2>/dev/null || true
           echo "${{ github.sha }}" > /tmp/res/SHA

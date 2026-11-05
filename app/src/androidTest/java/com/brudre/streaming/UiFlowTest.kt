@@ -71,6 +71,7 @@ class UiFlowTest {
         runBlocking { TestUtil.services.library.removeFavorite("cur:sintel") }
         // Android TV não tem tela de toque: simula esse modo (sem "touch mode") como no Mi Stick.
         InstrumentationRegistry.getInstrumentation().setInTouchMode(false)
+        com.brudre.streaming.ui.components.IntroState.shown = true // testes de navegação sem a abertura
         rule.activityRule.scenario.recreate()
     }
 
@@ -208,5 +209,34 @@ class UiFlowTest {
             services.settings.update { it.copy(maxRating = "16", pinHash = "") }
             rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].lockNow() }
         }
+    }
+
+    @Test fun t08_introPlaysThenSkips() {
+        com.brudre.streaming.ui.components.IntroState.shown = false
+        rule.activityRule.scenario.recreate()
+        waitTag("intro", 5_000)
+        Thread.sleep(700); TestUtil.shot("intro_1")
+        Thread.sleep(700); TestUtil.shot("intro_2")
+        Thread.sleep(700); TestUtil.shot("intro_3")
+        Thread.sleep(700); TestUtil.shot("intro_4")
+        diagnose("abertura terminar sozinha") {
+            rule.waitUntil(8_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty() }
+        }
+        Thread.sleep(2_500); TestUtil.shot("home")
+        // Qualquer tecla pula a abertura
+        com.brudre.streaming.ui.components.IntroState.shown = false
+        rule.activityRule.scenario.recreate()
+        waitTag("intro", 5_000)
+        remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        diagnose("abertura pulada pela tecla") {
+            rule.waitUntil(3_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty() }
+        }
+        // Telas principais para validação visual
+        rule.onNodeWithTag("nav_MOVIES").performClick(); Thread.sleep(4_000); TestUtil.shot("filmes")
+        rule.onNodeWithTag("nav_SETTINGS").performClick(); Thread.sleep(1_500); TestUtil.shot("configuracoes")
+        val t = runBlocking { TestUtil.services.catalog.row("tmdb_trending") }.first()
+        rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].openDetails(t) }
+        waitTag("details"); Thread.sleep(4_000); TestUtil.shot("detalhes")
+        rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
     }
 }

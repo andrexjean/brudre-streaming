@@ -51,6 +51,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,7 +68,9 @@ import com.brudre.streaming.data.TitleDetails
 import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.ui.components.AppBackground
 import com.brudre.streaming.ui.components.BruButton
+import com.brudre.streaming.ui.components.BruIntro
 import com.brudre.streaming.ui.components.BruLogo
+import com.brudre.streaming.ui.components.IntroState
 import com.brudre.streaming.update.UpdateState
 import com.brudre.streaming.ui.screens.BrowseScreen
 import com.brudre.streaming.ui.screens.DetailsDialog
@@ -121,6 +125,21 @@ fun BruDreRoot(vm: MainViewModel) {
     fun tmdb(vararg refs: RowRef): List<RowRef> = if (tmdbOn) refs.toList() else emptyList()
     val open: (Title) -> Unit = { t -> vm.openDetails(t) }
 
+    var showIntro by remember { mutableStateOf(!IntroState.shown && vm.settings.value.intro) }
+    var skipIntro by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { IntroState.shown = true }
+
+    Box(
+        Modifier
+            .fillMaxSize()
+            .onPreviewKeyEvent { e ->
+                // Durante a abertura, qualquer tecla do controle pula a animação.
+                if (showIntro) {
+                    if (e.type == KeyEventType.KeyDown) skipIntro = true
+                    true
+                } else false
+            },
+    ) {
     AppBackground {
         Column(Modifier.fillMaxSize().onPreviewKeyEvent { userNavigated = true; false }) {
             TopBar(section, online, update, onUpdate = { vm.startUpdate() }) { section = it }
@@ -152,6 +171,9 @@ fun BruDreRoot(vm: MainViewModel) {
                 }
             }
         }
+    }
+
+    if (showIntro) BruIntro(skip = skipIntro) { showIntro = false }
     }
 
     detailsTitle?.let { t ->

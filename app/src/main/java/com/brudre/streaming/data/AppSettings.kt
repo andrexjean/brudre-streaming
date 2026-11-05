@@ -40,6 +40,8 @@ data class SettingsValues(
     val pinHash: String = "",
     /** Classificação máxima liberada sem senha (L, 10, 12, 14, 16, 18). */
     val maxRating: String = "16",
+    /** Abertura animada ao iniciar o app. */
+    val intro: Boolean = true,
 )
 
 class AppSettings(context: Context) {
@@ -61,6 +63,7 @@ class AppSettings(context: Context) {
             onlyMine = prefs.getBoolean("onlyMine", d.onlyMine),
             pinHash = prefs.getString("pinHash", "") ?: "",
             maxRating = prefs.getString("maxRating", d.maxRating) ?: d.maxRating,
+            intro = prefs.getBoolean("intro", d.intro),
         )
     }
 
@@ -77,6 +80,7 @@ class AppSettings(context: Context) {
             .putBoolean("onlyMine", v.onlyMine)
             .putString("pinHash", v.pinHash)
             .putString("maxRating", v.maxRating)
+            .putBoolean("intro", v.intro)
             .apply()
         state.value = v
     }
