@@ -62,32 +62,48 @@ object GuardedHttp {
 class StreamValidator(guarded: OkHttpClient) {
     enum class Result { OK, INVALID, UNKNOWN }
 
+    companion object { private const val OK_TTL_MS = 20 * 60 * 1000L }
+
     private val client = guarded.newBuilder()
         .connectTimeout(8, TimeUnit.SECONDS)
         .readTimeout(8, TimeUnit.SECONDS)
         .callTimeout(12, TimeUnit.SECONDS)
         .build()
 
+    /** Fontes confirmadas há pouco não são verificadas de novo (abre o vídeo mais rápido). */
+    private val recent = java.util.concurrent.ConcurrentHashMap<String, Long>()
+
     suspend fun validate(p: Playable): Result = withContext(Dispatchers.IO) {
+        val key = p.directUrl ?: p.torrent?.torrentUrl ?: p.torrent?.magnet ?: ""
+        recent[key]?.let { if (System.currentTimeMillis() - it < OK_TTL_MS) return@withContext Result.OK }
+        val r = validateNow(p)
+        if (r == Result.OK && key.isNotEmpty()) {
+            if (recent.size > 200) recent.clear()
+            recent[key] = System.currentTimeMillis()
+        }
+        r
+    }
+
+    private fun validateNow(p: Playable): Result {
         var unknown = false
         for (u in (listOfNotNull(p.directUrl) + p.mirrors).distinct().take(3)) {
             when (check(u, p.headers)) {
-                Result.OK -> return@withContext Result.OK
+                Result.OK -> return Result.OK
                 Result.UNKNOWN -> unknown = true
                 Result.INVALID -> Unit
             }
         }
         p.torrent?.let { t ->
-            if (t.magnet != null && MagnetLink.parse(t.magnet) != null) return@withContext Result.OK
+            if (t.magnet != null && MagnetLink.parse(t.magnet) != null) return Result.OK
             t.torrentUrl?.let { url ->
                 when (check(url, emptyMap())) {
-                    Result.OK -> return@withContext Result.OK
+                    Result.OK -> return Result.OK
                     Result.UNKNOWN -> unknown = true
                     Result.INVALID -> Unit
                 }
             }
         }
-        if (unknown) Result.UNKNOWN else Result.INVALID
+        return if (unknown) Result.UNKNOWN else Result.INVALID
     }
 
     fun check(url: String, headers: Map<String, String>): Result {

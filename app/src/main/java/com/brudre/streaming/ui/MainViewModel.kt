@@ -39,7 +39,7 @@ sealed interface Load<out T> {
 }
 
 enum class Section(val label: String) {
-    HOME("Início"), MOVIES("Filmes"), SERIES("Séries"), KIDS("Infantil"), CLASSICS("Clássicos"),
+    HOME("Início"), RELEASES("Lançamentos"), TRENDING("Em Alta"), MOVIES("Filmes"), SERIES("Séries"), KIDS("Infantil"), CLASSICS("Clássicos"),
     DOCS("Documentários"), LIVE("TV ao Vivo"), MY_LIST("Minha Lista"), SEARCH("Pesquisa"), SETTINGS("Configurações"),
 }
 
@@ -74,7 +74,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 Load.Error(e.message ?: "Falha ao carregar")
             }
             // Passa o estado direto: com cache em memória a carga termina antes de a linha entrar no mapa.
-            if (key == "featured") rebuildHero(key, state.value)
+            if (key == "featured" || key == "tmdb_free_movies") rebuildHero(key, state.value)
         }
     }
 
@@ -86,11 +86,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private fun rebuildHero(changedKey: String, changed: Load<List<Title>>) {
         fun stateOf(k: String) = if (k == changedKey) changed else rows[k]?.value
         val extra = (stateOf("featured") as? Load.Ok)?.value.orEmpty().take(3)
-        _hero.value = (catalog.curated.featured() + extra).distinctBy { it.id }.take(7)
+        // Filmes recentes grátis (apps oficiais) também entram no destaque.
+        val free = (stateOf("tmdb_free_movies") as? Load.Ok)?.value.orEmpty().filter { it.bannerUrl != null }.take(3)
+        _hero.value = (free.take(2) + catalog.curated.featured().take(2) + extra + free.drop(2) + catalog.curated.featured().drop(2))
+            .distinctBy { it.id }.take(8)
     }
 
     init {
         row("featured")
+        if (catalog.tmdb.enabled) row("tmdb_free_movies")
     }
 
     // ----------------------------------------------------------- biblioteca
@@ -160,6 +164,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         onLaunch: (Intent) -> Unit,
         onError: (String) -> Unit,
         onLocked: (Title) -> Unit = { openDetails(it) },
+        onFreeApp: (Title, com.brudre.streaming.data.FreeProvider) -> Unit = { t, _ -> openDetails(t) },
     ) {
         if (title.isLive) {
             live.find(title.id.removePrefix(Title.LIVE_PREFIX))?.let { playChannel(it, onLaunch) }
@@ -173,6 +178,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 // Fluxo: título → identificação da fonte → verificação → reprodução.
                 val d = details ?: sources.details(title)
                 if (isLocked(d.title.rating)) { onLocked(d.title); return@launch }
+                if (d.freeElsewhere) { onFreeApp(d.title, d.freeProviders.first()); return@launch }
                 if (!d.available || !d.confirmed) {
                     onError(if (d.available) "A fonte de \"${title.name}\" não respondeu agora. Tente de novo em instantes." else d.sourceLabel)
                     return@launch
@@ -201,6 +207,31 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // ------------------------------------------------------------- TV ao Vivo
     private val liveLists = ConcurrentHashMap<String, MutableStateFlow<Load<List<LiveChannel>>>>()
     val offlineChannels: StateFlow<Set<String>> = live.offline
+    /** Resultado da verificação dos sinais (muda conforme os canais são testados). */
+    val liveHealth = live.health.results
+    val liveCheckProgress = live.health.progress
+
+    fun visibleChannels(list: List<LiveChannel>): List<LiveChannel> = live.visible(list)
+
+    /** Verifica os canais de uma linha que ainda não foram testados (ex.: listas do mundo). */
+    fun checkChannels(list: List<LiveChannel>) {
+        viewModelScope.launch { runCatching { live.health.check(list) } }
+    }
+
+    fun recheckLive() {
+        viewModelScope.launch {
+            runCatching { live.health.check(live.channels("iptv_br"), force = true) }
+            runCatching { live.health.check(live.channels("iptv_por").filter { it.country != "br" }, force = true) }
+        }
+    }
+
+    init {
+        // Depois da abertura e do Início carregarem, testa os canais em segundo plano.
+        viewModelScope.launch {
+            delay(15_000)
+            live.checkMain()
+        }
+    }
 
     fun liveList(id: String): StateFlow<Load<List<LiveChannel>>> =
         liveLists.getOrPut(id) { MutableStateFlow<Load<List<LiveChannel>>>(Load.Loading).also { loadLive(id, it, false) } }

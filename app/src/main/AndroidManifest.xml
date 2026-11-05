@@ -9,7 +9,23 @@
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
-    <!-- Apps de streaming que o BruDre abre (visibilidade de pacotes, Android 11+) -->
+    <!-- Apps GRATUITOS (com anúncios) que o BruDre pode abrir: visibilidade de pacotes no Android 11+ -->
+    <queries>
+        <package android:name="tv.pluto.android" />
+        <package android:name="com.plexapp.android" />
+        <package android:name="com.google.android.youtube.tv" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.mercadolibre.mercadoplay" />
+        <package android:name="com.mercadolibre" />
+        <package android:name="com.univision.prendetv" />
+        <package android:name="com.tubitv" />
+        <package android:name="com.tubitv.ott" />
+        <package android:name="tv.wuaki" />
+        <package android:name="tv.wuaki.apptv" />
+        <intent>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent>
+    </queries>
 
     <application
         android:name=".BruDreApp"

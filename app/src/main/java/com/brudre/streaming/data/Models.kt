@@ -146,7 +146,10 @@ data class TitleDetails(
     val providerId: String? = null,
     /** true quando o primeiro vídeo respondeu à verificação de disponibilidade. */
     val confirmed: Boolean = false,
+    /** Apps oficiais gratuitos que têm o título (quando não há vídeo dentro do BruDre). */
+    val freeProviders: List<FreeProvider> = emptyList(),
 ) {
+    val freeElsewhere: Boolean get() = !available && freeProviders.isNotEmpty()
     val available: Boolean get() = playables.any { it.hasSource }
     val seasons: List<Int> get() = playables.map { it.season }.distinct().sorted()
     val isEpisodic: Boolean get() = playables.size > 1

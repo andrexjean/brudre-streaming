@@ -12,7 +12,18 @@ data class TmdbDetails(
     val originalTitle: String?,
     val englishTitle: String?,
     val originalLanguage: String?,
+    /** Apps oficiais onde o título está GRÁTIS no Brasil (sem assinatura, aluguel ou compra). */
+    val freeProviders: List<FreeProvider> = emptyList(),
 )
+
+/** Serviço gratuito (com ou sem anúncios) que tem o título, segundo a JustWatch via TMDB. */
+data class FreeProvider(val id: Int, val name: String, val logoUrl: String?, val withAds: Boolean) {
+    fun toJson(): org.json.JSONObject = org.json.JSONObject().put("id", id).put("name", name).put("logo", logoUrl ?: org.json.JSONObject.NULL).put("ads", withAds)
+
+    companion object {
+        fun fromJson(o: org.json.JSONObject) = FreeProvider(o.optInt("id"), o.getString("name"), o.optStringOrNull("logo"), o.optBoolean("ads"))
+    }
+}
 
 /**
  * Leitura das respostas da API do TMDB (The Movie Database).
@@ -25,6 +36,8 @@ object TmdbParser {
 
     fun poster(path: String?) = path?.takeIf { it.isNotBlank() }?.let { "${IMG}w342$it" }
     fun backdrop(path: String?) = path?.takeIf { it.isNotBlank() }?.let { "${IMG}w780$it" }
+    /** Capa pequena para os cards (o card tem ~420 px; w780 baixava o dobro sem necessidade). */
+    fun backdropSmall(path: String?) = path?.takeIf { it.isNotBlank() }?.let { "${IMG}w300$it" }
     fun logo(path: String?) = path?.takeIf { it.isNotBlank() }?.let { "${IMG}w92$it" }
 
     fun id(media: String, tmdbId: Int) = "$PREFIX$media:$tmdbId"
@@ -68,7 +81,7 @@ object TmdbParser {
                 year = date?.take(4)?.takeIf { it.length == 4 },
                 synopsis = o.optStringOrNull("overview"),
                 genres = genres.mapNotNull { GENRES[it] }.take(2),
-                posterUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: poster,
+                posterUrl = backdropSmall(o.optStringOrNull("backdrop_path")) ?: poster,
                 bannerUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: poster,
                 license = "TMDB",
             )
@@ -112,7 +125,37 @@ object TmdbParser {
             license = "Metadados: TMDB",
         )
         val original = if (media == "movie") o.optStringOrNull("original_title") else o.optStringOrNull("original_name")
-        return TmdbDetails(title, media, original, englishTitle(o, media), o.optStringOrNull("original_language"))
+        val free = o.optJSONObject("watch/providers")?.let { parseFreeProviders(it, region) } ?: emptyList()
+        return TmdbDetails(title, media, original, englishTitle(o, media), o.optStringOrNull("original_language"), free)
+    }
+
+    /**
+     * Só ofertas "free" e "ads" (gratuitas). Assinatura, aluguel e compra são ignorados, e serviços
+     * pagos que aparecem como "com anúncios" (planos pagos mais baratos) são descartados pelo nome.
+     */
+    fun parseFreeProviders(wp: JSONObject, region: String = "BR"): List<FreeProvider> {
+        val r = wp.optJSONObject("results")?.optJSONObject(region) ?: return emptyList()
+        val out = ArrayList<Pair<FreeProvider, Int>>()
+        for ((key, ads) in listOf("free" to false, "ads" to true)) {
+            val a = r.optJSONArray(key) ?: continue
+            for (i in 0 until a.length()) {
+                val p = a.optJSONObject(i) ?: continue
+                val name = p.optString("provider_name").trim()
+                if (name.isEmpty() || FreeApps.isPaidBrand(name)) continue
+                out += FreeProvider(p.optInt("provider_id"), name, logo(p.optStringOrNull("logo_path")), ads) to p.optInt("display_priority", 999)
+            }
+        }
+        return out.sortedWith(compareBy({ FreeApps.rank(it.first.name) }, { it.second }))
+            .map { it.first }.distinctBy { FreeApps.canonical(it.name) }
+    }
+
+    /** Ids dos provedores gratuitos do país (/watch/providers/movie|tv), para filtrar as linhas. */
+    fun parseFreeCatalog(json: String): List<Int> {
+        val arr = JSONObject(json).optJSONArray("results") ?: return emptyList()
+        return (0 until arr.length()).mapNotNull { i ->
+            val p = arr.optJSONObject(i) ?: return@mapNotNull null
+            p.optInt("provider_id").takeIf { FreeApps.isKnownFree(p.optString("provider_name")) }
+        }
     }
 
     /** Título em inglês (append translations): é como as obras aparecem no Internet Archive. */

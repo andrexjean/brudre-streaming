@@ -65,6 +65,24 @@ class TmdbTest {
         assertNull(d.englishTitle)
     }
 
+    @Test fun onlyFreeProvidersAreKept() {
+        val wp = org.json.JSONObject("""{"results":{"BR":{
+          "flatrate":[{"provider_id":8,"provider_name":"Netflix","logo_path":"/n.jpg","display_priority":1}],
+          "ads":[{"provider_id":1796,"provider_name":"Netflix basic with Ads","logo_path":"/na.jpg","display_priority":2},
+                 {"provider_id":538,"provider_name":"Plex","logo_path":"/p.jpg","display_priority":40}],
+          "free":[{"provider_id":300,"provider_name":"Pluto TV","logo_path":"/pl.jpg","display_priority":30},
+                  {"provider_id":301,"provider_name":"Pluto TV","logo_path":"/pl.jpg","display_priority":31}],
+          "rent":[{"provider_id":2,"provider_name":"Apple TV","logo_path":"/a.jpg","display_priority":5}],
+          "buy":[{"provider_id":3,"provider_name":"Google Play Movies","logo_path":"/g.jpg","display_priority":6}]}}}""")
+        val free = TmdbParser.parseFreeProviders(wp)
+        assertEquals(listOf("Pluto TV", "Plex"), free.map { it.name })
+        assertEquals(listOf(false, true), free.map { it.withAds })
+        val details = TmdbParser.parseDetails("""{"id":1,"title":"Filme","release_date":"2019-01-01","watch/providers":${wp}}""", "movie", null)
+        assertEquals(2, details.freeProviders.size)
+        val catalog = TmdbParser.parseFreeCatalog("""{"results":[{"provider_id":300,"provider_name":"Pluto TV"},{"provider_id":8,"provider_name":"Netflix"},{"provider_id":538,"provider_name":"Plex"},{"provider_id":999,"provider_name":"Serviço Qualquer"}]}""")
+        assertEquals(listOf(300, 538), catalog)
+    }
+
     @Test fun ids() {
         assertEquals("movie" to 5, TmdbParser.parseId("tmdb:movie:5"))
         assertEquals("tv" to 7, TmdbParser.parseId("tmdb:tv:7"))

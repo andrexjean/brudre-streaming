@@ -133,7 +133,14 @@ class SourceManager(
         val owner = providers.firstOrNull { it.handles(title) }
             ?: return TitleDetails(title, emptyList(), "Fonte desconhecida para este título")
         var d = guarded(owner) { owner.getDetails(title) }.getOrThrow()
-        if (!d.available && owner === tmdb) d = findFreeSource(d)
+        if (!d.available && owner === tmdb) {
+            // 1º: vídeo dentro do BruDre (acervo público). 2º: app oficial gratuito.
+            if (tmdb.worthArchiveSearch(d.title)) d = findFreeSource(d).let { if (it.available) it else d }
+            if (!d.available && d.freeProviders.isNotEmpty()) {
+                val names = d.freeProviders.joinToString(", ") { com.brudre.streaming.data.FreeApps.label(it.name) }
+                return d.copy(sourceLabel = "Grátis no app oficial: $names (com anúncios, sem assinatura) • Disponibilidade: JustWatch")
+            }
+        }
         return confirm(d)
     }
 

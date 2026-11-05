@@ -114,7 +114,8 @@ fun BruDreRoot(vm: MainViewModel) {
 
     val toast: (String) -> Unit = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
     val launch: (android.content.Intent) -> Unit = { context.startActivity(it) }
-    val playTitle: (Title) -> Unit = { t -> vm.play(t, onLaunch = launch, onError = toast) }
+    val freeApp: (Title, com.brudre.streaming.data.FreeProvider) -> Unit = { t, p -> toast(FreeAppLauncher.open(context, p, t)) }
+    val playTitle: (Title) -> Unit = { t -> vm.play(t, onLaunch = launch, onError = toast, onFreeApp = freeApp) }
     val playChannel: (com.brudre.streaming.live.LiveChannel) -> Unit = { ch -> vm.playChannel(ch, launch) }
     val tmdbOn = vm.tmdbEnabled
     fun tmdb(vararg refs: RowRef): List<RowRef> = if (tmdbOn) refs.toList() else emptyList()
@@ -142,21 +143,38 @@ fun BruDreRoot(vm: MainViewModel) {
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (section) {
                     Section.HOME -> HomeScreen(vm, playFocus, open, playTitle, playChannel)
+                    Section.RELEASES -> BrowseScreen(
+                        vm, "Lançamentos",
+                        tmdb(RowRef("tmdb_free_new", Icons.Filled.PlayArrow), RowRef("tmdb_new_movies", BruIcons.NewReleases), RowRef("tmdb_upcoming_streaming"),
+                            RowRef("tmdb_free_new_series", Icons.Filled.PlayArrow), RowRef("tmdb_new_series", BruIcons.Layers)),
+                        "releases", open,
+                    )
+                    Section.TRENDING -> BrowseScreen(
+                        vm, "Em Alta",
+                        tmdb(RowRef("tmdb_free_trending", Icons.Filled.PlayArrow), RowRef("tmdb_trending_movies", BruIcons.Trending), RowRef("tmdb_popular_movies"),
+                            RowRef("tmdb_free_series", Icons.Filled.PlayArrow), RowRef("tmdb_trending_series", BruIcons.Trending), RowRef("tmdb_popular_series")),
+                        "trending", open,
+                    )
                     Section.MOVIES -> BrowseScreen(
                         vm, "Filmes",
-                        listOf(RowRef("featured", Icons.Filled.PlayArrow), RowRef("curated_torrent", BruIcons.Movie), RowRef("adventure"),
-                            RowRef("westerns"), RowRef("comedy"), RowRef("scifi"), RowRef("noir")) +
+                        tmdb(RowRef("tmdb_free_movies", Icons.Filled.PlayArrow), RowRef("tmdb_free_new", BruIcons.NewReleases)) +
+                            listOf(RowRef("featured", Icons.Filled.PlayArrow)) +
+                            tmdb(RowRef("tmdb_trending_movies", BruIcons.Trending), RowRef("tmdb_free_action"), RowRef("tmdb_free_comedy"), RowRef("tmdb_free_horror")) +
+                            listOf(RowRef("curated_torrent", BruIcons.Movie), RowRef("adventure"), RowRef("westerns"), RowRef("comedy"), RowRef("scifi"), RowRef("noir")) +
                             tmdb(RowRef("tmdb_pd_classics", Icons.Filled.Star)),
-                        "movies", open,
+                        "movies", open, onPlayChannel = playChannel, liveGroup = "Movies",
                     )
                     Section.SERIES -> BrowseScreen(
                         vm, "Séries",
-                        listOf(RowRef("series", BruIcons.Layers), RowRef("series_recent")),
-                        "series", open,
+                        tmdb(RowRef("tmdb_free_series", Icons.Filled.PlayArrow), RowRef("tmdb_trending_series", BruIcons.Trending)) +
+                            tmdb(RowRef("tmdb_new_series", BruIcons.NewReleases), RowRef("tmdb_free_new_series")) +
+                            listOf(RowRef("series", BruIcons.Layers), RowRef("series_recent")),
+                        "series", open, onPlayChannel = playChannel, liveGroup = "Series",
                     )
                     Section.KIDS -> BrowseScreen(
                         vm, "Infantil",
-                        listOf(RowRef("curated_kids", Icons.Filled.PlayArrow), RowRef("kids", Icons.Filled.Face), RowRef("kids_animation")) +
+                        tmdb(RowRef("tmdb_free_family", Icons.Filled.PlayArrow), RowRef("tmdb_free_kids", Icons.Filled.Face)) +
+                            listOf(RowRef("curated_kids", Icons.Filled.PlayArrow), RowRef("kids", Icons.Filled.Face), RowRef("kids_animation")) +
                             tmdb(RowRef("tmdb_pd_anim")),
                         "kids", open, liveCategory = "kids", onPlayChannel = playChannel,
                     )
@@ -168,7 +186,8 @@ fun BruDreRoot(vm: MainViewModel) {
                     )
                     Section.DOCS -> BrowseScreen(
                         vm, "Documentários",
-                        listOf(RowRef("docs_featured", BruIcons.Globe), RowRef("docs_prelinger"), RowRef("docs_science"), RowRef("docs_recent")) +
+                        listOf(RowRef("docs_featured", BruIcons.Globe)) + tmdb(RowRef("tmdb_free_docs", Icons.Filled.PlayArrow)) +
+                            listOf(RowRef("docs_prelinger"), RowRef("docs_science"), RowRef("docs_recent")) +
                             tmdb(RowRef("tmdb_pd_docs")),
                         "docs", open, liveCategory = "docs", onPlayChannel = playChannel,
                     )
@@ -190,8 +209,9 @@ fun BruDreRoot(vm: MainViewModel) {
             title = t,
             onDismiss = { vm.closeDetails() },
             onPlay = { title, playable, fromStart, details ->
-                vm.play(title, playable, fromStart, details, onLaunch = launch, onError = toast)
+                vm.play(title, playable, fromStart, details, onLaunch = launch, onError = toast, onFreeApp = freeApp)
             },
+            onFreeApp = freeApp,
         )
     }
 
@@ -254,6 +274,8 @@ private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, u
         Spacer(Modifier.width(if (compact) 10.dp else 24.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             NavItem(Section.HOME, Icons.Filled.Home, section, compact, onSelect)
+            NavItem(Section.RELEASES, BruIcons.NewReleases, section, compact, onSelect)
+            NavItem(Section.TRENDING, BruIcons.Trending, section, compact, onSelect)
             NavItem(Section.MOVIES, BruIcons.Movie, section, compact, onSelect)
             NavItem(Section.SERIES, BruIcons.Layers, section, compact, onSelect)
             NavItem(Section.KIDS, Icons.Filled.Face, section, compact, onSelect)
@@ -294,7 +316,7 @@ private fun NavItem(target: Section, icon: ImageVector, current: Section, compac
     Row(
         Modifier
             .graphicsLayer { scaleX = scale; scaleY = scale }
-            .shadow(if (selected || focused) 10.dp else 0.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan)
+            .then(if (selected || focused) Modifier.shadow(10.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan) else Modifier)
             .clip(shape)
             .background(
                 when {

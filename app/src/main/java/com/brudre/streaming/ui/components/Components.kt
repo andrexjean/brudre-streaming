@@ -171,7 +171,7 @@ fun BruButton(
     Row(
         modifier
             .graphicsLayer { scaleX = scale; scaleY = scale; alpha = if (enabled) 1f else 0.5f }
-            .shadow(if (focused) 14.dp else 0.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan)
+            .then(if (focused) Modifier.shadow(14.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan) else Modifier)
             .clip(shape)
             .background(bg, shape)
             .border(if (focused) 2.dp else 1.dp, if (focused) Color.White else BruColors.CardBorder, shape)
@@ -251,7 +251,7 @@ fun TitleCard(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
-                .shadow(if (focused) 18.dp else 2.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan)
+                .then(if (focused) Modifier.shadow(18.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan) else Modifier)
                 .clip(shape)
                 .background(Brush.linearGradient(listOf(BruColors.NavyLight, BruColors.Card)))
                 .border(if (focused) 3.dp else 1.dp, if (focused) BruColors.Cyan else BruColors.CardBorder, shape),
@@ -291,6 +291,7 @@ fun TitleCard(
             )
             // Diferencia "com fonte gratuita" de "só catálogo" (a fonte é procurada ao abrir).
             val badge = when {
+                title.isTmdb && title.license == com.brudre.streaming.data.TmdbSource.FREE_LICENSE -> "GRÁTIS" to Color(0xCC0E6E8C)
                 title.isTmdb -> "CATÁLOGO" to Color(0xCC3A4466)
                 title.isArchive || title.isCurated -> "GRÁTIS" to Color(0xCC0E6E8C)
                 else -> null

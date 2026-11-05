@@ -126,6 +126,28 @@ class LiveTest {
         assertFalse(LiveCategories.categoryOf(sp2).key == "kids")
     }
 
+    @Test fun hlsProbeParsesMasterAndMediaPlaylists() {
+        val master = """
+            #EXTM3U
+            #EXT-X-STREAM-INF:BANDWIDTH=2500000,RESOLUTION=1280x720,CODECS="avc1.4d401f,mp4a.40.2"
+            hd/index.m3u8
+            #EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=640x360
+            sd/index.m3u8
+        """.trimIndent()
+        val m = com.brudre.streaming.live.HlsProbe.parse(master)!!
+        assertTrue(m.isMaster)
+        assertEquals("sd/index.m3u8", com.brudre.streaming.live.HlsProbe.lightest(m)!!.uri)
+        assertEquals("https://cdn.example.com/live/sd/index.m3u8", com.brudre.streaming.live.HlsProbe.resolve("https://cdn.example.com/live/master.m3u8", "sd/index.m3u8"))
+        assertEquals("https://other.example.com/x.ts", com.brudre.streaming.live.HlsProbe.resolve("https://cdn.example.com/live/a.m3u8", "https://other.example.com/x.ts"))
+        val media = "#EXTM3U\n#EXT-X-TARGETDURATION:6\n#EXTINF:6,\nseg100.ts\n#EXTINF:6,\nseg101.ts\n"
+        val p = com.brudre.streaming.live.HlsProbe.parse(media)!!
+        assertFalse(p.isMaster)
+        assertEquals("seg101.ts", com.brudre.streaming.live.HlsProbe.probeSegment(p)) // ao vivo: o mais recente
+        val vod = com.brudre.streaming.live.HlsProbe.parse(media + "#EXT-X-ENDLIST\n")!!
+        assertEquals("seg100.ts", com.brudre.streaming.live.HlsProbe.probeSegment(vod))
+        assertNull(com.brudre.streaming.live.HlsProbe.parse("<html>erro</html>"))
+    }
+
     @Test fun urlGuard() {
         assertNull(UrlGuard.check("https://archive.org/download/x/y.mp4"))
         assertNull(UrlGuard.check("http://192.168.0.10:8080/lista.m3u"))

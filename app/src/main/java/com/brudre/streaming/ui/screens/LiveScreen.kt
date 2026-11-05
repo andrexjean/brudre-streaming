@@ -75,6 +75,11 @@ fun LiveScreen(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
     val favorites by vm.favorites.collectAsStateWithLifecycle()
     val liveFavs = favorites.filter { it.titleId.startsWith(LiveChannel.PREFIX) }
     val br by vm.liveList("iptv_br").collectAsStateWithLifecycle()
+    val progress by vm.liveCheckProgress.collectAsStateWithLifecycle()
+    val brAll = (br as? Load.Ok)?.value.orEmpty()
+    val brVisible = rememberVisible(vm, brAll)
+    val brGroups = remember(brVisible) { LiveCategories.group(brVisible) }
+    val favChannels = remember(liveFavs, brAll) { liveFavs.mapNotNull { f -> vm.services.live.find(f.titleId.removePrefix(LiveChannel.PREFIX)) } }
     LazyColumn(Modifier.fillMaxSize().testTag("live"), contentPadding = PaddingValues(bottom = 48.dp)) {
         item(key = "header") {
             Column(Modifier.padding(start = 40.dp, top = 8.dp, end = 40.dp)) {
@@ -84,6 +89,21 @@ fun LiveScreen(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
                         "os sinais são mantidos por terceiros e alguns podem estar fora do ar. Segure OK num canal para favoritar.",
                     color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(820.dp),
                 )
+                val hidden = brAll.size - brVisible.size
+                val status = when {
+                    progress != null -> "Testando os sinais: ${progress!!.done} de ${progress!!.total}…"
+                    hidden > 0 -> "Sinais testados neste aparelho • $hidden canais fora do ar foram ocultados"
+                    else -> null
+                }
+                if (status != null) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
+                        Text(status, color = BruColors.Cyan, fontSize = 13.sp, modifier = Modifier.testTag("live_check_status"))
+                        if (progress == null) {
+                            Spacer(Modifier.width(14.dp))
+                            BruButton("Testar de novo", icon = Icons.Filled.Refresh, modifier = Modifier.testTag("live_recheck")) { vm.recheckLive() }
+                        }
+                    }
+                }
             }
         }
         if (!vm.liveEnabled) {
@@ -96,17 +116,13 @@ fun LiveScreen(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
             return@LazyColumn
         }
         if (liveFavs.isNotEmpty()) {
-            item(key = "favs") {
-                val channels = liveFavs.mapNotNull { f -> vm.services.live.find(f.titleId.removePrefix(LiveChannel.PREFIX)) }
-                ChannelRow(vm, "Canais favoritos", channels, "live_favs", onPlay)
-            }
+            item(key = "favs") { ChannelRow(vm, "Canais favoritos", favChannels, "live_favs", onPlay) }
         }
         when (val s = br) {
             is Load.Loading -> item(key = "br_loading") { Column(Modifier.padding(top = 18.dp)) { SectionHeader("Brasil", BruIcons.LiveTv); SkeletonRow() } }
             is Load.Error -> item(key = "br_error") { ErrorRow("Brasil", s.message, "live_br") { vm.retryLive("iptv_br") } }
             is Load.Ok -> {
-                val groups = LiveCategories.group(s.value)
-                items(groups, key = { "br_" + it.first.key }) { (cat, list) ->
+                items(brGroups, key = { "br_" + it.first.key }) { (cat, list) ->
                     ChannelRow(vm, "Brasil — ${cat.label}", list, "live_br_${cat.key}", onPlay)
                 }
             }
@@ -127,8 +143,11 @@ private fun PortugueseRows(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
         is Load.Loading -> Column(Modifier.padding(top = 18.dp)) { SectionHeader("Em português", BruIcons.Globe); SkeletonRow() }
         is Load.Error -> ErrorRow("Em português", s.message, "live_por") { vm.retryLive("iptv_por") }
         is Load.Ok -> {
-            val byCountry = s.value.filter { it.country != null && it.country != "br" }.groupBy { it.country!! }
-                .entries.sortedByDescending { it.value.size }.take(6)
+            val visible = rememberVisible(vm, s.value)
+            val byCountry = remember(visible) {
+                visible.filter { it.country != null && it.country != "br" }.groupBy { it.country!! }
+                    .entries.sortedByDescending { it.value.size }.take(6)
+            }
             Column {
                 byCountry.forEach { (code, list) ->
                     ChannelRow(vm, "Em português — ${LiveRepository.countryName(code) ?: code.uppercase()}", list, "live_por_$code", onPlay)
@@ -144,8 +163,31 @@ private fun WholeListRow(vm: MainViewModel, listId: String, label: String, onPla
     when (val s = state) {
         is Load.Loading -> Column(Modifier.padding(top = 18.dp)) { SectionHeader(label, BruIcons.LiveTv); SkeletonRow() }
         is Load.Error -> ErrorRow(label, s.message, "live_$listId") { vm.retryLive(listId) }
-        is Load.Ok -> ChannelRow(vm, label, s.value.sortedBy { if (it.logo != null) 0 else 1 }.take(80), "live_$listId", onPlay)
+        is Load.Ok -> {
+            val shown = remember(s.value) { s.value.sortedBy { if (it.logo != null) 0 else 1 }.take(80) }
+            // Listas do mundo são testadas só quando a linha aparece (e só os canais exibidos).
+            androidx.compose.runtime.LaunchedEffect(shown) { vm.checkChannels(shown) }
+            ChannelRow(vm, label, rememberVisible(vm, shown), "live_$listId", onPlay)
+        }
     }
+}
+
+/** Canais de um grupo da lista (ex.: "Movies" → canais de filmes 24 h grátis em Filmes). */
+@Composable
+fun LiveGroupRow(vm: MainViewModel, listId: String, group: String, label: String, onPlay: (LiveChannel) -> Unit) {
+    val state by vm.liveList(listId).collectAsStateWithLifecycle()
+    val all = (state as? Load.Ok)?.value ?: return
+    val visible = rememberVisible(vm, all)
+    val list = remember(visible, group) { visible.filter { ch -> ch.groups.any { it.equals(group, true) } } }
+    if (list.isNotEmpty()) ChannelRow(vm, label, list, "live_${listId}_g_$group", onPlay)
+}
+
+/** Lista sem os canais que falharam no teste de sinal (recalculada só quando o resultado muda). */
+@Composable
+fun rememberVisible(vm: MainViewModel, list: List<LiveChannel>): List<LiveChannel> {
+    val health by vm.liveHealth.collectAsStateWithLifecycle()
+    val offline by vm.offlineChannels.collectAsStateWithLifecycle()
+    return remember(list, health, offline) { vm.visibleChannels(list) }
 }
 
 /** Linha de canais de uma categoria de uma lista (usada também em Início, Infantil e Documentários). */
@@ -156,7 +198,8 @@ fun LiveCategoryRow(vm: MainViewModel, listId: String, category: String, label: 
         is Load.Loading -> Column(Modifier.padding(top = 18.dp)) { SectionHeader(label, BruIcons.LiveTv); SkeletonRow() }
         is Load.Error -> ErrorRow(label, s.message, "live_${listId}_$category") { vm.retryLive(listId) }
         is Load.Ok -> {
-            val list = LiveCategories.inCategory(s.value, category)
+            val visible = rememberVisible(vm, s.value)
+            val list = remember(visible, category) { LiveCategories.inCategory(visible, category) }
             if (list.isNotEmpty()) ChannelRow(vm, label, list, "live_${listId}_$category", onPlay)
         }
     }
@@ -212,6 +255,7 @@ fun ChannelCard(
 ) {
     var focused by remember { mutableStateOf(false) }
     var longPressed by remember { mutableStateOf(false) }
+    val caption = remember(ch) { listOfNotNull(LiveCategories.categoryOf(ch).label, if (ch.notAlways) "nem sempre no ar" else null).joinToString(" • ") }
     val scale by animateFloatAsState(if (focused) 1.08f else 1f, tween(150), label = "chScale")
     val shape = RoundedCornerShape(10.dp)
     Column(
@@ -235,7 +279,7 @@ fun ChannelCard(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
-                .shadow(if (focused) 18.dp else 2.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan)
+                .then(if (focused) Modifier.shadow(18.dp, shape, ambientColor = BruColors.Cyan, spotColor = BruColors.Cyan) else Modifier)
                 .clip(shape)
                 .background(Brush.linearGradient(listOf(Color(0xFF16275A), BruColors.Card)))
                 .border(if (focused) 3.dp else 1.dp, if (focused) BruColors.Cyan else BruColors.CardBorder, shape)
@@ -275,7 +319,7 @@ fun ChannelCard(
             )
         }
         Text(
-            listOfNotNull(LiveCategories.categoryOf(ch).label, if (ch.notAlways) "nem sempre no ar" else null).joinToString(" • "),
+            caption,
             color = if (focused) Color.White else BruColors.TextFaint, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 6.dp, start = 2.dp),
         )

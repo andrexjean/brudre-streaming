@@ -105,10 +105,21 @@ class CatalogRepository(
     /** Procura no acervo a mesma obra catalogada em outra fonte (título + ano). */
     suspend fun matchArchive(names: List<String>, year: String?, kind: Kind): Title? = withContext(Dispatchers.IO) {
         if (names.isEmpty()) return@withContext null
+        // Resultado guardado por 7 dias: abrir o mesmo título de novo não refaz a busca no acervo.
+        val key = "match|${kind.name}|$year|${names.joinToString("|")}"
+        db.catalogCache().get(key)?.takeIf { System.currentTimeMillis() - it.fetchedAt < MATCH_TTL_MS }?.let { c ->
+            return@withContext if (c.json == "-") null else runCatching { Title.fromJson(org.json.JSONObject(c.json)) }.getOrNull()
+        }
+        val found = matchArchiveRemote(names, year, kind)
+        db.catalogCache().put(CatalogCacheEntity(key, found?.toJson()?.toString() ?: "-", System.currentTimeMillis()))
+        found
+    }
+
+    private fun matchArchiveRemote(names: List<String>, year: String?, kind: Kind): Title? {
         val collections = if (kind == Kind.SERIES) "classic_tv" else "$SEARCH_COLLECTIONS OR prelinger"
         val q = "(${com.brudre.streaming.sources.TitleMatcher.archiveQuery(names)}) AND collection:($collections)$NOT_RESTRICTED"
         val found = parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 25)), kind) }.filter { ArchiveParser.isFamilySafe(it) }
-        com.brudre.streaming.sources.TitleMatcher.best(found, names, year)
+        return com.brudre.streaming.sources.TitleMatcher.best(found, names, year)
     }
 
     // --------------------------------------------------------------- detalhes
@@ -207,6 +218,7 @@ class CatalogRepository(
     companion object {
         const val USER_AGENT = "BruDreStreaming/8.0 (Android TV; uso domestico)"
         private const val CACHE_TTL_MS = 6 * 60 * 60 * 1000L
+        private const val MATCH_TTL_MS = 7 * 24 * 60 * 60 * 1000L
         /**
          * Filtros de segurança aplicados a toda consulta ao Internet Archive:
          * só itens com licença declarada (domínio público ou Creative Commons),

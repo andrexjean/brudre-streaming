@@ -80,12 +80,17 @@ fun HomeScreen(
     val continueWatching by vm.continueWatching.collectAsStateWithLifecycle()
     val loadingId by vm.playLoading.collectAsStateWithLifecycle()
     // Início: só linhas que tocam no BruDre; o catálogo TMDB entra com clássicos que têm cópia gratuita.
+    val tm = vm.tmdbEnabled
     val rows = listOfNotNull(
+        if (tm) RowRef("tmdb_free_movies", Icons.Filled.PlayArrow) else null,
         RowRef("featured", Icons.Filled.PlayArrow),
+        if (tm) RowRef("tmdb_trending_movies", BruIcons.Trending) else null,
+        if (tm) RowRef("tmdb_free_series", BruIcons.Layers) else null,
         RowRef("curated_torrent", BruIcons.Movie),
+        if (tm) RowRef("tmdb_new_movies", BruIcons.NewReleases) else null,
         RowRef("series", BruIcons.Layers),
         RowRef("kids", Icons.Filled.Face),
-        if (vm.tmdbEnabled) RowRef("tmdb_pd_classics", Icons.Filled.Star) else null,
+        if (tm) RowRef("tmdb_pd_classics", Icons.Filled.Star) else null,
         RowRef("docs_featured", BruIcons.Globe),
     )
     LazyColumn(Modifier.fillMaxSize().testTag("home"), contentPadding = PaddingValues(bottom = 48.dp)) {
@@ -275,12 +280,20 @@ fun BrowseScreen(
     onOpen: (Title) -> Unit,
     liveCategory: String? = null,
     onPlayChannel: (com.brudre.streaming.live.LiveChannel) -> Unit = {},
+    liveGroup: String? = null,
 ) {
     LazyColumn(Modifier.fillMaxSize().testTag(tag), contentPadding = PaddingValues(top = 4.dp, bottom = 48.dp)) {
         item(key = "header") {
             Text(title, color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 40.dp, top = 8.dp))
         }
-        items(rows, key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
+        items(rows.take(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
+        if (liveGroup != null && vm.liveEnabled) {
+            // Canais 24 h gratuitos (Pluto TV e outros) perto do topo: conteúdo recente que toca no app.
+            item(key = "live_g_$liveGroup") {
+                LiveGroupRow(vm, "iptv_br", liveGroup, "Canais de ${title.lowercase()} 24 h grátis", onPlay = onPlayChannel)
+            }
+        }
+        items(rows.drop(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
         if (liveCategory != null && vm.liveEnabled) {
             item(key = "live_$liveCategory") {
                 LiveCategoryRow(vm, "iptv_br", liveCategory, "Canais ao vivo — $title", onPlay = onPlayChannel)

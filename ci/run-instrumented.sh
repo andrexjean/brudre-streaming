@@ -8,5 +8,6 @@ adb logcat -d -v time -s BruDreTest:V BruDreTorrent:V BruDrePlayer:V BruDre:V Br
 adb shell dumpsys meminfo com.brudre.streaming > meminfo.txt 2>&1 || true
 mkdir -p shots && adb pull /sdcard/brudre_shots/. shots/ > /dev/null 2>&1 || true
 echo "$code" > instrumented.exit
+./ci/perf-release.sh || true
 tail -n 80 instrumented.log
 exit 0

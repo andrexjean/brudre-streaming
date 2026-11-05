@@ -82,6 +82,7 @@ fun DetailsDialog(
     title: Title,
     onDismiss: () -> Unit,
     onPlay: (Title, Playable?, Boolean, TitleDetails?) -> Unit,
+    onFreeApp: (Title, com.brudre.streaming.data.FreeProvider) -> Unit = { _, _ -> },
 ) {
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         FullScreenDialogWindow()
@@ -179,7 +180,13 @@ fun DetailsDialog(
                             primaryFocus = primaryFocus,
                             onUnlock = { showPin = true },
                         )
-                    } else AvailableSection(
+                    } else if (s.value.freeElsewhere) FreeAppsSection(
+                        details = s.value,
+                        isFavorite = isFavorite,
+                        primaryFocus = primaryFocus,
+                        onToggleFavorite = { vm.toggleFavorite(s.value.title) },
+                        onOpen = { p -> onFreeApp(s.value.title, p) },
+                    ) else AvailableSection(
                         details = s.value,
                         progress = progress,
                         isFavorite = isFavorite,
@@ -242,6 +249,38 @@ private fun FavoriteButton(isFavorite: Boolean, modifier: Modifier = Modifier, o
         modifier = modifier.testTag("btn_favorite"),
         onClick = onClick,
     )
+}
+
+/** Título grátis em app oficial (Pluto TV, YouTube, Plex…): botão por serviço. */
+@Composable
+private fun FreeAppsSection(
+    details: TitleDetails,
+    isFavorite: Boolean,
+    primaryFocus: FocusRequester,
+    onToggleFavorite: () -> Unit,
+    onOpen: (com.brudre.streaming.data.FreeProvider) -> Unit,
+) {
+    Column {
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            details.freeProviders.take(3).forEachIndexed { i, p ->
+                BruButton(
+                    "Assistir grátis no ${com.brudre.streaming.data.FreeApps.label(p.name)}",
+                    icon = Icons.Filled.PlayArrow,
+                    primary = i == 0,
+                    modifier = Modifier
+                        .then(if (i == 0) Modifier.focusRequester(primaryFocus) else Modifier)
+                        .testTag("btn_free_$i"),
+                ) { onOpen(p) }
+            }
+            FavoriteButton(isFavorite, onClick = onToggleFavorite)
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(details.sourceLabel, color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.testTag("details_source"))
+        Text(
+            "Abre o app oficial gratuito (com anúncios). Se não estiver instalado, a Play Store abre para instalar sem custo.",
+            color = BruColors.TextFaint, fontSize = 12.sp,
+        )
+    }
 }
 
 @Composable

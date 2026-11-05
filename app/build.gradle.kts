@@ -59,10 +59,17 @@ android {
             ndk { abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86") }
         }
         release {
-            isMinifyEnabled = false
+            // R8: remove código não usado e otimiza o Compose (bem mais fluido no Mi Stick).
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = if (keystoreProps.isNotEmpty()) signingConfigs.getByName("brudre") else signingConfigs.getByName("debug")
             // Mi TV Stick (Amlogic S805Y) usa userland ARM 32 bits; arm64 incluído para outros aparelhos.
-            ndk { abiFilters += listOf("armeabi-v7a", "arm64-v8a") }
+            ndk {
+                abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+                // Só no CI: inclui x86_64 para medir o APK release no emulador.
+                if (project.hasProperty("perfAbi")) abiFilters += "x86_64"
+            }
         }
     }
 
@@ -124,6 +131,8 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     implementation("io.coil-kt:coil-compose:2.7.0")
+    // Instala os perfis de compilação do Compose também em APK instalado fora da Play Store.
+    implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 

@@ -496,15 +496,19 @@ private fun AddListDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit
 @Composable
 private fun DeviceSection() {
     val context = LocalContext.current
-    val info = remember { runCatching { DeviceInfo.collect(context) }.getOrNull() } ?: return
+    // A lista de decodificadores demora no Mi Stick: lida fora da thread da interface.
+    val info by androidx.compose.runtime.produceState<DeviceInfo.Info?>(null) {
+        value = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { DeviceInfo.collect(context) }.getOrNull() }
+    }
+    val i = info ?: return
     Column(Modifier.padding(top = 16.dp).testTag("device_info")) {
         Text("Este aparelho", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(info.summary(), color = BruColors.TextDim, fontSize = 14.sp)
+        Text(i.summary(), color = BruColors.TextDim, fontSize = 14.sp)
         Text(
-            "Memória livre ${info.ramAvailMb} MB${if (info.lowRamDevice) " (modo pouca memória)" else ""} • limite do app ${info.memoryClassMb} MB • " +
-                "armazenamento livre ${CacheManager.formatBytes(info.storageFreeMb * 1024 * 1024)} de ${CacheManager.formatBytes(info.storageTotalMb * 1024 * 1024)}",
+            "Memória livre ${i.ramAvailMb} MB${if (i.lowRamDevice) " (modo pouca memória)" else ""} • limite do app ${i.memoryClassMb} MB • " +
+                "armazenamento livre ${CacheManager.formatBytes(i.storageFreeMb * 1024 * 1024)} de ${CacheManager.formatBytes(i.storageTotalMb * 1024 * 1024)}",
             color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
         )
-        Text("Decodificadores: ${info.codecLine()}", color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp).testTag("device_codecs"))
+        Text("Decodificadores: ${i.codecLine()}", color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp).testTag("device_codecs"))
     }
 }

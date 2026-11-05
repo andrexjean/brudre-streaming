@@ -195,12 +195,31 @@ class PlaybackTest {
         val d = playable!!
         assertTrue(d.title.isTmdb)
         launch(d.title, d.playables.first().copy(key = "test_tmdb_match")).use { sc -> sc.awaitPlaying(90_000, 2_000) }
+        // Filmes recentes grátis em apps oficiais (Pluto TV, YouTube, Plex, Mercado Play…)
+        for (key in listOf("tmdb_free_movies", "tmdb_free_new", "tmdb_free_series", "tmdb_trending_movies", "tmdb_new_movies", "tmdb_trending_series", "tmdb_new_series")) {
+            val r = runBlocking { services.catalog.row(key, force = true) }
+            TestUtil.log("$key: ${r.size} títulos, ex.: ${r.take(4).joinToString { it.name + " (" + it.year + ")" }}")
+            assertTrue("$key vazio", r.isNotEmpty())
+        }
+        val freeRecent = runBlocking { services.catalog.row("tmdb_free_movies") }.take(6).mapNotNull { t ->
+            runCatching { runBlocking { services.sources.details(t) } }.getOrNull()
+        }
+        freeRecent.forEach { fd -> TestUtil.log("Grátis: ${fd.title.name} (${fd.title.year}) → ${fd.freeProviders.joinToString { it.name + if (it.withAds) "/anúncios" else "/grátis" }}") }
+        assertTrue("nenhum filme recente com app gratuito", freeRecent.any { it.freeElsewhere })
+        assertTrue("serviço pago na lista de grátis", freeRecent.flatMap { it.freeProviders }.none { com.brudre.streaming.data.FreeApps.isPaidBrand(it.name) })
+        // Abrir o app gratuito (não instalado no emulador) leva à Play Store sem travar
+        val fd = freeRecent.first { it.freeElsewhere }
+        var msg = ""
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { msg = com.brudre.streaming.ui.FreeAppLauncher.open(ctx, fd.freeProviders.first(), fd.title) }
+        TestUtil.log("Abrir app grátis: $msg")
+        assertTrue(msg.isNotBlank())
         // Lançamento recente: catalogado, sem fonte gratuita e sem redirecionamento pago
         val recent = runBlocking { services.sources.search("Duna Parte Dois") }.firstOrNull { it.isTmdb }
         if (recent != null) {
             val rd = runBlocking { services.sources.details(recent) }
             TestUtil.log("Lançamento: ${rd.title.name} → ${rd.sourceLabel}")
             assertTrue("lançamento comercial não deveria ter fonte", !rd.available)
+            TestUtil.log("Lançamento grátis em: ${rd.freeProviders.joinToString { it.name }.ifEmpty { "nenhum app gratuito" }}")
         }
     }
 
@@ -236,6 +255,49 @@ class PlaybackTest {
             if (played) { ok = ch.name; break }
         }
         assertNotNull("nenhum canal ao vivo tocou", ok)
+    }
+
+    /** Teste de TODOS os canais (Brasil + português): manifesto → variante → segmento; depois amostra no player. */
+    @Test fun t21_allLiveChannelsChecked() {
+        val live = services.live
+        val br = runBlocking { live.channels("iptv_br") }
+        val por = runBlocking { live.channels("iptv_por") }.filter { it.country != "br" }
+        val all = (br + por).distinctBy { it.id }
+        val t0 = System.currentTimeMillis()
+        runBlocking { live.health.check(all, force = true) }
+        val secs = (System.currentTimeMillis() - t0) / 1000
+        val res = live.health.results.value
+        val ok = all.filter { res[it.id]?.ok == true }
+        val fail = all.filter { res[it.id]?.ok == false }
+        TestUtil.log("Canais testados: ${all.size} em ${secs}s • no ar: ${ok.size} • fora do ar: ${fail.size}")
+        TestUtil.log("Brasil: ${br.count { res[it.id]?.ok == true }} de ${br.size} no ar")
+        fail.groupingBy { (res[it.id]?.reason ?: "?").replace(Regex("\\d{3}"), "NNN").take(40) }.eachCount()
+            .entries.sortedByDescending { it.value }.take(10).forEach { TestUtil.log("  motivo: ${it.key} → ${it.value}") }
+        // Relatório completo (CSV) junto das capturas
+        runCatching {
+            val f = File("/sdcard/brudre_shots/live_health.csv")
+            f.parentFile?.mkdirs()
+            f.writeText("lista;canal;resultado;motivo;url\n" + all.joinToString("\n") { c ->
+                val e = res[c.id]
+                "${c.source};${c.name.replace(';', ',')};${if (e?.ok == true) "no ar" else "fora"};${e?.reason ?: ""};${e?.workingUrl ?: c.url}"
+            })
+        }
+        assertTrue("nenhum canal no ar", ok.size >= 20)
+        // Precisão da verificação: canais aprovados precisam tocar de verdade no player
+        val sample = ok.shuffled(java.util.Random(7)).take(10)
+        var played = 0
+        for (ch in sample) {
+            val c = live.health.withWorkingUrl(ch)
+            val t = com.brudre.streaming.live.LiveRepository.run { c.toTitle() }
+            val p = com.brudre.streaming.live.LiveRepository.run { c.toPlayable() }.copy(mirrors = emptyList())
+            val good = launch(t, p).use { sc ->
+                runCatching { TestUtil.waitFor(25_000, c.name) { sc.state() == Player.STATE_READY && sc.read { it.playerForTest()!!.isPlaying } } }.isSuccess
+            }
+            if (good) played++
+            TestUtil.log("Player: ${c.name} → ${if (good) "tocou" else "não tocou"}")
+        }
+        TestUtil.log("Aprovados na verificação que tocaram no player: $played de ${sample.size}")
+        assertTrue("verificação aprovou canais que não tocam ($played/${sample.size})", played >= sample.size * 7 / 10)
     }
 
     /** Teste 11: reprodução HLS (stream público de teste da Mux). */

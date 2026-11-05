@@ -1,0 +1,76 @@
+{
+  "name": "Filmes abertos da Blender (exemplo de fonte externa)",
+  "note": "Obras com licença Creative Commons da Blender Foundation. Torrents oficiais publicados pelo projeto WebTorrent.",
+  "items": [
+    {
+      "id": "sintel-magnet",
+      "title": "Sintel (magnet)",
+      "year": "2010",
+      "kind": "MOVIE",
+      "durationMin": 15,
+      "genres": ["Animação", "Fantasia"],
+      "synopsis": "Curta aberto da Blender Foundation. Fonte de teste: somente magnet link (BitTorrent progressivo).",
+      "poster": "https://webtorrent.io/torrents/Sintel/poster.jpg",
+      "license": "CC BY 3.0 — Blender Foundation",
+      "sources": [
+        {"type": "magnet", "url": "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.webtorrent.dev&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent", "file": "Sintel.mp4"}
+      ]
+    },
+    {
+      "id": "big-buck-bunny-torrent",
+      "title": "Big Buck Bunny (.torrent)",
+      "year": "2008",
+      "kind": "KIDS",
+      "durationMin": 10,
+      "genres": ["Animação", "Comédia"],
+      "synopsis": "Curta aberto da Blender Foundation. Fonte de teste: arquivo .torrent oficial.",
+      "poster": "https://webtorrent.io/torrents/Big%20Buck%20Bunny/poster.jpg",
+      "license": "CC BY 3.0 — Blender Foundation",
+      "sources": [
+        {"type": "torrent", "url": "https://webtorrent.io/torrents/big-buck-bunny.torrent", "file": "Big Buck Bunny.mp4"}
+      ]
+    },
+    {
+      "id": "tears-of-steel",
+      "title": "Tears of Steel",
+      "year": "2012",
+      "kind": "MOVIE",
+      "durationMin": 12,
+      "genres": ["Ficção científica"],
+      "synopsis": "Curta aberto da Blender Foundation. Fonte de teste: magnet + .torrent (o app escolhe o melhor).",
+      "poster": "https://webtorrent.io/torrents/tears-of-steel/poster.jpg",
+      "license": "CC BY 3.0 — Blender Foundation",
+      "sources": [
+        {"type": "magnet", "url": "magnet:?xt=urn:btih:209c8226b299b308beaf2b9cd3fb49212dbd13ec&dn=Tears+of+Steel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.webtorrent.dev&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Ftears-of-steel.torrent"},
+        {"type": "torrent", "url": "https://webtorrent.io/torrents/tears-of-steel.torrent"}
+      ]
+    },
+    {
+      "id": "sintel-http",
+      "title": "Sintel (HTTP + torrent)",
+      "year": "2010",
+      "kind": "MOVIE",
+      "durationMin": 15,
+      "synopsis": "Mesma obra com fonte HTTPS direta e torrent de reserva: o app usa o HTTP primeiro.",
+      "poster": "https://webtorrent.io/torrents/Sintel/poster.jpg",
+      "license": "CC BY 3.0 — Blender Foundation",
+      "sources": [
+        {"type": "http", "url": "https://webtorrent.io/torrents/Sintel/Sintel.mp4"},
+        {"type": "torrent", "url": "https://webtorrent.io/torrents/sintel.torrent", "file": "Sintel.mp4"}
+      ],
+      "subtitles": [{"lang": "pt", "label": "Português", "url": "https://webtorrent.io/torrents/Sintel/Sintel.pt.srt"}]
+    },
+    {
+      "id": "bbb-hls",
+      "title": "Big Buck Bunny (HLS)",
+      "year": "2008",
+      "kind": "KIDS",
+      "durationMin": 10,
+      "synopsis": "Fonte de teste em HLS (stream público de testes da Mux).",
+      "license": "CC BY 3.0 — Blender Foundation",
+      "sources": [
+        {"type": "hls", "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"}
+      ]
+    }
+  ]
+}

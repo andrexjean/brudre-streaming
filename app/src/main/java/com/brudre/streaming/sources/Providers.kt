@@ -63,8 +63,11 @@ class TmdbProvider(private val catalog: CatalogRepository) : ContentProvider {
         val d = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { catalog.parseOrThrow { catalog.tmdb.details(title) } }
         if (hints.size > 40) hints.clear()
         hints[d.title.id] = d
-        return TitleDetails(d.title, emptyList(), NO_FREE_SOURCE, providerId = null)
+        return TitleDetails(d.title, emptyList(), NO_FREE_SOURCE, providerId = null, freeProviders = d.freeProviders)
     }
+
+    /** Só vale procurar no acervo público obras antigas (lançamentos recentes não estão lá). */
+    fun worthArchiveSearch(title: Title): Boolean = (title.year?.toIntOrNull() ?: 0).let { it in 1..1975 }
 
     fun hintFor(title: Title): MatchHint? {
         val d = hints[title.id] ?: return null

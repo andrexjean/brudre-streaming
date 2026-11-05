@@ -45,6 +45,9 @@ class LiveRepository(
     private val dir get() = File(app.cacheDir, "live").apply { mkdirs() }
     private val store = app.getSharedPreferences("brudre_live_channels", Context.MODE_PRIVATE)
 
+    /** Verificação real dos sinais (no aparelho), usada para ocultar canais fora do ar. */
+    val health = LiveHealth(guardedHttp, File(app.cacheDir, "live"))
+
     private val _offline = MutableStateFlow<Set<String>>(emptySet())
     /** Canais que falharam nesta sessão (mostrados como "fora do ar"). */
     val offline: StateFlow<Set<String>> = _offline.asStateFlow()
@@ -175,8 +178,19 @@ class LiveRepository(
     /** Guarda os dados do canal para reproduzir os favoritos mesmo antes de a lista carregar. */
     fun remember(ch: LiveChannel) { store.edit().putString(ch.id, ch.toJson().toString()).apply() }
 
-    fun markOffline(id: String) { _offline.value = _offline.value + id }
-    fun markOnline(id: String) { if (id in _offline.value) _offline.value = _offline.value - id }
+    fun markOffline(id: String) { _offline.value = _offline.value + id; health.mark(id, false, "falhou no player") }
+    fun markOnline(id: String) { if (id in _offline.value) _offline.value = _offline.value - id; health.mark(id, true) }
+
+    /** Esconde os canais que falharam na verificação e usa o endereço que respondeu. */
+    fun visible(list: List<LiveChannel>): List<LiveChannel> =
+        list.filter { health.status(it.id) != false && it.id !in _offline.value }.map { health.withWorkingUrl(it) }
+
+    /** Verifica em segundo plano as listas principais (Brasil e português). */
+    suspend fun checkMain() {
+        if (!enabled) return
+        runCatching { health.check(channels("iptv_br")) }
+        runCatching { health.check(channels("iptv_por").filter { it.country != "br" }) }
+    }
 
     fun trimMemory() {
         memory.keys.filter { it != "iptv_br" }.forEach { memory.remove(it) }
@@ -186,6 +200,7 @@ class LiveRepository(
         val size = dir.listFiles()?.sumOf { it.length() } ?: 0L
         dir.listFiles()?.forEach { it.delete() }
         memory.clear()
+        health.clear()
         return size
     }
 

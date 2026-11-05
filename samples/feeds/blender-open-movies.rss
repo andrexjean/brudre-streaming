@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Filmes abertos da Blender (RSS de exemplo)</title>
+    <link>https://webtorrent.io/free-torrents</link>
+    <description>Torrents oficiais de obras Creative Commons</description>
+    <item>
+      <title>Sintel (2010)</title>
+      <description><![CDATA[Curta aberto da <b>Blender Foundation</b>.]]></description>
+      <guid>sintel-rss</guid>
+      <enclosure url="https://webtorrent.io/torrents/sintel.torrent" type="application/x-bittorrent" length="0"/>
+    </item>
+    <item>
+      <title>Cosmos Laundromat (2015)</title>
+      <description>Curta aberto da Blender Foundation.</description>
+      <guid>cosmos-rss</guid>
+      <enclosure url="https://webtorrent.io/torrents/cosmos-laundromat.torrent" type="application/x-bittorrent" length="0"/>
+    </item>
+  </channel>
+</rss>

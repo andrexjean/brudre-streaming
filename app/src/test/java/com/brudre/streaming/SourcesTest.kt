@@ -85,15 +85,31 @@ class SourcesTest {
         assertEquals("streaming HLS", PlaybackPlan.attempts(back, SourceMode.AUTO).first().label)
     }
 
-    @Test fun tmdbRowsOnlyCoverPublicDomainEra() {
-        assertTrue(TmdbSource.ROWS.keys.all { it.startsWith("tmdb_pd_") })
+    @Test fun tmdbRowsAreFreeClassicOrCatalogOnly() {
+        for ((key, spec) in TmdbSource.ROWS) {
+            if (key.startsWith("tmdb_free_")) assertTrue("$key deveria ser só grátis", spec.free)
+            if (key.startsWith("tmdb_pd_")) assertTrue("$key deveria ser clássico", spec.classic && !spec.free)
+        }
         assertTrue(TmdbSource.PUBLIC_DOMAIN_YEAR <= 1930)
+    }
+
+    @Test fun freeAppsNeverIncludePaidServices() {
+        val F = com.brudre.streaming.data.FreeApps
+        for (paid in listOf("Netflix", "Netflix Standard with Ads", "Amazon Prime Video with Ads", "Max", "HBO Max", "Disney Plus", "Globoplay", "Paramount Plus", "Claro tv+", "Apple TV Plus")) {
+            assertTrue(paid, F.isPaidBrand(paid))
+            assertFalse(paid, F.isKnownFree(paid))
+        }
+        for (free in listOf("Pluto TV", "Plex", "YouTube", "Mercado Play", "ViX", "Tubi TV")) assertTrue(free, F.isKnownFree(free))
+        assertEquals("pluto", F.canonical("Pluto TV"))
+        assertTrue(F.APPS.values.none { a -> a.packages.any { it.contains("netflix") || it.contains("disney") || it.contains("hbo") || it.contains("globo") } })
+        assertTrue(F.rank("Pluto TV") < F.rank("Plex"))
     }
 
     /** Requisito 18: nenhum serviço pago, aluguel ou compra no código do app. */
     @Test fun noPaidServiceRedirectsInSource() {
         val root = listOf(File("src/main"), File("app/src/main"), File("/home/claude/brudre/app/src/main")).first { it.exists() }
-        val forbidden = Regex("(?i)(com\\.netflix|amazonvideo|disneyplus|com\\.hbo|globo\\.globotv|watch/providers|flatrate|StreamingLauncher|StreamingApps|Offer\\.RENT|Offer\\.BUY|JustWatch|with_watch_monetization)")
+        // Apps gratuitos (Pluto TV, YouTube, Plex…) são permitidos; serviços pagos, aluguel e compra não.
+        val forbidden = Regex("(?i)(com\\.netflix|amazonvideo|amazon\\.avod|disneyplus|com\\.hbo|com\\.wbd|globo\\.globotv|com\\.cbs\\.|appletv|flatrate|StreamingLauncher|StreamingApps|Offer\\.RENT|Offer\\.BUY|Offer\\.SUBSCRIPTION|myServices|onlyMine|\"rent\"|\"buy\")")
         val hits = root.walkTopDown().filter { it.isFile && (it.extension == "kt" || it.extension == "xml") }
             .flatMap { f -> f.readLines().mapIndexedNotNull { i, l -> if (forbidden.containsMatchIn(l)) "${f.name}:${i + 1}: ${l.trim()}" else null } }
             .toList()

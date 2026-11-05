@@ -137,6 +137,15 @@ class UiFlowTest {
         rule.onNodeWithTag("nav_LIVE").performClick()
         waitTag("live")
         waitPrefix("channel_live_br_", 90_000)
+        // Abas novas: Lançamentos e Em Alta (filmes e séries)
+        rule.onNodeWithTag("nav_RELEASES").performClick()
+        waitTag("releases")
+        waitPrefix("card_tmdb_new_movies_tmdb:", 60_000)
+        rule.onNodeWithTag("nav_TRENDING").performClick()
+        waitTag("trending")
+        waitPrefix("card_tmdb_trending_movies_tmdb:", 60_000)
+        rule.onNodeWithTag("trending").performScrollToKey("tmdb_trending_series")
+        waitPrefix("card_tmdb_trending_series_tmdb:", 60_000)
     }
 
     @Test fun t04_searchFindsTitles() {
@@ -286,7 +295,7 @@ class UiFlowTest {
     @Test fun t09_screensForVisualCheck() {
         waitTag("hero_play")
         Thread.sleep(4_000); TestUtil.shot("home")
-        for ((nav, tag) in listOf("MOVIES" to "movies", "CLASSICS" to "classics", "DOCS" to "docs", "LIVE" to "live", "KIDS" to "kids")) {
+        for ((nav, tag) in listOf("RELEASES" to "releases", "TRENDING" to "trending", "MOVIES" to "movies", "SERIES" to "series", "CLASSICS" to "classics", "DOCS" to "docs", "LIVE" to "live", "KIDS" to "kids")) {
             rule.onNodeWithTag("nav_$nav").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
             waitTag(tag); Thread.sleep(if (tag == "live") 9_000 else 5_000); TestUtil.shot(tag)
         }
@@ -299,6 +308,13 @@ class UiFlowTest {
         waitTag("details")
         rule.waitUntil(60_000) { rule.onAllNodes(tagPrefix("details_loading")).fetchSemanticsNodes().isEmpty() }
         Thread.sleep(2_000); TestUtil.shot("detalhes_classico")
+        rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
+        // Detalhes de um filme recente grátis (botão do app oficial)
+        val free = runBlocking { TestUtil.services.catalog.row("tmdb_free_movies") }.first()
+        rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].openDetails(free) }
+        waitTag("details")
+        rule.waitUntil(60_000) { rule.onAllNodes(tagPrefix("details_loading")).fetchSemanticsNodes().isEmpty() }
+        Thread.sleep(2_000); TestUtil.shot("detalhes_gratis_app")
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
         // Pesquisa unificada com canais
         rule.onNodeWithTag("nav_SEARCH").performClick()

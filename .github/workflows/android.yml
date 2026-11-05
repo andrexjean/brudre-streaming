@@ -112,6 +112,7 @@ jobs:
           mkdir -p /tmp/res
           cp instrumented.log logcat.txt meminfo.txt instrumented.exit /tmp/res/ 2>/dev/null || true
           cp -r shots /tmp/res/ 2>/dev/null || true
+          cp -r perf /tmp/res/ 2>/dev/null || true
           cp -r app/build/outputs/androidTest-results /tmp/res/ 2>/dev/null || true
           cp -r app/build/reports/androidTests /tmp/res/reports 2>/dev/null || true
           echo "${{ github.sha }}" > /tmp/res/SHA

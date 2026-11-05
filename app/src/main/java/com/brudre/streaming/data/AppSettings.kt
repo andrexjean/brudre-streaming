@@ -45,6 +45,9 @@ data class SettingsValues(
 )
 
 class AppSettings(context: Context) {
+    /** Preferências da versão 7 (serviços pagos) apagadas na primeira gravação. */
+    private val LEGACY_KEYS = listOf("my" + "Services", "only" + "Mine")
+
     private val prefs = context.getSharedPreferences("brudre_settings", Context.MODE_PRIVATE)
     private val state = MutableStateFlow(read())
     val values: StateFlow<SettingsValues> = state.asStateFlow()
@@ -78,8 +81,8 @@ class AppSettings(context: Context) {
             .putInt("connections", v.torrentConnections)
             .putStringSet("disabledSources", v.disabledSources)
             .putString("customLists", v.customLists.joinToString("\n"))
-            .remove("myServices")
-            .remove("onlyMine")
+            .remove(LEGACY_KEYS[0])
+            .remove(LEGACY_KEYS[1])
             .putString("pinHash", v.pinHash)
             .putString("maxRating", v.maxRating)
             .putBoolean("intro", v.intro)

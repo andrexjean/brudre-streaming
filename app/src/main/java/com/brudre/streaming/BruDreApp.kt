@@ -94,7 +94,8 @@ class Services(private val app: Context) {
             .memoryCache { MemoryCache.Builder(app).maxSizePercent(0.12).build() }
             .diskCache { DiskCache.Builder().directory(imageCacheDir).maxSizeBytes(48L * 1024 * 1024).build() }
             .allowRgb565(true)
-            .crossfade(180)
+            // Sem crossfade: em listas longas a animação de cada capa pesa na GPU do Mi Stick.
+            .crossfade(false)
             .respectCacheHeaders(false)
             .build()
     }
