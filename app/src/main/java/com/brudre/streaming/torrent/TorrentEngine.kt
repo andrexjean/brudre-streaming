@@ -58,6 +58,7 @@ class TorrentEngine(
             .uploadRateLimit(128 * 1024)
             .maxPeerlistSize(500)
             .maxQueuedDiskBytes(4 * 1024 * 1024)
+            .stopTrackerTimeout(1)
         pack.setDhtBootstrapNodes(DHT_BOOTSTRAP)
         val s = SessionManager(false)
         s.start(SessionParams(pack))
@@ -184,14 +185,17 @@ class TorrentEngine(
 
     /** Encerra a sessão se não houver streams (bloqueia ~1 s: chamar fora da UI thread). */
     fun shutdownIfIdle() {
-        synchronized(lock) {
+        // A sessão é desligada FORA do lock: stop() pode demorar (trackers/DHT) e não pode
+        // bloquear a abertura de um novo vídeo.
+        val toStop: SessionManager = synchronized(lock) {
             if (active.isNotEmpty()) return
             val s = session ?: return
             session = null
-            try { s.stop() } catch (e: Throwable) { Log.w(TAG, "Falha ao encerrar sessão", e) }
-            Log.i(TAG, "Sessão BitTorrent encerrada")
+            s
         }
-        CacheManager.trimTorrentDir(saveDir, keep = emptySet(), limitBytes = 0)
+        try { toStop.stop() } catch (e: Throwable) { Log.w(TAG, "Falha ao encerrar sessão", e) }
+        Log.i(TAG, "Sessão BitTorrent encerrada")
+        if (active.isEmpty()) CacheManager.trimTorrentDir(saveDir, keep = emptySet(), limitBytes = 0)
     }
 
     companion object {

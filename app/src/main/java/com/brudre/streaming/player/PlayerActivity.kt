@@ -234,6 +234,8 @@ class PlayerActivity : ComponentActivity() {
             }
             is SourceAttempt.Torrent -> {
                 showStatus("BitTorrent: preparando…")
+                // Prazo total (metadados + primeiros dados) contado desde já: se o motor travar, troca de fonte.
+                startWatchdog(TORRENT_START_TIMEOUT_MS)
                 openJob = lifecycleScope.launch {
                     try {
                         val stream = services.torrent.open(attempt.ref) { msg -> runOnUiThread { showStatus("BitTorrent: $msg") } }
@@ -241,7 +243,6 @@ class PlayerActivity : ComponentActivity() {
                         torrentStream = stream
                         prepare(p, stream.uri, guessMime(stream.file.name))
                         startTicker()
-                        startWatchdog(TORRENT_START_TIMEOUT_MS)
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
@@ -299,6 +300,7 @@ class PlayerActivity : ComponentActivity() {
     private fun failCurrent(message: String, retryOtherSource: Boolean) {
         runOnUiThread {
             if (isFinishing || isDestroyed) return@runOnUiThread
+            openJob?.cancel()
             lastErrorMessage = message
             val keep = player?.currentPosition ?: 0L
             if (hasBeenReady) resumeMs = keep
@@ -416,7 +418,11 @@ class PlayerActivity : ComponentActivity() {
         player = null
         releaseTorrent()
         val engine = services.torrent
-        services.appScope.launch(Dispatchers.IO) { engine.shutdownIfIdle() }
+        // Mantém a sessão um pouco (o usuário pode abrir outro título em seguida) e depois libera a memória.
+        services.appScope.launch(Dispatchers.IO) {
+            delay(SESSION_IDLE_MS)
+            engine.shutdownIfIdle()
+        }
     }
 
     private fun releaseTorrent() {
@@ -470,6 +476,7 @@ class PlayerActivity : ComponentActivity() {
         private const val TAG = "BruDrePlayer"
         private const val TORRENT_START_TIMEOUT_MS = 90_000L
         private const val TORRENT_STALL_MS = 45_000L
+        private const val SESSION_IDLE_MS = 20_000L
         private const val DIRECT_STALL_MS = 60_000L
         const val EXTRA_TITLE = "title"
         const val EXTRA_PLAYABLE = "playable"
