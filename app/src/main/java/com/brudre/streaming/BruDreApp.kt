@@ -73,6 +73,16 @@ class Services(private val app: Context) {
     val curated: CuratedCatalog by lazy { CuratedCatalog(app.assets.open("authorized_sources.json").bufferedReader().use { it.readText() }) }
     val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline, BuildConfig.TMDB_API_KEY) }
     val library: LibraryRepository by lazy { LibraryRepository(database) }
+
+    /** Cliente para mídia e listas de terceiros: valida cada redirecionamento e bloqueia executáveis. */
+    val guardedHttp: OkHttpClient by lazy { com.brudre.streaming.sources.GuardedHttp.client(http) }
+    val sourceStatus = com.brudre.streaming.sources.StatusBoard()
+    val sources: com.brudre.streaming.sources.SourceManager by lazy {
+        com.brudre.streaming.sources.SourceManager(catalog, settings, com.brudre.streaming.sources.StreamValidator(guardedHttp), sourceStatus)
+    }
+    val live: com.brudre.streaming.live.LiveRepository by lazy {
+        com.brudre.streaming.live.LiveRepository(app, guardedHttp, settings, sourceStatus, ::isOnline)
+    }
     val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 
@@ -98,10 +108,11 @@ class Services(private val app: Context) {
     fun releaseMemory() {
         imageLoader.memoryCache?.clear()
         catalog.trimMemory()
+        live.trimMemory()
     }
 
     @OptIn(coil.annotation.ExperimentalCoilApi::class)
-    /** Limpa dados temporários: vídeo do torrent (exceto o que estiver tocando), imagens e catálogo. */
+    /** Limpa dados temporários: vídeo do torrent (exceto o que estiver tocando), imagens, catálogo e listas de canais. */
     suspend fun clearTemporaryData(): Long {
         val torrentBytes = CacheManager.clearDir(torrent.saveDir)
         val imageBytes = CacheManager.dirSize(imageCacheDir)
@@ -110,9 +121,11 @@ class Services(private val app: Context) {
         val httpBytes = CacheManager.dirSize(File(app.cacheDir, "http"))
         runCatching { http.cache?.evictAll() }
         catalog.clearCache()
-        return torrentBytes + imageBytes + httpBytes
+        val liveBytes = live.clearCache()
+        return torrentBytes + imageBytes + httpBytes + liveBytes
     }
 
     fun cacheUsage(): Long =
-        CacheManager.dirSize(torrent.saveDir) + CacheManager.dirSize(imageCacheDir) + CacheManager.dirSize(File(app.cacheDir, "http"))
+        CacheManager.dirSize(torrent.saveDir) + CacheManager.dirSize(imageCacheDir) + CacheManager.dirSize(File(app.cacheDir, "http")) +
+            CacheManager.dirSize(File(app.cacheDir, "live"))
 }

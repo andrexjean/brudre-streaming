@@ -25,7 +25,7 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -73,6 +73,9 @@ class PlayerActivity : ComponentActivity() {
     private var resumeMs = 0L
     private var hasBeenReady = false
     private var errorDialog: AlertDialog? = null
+    private var reconnects = 0
+    private var reconnectJob: Job? = null
+    private val isLive: Boolean get() = ::playable.isInitialized && playable.live
 
     /** Último estado observado, para testes instrumentados. */
     @Volatile var lastErrorMessage: String? = null
@@ -92,9 +95,10 @@ class PlayerActivity : ComponentActivity() {
         resumeMs = intent.getLongExtra(EXTRA_START_MS, 0L)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         buildViews()
-        attempts = PlaybackPlan.attempts(playable, services.settings.current.sourceMode)
+        attempts = PlaybackPlan.attempts(playable, if (playable.live) com.brudre.streaming.data.SourceMode.DIRECT else services.settings.current.sourceMode, services.sources.torrentAllowed)
         if (attempts.isEmpty()) {
-            showFatal("Este título não possui uma fonte autorizada para reprodução.")
+            showFatal(if (playable.torrent != null && !services.sources.torrentAllowed) "Este título só tem fonte BitTorrent, que está desativada em Configurações > Fontes de conteúdo."
+                else "Este título não possui uma fonte autorizada para reprodução.")
             return
         }
         createPlayer()
@@ -123,7 +127,11 @@ class PlayerActivity : ComponentActivity() {
             })
         }
         headerView = TextView(this).apply {
-            text = if (playable.label.isNotBlank() && playable.label != title.name) "${title.name} — ${playable.label}" else title.name
+            text = when {
+                playable.live -> "\u25CF AO VIVO  ${title.name}"
+                playable.label.isNotBlank() && playable.label != title.name -> "${title.name} — ${playable.label}"
+                else -> title.name
+            }
             setTextColor(Color.WHITE)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
             setShadowLayer(8f, 0f, 2f, Color.BLACK)
@@ -152,17 +160,16 @@ class PlayerActivity : ComponentActivity() {
     // ----------------------------------------------------------------- player
 
     private fun createPlayer() {
-        val http = DefaultHttpDataSource.Factory()
-            .setUserAgent(CatalogRepository.USER_AGENT)
-            .setConnectTimeoutMs(15_000)
-            .setReadTimeoutMs(30_000)
-            .setAllowCrossProtocolRedirects(true)
+        // Cliente protegido: cada redirecionamento é validado e respostas executáveis são recusadas.
+        val http = OkHttpDataSource.Factory(services.guardedHttp)
+            .setUserAgent(playable.headers["User-Agent"] ?: CatalogRepository.USER_AGENT)
+            .setDefaultRequestProperties(playable.headers.filterKeys { it != "User-Agent" })
         val upstream = DefaultDataSource.Factory(this, http)
         val routing = RoutingDataSource.Factory(TorrentDataSource.Factory(), upstream)
 
         // Buffers reduzidos: o Mi Stick tem 1 GB de RAM.
         val loadControl = DefaultLoadControl.Builder()
-            .setBufferDurationsMs(15_000, 40_000, 2_000, 4_000)
+            .setBufferDurationsMs(if (playable.live) 8_000 else 15_000, if (playable.live) 20_000 else 40_000, 2_000, 4_000)
             .setTargetBufferBytes(24 * 1024 * 1024)
             .setPrioritizeTimeOverSizeThresholds(false)
             .build()
@@ -185,27 +192,37 @@ class PlayerActivity : ComponentActivity() {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_READY) {
                     hasBeenReady = true
+                    reconnects = 0
                     watchdogJob?.cancel()
                     stallJob?.cancel()
                     if (currentAttempt !is SourceAttempt.Torrent) showStatus(null)
+                    if (isLive) services.live.markOnline(title.id.removePrefix(com.brudre.streaming.data.Title.LIVE_PREFIX))
                 }
                 if (state == Player.STATE_BUFFERING && hasBeenReady) {
                     // Travou no meio: se não voltar em pouco tempo, troca de fonte.
                     stallJob?.cancel()
                     stallJob = lifecycleScope.launch {
-                        delay(if (currentAttempt is SourceAttempt.Torrent) TORRENT_STALL_MS else DIRECT_STALL_MS)
+                        delay(if (isLive) LIVE_STALL_MS else if (currentAttempt is SourceAttempt.Torrent) TORRENT_STALL_MS else DIRECT_STALL_MS)
                         if (player?.playbackState == Player.STATE_BUFFERING) {
                             failCurrent("A fonte parou de enviar dados.", true)
                         }
                     }
                 }
                 if (state == Player.STATE_ENDED) {
+                    // Transmissão ao vivo não "termina": se o servidor encerrar, reconecta.
+                    if (isLive) { failCurrent("A transmissão foi interrompida.", true); return }
                     saveProgress(completed = true)
                     finish()
                 }
             }
 
             override fun onPlayerError(error: PlaybackException) {
+                if (isLive && error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
+                    // Ficou para trás da janela ao vivo: volta para o ponto atual sem trocar de fonte.
+                    player?.seekToDefaultPosition()
+                    player?.prepare()
+                    return
+                }
                 val info = PlayerErrors.describe(error)
                 Log.w(TAG, "Erro de reprodução (${currentAttempt?.label}): ${error.errorCodeName}", error)
                 failCurrent(info.message, info.retryOtherSource)
@@ -228,12 +245,18 @@ class PlayerActivity : ComponentActivity() {
 
         when (attempt) {
             is SourceAttempt.Direct -> {
-                showStatus(if (attempts.size > 1) "Fonte: streaming direto" else null)
-                prepare(p, Uri.parse(attempt.url), guessMime(attempt.url))
-                startWatchdog(45_000)
+                showStatus(
+                    when {
+                        isLive && attempts.size > 1 -> "Sinal ${index + 1} de ${attempts.size}"
+                        attempts.size > 1 -> "Fonte: ${attempt.label}"
+                        else -> null
+                    },
+                )
+                prepare(p, Uri.parse(attempt.url), if (isLive) MimeTypes.APPLICATION_M3U8 else guessMime(attempt.url))
+                startWatchdog(if (isLive) LIVE_START_TIMEOUT_MS else 45_000)
             }
             is SourceAttempt.Torrent -> {
-                showStatus("BitTorrent: preparando…")
+                showStatus("BitTorrent: preparando… (seu IP fica visível aos outros participantes)")
                 // Prazo total (metadados + primeiros dados) contado desde já: se o motor travar, troca de fonte.
                 startWatchdog(TORRENT_START_TIMEOUT_MS)
                 openJob = lifecycleScope.launch {
@@ -270,6 +293,12 @@ class PlayerActivity : ComponentActivity() {
             .setSubtitleConfigurations(subs)
             .setMediaMetadata(MediaMetadata.Builder().setTitle(title.name).setSubtitle(playable.label).build())
             .build()
+        if (isLive) {
+            p.setMediaItem(item)
+            p.prepare()
+            p.playWhenReady = true
+            return
+        }
         val start = if (hasBeenReady) p.currentPosition else resumeMs
         p.setMediaItem(item, start.coerceAtLeast(0))
         p.prepare()
@@ -282,6 +311,7 @@ class PlayerActivity : ComponentActivity() {
             n.endsWith(".mp4") || n.endsWith(".m4v") -> MimeTypes.VIDEO_MP4
             n.endsWith(".webm") -> MimeTypes.VIDEO_WEBM
             n.endsWith(".mkv") -> MimeTypes.VIDEO_MATROSKA
+            n.endsWith(".m3u8") -> MimeTypes.APPLICATION_M3U8
             else -> null
         }
     }
@@ -302,8 +332,21 @@ class PlayerActivity : ComponentActivity() {
             if (isFinishing || isDestroyed) return@runOnUiThread
             openJob?.cancel()
             lastErrorMessage = message
+            if (isLive && reconnects < LIVE_RECONNECTS) {
+                // Reconexão automática do mesmo sinal, com espera crescente (3 s, 6 s).
+                reconnects++
+                showStatus("Reconectando… ($reconnects/$LIVE_RECONNECTS)")
+                player?.stop()
+                reconnectJob?.cancel()
+                reconnectJob = lifecycleScope.launch {
+                    delay(3_000L * reconnects)
+                    startAttempt(attemptIndex)
+                }
+                return@runOnUiThread
+            }
+            reconnects = 0
             val keep = player?.currentPosition ?: 0L
-            if (hasBeenReady) resumeMs = keep
+            if (hasBeenReady && !isLive) resumeMs = keep
             val next = attemptIndex + 1
             if (retryOtherSource && next < attempts.size) {
                 Toast.makeText(this, "$message Tentando ${attempts[next].label}…", Toast.LENGTH_LONG).show()
@@ -311,7 +354,10 @@ class PlayerActivity : ComponentActivity() {
                 startAttempt(next)
             } else {
                 player?.stop()
-                showFatal(message)
+                if (isLive) {
+                    services.live.markOffline(title.id.removePrefix(com.brudre.streaming.data.Title.LIVE_PREFIX))
+                    showFatal("Canal fora do ar no momento. $message")
+                } else showFatal(message)
             }
         }
     }
@@ -329,6 +375,7 @@ class PlayerActivity : ComponentActivity() {
             .apply {
                 if (attempts.isNotEmpty()) setPositiveButton("Tentar novamente") { _, _ ->
                     hasBeenReady = false
+                    reconnects = 0
                     if (player == null) createPlayer()
                     startAttempt(0)
                 }
@@ -367,7 +414,7 @@ class PlayerActivity : ComponentActivity() {
 
     private fun saveProgress(completed: Boolean = false) {
         val p = player ?: return
-        if (!hasBeenReady) return
+        if (!hasBeenReady || isLive) return
         val duration = p.duration.takeIf { it != C.TIME_UNSET && it > 0 } ?: ((playable.durationSec ?: 0) * 1000L)
         val position = if (completed) duration else p.currentPosition
         val lib = services.library
@@ -414,6 +461,7 @@ class PlayerActivity : ComponentActivity() {
         watchdogJob?.cancel()
         stallJob?.cancel()
         tickerJob?.cancel()
+        reconnectJob?.cancel()
         player?.release()
         player = null
         releaseTorrent()
@@ -445,6 +493,8 @@ class PlayerActivity : ComponentActivity() {
         val p = player
         if (p != null && event.action == KeyEvent.ACTION_DOWN && errorDialog?.isShowing != true) {
             val controllerVisible = playerView.isControllerFullyVisible
+            // Ao vivo sem janela de DVR: setas não fazem busca.
+            val canSeek = !isLive || p.isCurrentMediaItemSeekable
             when (event.keyCode) {
                 KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_SPACE, KeyEvent.KEYCODE_HEADSETHOOK -> {
                     if (p.isPlaying) p.pause() else p.play()
@@ -454,8 +504,8 @@ class PlayerActivity : ComponentActivity() {
                 KeyEvent.KEYCODE_MEDIA_PAUSE -> { p.pause(); playerView.showController(); return true }
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> { p.seekForward(); playerView.showController(); return true }
                 KeyEvent.KEYCODE_MEDIA_REWIND -> { p.seekBack(); playerView.showController(); return true }
-                KeyEvent.KEYCODE_DPAD_RIGHT -> if (!controllerVisible) { p.seekTo(p.currentPosition + 10_000); playerView.showController(); return true }
-                KeyEvent.KEYCODE_DPAD_LEFT -> if (!controllerVisible) { p.seekTo((p.currentPosition - 10_000).coerceAtLeast(0)); playerView.showController(); return true }
+                KeyEvent.KEYCODE_DPAD_RIGHT -> if (!controllerVisible && canSeek) { p.seekTo(p.currentPosition + 10_000); playerView.showController(); return true }
+                KeyEvent.KEYCODE_DPAD_LEFT -> if (!controllerVisible && canSeek) { p.seekTo((p.currentPosition - 10_000).coerceAtLeast(0)); playerView.showController(); return true }
                 KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> if (!controllerVisible) {
                     if (p.isPlaying) p.pause() else p.play()
                     playerView.showController(); return true
@@ -478,6 +528,9 @@ class PlayerActivity : ComponentActivity() {
         private const val TORRENT_STALL_MS = 45_000L
         private const val SESSION_IDLE_MS = 20_000L
         private const val DIRECT_STALL_MS = 60_000L
+        private const val LIVE_STALL_MS = 20_000L
+        private const val LIVE_START_TIMEOUT_MS = 25_000L
+        private const val LIVE_RECONNECTS = 2
         const val EXTRA_TITLE = "title"
         const val EXTRA_PLAYABLE = "playable"
         const val EXTRA_START_MS = "start"

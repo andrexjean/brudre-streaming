@@ -25,7 +25,7 @@ class CatalogRepository(
     tmdbApiKey: String = "",
 ) {
 
-    /** Catálogo completo de lançamentos (TMDB). Desligado se o app foi compilado sem a chave. */
+    /** Metadados do TMDB (só obras com chance de fonte gratuita). Desligado se o app foi compilado sem a chave. */
     val tmdb = TmdbSource(tmdbApiKey, settings) { url -> get(url) }
 
     data class RowSpec(val key: String, val label: String, val query: String?, val sort: String, val kind: Kind, val rows: Int = 30)
@@ -61,7 +61,7 @@ class CatalogRepository(
     }
 
     private suspend fun tmdbRow(key: String, force: Boolean): List<Title> {
-        if (!tmdb.enabled) throw CatalogException("Catálogo de lançamentos desativado (app compilado sem a chave do TMDB)")
+        if (!tmdb.enabled) throw CatalogException("Catálogo TMDB desativado (app compilado sem a chave do TMDB)")
         val cacheKey = tmdb.cacheKey(key)
         if (!force) memory[cacheKey]?.let { return it }
         return withContext(Dispatchers.IO) {
@@ -88,57 +88,59 @@ class CatalogRepository(
     }
 
     // ----------------------------------------------------------------- busca
+    // Usadas pelos provedores do BruDre Source Manager (sources/Providers.kt).
 
-    suspend fun search(term: String): List<Title> {
-        val clean = term.replace(Regex("[^\\p{L}\\p{N} '-]"), " ").replace(Regex("\\s+"), " ").trim()
-        if (clean.length < 2) return emptyList()
-        val local = curated.search(clean)
+    fun cleanQuery(term: String): String =
+        term.replace(Regex("[^\\p{L}\\p{N} '-]"), " ").replace(Regex("\\s+"), " ").trim()
+
+    /** Busca no acervo público com os filtros de licença e segurança. */
+    suspend fun searchArchive(clean: String, page: Int = 1): List<Title> = withContext(Dispatchers.IO) {
         val terms = clean.split(' ').filter { it.length > 1 }.ifEmpty { listOf(clean) }
         val byTitle = terms.joinToString(" AND ") { "title:($it*)" }
         val bySubject = terms.joinToString(" AND ") { "subject:($it)" }
         val q = "(($byTitle) OR ($bySubject)) AND collection:($SEARCH_COLLECTIONS)$NOT_RESTRICTED"
-        val fromTmdb = if (tmdb.enabled) withContext(Dispatchers.IO) { runCatching { tmdb.search(clean) }.getOrDefault(emptyList()) } else emptyList()
-        val remote = try {
-            withContext(Dispatchers.IO) {
-                parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40)), Kind.MOVIE) }.filter { ArchiveParser.isFamilySafe(it) }
-            }
-        } catch (e: IOException) {
-            // Acervo público fora do ar não impede mostrar os lançamentos encontrados.
-            if (fromTmdb.isNotEmpty() || local.isNotEmpty()) emptyList() else throw e
-        }
-        return (local + fromTmdb + remote).distinctBy { it.id }
+        parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40, page)), Kind.MOVIE) }.filter { ArchiveParser.isFamilySafe(it) }
+    }
+
+    /** Procura no acervo a mesma obra catalogada em outra fonte (título + ano). */
+    suspend fun matchArchive(names: List<String>, year: String?, kind: Kind): Title? = withContext(Dispatchers.IO) {
+        if (names.isEmpty()) return@withContext null
+        val collections = if (kind == Kind.SERIES) "classic_tv" else "$SEARCH_COLLECTIONS OR prelinger"
+        val q = "(${com.brudre.streaming.sources.TitleMatcher.archiveQuery(names)}) AND collection:($collections)$NOT_RESTRICTED"
+        val found = parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 25)), kind) }.filter { ArchiveParser.isFamilySafe(it) }
+        com.brudre.streaming.sources.TitleMatcher.best(found, names, year)
     }
 
     // --------------------------------------------------------------- detalhes
 
-    suspend fun details(title: Title): TitleDetails = withContext(Dispatchers.IO) {
-        if (title.isTmdb) return@withContext parseOrThrow { tmdb.details(title) }
-        val entry = if (title.isCurated) curated.find(title.id) else null
+    suspend fun curatedDetails(title: Title): TitleDetails = withContext(Dispatchers.IO) {
+        val entry = curated.find(title.id) ?: return@withContext TitleDetails(title, emptyList(), "Sem fonte autorizada cadastrada")
         when {
-            entry?.playable != null -> TitleDetails(
+            entry.playable != null -> TitleDetails(
                 title = entry.title,
                 playables = listOf(entry.playable),
-                sourceLabel = "Fonte oficial do titular • torrent + streaming direto",
+                sourceLabel = "Fonte oficial do titular • streaming direto + torrent oficial",
+                providerId = "curated",
             )
-            entry?.archiveId != null -> {
+            entry.archiveId != null -> {
                 val json = metadataJson(entry.archiveId)
                 val playables = ArchiveParser.buildPlayables(entry.archiveId, json, settings.current.quality, entry.title.kind)
-                TitleDetails(entry.title, playables, sourceLabelFor(playables))
+                TitleDetails(entry.title, playables, sourceLabelFor(playables), providerId = "curated")
             }
-            entry != null -> TitleDetails(entry.title, emptyList(), "Sem fonte autorizada cadastrada")
-            title.isArchive -> {
-                val id = title.archiveId!!
-                val json = metadataJson(id)
-                val enriched = parseOrThrow { ArchiveParser.enrichTitle(title, json) }
-                val playables = parseOrThrow { ArchiveParser.buildPlayables(id, json, settings.current.quality, title.kind) }
-                TitleDetails(enriched, playables, sourceLabelFor(playables))
-            }
-            else -> TitleDetails(title, emptyList(), "Sem fonte autorizada cadastrada")
+            else -> TitleDetails(entry.title, emptyList(), "Sem fonte autorizada cadastrada")
         }
     }
 
+    suspend fun archiveDetails(title: Title, archiveId: String = title.archiveId!!): TitleDetails = withContext(Dispatchers.IO) {
+        val json = metadataJson(archiveId)
+        if (ArchiveParser.isRestricted(json)) throw CatalogException("Item com acesso restrito no Internet Archive")
+        val enriched = parseOrThrow { ArchiveParser.enrichTitle(title, json) }
+        val playables = parseOrThrow { ArchiveParser.buildPlayables(archiveId, json, settings.current.quality, title.kind) }
+        TitleDetails(enriched, playables, sourceLabelFor(playables), providerId = "archive")
+    }
+
     private fun sourceLabelFor(playables: List<Playable>): String = when {
-        playables.isEmpty() -> "Nenhum vídeo compatível encontrado neste item"
+        playables.isEmpty() -> "Nenhum vídeo compatível (MP4 H.264) encontrado neste item"
         playables.any { it.torrent != null } -> "Internet Archive • streaming direto + torrent oficial"
         else -> "Internet Archive • streaming direto"
     }
@@ -163,15 +165,15 @@ class CatalogRepository(
 
     // ------------------------------------------------------------------ rede
 
-    private fun searchUrl(query: String, sort: String, rows: Int): String {
+    private fun searchUrl(query: String, sort: String, rows: Int, page: Int = 1): String {
         val fields = listOf("identifier", "title", "year", "date", "description", "subject", "runtime", "collection")
             .joinToString("") { "&fl%5B%5D=$it" }
         return "${ArchiveParser.BASE}/advancedsearch.php?q=${URLEncoder.encode(query, "UTF-8")}" +
-            fields + "&sort%5B%5D=${URLEncoder.encode(sort, "UTF-8")}&rows=$rows&page=1&output=json"
+            fields + "&sort%5B%5D=${URLEncoder.encode(sort, "UTF-8")}&rows=$rows&page=$page&output=json"
     }
 
     /** GET com uma nova tentativa em falha de rede (Wi-Fi instável ou recém-reconectado). */
-    private fun get(url: String): String {
+    internal fun get(url: String): String {
         if (!isOnline()) throw CatalogException("Sem conexão com a internet")
         val req = Request.Builder().url(url).header("User-Agent", USER_AGENT).build()
         var last: IOException? = null
@@ -192,7 +194,7 @@ class CatalogRepository(
         throw CatalogException(if (isOnline()) "Falha de rede ao consultar o catálogo" else "Sem conexão com a internet", last)
     }
 
-    private inline fun <T> parseOrThrow(block: () -> T): T = try {
+    internal inline fun <T> parseOrThrow(block: () -> T): T = try {
         block()
     } catch (e: IOException) {
         throw e
@@ -203,14 +205,14 @@ class CatalogRepository(
     }
 
     companion object {
-        const val USER_AGENT = "BruDreStreaming/6.0 (Android TV; uso domestico)"
+        const val USER_AGENT = "BruDreStreaming/8.0 (Android TV; uso domestico)"
         private const val CACHE_TTL_MS = 6 * 60 * 60 * 1000L
         /**
          * Filtros de segurança aplicados a toda consulta ao Internet Archive:
          * só itens com licença declarada (domínio público ou Creative Commons),
          * sem acesso restrito e sem conteúdo adulto/explícito.
          */
-        private const val NOT_RESTRICTED =
+        const val NOT_RESTRICTED =
             " AND mediatype:(movies)" +
                 " AND licenseurl:(*publicdomain* OR *creativecommons*)" +
                 " AND -access-restricted-item:(true)" +
@@ -235,6 +237,12 @@ class CatalogRepository(
             RowSpec("series_recent", "Séries Adicionadas Recentemente", ia("classic_tv"), "publicdate desc", Kind.SERIES),
             RowSpec("kids", "Desenhos Clássicos Grátis", ia("classic_cartoons"), "downloads desc", Kind.KIDS),
             RowSpec("kids_animation", "Animação", ia("animationandcartoons"), "downloads desc", Kind.KIDS),
+            RowSpec("westerns", "Faroeste", ia("feature_films", " AND subject:(western)"), "downloads desc", Kind.MOVIE),
+            RowSpec("adventure", "Aventura e Ação", ia("feature_films", " AND subject:(adventure OR action OR swashbuckler)"), "downloads desc", Kind.MOVIE),
+            RowSpec("docs_featured", "Documentários Grátis", ia("feature_films OR prelinger", " AND subject:(documentary OR documentaries OR documentario)"), "downloads desc", Kind.MOVIE),
+            RowSpec("docs_prelinger", "Arquivo Prelinger — Filmes Históricos", ia("prelinger"), "downloads desc", Kind.MOVIE),
+            RowSpec("docs_science", "Ciência e Natureza", ia("prelinger", " AND subject:(science OR nature OR space OR animals OR biology)"), "downloads desc", Kind.MOVIE),
+            RowSpec("docs_recent", "Documentários Adicionados Recentemente", ia("prelinger"), "publicdate desc", Kind.MOVIE),
         ).associateBy { it.key }
 
         fun label(key: String) = ROWS[key]?.label ?: TmdbSource.ROWS[key]?.label ?: key

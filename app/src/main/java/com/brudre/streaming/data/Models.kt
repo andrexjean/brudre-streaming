@@ -4,7 +4,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 enum class Kind(val label: String) {
-    MOVIE("Filme"), SERIES("Série"), KIDS("Infantil");
+    MOVIE("Filme"), SERIES("Série"), KIDS("Infantil"), LIVE("Ao vivo");
 
     companion object {
         fun parse(value: String?): Kind = entries.firstOrNull { it.name == value } ?: MOVIE
@@ -28,6 +28,7 @@ data class Title(
     val isArchive: Boolean get() = id.startsWith(ARCHIVE_PREFIX)
     val isCurated: Boolean get() = id.startsWith(CURATED_PREFIX)
     val isTmdb: Boolean get() = id.startsWith(TmdbParser.PREFIX)
+    val isLive: Boolean get() = id.startsWith(LIVE_PREFIX)
     val archiveId: String? get() = if (isArchive) id.removePrefix(ARCHIVE_PREFIX) else null
 
     fun toJson(): JSONObject = JSONObject()
@@ -44,6 +45,7 @@ data class Title(
     companion object {
         const val ARCHIVE_PREFIX = "ia:"
         const val CURATED_PREFIX = "cur:"
+        const val LIVE_PREFIX = "live:"
 
         fun fromJson(o: JSONObject): Title = Title(
             id = o.getString("id"),
@@ -98,8 +100,14 @@ data class Playable(
     val subtitles: List<SubtitleRef>,
     val durationSec: Int?,
     val preferTorrent: Boolean,
+    /** Endereços diretos alternativos (mesmo conteúdo), tentados em ordem quando o principal falha. */
+    val mirrors: List<String> = emptyList(),
+    /** Transmissão ao vivo (HLS): sem retomada de posição, com reconexão automática. */
+    val live: Boolean = false,
+    /** Cabeçalhos HTTP exigidos pela fonte (Referer / User-Agent das listas M3U). */
+    val headers: Map<String, String> = emptyMap(),
 ) {
-    val hasSource: Boolean get() = directUrl != null || torrent != null
+    val hasSource: Boolean get() = directUrl != null || torrent != null || mirrors.isNotEmpty()
 
     fun toJson(): JSONObject = JSONObject()
         .put("key", key).put("label", label).put("season", season).put("number", number)
@@ -108,6 +116,9 @@ data class Playable(
         .put("subtitles", JSONArray().apply { subtitles.forEach { put(it.toJson()) } })
         .put("durationSec", durationSec ?: JSONObject.NULL)
         .put("preferTorrent", preferTorrent)
+        .put("mirrors", JSONArray(mirrors))
+        .put("live", live)
+        .put("headers", JSONObject(headers as Map<*, *>))
 
     companion object {
         fun fromJson(o: JSONObject): Playable = Playable(
@@ -120,6 +131,9 @@ data class Playable(
             subtitles = o.optJSONArray("subtitles")?.let { a -> (0 until a.length()).map { SubtitleRef.fromJson(a.getJSONObject(it)) } } ?: emptyList(),
             durationSec = if (o.isNull("durationSec")) null else o.optInt("durationSec"),
             preferTorrent = o.optBoolean("preferTorrent", false),
+            mirrors = o.optJSONArray("mirrors")?.let { a -> (0 until a.length()).map { a.getString(it) } } ?: emptyList(),
+            live = o.optBoolean("live", false),
+            headers = o.optJSONObject("headers")?.let { h -> h.keys().asSequence().associateWith { h.getString(it) } } ?: emptyMap(),
         )
     }
 }
@@ -128,10 +142,11 @@ data class TitleDetails(
     val title: Title,
     val playables: List<Playable>,
     val sourceLabel: String,
-    /** Streamings onde o título está no Brasil (catálogo TMDB). Reproduzidos pelo app oficial. */
-    val providers: List<WatchProvider> = emptyList(),
+    /** Fonte que forneceu os vídeos (id do provedor no Source Manager). */
+    val providerId: String? = null,
+    /** true quando o primeiro vídeo respondeu à verificação de disponibilidade. */
+    val confirmed: Boolean = false,
 ) {
-    val isExternal: Boolean get() = title.isTmdb
     val available: Boolean get() = playables.any { it.hasSource }
     val seasons: List<Int> get() = playables.map { it.season }.distinct().sorted()
     val isEpisodic: Boolean get() = playables.size > 1

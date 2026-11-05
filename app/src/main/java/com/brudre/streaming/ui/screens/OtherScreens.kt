@@ -56,7 +56,9 @@ import com.brudre.streaming.data.LanguageChoices
 import com.brudre.streaming.data.Quality
 import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.SourceMode
-import com.brudre.streaming.data.StreamingApps
+import com.brudre.streaming.DeviceInfo
+import com.brudre.streaming.live.LiveChannel
+import com.brudre.streaming.sources.Health
 import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.db.fraction
 import com.brudre.streaming.torrent.CacheManager
@@ -75,8 +77,11 @@ import com.brudre.streaming.update.UpdateState
 
 @Composable
 fun MyListScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
-    val favorites by vm.favorites.collectAsStateWithLifecycle()
+    val allFavorites by vm.favorites.collectAsStateWithLifecycle()
+    val favorites = allFavorites.filterNot { it.titleId.startsWith(LiveChannel.PREFIX) }
+    val liveFavorites = allFavorites.filter { it.titleId.startsWith(LiveChannel.PREFIX) }
     val history by vm.history.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     LazyColumn(Modifier.fillMaxSize().testTag("mylist"), contentPadding = PaddingValues(bottom = 48.dp)) {
         item {
             Text("Minha Lista", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 40.dp, top = 8.dp, bottom = 12.dp))
@@ -98,9 +103,15 @@ fun MyListScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
                 }
             }
         }
+        if (liveFavorites.isNotEmpty()) {
+            item {
+                val channels = liveFavorites.mapNotNull { f -> vm.services.live.find(f.titleId.removePrefix(LiveChannel.PREFIX)) }
+                ChannelRow(vm, "Canais favoritos", channels, "mylist_live") { ch -> vm.playChannel(ch) { context.startActivity(it) } }
+            }
+        }
         item {
             Spacer(Modifier.height(16.dp))
-            SectionHeader("Histórico")
+            SectionHeader("Histórico — Continuar Assistindo")
             if (history.isEmpty()) {
                 Text("Nada assistido ainda.", color = BruColors.TextFaint, fontSize = 15.sp, modifier = Modifier.padding(start = 40.dp).testTag("history_empty"))
             } else {
@@ -130,6 +141,8 @@ private val SUGGESTIONS = listOf(
 fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
     var query by rememberSaveable { mutableStateOf(vm.lastQuery) }
     val results by vm.searchResults.collectAsStateWithLifecycle()
+    val channels by vm.channelResults.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val keyboard = LocalSoftwareKeyboardController.current
     val submit = { q: String -> keyboard?.hide(); vm.search(q) }
 
@@ -140,7 +153,7 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                placeholder = { Text("Título, gênero ou palavra-chave (ex.: Popeye)") },
+                placeholder = { Text("Filme, série, desenho, documentário ou canal (ex.: Popeye, Cultura)") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { submit(query) }),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -161,6 +174,20 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
                 BruChip(label, modifier = Modifier.testTag("suggest_$q")) { query = q; submit(q) }
             }
         }
+        if (channels.isNotEmpty()) {
+            Box(Modifier.padding(start = 0.dp)) {
+                Column(Modifier.padding(start = 0.dp)) {
+                    Text("Canais ao vivo", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(vertical = 8.dp), modifier = Modifier.testTag("search_channels")) {
+                        items(channels, key = { it.id }) { ch ->
+                            ChannelCard(ch, offline = false, width = 170.dp, modifier = Modifier.testTag("result_channel_${ch.id}")) {
+                                vm.playChannel(ch) { context.startActivity(it) }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         Spacer(Modifier.height(14.dp))
         when (val r = results) {
             null -> Text("Use o teclado da TV ou escolha uma sugestão acima.", color = BruColors.TextFaint, fontSize = 15.sp)
@@ -169,7 +196,11 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
             is Load.Ok -> if (r.value.isEmpty()) {
                 Text("Nenhum título encontrado para \"${vm.lastQuery}\".", color = BruColors.TextFaint, fontSize = 15.sp, modifier = Modifier.testTag("search_empty"))
             } else {
-                Text("${r.value.size} resultados", color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.testTag("search_count"))
+                val playable = r.value.count { !it.isTmdb }
+                Text(
+                    "${r.value.size} resultados • $playable com fonte gratuita" + if (playable < r.value.size) " • ${r.value.size - playable} só no catálogo (a fonte é procurada ao abrir)" else "",
+                    color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.testTag("search_count"),
+                )
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(210.dp),
                     contentPadding = PaddingValues(vertical = 12.dp),
@@ -178,7 +209,7 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
                     modifier = Modifier.fillMaxSize().testTag("search_results"),
                 ) {
                     items(r.value, key = { it.id }) { t ->
-                        TitleCard(t, caption = listOfNotNull(t.kind.label, t.year).joinToString(" • "), modifier = Modifier.testTag("result_${t.id}")) { onOpen(t) }
+                        TitleCard(t, caption = listOfNotNull(t.kind.label, t.year, if (t.isTmdb) "catálogo" else "grátis").joinToString(" • "), modifier = Modifier.testTag("result_${t.id}")) { onOpen(t) }
                     }
                 }
             }
@@ -257,31 +288,9 @@ fun SettingsScreen(vm: MainViewModel) {
             }
             Spacer(Modifier.height(12.dp))
         }
+        item { SourcesSection(vm) }
         item {
-            Text("Meus streamings", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
-            Text(
-                "Marque os serviços que vocês assinam. Eles aparecem primeiro em \"Onde assistir\" e o \"Assistir Agora\" abre direto neles.",
-                color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
-            )
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 10.dp), modifier = Modifier.testTag("my_services")) {
-                items(StreamingApps.SELECTABLE, key = { it.key }) { app ->
-                    val on = app.key in s.myServices
-                    BruChip(if (on) "✓ ${app.label}" else app.label, selected = on, modifier = Modifier.testTag("service_${app.key}")) {
-                        vm.updateSettings { v -> v.copy(myServices = if (on) v.myServices - app.key else v.myServices + app.key) }
-                    }
-                }
-            }
-        }
-        item {
-            SettingRow(
-                "Lançamentos: só o que eu assino",
-                if (s.onlyMine) "Sim" else "Não",
-                if (s.myServices.isEmpty()) "Marque seus streamings acima para usar este filtro" else "Esconde títulos que estão só em serviços que vocês não assinam",
-                "set_only_mine",
-            ) { vm.updateSettings { it.copy(onlyMine = !it.onlyMine) } }
-        }
-        item {
-            SettingRow("Abertura animada", if (s.intro) "Ligada" else "Desligada", "Animação do logo ao abrir o app (qualquer tecla pula)", "set_intro") {
+            SettingRow("Abertura cinematográfica", if (s.intro) "Ligada" else "Desligada", "Vinheta de 7 s ao abrir o app (OK ou Voltar pula)", "set_intro") {
                 vm.updateSettings { it.copy(intro = !it.intro) }
             }
         }
@@ -313,7 +322,7 @@ fun SettingsScreen(vm: MainViewModel) {
             }
         }
         item {
-            SettingRow("Conexões BitTorrent", "${s.torrentConnections}", "Menos conexões = menos memória (vale na próxima reprodução)", "set_connections") {
+            SettingRow("Conexões BitTorrent", "${s.torrentConnections}", "Menos conexões = menos memória e banda (vale na próxima reprodução)", "set_connections") {
                 vm.updateSettings { it.copy(torrentConnections = next(LanguageChoices.connections, it.torrentConnections)) }
             }
         }
@@ -347,14 +356,15 @@ fun SettingsScreen(vm: MainViewModel) {
                 vm.clearHistory { Toast.makeText(context, "Histórico apagado", Toast.LENGTH_SHORT).show() }
             }
         }
+        item { DeviceSection() }
         item {
             Spacer(Modifier.height(24.dp))
             Text(
-                "BruDre Streaming ${BuildConfig.VERSION_NAME} — uso doméstico.\n" +
-                    "Catálogo: Internet Archive (acervo público) e obras abertas publicadas pelos titulares. " +
-                    "O app não usa indexadores de terceiros nem contorna DRM. Títulos sem fonte autorizada aparecem como indisponíveis.\n" +
-                    "Lançamentos: catálogo do TMDB; disponibilidade por streaming fornecida pela JustWatch. " +
-                    "Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.",
+                "BruDre Streaming ${BuildConfig.VERSION_NAME} — uso doméstico, sem assinaturas nem pagamentos.\n" +
+                    "Fontes: Internet Archive (domínio público e Creative Commons), obras abertas publicadas pelos titulares, " +
+                    "listas públicas de canais abertos (iptv-org) e listas M3U que você adicionar. " +
+                    "O app não usa indexadores de pirataria nem contorna DRM. Títulos sem fonte gratuita aparecem só como catálogo, sem botão Assistir.\n" +
+                    "Metadados: este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.",
                 color = BruColors.TextFaint,
                 fontSize = 13.sp,
                 lineHeight = 19.sp,
@@ -367,13 +377,13 @@ fun SettingsScreen(vm: MainViewModel) {
 private enum class PinMode { CREATE, NEW, VERIFY, VERIFY_FOR_CHANGE }
 
 @Composable
-private fun SettingRow(label: String, value: String, hint: String, tag: String, onClick: () -> Unit) {
+private fun SettingRow(label: String, value: String, hint: String, tag: String, width: androidx.compose.ui.unit.Dp = 760.dp, onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(12.dp)
     Row(
         Modifier
             .padding(vertical = 5.dp)
-            .width(760.dp)
+            .width(width)
             .clip(shape)
             .background(if (focused) BruColors.NavyLight else BruColors.Card)
             .border(if (focused) 2.dp else 1.dp, if (focused) BruColors.Cyan else BruColors.CardBorder, shape)
@@ -395,5 +405,106 @@ private fun SettingRow(label: String, value: String, hint: String, tag: String, 
         ) {
             Text(value, color = BruColors.Cyan, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.testTag("${tag}_value"))
         }
+    }
+}
+
+// ------------------------------------------------------ Fontes de conteúdo
+
+@Composable
+private fun SourcesSection(vm: MainViewModel) {
+    val status by vm.sourceStatus.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    var adding by remember { mutableStateOf(false) }
+    Column(Modifier.padding(top = 4.dp)) {
+        Text("Fontes de conteúdo", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(
+            "BruDre Source Manager: cada fonte pode ser ligada ou desligada; se uma falhar, as outras continuam. " +
+                "Ordem de reprodução: HTTP/HLS direto → endereços alternativos → BitTorrent oficial.",
+            color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
+        )
+        status.forEach { st ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val health = when {
+                    !st.enabled -> "Desativada"
+                    st.health == Health.ERROR -> "Falha: ${st.lastError ?: "erro"}"
+                    st.health == Health.OK || st.health == Health.SLOW -> "${st.health.label}${st.lastLatencyMs?.let { " • ${it} ms" } ?: ""}"
+                    else -> st.health.label
+                }
+                SettingRow(st.name, if (st.enabled) "Ativada" else "Desativada", "$health — ${st.description}", "source_${st.id}", width = if (st.removable) 620.dp else 760.dp) {
+                    vm.setSourceEnabled(st.id, !st.enabled)
+                }
+                if (st.removable) {
+                    Spacer(Modifier.width(10.dp))
+                    BruButton("Remover", icon = Icons.Filled.Delete, modifier = Modifier.testTag("remove_${st.id}")) { vm.removeCustomList(st.id) }
+                }
+            }
+        }
+        SettingRow("Adicionar lista M3U", "Adicionar", "Listas gratuitas e autorizadas (só canais HLS por http/https; executáveis e endereços locais são bloqueados)", "add_m3u") {
+            adding = true
+        }
+        Spacer(Modifier.height(12.dp))
+    }
+    if (adding) {
+        AddListDialog(
+            onDismiss = { adding = false },
+            onAdd = { name, url ->
+                vm.addCustomList(name, url) { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
+                adding = false
+            },
+        )
+    }
+}
+
+@Composable
+private fun AddListDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var url by remember { mutableStateOf("https://") }
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = BruColors.Cyan, unfocusedBorderColor = BruColors.CardBorder,
+        focusedTextColor = Color.White, unfocusedTextColor = Color.White, cursorColor = BruColors.Cyan,
+    )
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Column(
+            Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(BruColors.Navy)
+                .border(1.dp, BruColors.CardBorder, RoundedCornerShape(16.dp))
+                .padding(24.dp)
+                .width(620.dp)
+                .testTag("add_m3u_dialog"),
+        ) {
+            Text("Nova lista M3U", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text("Use apenas listas de canais gratuitos e autorizados.", color = BruColors.TextFaint, fontSize = 13.sp)
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(name, { name = it.take(40) }, singleLine = true, label = { Text("Nome") }, colors = fieldColors, modifier = Modifier.fillMaxWidth().testTag("m3u_name"))
+            Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                url, { url = it.trim().take(2048) }, singleLine = true, label = { Text("Endereço (https://…/lista.m3u)") },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), colors = fieldColors, modifier = Modifier.fillMaxWidth().testTag("m3u_url"),
+            )
+            Spacer(Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                BruButton("Adicionar", primary = true, modifier = Modifier.testTag("m3u_add")) { onAdd(name.ifBlank { "Minha lista" }, url) }
+                BruButton("Cancelar", onClick = onDismiss)
+            }
+        }
+    }
+}
+
+// ------------------------------------------------------------- Aparelho
+
+@Composable
+private fun DeviceSection() {
+    val context = LocalContext.current
+    val info = remember { runCatching { DeviceInfo.collect(context) }.getOrNull() } ?: return
+    Column(Modifier.padding(top = 16.dp).testTag("device_info")) {
+        Text("Este aparelho", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(info.summary(), color = BruColors.TextDim, fontSize = 14.sp)
+        Text(
+            "Memória livre ${info.ramAvailMb} MB${if (info.lowRamDevice) " (modo pouca memória)" else ""} • limite do app ${info.memoryClassMb} MB • " +
+                "armazenamento livre ${CacheManager.formatBytes(info.storageFreeMb * 1024 * 1024)} de ${CacheManager.formatBytes(info.storageTotalMb * 1024 * 1024)}",
+            color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
+        )
+        Text("Decodificadores: ${info.codecLine()}", color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp).testTag("device_codecs"))
     }
 }

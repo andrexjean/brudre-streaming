@@ -74,27 +74,20 @@ fun HomeScreen(
     playFocus: FocusRequester,
     onOpen: (Title) -> Unit,
     onPlay: (Title) -> Unit,
+    onPlayChannel: (com.brudre.streaming.live.LiveChannel) -> Unit = {},
 ) {
     val hero by vm.hero.collectAsStateWithLifecycle()
     val continueWatching by vm.continueWatching.collectAsStateWithLifecycle()
     val loadingId by vm.playLoading.collectAsStateWithLifecycle()
-    val settings by vm.settings.collectAsStateWithLifecycle()
-    val classics = listOf(
+    // Início: só linhas que tocam no BruDre; o catálogo TMDB entra com clássicos que têm cópia gratuita.
+    val rows = listOfNotNull(
         RowRef("featured", Icons.Filled.PlayArrow),
-        RowRef("curated_torrent", Icons.Filled.PlayArrow),
+        RowRef("curated_torrent", BruIcons.Movie),
         RowRef("series", BruIcons.Layers),
         RowRef("kids", Icons.Filled.Face),
+        if (vm.tmdbEnabled) RowRef("tmdb_pd_classics", Icons.Filled.Star) else null,
+        RowRef("docs_featured", BruIcons.Globe),
     )
-    val rows = if (vm.tmdbEnabled) {
-        listOfNotNull(
-            RowRef("tmdb_trending", Icons.Filled.Star),
-            if (settings.myServices.isNotEmpty()) RowRef("tmdb_mine", BruIcons.Bookmark) else null,
-            RowRef("tmdb_new_movies", BruIcons.Movie),
-            RowRef("tmdb_series", BruIcons.Layers),
-            RowRef("tmdb_kids_series", Icons.Filled.Face),
-            RowRef("tmdb_free", Icons.Filled.PlayArrow),
-        ) + classics
-    } else classics
     LazyColumn(Modifier.fillMaxSize().testTag("home"), contentPadding = PaddingValues(bottom = 48.dp)) {
         item(key = "hero") {
             Hero(hero, playFocus, loadingId, onPlay, onOpen)
@@ -120,18 +113,27 @@ fun HomeScreen(
                 }
             }
         }
-        items(rows, key = { it.key }) { ref ->
-            val state by vm.row(ref.key).collectAsStateWithLifecycle()
-            TitleRow(
-                label = com.brudre.streaming.data.CatalogRepository.label(ref.key),
-                state = state,
-                icon = ref.icon,
-                tag = ref.key,
-                onRetry = { vm.retryRow(ref.key) },
-                onOpen = onOpen,
-            )
+        items(rows.take(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
+        if (vm.liveEnabled) {
+            item(key = "live_home") {
+                LiveCategoryRow(vm, "iptv_br", "news", "TV ao Vivo — Notícias do Brasil", onPlay = onPlayChannel)
+            }
         }
+        items(rows.drop(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
     }
+}
+
+@Composable
+fun CatalogRow(vm: MainViewModel, ref: RowRef, onOpen: (Title) -> Unit) {
+    val state by vm.row(ref.key).collectAsStateWithLifecycle()
+    TitleRow(
+        label = com.brudre.streaming.data.CatalogRepository.label(ref.key),
+        state = state,
+        icon = ref.icon,
+        tag = ref.key,
+        onRetry = { vm.retryRow(ref.key) },
+        onOpen = onOpen,
+    )
 }
 
 @Composable
@@ -265,21 +267,24 @@ fun Hero(
 
 /** Telas Filmes / Séries / Infantil: várias linhas do catálogo. */
 @Composable
-fun BrowseScreen(vm: MainViewModel, title: String, rows: List<RowRef>, tag: String, onOpen: (Title) -> Unit) {
+fun BrowseScreen(
+    vm: MainViewModel,
+    title: String,
+    rows: List<RowRef>,
+    tag: String,
+    onOpen: (Title) -> Unit,
+    liveCategory: String? = null,
+    onPlayChannel: (com.brudre.streaming.live.LiveChannel) -> Unit = {},
+) {
     LazyColumn(Modifier.fillMaxSize().testTag(tag), contentPadding = PaddingValues(top = 4.dp, bottom = 48.dp)) {
         item(key = "header") {
             Text(title, color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 40.dp, top = 8.dp))
         }
-        items(rows, key = { it.key }) { ref ->
-            val state by vm.row(ref.key).collectAsStateWithLifecycle()
-            TitleRow(
-                label = com.brudre.streaming.data.CatalogRepository.label(ref.key),
-                state = state,
-                icon = ref.icon,
-                tag = ref.key,
-                onRetry = { vm.retryRow(ref.key) },
-                onOpen = onOpen,
-            )
+        items(rows, key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
+        if (liveCategory != null && vm.liveEnabled) {
+            item(key = "live_$liveCategory") {
+                LiveCategoryRow(vm, "iptv_br", liveCategory, "Canais ao vivo — $title", onPlay = onPlayChannel)
+            }
         }
     }
 }

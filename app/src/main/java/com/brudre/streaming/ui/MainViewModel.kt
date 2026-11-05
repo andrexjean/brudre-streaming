@@ -5,11 +5,12 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.brudre.streaming.BruDreApp
-import com.brudre.streaming.data.Offer
 import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.Playable
-import com.brudre.streaming.data.StreamingApps
-import com.brudre.streaming.data.WatchProvider
+import com.brudre.streaming.live.LiveChannel
+import com.brudre.streaming.live.LiveRepository.Companion.toPlayable
+import com.brudre.streaming.live.LiveRepository.Companion.toTitle
+import com.brudre.streaming.sources.ProviderStatus
 import com.brudre.streaming.data.SettingsValues
 import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.TitleDetails
@@ -38,15 +39,17 @@ sealed interface Load<out T> {
 }
 
 enum class Section(val label: String) {
-    HOME("Início"), MOVIES("Filmes"), SERIES("Séries"), KIDS("Infantil"),
-    MY_LIST("Minha Lista"), SEARCH("Pesquisa"), SETTINGS("Configurações"),
+    HOME("Início"), MOVIES("Filmes"), SERIES("Séries"), KIDS("Infantil"), CLASSICS("Clássicos"),
+    DOCS("Documentários"), LIVE("TV ao Vivo"), MY_LIST("Minha Lista"), SEARCH("Pesquisa"), SETTINGS("Configurações"),
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     val services = BruDreApp.services(app)
     private val catalog = services.catalog
-    val tmdbEnabled: Boolean get() = catalog.tmdb.enabled
+    private val sources = services.sources
+    private val live = services.live
+    val tmdbEnabled: Boolean get() = catalog.tmdb.enabled && sources.isEnabled("tmdb")
     private val library = services.library
 
     // ------------------------------------------------------------- linhas
@@ -71,7 +74,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 Load.Error(e.message ?: "Falha ao carregar")
             }
             // Passa o estado direto: com cache em memória a carga termina antes de a linha entrar no mapa.
-            if (key == "featured" || key == "tmdb_trending") rebuildHero(key, state.value)
+            if (key == "featured") rebuildHero(key, state.value)
         }
     }
 
@@ -79,19 +82,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _hero = MutableStateFlow(catalog.curated.featured())
     val hero: StateFlow<List<Title>> = _hero.asStateFlow()
 
+    /** Destaques só com títulos que tocam no BruDre (obras abertas + acervo público). */
     private fun rebuildHero(changedKey: String, changed: Load<List<Title>>) {
         fun stateOf(k: String) = if (k == changedKey) changed else rows[k]?.value
-        val trending = (stateOf("tmdb_trending") as? Load.Ok)?.value.orEmpty().filter { it.bannerUrl != null }.take(5)
-        if (trending.isNotEmpty()) {
-            _hero.value = (trending + catalog.curated.featured().take(1)).distinctBy { it.id }
-            return
-        }
-        val extra = (stateOf("featured") as? Load.Ok)?.value.orEmpty().take(2)
-        _hero.value = (catalog.curated.featured() + extra).distinctBy { it.id }.take(6)
+        val extra = (stateOf("featured") as? Load.Ok)?.value.orEmpty().take(3)
+        _hero.value = (catalog.curated.featured() + extra).distinctBy { it.id }.take(7)
     }
 
     init {
-        if (catalog.tmdb.enabled) row("tmdb_trending")
+        row("featured")
     }
 
     // ----------------------------------------------------------- biblioteca
@@ -130,7 +129,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _details.value = Load.Loading
         detailsJob = viewModelScope.launch {
             _details.value = try {
-                Load.Ok(catalog.details(title))
+                if (title.isLive) throw IllegalStateException("Canal ao vivo")
+                Load.Ok(sources.details(title))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -159,22 +159,26 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         details: TitleDetails? = null,
         onLaunch: (Intent) -> Unit,
         onError: (String) -> Unit,
-        onExternal: (TitleDetails, WatchProvider?) -> Unit = { _, _ -> },
+        onLocked: (Title) -> Unit = { openDetails(it) },
     ) {
+        if (title.isLive) {
+            live.find(title.id.removePrefix(Title.LIVE_PREFIX))?.let { playChannel(it, onLaunch) }
+                ?: onError("Canal não encontrado nas listas carregadas. Abra TV ao Vivo e tente de novo.")
+            return
+        }
         if (_playLoading.value != null) return
         _playLoading.value = title.id
         viewModelScope.launch {
             try {
-                if (title.isTmdb) {
-                    // Lançamentos tocam no app oficial: escolhe o melhor serviço disponível.
-                    val d = details ?: catalog.details(title)
-                    // Acima da classificação liberada: vai para os detalhes, que pedem a senha.
-                    onExternal(d, if (isLocked(d.title.rating)) null else bestProvider(d.providers))
+                // Fluxo: título → identificação da fonte → verificação → reprodução.
+                val d = details ?: sources.details(title)
+                if (isLocked(d.title.rating)) { onLocked(d.title); return@launch }
+                if (!d.available || !d.confirmed) {
+                    onError(if (d.available) "A fonte de \"${title.name}\" não respondeu agora. Tente de novo em instantes." else d.sourceLabel)
                     return@launch
                 }
-                val d = details ?: if (playable == null) catalog.details(title) else null
                 val target = playable ?: run {
-                    val list = d!!.playables.filter { it.hasSource }
+                    val list = d.playables.filter { sources.playableAllowed(it) }
                     if (list.isEmpty()) {
                         onError("Nenhuma fonte autorizada disponível para \"${title.name}\".")
                         return@launch
@@ -183,7 +187,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     list.firstOrNull { it.key == last?.episodeKey } ?: list.first()
                 }
                 val start = if (fromStart) 0L else library.resumePosition(title.id, target.key)
-                onLaunch(PlayerActivity.intent(getApplication<Application>(), d?.title ?: title, target, start))
+                onLaunch(PlayerActivity.intent(getApplication<Application>(), d.title, target, start))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -194,12 +198,75 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Prioriza serviços que a família assina; depois grátis; nunca escolhe aluguel/compra sozinho. */
-    fun bestProvider(list: List<WatchProvider>): WatchProvider? {
-        val mine = services.settings.current.myServices
-        return list.firstOrNull { it.offer == Offer.SUBSCRIPTION && StreamingApps.canonical(it.name) in mine }
-            ?: list.firstOrNull { (it.offer == Offer.FREE || it.offer == Offer.ADS) }
-            ?: list.firstOrNull { it.offer == Offer.SUBSCRIPTION && mine.isEmpty() }
+    // ------------------------------------------------------------- TV ao Vivo
+    private val liveLists = ConcurrentHashMap<String, MutableStateFlow<Load<List<LiveChannel>>>>()
+    val offlineChannels: StateFlow<Set<String>> = live.offline
+
+    fun liveList(id: String): StateFlow<Load<List<LiveChannel>>> =
+        liveLists.getOrPut(id) { MutableStateFlow<Load<List<LiveChannel>>>(Load.Loading).also { loadLive(id, it, false) } }
+
+    fun retryLive(id: String) { liveLists[id]?.let { loadLive(id, it, true) } }
+
+    private fun loadLive(id: String, state: MutableStateFlow<Load<List<LiveChannel>>>, force: Boolean) {
+        state.value = Load.Loading
+        viewModelScope.launch {
+            state.value = try {
+                Load.Ok(live.channels(id, force))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Load.Error(e.message ?: "Falha ao carregar os canais")
+            }
+        }
+    }
+
+    fun liveListsInfo() = live.builtInLists() + live.customLists().filter { live.isListEnabled(it) }
+    val liveEnabled: Boolean get() = live.enabled
+
+    fun playChannel(ch: LiveChannel, onLaunch: (Intent) -> Unit) {
+        live.remember(ch)
+        onLaunch(PlayerActivity.intent(getApplication<Application>(), ch.toTitle(), ch.toPlayable(), 0L))
+    }
+
+    fun toggleFavoriteChannel(ch: LiveChannel, onResult: (Boolean) -> Unit = {}) {
+        live.remember(ch)
+        toggleFavorite(ch.toTitle(), onResult)
+    }
+
+    // ---------------------------------------------------- fontes de conteúdo
+    val sourceStatus: StateFlow<List<ProviderStatus>> = services.sourceStatus.all
+
+    fun setSourceEnabled(id: String, enabled: Boolean) {
+        when {
+            id == com.brudre.streaming.live.LiveRepository.PROVIDER_ID || id.startsWith(com.brudre.streaming.live.LiveRepository.CUSTOM_PREFIX) -> {
+                live.setListEnabled(id, enabled)
+                liveLists.forEach { (k, v) -> loadLive(k, v, false) }
+            }
+            else -> {
+                sources.setEnabled(id, enabled)
+                rows.forEach { (k, v) -> if (v.value is Load.Error || k.startsWith("tmdb_")) load(k, v, false) }
+            }
+        }
+    }
+
+    fun addCustomList(name: String, url: String, onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            onResult(
+                try {
+                    val n = live.addCustomList(name, url)
+                    "Lista adicionada: $n canais"
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    e.message ?: "Não foi possível adicionar a lista"
+                },
+            )
+        }
+    }
+
+    fun removeCustomList(id: String) {
+        live.removeCustomList(id)
+        liveLists.remove(id)
     }
 
     // ------------------------------------------------------------ atualização
@@ -260,6 +327,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // ---------------------------------------------------------------- busca
     private val _searchResults = MutableStateFlow<Load<List<Title>>?>(null)
     val searchResults: StateFlow<Load<List<Title>>?> = _searchResults.asStateFlow()
+    private val _channelResults = MutableStateFlow<List<LiveChannel>>(emptyList())
+    val channelResults: StateFlow<List<LiveChannel>> = _channelResults.asStateFlow()
     var lastQuery: String = ""
         private set
     private var searchJob: Job? = null
@@ -273,10 +342,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         _searchResults.value = Load.Loading
+        _channelResults.value = emptyList()
         searchJob = viewModelScope.launch {
             delay(150)
+            launch { _channelResults.value = runCatching { live.search(q) }.getOrDefault(emptyList()) }
             _searchResults.value = try {
-                Load.Ok(catalog.search(q))
+                Load.Ok(sources.search(q))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -293,7 +364,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         services.settings.update(transform)
         val after = services.settings.current
         if (before.quality != after.quality) reloadDetails()
-        if (before.myServices != after.myServices || before.onlyMine != after.onlyMine) {
+        if (before.maxRating != after.maxRating) {
             rows.forEach { (k, v) -> if (k.startsWith("tmdb_")) load(k, v, false) }
         }
     }

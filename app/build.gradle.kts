@@ -34,8 +34,8 @@ android {
         targetSdk = 35
         // Número do build do GitHub Actions: cada release tem versionCode maior (permite atualizar por cima).
         val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
-        versionCode = 70000 + buildNumber
-        versionName = "7.0.$buildNumber"
+        versionCode = 80000 + buildNumber
+        versionName = "8.0.$buildNumber"
         buildConfigField("int", "BUILD_NUMBER", buildNumber.toString())
         buildConfigField("String", "UPDATE_REPO", "\"andrexjean/brudre-streaming\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -116,6 +116,8 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer:$media3Version")
     implementation("androidx.media3:media3-ui:$media3Version")
     implementation("androidx.media3:media3-common:$media3Version")
+    implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
+    implementation("androidx.media3:media3-datasource-okhttp:$media3Version")
 
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")

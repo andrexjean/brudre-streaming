@@ -64,17 +64,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.brudre.streaming.data.Title
-import com.brudre.streaming.data.TitleDetails
-import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.ui.components.AppBackground
 import com.brudre.streaming.ui.components.BruButton
-import com.brudre.streaming.ui.components.BruIntro
+import com.brudre.streaming.ui.components.BruVideoIntro
 import com.brudre.streaming.ui.components.BruLogo
 import com.brudre.streaming.ui.components.IntroState
 import com.brudre.streaming.update.UpdateState
 import com.brudre.streaming.ui.screens.BrowseScreen
 import com.brudre.streaming.ui.screens.DetailsDialog
 import com.brudre.streaming.ui.screens.HomeScreen
+import com.brudre.streaming.ui.screens.LiveScreen
 import com.brudre.streaming.ui.screens.MyListScreen
 import com.brudre.streaming.ui.screens.RowRef
 import com.brudre.streaming.ui.screens.SearchScreen
@@ -114,16 +113,13 @@ fun BruDreRoot(vm: MainViewModel) {
     var userNavigated by remember { mutableStateOf(false) }
 
     val toast: (String) -> Unit = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
-    val openProvider: (Title, WatchProvider) -> Unit = { t, p -> toast(StreamingLauncher.open(context, p, t)) }
-    val external: (TitleDetails, WatchProvider?) -> Unit = { d, p ->
-        if (p != null) openProvider(d.title, p) else vm.openDetails(d.title)
-    }
-    val playTitle: (Title) -> Unit = { t ->
-        vm.play(t, onLaunch = { context.startActivity(it) }, onError = toast, onExternal = external)
-    }
+    val launch: (android.content.Intent) -> Unit = { context.startActivity(it) }
+    val playTitle: (Title) -> Unit = { t -> vm.play(t, onLaunch = launch, onError = toast) }
+    val playChannel: (com.brudre.streaming.live.LiveChannel) -> Unit = { ch -> vm.playChannel(ch, launch) }
     val tmdbOn = vm.tmdbEnabled
     fun tmdb(vararg refs: RowRef): List<RowRef> = if (tmdbOn) refs.toList() else emptyList()
-    val open: (Title) -> Unit = { t -> vm.openDetails(t) }
+    // Canais (Minha Lista / pesquisa) tocam direto; os demais abrem os detalhes.
+    val open: (Title) -> Unit = { t -> if (t.isLive) playTitle(t) else vm.openDetails(t) }
 
     var showIntro by remember { mutableStateOf(!IntroState.shown && vm.settings.value.intro) }
     var skipIntro by remember { mutableStateOf(false) }
@@ -145,26 +141,38 @@ fun BruDreRoot(vm: MainViewModel) {
             TopBar(section, online, update, onUpdate = { vm.startUpdate() }) { section = it }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (section) {
-                    Section.HOME -> HomeScreen(vm, playFocus, open, playTitle)
+                    Section.HOME -> HomeScreen(vm, playFocus, open, playTitle, playChannel)
                     Section.MOVIES -> BrowseScreen(
                         vm, "Filmes",
-                        tmdb(RowRef("tmdb_new_movies", BruIcons.Movie), RowRef("tmdb_movies"), RowRef("tmdb_top_movies", Icons.Filled.Star),
-                            RowRef("tmdb_action"), RowRef("tmdb_comedy"), RowRef("tmdb_horror"), RowRef("tmdb_free")) +
-                            listOf(RowRef("featured", Icons.Filled.PlayArrow), RowRef("curated_torrent"), RowRef("scifi"), RowRef("noir"), RowRef("silent")),
+                        listOf(RowRef("featured", Icons.Filled.PlayArrow), RowRef("curated_torrent", BruIcons.Movie), RowRef("adventure"),
+                            RowRef("westerns"), RowRef("comedy"), RowRef("scifi"), RowRef("noir")) +
+                            tmdb(RowRef("tmdb_pd_classics", Icons.Filled.Star)),
                         "movies", open,
                     )
                     Section.SERIES -> BrowseScreen(
                         vm, "Séries",
-                        tmdb(RowRef("tmdb_series", BruIcons.Layers), RowRef("tmdb_new_series"), RowRef("tmdb_top_series", Icons.Filled.Star), RowRef("tmdb_free_series")) +
-                            listOf(RowRef("series", Icons.Filled.PlayArrow), RowRef("series_recent")),
+                        listOf(RowRef("series", BruIcons.Layers), RowRef("series_recent")),
                         "series", open,
                     )
                     Section.KIDS -> BrowseScreen(
                         vm, "Infantil",
-                        tmdb(RowRef("tmdb_kids_series", Icons.Filled.Face), RowRef("tmdb_anim_movies"), RowRef("tmdb_family")) +
-                            listOf(RowRef("curated_kids", Icons.Filled.PlayArrow), RowRef("kids"), RowRef("kids_animation")),
-                        "kids", open,
+                        listOf(RowRef("curated_kids", Icons.Filled.PlayArrow), RowRef("kids", Icons.Filled.Face), RowRef("kids_animation")) +
+                            tmdb(RowRef("tmdb_pd_anim")),
+                        "kids", open, liveCategory = "kids", onPlayChannel = playChannel,
                     )
+                    Section.CLASSICS -> BrowseScreen(
+                        vm, "Clássicos",
+                        tmdb(RowRef("tmdb_pd_classics", Icons.Filled.Star), RowRef("tmdb_pd_top"), RowRef("tmdb_pd_comedy"), RowRef("tmdb_pd_horror")) +
+                            listOf(RowRef("silent", BruIcons.History), RowRef("noir"), RowRef("recent")),
+                        "classics", open,
+                    )
+                    Section.DOCS -> BrowseScreen(
+                        vm, "Documentários",
+                        listOf(RowRef("docs_featured", BruIcons.Globe), RowRef("docs_prelinger"), RowRef("docs_science"), RowRef("docs_recent")) +
+                            tmdb(RowRef("tmdb_pd_docs")),
+                        "docs", open, liveCategory = "docs", onPlayChannel = playChannel,
+                    )
+                    Section.LIVE -> LiveScreen(vm, onPlay = playChannel)
                     Section.MY_LIST -> MyListScreen(vm, open)
                     Section.SEARCH -> SearchScreen(vm, open)
                     Section.SETTINGS -> SettingsScreen(vm)
@@ -173,7 +181,7 @@ fun BruDreRoot(vm: MainViewModel) {
         }
     }
 
-    if (showIntro) BruIntro(skip = skipIntro) { showIntro = false }
+    if (showIntro) BruVideoIntro(skip = skipIntro) { showIntro = false }
     }
 
     detailsTitle?.let { t ->
@@ -182,9 +190,8 @@ fun BruDreRoot(vm: MainViewModel) {
             title = t,
             onDismiss = { vm.closeDetails() },
             onPlay = { title, playable, fromStart, details ->
-                vm.play(title, playable, fromStart, details, onLaunch = { context.startActivity(it) }, onError = toast, onExternal = external)
+                vm.play(title, playable, fromStart, details, onLaunch = launch, onError = toast)
             },
-            onProvider = openProvider,
         )
     }
 
@@ -215,8 +222,8 @@ fun BruDreRoot(vm: MainViewModel) {
 @Composable
 private fun TopBar(section: Section, online: Boolean, update: UpdateState, onUpdate: () -> Unit, onSelect: (Section) -> Unit) {
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-        // Em telas com menos de ~900 dp (TVs 720p, alguns sticks) só o item ativo/focado mostra o texto.
-        val compact = maxWidth < 900.dp
+        // Com 8 seções, em telas abaixo de ~1500 dp (todas as TVs 720p/1080p) só o item ativo/focado mostra o texto.
+        val compact = maxWidth < 1500.dp
         TopBarContent(section, online, compact, update, onUpdate, onSelect)
     }
 }
@@ -243,13 +250,16 @@ private fun TopBarContent(section: Section, online: Boolean, compact: Boolean, u
             .testTag("topbar"),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        BruLogo(scale = if (compact) 0.85f else 1f)
-        Spacer(Modifier.width(if (compact) 12.dp else 24.dp))
+        BruLogo(scale = if (compact) 0.8f else 1f)
+        Spacer(Modifier.width(if (compact) 10.dp else 24.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             NavItem(Section.HOME, Icons.Filled.Home, section, compact, onSelect)
             NavItem(Section.MOVIES, BruIcons.Movie, section, compact, onSelect)
             NavItem(Section.SERIES, BruIcons.Layers, section, compact, onSelect)
             NavItem(Section.KIDS, Icons.Filled.Face, section, compact, onSelect)
+            NavItem(Section.CLASSICS, BruIcons.History, section, compact, onSelect)
+            NavItem(Section.DOCS, BruIcons.Globe, section, compact, onSelect)
+            NavItem(Section.LIVE, BruIcons.LiveTv, section, compact, onSelect)
             NavItem(Section.MY_LIST, BruIcons.Bookmark, section, compact, onSelect)
         }
         Spacer(Modifier.weight(1f))

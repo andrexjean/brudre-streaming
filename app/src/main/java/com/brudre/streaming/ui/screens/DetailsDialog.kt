@@ -53,11 +53,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.brudre.streaming.data.Offer
 import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.Playable
-import com.brudre.streaming.data.StreamingApps
-import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.TitleDetails
 import com.brudre.streaming.data.db.ProgressEntity
@@ -85,7 +82,6 @@ fun DetailsDialog(
     title: Title,
     onDismiss: () -> Unit,
     onPlay: (Title, Playable?, Boolean, TitleDetails?) -> Unit,
-    onProvider: (Title, WatchProvider) -> Unit = { _, _ -> },
 ) {
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         FullScreenDialogWindow()
@@ -162,7 +158,10 @@ fun DetailsDialog(
                     is Load.Loading -> Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(color = BruColors.Cyan, strokeWidth = 3.dp, modifier = Modifier.width(26.dp).height(26.dp))
                         Spacer(Modifier.width(14.dp))
-                        Text("Procurando fontes autorizadas…", color = BruColors.TextDim, fontSize = 15.sp)
+                        Text(
+                            if (title.isTmdb) "Procurando uma fonte gratuita e autorizada desta obra…" else "Verificando a fonte do vídeo…",
+                            color = BruColors.TextDim, fontSize = 15.sp, modifier = Modifier.testTag("details_loading"),
+                        )
                         Spacer(Modifier.width(24.dp))
                         FavoriteButton(isFavorite, Modifier.focusRequester(primaryFocus)) { vm.toggleFavorite(shown) }
                     }
@@ -180,14 +179,7 @@ fun DetailsDialog(
                             primaryFocus = primaryFocus,
                             onUnlock = { showPin = true },
                         )
-                    } else if (s.value.isExternal) ProvidersSection(
-                        details = s.value,
-                        myServices = mySettings.myServices,
-                        isFavorite = isFavorite,
-                        primaryFocus = primaryFocus,
-                        onToggleFavorite = { vm.toggleFavorite(s.value.title) },
-                        onProvider = { p -> onProvider(s.value.title, p) },
-                    ) else AvailableSection(
+                    } else AvailableSection(
                         details = s.value,
                         progress = progress,
                         isFavorite = isFavorite,
@@ -195,6 +187,7 @@ fun DetailsDialog(
                         primaryFocus = primaryFocus,
                         onToggleFavorite = { vm.toggleFavorite(s.value.title) },
                         onPlay = { p, fromStart -> onPlay(s.value.title, p, fromStart, s.value) },
+                        onRetry = { vm.reloadDetails() },
                     )
                 }
             }
@@ -241,101 +234,6 @@ private fun LockedSection(rating: String, hasPin: Boolean, primaryFocus: FocusRe
     }
 }
 
-/** Lançamentos: onde assistir no Brasil. OK abre o app oficial. */
-@Composable
-private fun ProvidersSection(
-    details: TitleDetails,
-    myServices: Set<String>,
-    isFavorite: Boolean,
-    primaryFocus: FocusRequester,
-    onToggleFavorite: () -> Unit,
-    onProvider: (WatchProvider) -> Unit,
-) {
-    val providers = details.providers.sortedWith(
-        compareBy<WatchProvider>(
-            { if (StreamingApps.canonical(it.name) in myServices && it.offer == Offer.SUBSCRIPTION) 0 else 1 },
-            { it.offer.order },
-            { it.priority },
-        ),
-    )
-    Column {
-        Text("Onde assistir", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(8.dp))
-        if (providers.isEmpty()) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0x33FFFFFF))
-                        .padding(horizontal = 16.dp, vertical = 10.dp)
-                        .testTag("details_no_provider"),
-                ) {
-                    Text(details.sourceLabel, color = Color.White, fontSize = 15.sp)
-                }
-                Spacer(Modifier.width(16.dp))
-                FavoriteButton(isFavorite, Modifier.focusRequester(primaryFocus), onToggleFavorite)
-            }
-        } else {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 4.dp),
-                modifier = Modifier.testTag("providers"),
-            ) {
-                items(providers, key = { "${it.id}_${it.offer}" }) { p ->
-                    val mine = StreamingApps.canonical(p.name) in myServices
-                    ProviderCard(
-                        p, mine,
-                        Modifier
-                            .then(if (p == providers.first()) Modifier.focusRequester(primaryFocus) else Modifier)
-                            .testTag("provider_${p.id}"),
-                    ) { onProvider(p) }
-                }
-                item(key = "fav") { FavoriteButton(isFavorite, onClick = onToggleFavorite) }
-            }
-        }
-        Spacer(Modifier.height(10.dp))
-        Text(
-            "${details.sourceLabel}  •  Disponibilidade: JustWatch • Catálogo: TMDB",
-            color = BruColors.TextFaint,
-            fontSize = 13.sp,
-            modifier = Modifier.testTag("details_source"),
-        )
-    }
-}
-
-@Composable
-private fun ProviderCard(p: WatchProvider, mine: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    var focused by remember { mutableStateOf(false) }
-    val shape = RoundedCornerShape(12.dp)
-    Row(
-        modifier
-            .width(250.dp)
-            .graphicsLayer { val sc = if (focused) 1.05f else 1f; scaleX = sc; scaleY = sc }
-            .clip(shape)
-            .background(if (focused) BruColors.NavyLight else BruColors.Card)
-            .border(if (focused) 2.dp else 1.dp, if (focused) BruColors.Cyan else if (mine) BruColors.Neon else BruColors.CardBorder, shape)
-            .onFocusChanged { focused = it.isFocused }
-            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { onClick() }
-            .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            model = p.logoUrl,
-            contentDescription = p.name,
-            modifier = Modifier.width(46.dp).height(46.dp).clip(RoundedCornerShape(10.dp)),
-        )
-        Spacer(Modifier.width(10.dp))
-        Column {
-            Text(p.name, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(
-                if (mine && p.offer == Offer.SUBSCRIPTION) "Você assina • abrir" else p.offer.label,
-                color = if (mine || p.offer == Offer.FREE || p.offer == Offer.ADS) BruColors.Cyan else BruColors.TextFaint,
-                fontSize = 13.sp,
-            )
-        }
-    }
-}
-
 @Composable
 private fun FavoriteButton(isFavorite: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
     BruButton(
@@ -355,6 +253,7 @@ private fun AvailableSection(
     primaryFocus: FocusRequester,
     onToggleFavorite: () -> Unit,
     onPlay: (Playable, Boolean) -> Unit,
+    onRetry: () -> Unit,
 ) {
     val playables = details.playables.filter { it.hasSource }
     val byKey = progress.associateBy { it.episodeKey }
@@ -366,6 +265,7 @@ private fun AvailableSection(
 
     Column {
         if (target == null) {
+            // Título só catalogado: sem botão Assistir e sem redirecionar para serviços pagos.
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     Modifier
@@ -375,10 +275,31 @@ private fun AvailableSection(
                         .padding(horizontal = 16.dp, vertical = 10.dp)
                         .testTag("details_unavailable"),
                 ) {
-                    Text("Indisponível: nenhuma fonte autorizada e compatível foi encontrada.", color = Color.White, fontSize = 15.sp)
+                    Text(
+                        if (details.title.isTmdb) "Sem fonte gratuita no momento" else "Indisponível: nenhuma fonte autorizada e compatível foi encontrada.",
+                        color = Color.White, fontSize = 15.sp,
+                    )
                 }
                 Spacer(Modifier.width(16.dp))
                 FavoriteButton(isFavorite, Modifier.focusRequester(primaryFocus), onToggleFavorite)
+            }
+        } else if (!details.confirmed) {
+            // Fonte identificada, mas não respondeu à verificação: o Assistir só aparece depois de confirmar.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color(0x33F5C518))
+                        .border(1.dp, BruColors.Badge, RoundedCornerShape(10.dp))
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                        .testTag("details_unconfirmed"),
+                ) {
+                    Text("Fonte encontrada, mas não respondeu agora", color = Color.White, fontSize = 15.sp)
+                }
+                Spacer(Modifier.width(16.dp))
+                BruButton("Verificar de novo", icon = Icons.Filled.Refresh, primary = true, modifier = Modifier.focusRequester(primaryFocus).testTag("details_recheck"), onClick = onRetry)
+                Spacer(Modifier.width(12.dp))
+                FavoriteButton(isFavorite, onClick = onToggleFavorite)
             }
         } else {
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {

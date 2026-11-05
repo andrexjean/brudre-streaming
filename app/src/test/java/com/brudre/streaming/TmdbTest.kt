@@ -1,8 +1,6 @@
 package com.brudre.streaming
 
 import com.brudre.streaming.data.Kind
-import com.brudre.streaming.data.Offer
-import com.brudre.streaming.data.StreamingApps
 import com.brudre.streaming.data.TmdbParser
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -40,45 +38,38 @@ class TmdbTest {
         {"id":693134,"title":"Duna: Parte Dois","overview":"Sinopse.","release_date":"2024-02-27","runtime":166,
          "genres":[{"id":878,"name":"Ficção científica"},{"id":12,"name":"Aventura"}],"backdrop_path":"/b.jpg","poster_path":"/p.jpg",
          "release_dates":{"results":[{"iso_3166_1":"US","release_dates":[{"certification":"PG-13"}]},{"iso_3166_1":"BR","release_dates":[{"certification":""},{"certification":"14"}]}]},
-         "watch/providers":{"results":{"BR":{"link":"https://www.themoviedb.org/movie/693134/watch?locale=BR",
-           "flatrate":[{"provider_id":1899,"provider_name":"HBO Max","logo_path":"/max.jpg","display_priority":3},
-                       {"provider_id":1825,"provider_name":"HBO Max Amazon Channel","logo_path":"/mc.jpg","display_priority":40}],
-           "rent":[{"provider_id":2,"provider_name":"Apple TV","logo_path":"/a.jpg","display_priority":5},{"provider_id":10,"provider_name":"Amazon Video","logo_path":"/av.jpg","display_priority":7}],
-           "buy":[{"provider_id":2,"provider_name":"Apple TV","logo_path":"/a.jpg","display_priority":5}]}}}}
+         "original_title":"Dune: Part Two","original_language":"en",
+         "translations":{"translations":[{"iso_3166_1":"GB","iso_639_1":"en","data":{"title":"Dune Two (UK)"}},{"iso_3166_1":"US","iso_639_1":"en","data":{"title":"Dune: Part Two"}},{"iso_3166_1":"BR","iso_639_1":"pt","data":{"title":"Duna: Parte Dois"}}]}}
     """.trimIndent()
 
-    @Test fun parsesDetailsProvidersAndRating() {
-        val (t, providers) = TmdbParser.parseDetails(details, "movie", null)
+    @Test fun parsesDetailsRatingAndMatchingTitles() {
+        val d = TmdbParser.parseDetails(details, "movie", null)
+        val t = d.title
         assertEquals(166, t.durationMin)
         assertEquals("14", t.rating)
         assertEquals(listOf("Ficção científica", "Aventura"), t.genres)
-        // HBO Max por assinatura; canal Amazon e Amazon Video viram "amazon" (aparece uma vez, na melhor oferta)
-        assertEquals(listOf("HBO Max" to Offer.SUBSCRIPTION, "HBO Max Amazon Channel" to Offer.SUBSCRIPTION, "Apple TV" to Offer.RENT),
-            providers.map { it.name to it.offer })
-        assertEquals("https://image.tmdb.org/t/p/w92/max.jpg", providers[0].logoUrl)
+        assertEquals("Dune: Part Two", d.originalTitle)
+        assertEquals("Dune: Part Two", d.englishTitle) // prefere a tradução dos EUA
+        assertEquals("en", d.originalLanguage)
+        assertEquals("Metadados: TMDB", t.license)
     }
 
     @Test fun tvRatingAndSeasons() {
         val json = """{"id":1,"name":"Série","overview":"X","first_air_date":"2020-01-01","episode_run_time":[42],"number_of_seasons":3,
             "genres":[{"id":18,"name":"Drama"}],"content_ratings":{"results":[{"iso_3166_1":"BR","rating":"A16"}]}}"""
-        val (t, p) = TmdbParser.parseDetails(json, "tv", null)
+        val d = TmdbParser.parseDetails(json, "tv", null)
+        val t = d.title
         assertEquals("16", t.rating)
         assertEquals(42, t.durationMin)
         assertTrue(t.synopsis!!.contains("3 temporadas"))
-        assertTrue(p.isEmpty())
+        assertNull(d.englishTitle)
     }
 
-    @Test fun idsAndApps() {
+    @Test fun ids() {
         assertEquals("movie" to 5, TmdbParser.parseId("tmdb:movie:5"))
+        assertEquals("tv" to 7, TmdbParser.parseId("tmdb:tv:7"))
         assertNull(TmdbParser.parseId("ia:x"))
-        assertEquals("netflix", StreamingApps.canonical("Netflix Standard with Ads"))
-        assertEquals("amazon", StreamingApps.canonical("Paramount Plus Amazon Channel"))
-        assertEquals("amazon", StreamingApps.canonical("Amazon Prime Video"))
-        assertEquals("max", StreamingApps.canonical("HBO Max"))
-        assertEquals("max", StreamingApps.canonical("Max"))
-        assertEquals("globoplay", StreamingApps.canonical("Globoplay"))
-        assertEquals("com.netflix.ninja", StreamingApps.appFor("Netflix")!!.packages.first())
-        assertNull(StreamingApps.appFor("Serviço Desconhecido"))
+        assertNull(TmdbParser.parseId("tmdb:person:1"))
     }
 
     @Test(expected = IllegalStateException::class)

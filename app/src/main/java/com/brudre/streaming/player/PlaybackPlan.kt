@@ -10,7 +10,7 @@ sealed class SourceAttempt {
     abstract val label: String
 
     data class Direct(val url: String) : SourceAttempt() {
-        override val label = "streaming direto"
+        override val label = if (url.substringBefore('?').lowercase().contains(".m3u8")) "streaming HLS" else "streaming direto"
     }
 
     data class Torrent(val ref: TorrentRef) : SourceAttempt() {
@@ -19,16 +19,22 @@ sealed class SourceAttempt {
 }
 
 object PlaybackPlan {
-    /** Ordem de tentativas conforme a preferência do usuário e a natureza da fonte. */
-    fun attempts(playable: Playable, mode: SourceMode): List<SourceAttempt> {
-        val direct = playable.directUrl?.let { SourceAttempt.Direct(it) }
-        val torrent = playable.torrent?.let { SourceAttempt.Torrent(it) }
-        val ordered = when (mode) {
-            SourceMode.DIRECT -> listOf(direct, torrent)
-            SourceMode.TORRENT -> listOf(torrent, direct)
-            SourceMode.AUTO -> if (playable.preferTorrent) listOf(torrent, direct) else listOf(direct, torrent)
+    /**
+     * Ordem de tentativas (BruDre Source Manager):
+     * 1) HTTP/HLS direto, 2) endereços diretos alternativos, 3) BitTorrent autorizado.
+     * O motor BitTorrent só é iniciado se as diretas falharem (ou se o usuário preferir torrent).
+     */
+    fun attempts(playable: Playable, mode: SourceMode, allowTorrent: Boolean = true): List<SourceAttempt> {
+        val direct = (listOfNotNull(playable.directUrl) + playable.mirrors)
+            .distinct()
+            .filter { com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
+            .map { SourceAttempt.Direct(it) }
+        val torrent = playable.torrent?.takeIf { allowTorrent && !playable.live }?.let { listOf(SourceAttempt.Torrent(it)) } ?: emptyList()
+        return when (mode) {
+            SourceMode.DIRECT -> direct
+            SourceMode.TORRENT -> torrent + direct
+            SourceMode.AUTO -> direct + torrent
         }
-        return ordered.filterNotNull()
     }
 }
 

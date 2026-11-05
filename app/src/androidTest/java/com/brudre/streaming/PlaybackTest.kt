@@ -103,8 +103,9 @@ class PlaybackTest {
 
     @Test fun t07b_internetArchiveItemResolvesAndPlays() {
         val entry = services.curated.find("cur:night-of-the-living-dead")!!
-        val details = runBlocking { services.catalog.details(entry.title) }
+        val details = runBlocking { services.sources.details(entry.title) }
         assertTrue("Internet Archive sem vídeo compatível", details.available)
+        assertTrue("fonte não confirmada: ${details.sourceLabel}", details.confirmed)
         val p = details.playables.first()
         assertNotNull(p.directUrl)
         launch(details.title, p.copy(torrent = null, key = "test_ia")).use { sc -> sc.awaitPlaying(90_000, 2_000) }
@@ -114,7 +115,7 @@ class PlaybackTest {
         TestUtil.shell("svc wifi disable")
         TestUtil.shell("svc data disable")
         TestUtil.waitFor(20_000, "rede desligada") { !services.isOnline() }
-        val error = runCatching { runBlocking { services.catalog.search("chaplin") } }.exceptionOrNull()
+        val error = runCatching { runBlocking { services.sources.search("chaplin") } }.exceptionOrNull()
         assertNotNull("busca deveria falhar sem rede", error)
         assertTrue(error!!.message!!.contains("internet", ignoreCase = true))
         // Player sem rede: deve mostrar erro, não fechar o app
@@ -126,7 +127,7 @@ class PlaybackTest {
         TestUtil.waitFor(30_000, "rede religada") { services.isOnline() }
         // Após reconectar, a busca volta a funcionar (o app tenta de novo sozinho em falhas transitórias)
         TestUtil.waitFor(60_000, "busca funcionar após reconectar") {
-            runBlocking { services.catalog.search("chaplin") }.isNotEmpty()
+            runBlocking { services.sources.search("chaplin") }.isNotEmpty()
         }
     }
 
@@ -177,31 +178,92 @@ class PlaybackTest {
         }
     }
 
-    @Test fun t15_releaseCatalogWhereToWatch() {
+    /** Catálogo TMDB (só metadados): clássicos em domínio público encontrados no acervo e tocados no app. */
+    @Test fun t15_catalogTitlesFindFreeSource() {
         assertTrue("app compilado sem a chave do TMDB", services.catalog.tmdb.enabled)
-        val trending = runBlocking { services.catalog.row("tmdb_trending", force = true) }
-        assertTrue("Em Alta vazio", trending.size >= 5)
-        for (key in listOf("tmdb_new_movies", "tmdb_series", "tmdb_kids_series", "tmdb_free")) {
-            val r = runBlocking { services.catalog.row(key, force = true) }
-            TestUtil.log("$key: ${r.size} títulos, ex.: ${r.take(3).joinToString { it.name }}")
-            assertTrue("$key vazio", r.isNotEmpty())
+        val classics = runBlocking { services.catalog.row("tmdb_pd_classics", force = true) }
+        assertTrue("linha de clássicos vazia", classics.size >= 5)
+        var playable: com.brudre.streaming.data.TitleDetails? = null
+        var found = 0
+        for (t in classics.take(10)) {
+            val d = runCatching { runBlocking { services.sources.details(t) } }.getOrNull() ?: continue
+            TestUtil.log("TMDB→fonte: ${t.name} (${t.year}) → disponível=${d.available} confirmado=${d.confirmed} • ${d.sourceLabel}")
+            if (d.available && d.confirmed) { found++; if (playable == null) playable = d }
         }
-        // Títulos populares no streaming brasileiro precisam trazer "onde assistir"
-        val popular = runBlocking { services.catalog.row("tmdb_movies", force = true) }
-        val withProviders = popular.take(5).map { runBlocking { services.catalog.details(it) } }
-        withProviders.forEach { d -> TestUtil.log("${d.title.name} [${d.title.rating}]: ${d.providers.joinToString { it.name + "/" + it.offer }}") }
-        assertTrue("nenhum provedor encontrado", withProviders.any { it.providers.isNotEmpty() })
-        // Abrir um serviço não instalado no emulador leva à Play Store sem travar
-        val d = withProviders.first { it.providers.isNotEmpty() }
-        var msg = ""
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            msg = com.brudre.streaming.ui.StreamingLauncher.open(ctx, d.providers.first(), d.title)
+        TestUtil.log("Clássicos com fonte gratuita confirmada: $found de ${classics.take(10).size}")
+        assertNotNull("nenhum clássico do catálogo achou fonte gratuita", playable)
+        val d = playable!!
+        assertTrue(d.title.isTmdb)
+        launch(d.title, d.playables.first().copy(key = "test_tmdb_match")).use { sc -> sc.awaitPlaying(90_000, 2_000) }
+        // Lançamento recente: catalogado, sem fonte gratuita e sem redirecionamento pago
+        val recent = runBlocking { services.sources.search("Duna Parte Dois") }.firstOrNull { it.isTmdb }
+        if (recent != null) {
+            val rd = runBlocking { services.sources.details(recent) }
+            TestUtil.log("Lançamento: ${rd.title.name} → ${rd.sourceLabel}")
+            assertTrue("lançamento comercial não deveria ter fonte", !rd.available)
         }
-        TestUtil.log("Launcher: $msg")
-        assertTrue(msg.isNotBlank())
-        // Busca encontra lançamentos
-        val found = runBlocking { services.catalog.search("Divertida Mente") }
-        assertTrue("busca sem lançamentos", found.any { it.isTmdb })
+    }
+
+    /** Teste 6: listas do iptv-org baixadas, filtradas (sem pagos/adultos/http) e organizadas. */
+    @Test fun t17_iptvOrgListsLoad() {
+        val br = runBlocking { services.live.channels("iptv_br", force = true) }
+        TestUtil.log("iptv-org Brasil: ${br.size} canais")
+        assertTrue("poucos canais: ${br.size}", br.size >= 50)
+        assertTrue(br.all { it.url.startsWith("https://") && com.brudre.streaming.live.ChannelPolicy.isHls(it.url) })
+        assertTrue(br.none { com.brudre.streaming.live.ChannelPolicy.isPayTv(it.name, it.url) || com.brudre.streaming.live.ChannelPolicy.isAdult(it.name, it.groups) })
+        val groups = com.brudre.streaming.live.LiveCategories.group(br)
+        groups.forEach { (c, l) -> TestUtil.log("  ${c.label}: ${l.size}") }
+        assertTrue(groups.size >= 4)
+        val por = runBlocking { services.live.channels("iptv_por") }
+        TestUtil.log("Em português: ${por.size} canais; países: ${por.mapNotNull { it.country }.distinct()}")
+        assertTrue(por.isNotEmpty())
+        assertTrue(runBlocking { services.live.search("tv") }.isNotEmpty())
+    }
+
+    /** Teste 7: um canal ao vivo da lista toca (tenta vários; sinais de terceiros caem). */
+    @Test fun t18_liveChannelPlays() {
+        val br = runBlocking { services.live.channels("iptv_br") }
+        val ordered = br.sortedBy { if (com.brudre.streaming.live.LiveCategories.categoryOf(it).key == "news") 0 else 1 }
+        var ok: String? = null
+        for (ch in ordered.take(14)) {
+            val t = com.brudre.streaming.live.LiveRepository.run { ch.toTitle() }
+            val p = com.brudre.streaming.live.LiveRepository.run { ch.toPlayable() }.copy(mirrors = emptyList())
+            val played = launch(t, p).use { sc ->
+                runCatching { TestUtil.waitFor(25_000, "canal ${ch.name}") { sc.state() == Player.STATE_READY && sc.read { it.playerForTest()!!.isPlaying } } }.isSuccess
+                    .also { if (it) { Thread.sleep(3_000); TestUtil.shot("ao_vivo") } }
+            }
+            TestUtil.log("Canal ${ch.name} (${ch.url.take(60)}): ${if (played) "TOCOU" else "sem sinal"}")
+            if (played) { ok = ch.name; break }
+        }
+        assertNotNull("nenhum canal ao vivo tocou", ok)
+    }
+
+    /** Teste 11: reprodução HLS (stream público de teste da Mux). */
+    @Test fun t19_hlsPlayback() {
+        val hls = Playable("hls", "HLS", 1, 1, "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", null, emptyList(), null, false)
+        launch(Title("test:hls", Kind.MOVIE, "Teste HLS"), hls).use { sc ->
+            sc.awaitPlaying(60_000, 3_000)
+            val fmt = sc.read { it.playerForTest()!!.videoFormat }
+            TestUtil.log("HLS: ${fmt?.sampleMimeType} ${fmt?.width}x${fmt?.height}")
+            assertTrue(sc.read { it.currentAttemptForTest() }!!.label.contains("HLS"))
+        }
+    }
+
+    /** Segurança: destinos locais, esquemas perigosos e executáveis bloqueados; fonte válida confirmada. */
+    @Test fun t20_urlGuardAndValidation() {
+        val client = services.guardedHttp
+        val blocked = runCatching { client.newCall(okhttp3.Request.Builder().url("http://127.0.0.1:9/x.m3u8").build()).execute().close() }.exceptionOrNull()
+        assertTrue("loopback deveria ser bloqueado: $blocked", blocked is com.brudre.streaming.sources.BlockedUrlException)
+        val v = com.brudre.streaming.sources.StreamValidator(client)
+        assertEquals(com.brudre.streaming.sources.StreamValidator.Result.OK, runBlocking { v.validate(sintelPlayable.copy(torrent = null)) })
+        assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID,
+            runBlocking { v.validate(sintelPlayable.copy(directUrl = "https://archive.org/download/brudre_nao_existe_123/x.mp4", torrent = null)) })
+        assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID, v.check("file:///system/build.prop", emptyMap()))
+        // Device: versão, ABI e decodificadores (teste 23)
+        val info = DeviceInfo.collect(ctx)
+        TestUtil.log("Aparelho: ${info.summary()} • ${info.codecLine()}")
+        assertTrue("sem decodificador H.264", info.codecs.first { it.label == "H.264" }.supported)
+        assertTrue("sem decodificador AAC", info.codecs.first { it.label == "AAC" }.supported)
     }
 
     @Test fun t16_inAppUpdatePipeline() = runBlocking {

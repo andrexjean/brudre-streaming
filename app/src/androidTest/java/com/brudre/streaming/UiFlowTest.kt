@@ -125,6 +125,18 @@ class UiFlowTest {
         waitPrefix("card_curated_kids_cur:", 10_000)
         rule.onNodeWithTag("kids").performScrollToKey("kids")
         waitPrefix("card_kids_ia:", 90_000)
+        // Seções novas: Clássicos, Documentários e TV ao Vivo
+        rule.onNodeWithTag("nav_CLASSICS").performClick()
+        waitTag("classics")
+        rule.onNodeWithTag("classics").performScrollToKey("silent")
+        waitPrefix("card_silent_ia:", 90_000)
+        rule.onNodeWithTag("nav_DOCS").performClick()
+        waitTag("docs")
+        rule.onNodeWithTag("docs").performScrollToKey("docs_prelinger")
+        waitPrefix("card_docs_prelinger_ia:", 90_000)
+        rule.onNodeWithTag("nav_LIVE").performClick()
+        waitTag("live")
+        waitPrefix("channel_live_br_", 90_000)
     }
 
     @Test fun t04_searchFindsTitles() {
@@ -182,9 +194,11 @@ class UiFlowTest {
     @Test fun t07_parentalControlAsksPin() {
         val services = TestUtil.services
         // Um filme popular com classificação acima de "Livre"
-        val candidates = runBlocking { services.catalog.row("tmdb_movies", force = true) }
-        val target = candidates.take(10).firstNotNullOfOrNull { t ->
-            val d = runBlocking { services.catalog.details(t) }
+        val candidates = listOf("Interestelar", "Duna", "Toy Story", "Matrix").flatMap { q ->
+            runBlocking { services.sources.search(q) }.filter { it.isTmdb }.take(3)
+        }
+        val target = candidates.firstNotNullOfOrNull { t ->
+            val d = runCatching { runBlocking { services.sources.details(t) } }.getOrNull() ?: return@firstNotNullOfOrNull null
             if (com.brudre.streaming.data.Parental.level(d.title.rating) > 0) d.title else null
         } ?: error("nenhum filme classificado encontrado")
         services.settings.update { it.copy(maxRating = "L", pinHash = "") }
@@ -196,7 +210,7 @@ class UiFlowTest {
                 vm.openDetails(target)
             }
             waitTag("details_locked", 30_000)
-            check(rule.onAllNodes(tagPrefix("provider_")).fetchSemanticsNodes().isEmpty()) { "Onde assistir visível sem senha" }
+            check(rule.onAllNodes(tagPrefix("btn_play")).fetchSemanticsNodes().isEmpty()) { "Assistir visível sem senha" }
             rule.onNodeWithTag("btn_unlock").performClick()
             waitTag("pin_dialog")
             listOf("1", "2", "3", "4").forEach { rule.onNodeWithTag("pin_key_$it").performClick() }
@@ -211,61 +225,87 @@ class UiFlowTest {
         }
     }
 
-    @Test fun t08_introPlaysThenSkips() {
-        // O CI desliga as animações do sistema (escala 0); a abertura precisa da escala normal.
+    private fun introVisible() = rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isNotEmpty()
+
+    private fun relaunchWithIntro() {
+        com.brudre.streaming.ui.components.IntroState.shown = false
+        com.brudre.streaming.ui.components.IntroVideoState.started = false
+        rule.activityRule.scenario.recreate()
+    }
+
+    /** Testes 19 a 22: vinheta toca sozinha, OK e Voltar pulam, opção de desligar e transição para o Início. */
+    @Test fun t08_cinematicIntro() {
         TestUtil.shell("settings put global animator_duration_scale 1")
         TestUtil.shell("settings put global transition_animation_scale 1")
-        try { introFlow() } finally {
+        try {
+            // 19 + 22: toca até o fim (~7 s) e entrega a tela inicial
+            relaunchWithIntro()
+            waitTag("intro", 5_000)
+            val t0 = System.currentTimeMillis()
+            for (ms in listOf(1_000L, 2_300L, 3_700L, 5_400L, 6_300L)) {
+                val wait = ms - (System.currentTimeMillis() - t0)
+                if (wait > 0) Thread.sleep(wait)
+                TestUtil.shot("intro_${ms}ms")
+            }
+            diagnose("vinheta terminar sozinha") { rule.waitUntil(6_000) { !introVisible() } }
+            val took = System.currentTimeMillis() - t0
+            TestUtil.log("Vinheta: terminou em $took ms; vídeo iniciou=${com.brudre.streaming.ui.components.IntroVideoState.started}; " +
+                "animação reserva=${com.brudre.streaming.ui.components.IntroVideoState.usedFallback}")
+            check(took in 5_500..11_000) { "duração inesperada: $took ms" }
+            waitTag("hero_play", 10_000)
+            TestUtil.shot("intro_transicao_inicio")
+
+            // 20: OK pula
+            relaunchWithIntro()
+            waitTag("intro", 5_000)
+            Thread.sleep(1_200)
+            remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            diagnose("vinheta pulada pelo OK") { rule.waitUntil(2_000) { !introVisible() } }
+            // Voltar também pula (sem fechar o app)
+            relaunchWithIntro()
+            waitTag("intro", 5_000)
+            Thread.sleep(800)
+            remote(KeyEvent.KEYCODE_BACK)
+            diagnose("vinheta pulada pelo Voltar") { rule.waitUntil(2_000) { !introVisible() } }
+            waitTag("hero_play", 10_000)
+
+            // 21: desativada nas Configurações
+            TestUtil.services.settings.update { it.copy(intro = false) }
+            relaunchWithIntro()
+            waitTag("hero_play", 15_000)
+            check(!introVisible()) { "vinheta apareceu desativada" }
+        } finally {
+            TestUtil.services.settings.update { it.copy(intro = true) }
+            com.brudre.streaming.ui.components.IntroState.shown = true
             TestUtil.shell("settings put global animator_duration_scale 0")
             TestUtil.shell("settings put global transition_animation_scale 0")
         }
     }
 
-    private fun introFlow() {
-        // O relógio do teste do Compose acelera animações; aqui ele é controlado quadro a quadro.
-        rule.mainClock.autoAdvance = false
-        try {
-            com.brudre.streaming.ui.components.IntroState.shown = false
-            rule.activityRule.scenario.recreate()
-            waitTag("intro", 5_000)
-            for (i in 1..4) {
-                rule.mainClock.advanceTimeBy(750)
-                rule.waitForIdle()
-                Thread.sleep(250)
-                TestUtil.shot("intro_$i")
-            }
-            rule.mainClock.advanceTimeBy(1_500)
-            rule.waitForIdle()
-            diagnose("abertura terminar sozinha") {
-                check(rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty()) { "abertura ainda visível" }
-            }
-            // Qualquer tecla pula a abertura
-            com.brudre.streaming.ui.components.IntroState.shown = false
-            rule.activityRule.scenario.recreate()
-            waitTag("intro", 5_000)
-            rule.mainClock.advanceTimeBy(500)
-            remote(KeyEvent.KEYCODE_DPAD_CENTER)
-            rule.mainClock.advanceTimeBy(600)
-            rule.waitForIdle()
-            diagnose("abertura pulada pela tecla") {
-                check(rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "intro")).fetchSemanticsNodes().isEmpty()) { "abertura não foi pulada" }
-            }
-        } finally {
-            rule.mainClock.autoAdvance = true
+    /** Telas principais para validação visual. */
+    @Test fun t09_screensForVisualCheck() {
+        waitTag("hero_play")
+        Thread.sleep(4_000); TestUtil.shot("home")
+        for ((nav, tag) in listOf("MOVIES" to "movies", "CLASSICS" to "classics", "DOCS" to "docs", "LIVE" to "live", "KIDS" to "kids")) {
+            rule.onNodeWithTag("nav_$nav").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            waitTag(tag); Thread.sleep(if (tag == "live") 9_000 else 5_000); TestUtil.shot(tag)
         }
-        Thread.sleep(3_000); TestUtil.shot("home")
-        // Telas principais para validação visual
-        // A Home deve abrir com um lançamento em destaque (TMDB), não com o filme aberto padrão
-        diagnose("herói com lançamento") {
-            rule.waitUntil(30_000) { runCatching { rule.onNodeWithTag("hero_title").assert(hasText("SINTEL").not()); true }.getOrDefault(false) }
-        }
-        rule.onNodeWithTag("nav_MOVIES").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
-        waitTag("movies"); Thread.sleep(4_000); TestUtil.shot("filmes")
         rule.onNodeWithTag("nav_SETTINGS").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("settings"); Thread.sleep(1_500); TestUtil.shot("configuracoes")
-        val t = runBlocking { TestUtil.services.catalog.row("tmdb_trending") }.first()
+        waitTag("source_archive"); rule.onNodeWithTag("source_archive").requestFocus(); Thread.sleep(800); TestUtil.shot("configuracoes_fontes")
+        // Detalhes de um clássico do catálogo TMDB (fonte procurada no acervo)
+        val t = runBlocking { TestUtil.services.catalog.row("tmdb_pd_classics") }.first()
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].openDetails(t) }
-        waitTag("details"); Thread.sleep(4_000); TestUtil.shot("detalhes")
+        waitTag("details")
+        rule.waitUntil(60_000) { rule.onAllNodes(tagPrefix("details_loading")).fetchSemanticsNodes().isEmpty() }
+        Thread.sleep(2_000); TestUtil.shot("detalhes_classico")
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
+        // Pesquisa unificada com canais
+        rule.onNodeWithTag("nav_SEARCH").performClick()
+        waitTag("search_field")
+        rule.onNodeWithTag("search_field").performTextInput("cultura")
+        rule.onNodeWithTag("search_button").performClick()
+        waitPrefix("result_", 90_000)
+        Thread.sleep(3_000); TestUtil.shot("pesquisa")
     }
 }

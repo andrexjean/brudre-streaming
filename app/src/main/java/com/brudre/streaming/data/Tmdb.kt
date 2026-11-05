@@ -1,40 +1,22 @@
 package com.brudre.streaming.data
 
-import org.json.JSONArray
 import org.json.JSONObject
 
 /** Título adulto/explícito: nunca exibido. */
 class BlockedContentException : IllegalStateException("Conteúdo bloqueado pelo BruDre")
 
-/** Tipo de oferta de um streaming para um título (dados JustWatch via TMDB). */
-enum class Offer(val label: String, val order: Int) {
-    SUBSCRIPTION("Assinatura", 0),
-    FREE("Grátis", 1),
-    ADS("Grátis com anúncios", 2),
-    RENT("Aluguel", 3),
-    BUY("Compra", 4),
-}
-
-data class WatchProvider(
-    val id: Int,
-    val name: String,
-    val logoUrl: String?,
-    val offer: Offer,
-    val priority: Int = 999,
-) {
-    fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("logo", logoUrl ?: JSONObject.NULL)
-        .put("offer", offer.name).put("priority", priority)
-
-    companion object {
-        fun fromJson(o: JSONObject) = WatchProvider(
-            o.getInt("id"), o.getString("name"), o.optStringOrNull("logo"),
-            runCatching { Offer.valueOf(o.getString("offer")) }.getOrDefault(Offer.SUBSCRIPTION), o.optInt("priority", 999),
-        )
-    }
-}
+/** Metadados de detalhes do TMDB + títulos usados para achar uma fonte gratuita (ex.: Internet Archive). */
+data class TmdbDetails(
+    val title: Title,
+    val media: String,
+    val originalTitle: String?,
+    val englishTitle: String?,
+    val originalLanguage: String?,
+)
 
 /**
  * Leitura das respostas da API do TMDB (The Movie Database).
+ * Só metadados (capas, sinopses, classificação): o BruDre não usa dados de serviços pagos.
  * Funções puras para testes unitários. Imagens servidas por image.tmdb.org.
  */
 object TmdbParser {
@@ -94,8 +76,8 @@ object TmdbParser {
         return out
     }
 
-    /** Detalhes completos com append_to_response=watch/providers,release_dates|content_ratings. */
-    fun parseDetails(json: String, media: String, base: Title?, region: String = "BR"): Pair<Title, List<WatchProvider>> {
+    /** Detalhes completos com append_to_response=release_dates|content_ratings,translations. */
+    fun parseDetails(json: String, media: String, base: Title?, region: String = "BR"): TmdbDetails {
         val o = JSONObject(json)
         if (o.has("status_message") && !o.has("id")) throw IllegalStateException("TMDB: ${o.optString("status_message")}")
         if (o.optBoolean("adult", false) || Parental.isExplicit(o.optStringOrNull("title"), o.optStringOrNull("name"), o.optStringOrNull("overview"))) {
@@ -127,30 +109,24 @@ object TmdbParser {
             rating = certification(o, media, region),
             posterUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: poster(o.optStringOrNull("poster_path")) ?: base?.posterUrl,
             bannerUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: base?.bannerUrl,
-            license = "Dados: TMDB • Onde assistir: JustWatch",
+            license = "Metadados: TMDB",
         )
-        val providers = o.optJSONObject("watch/providers")?.let { parseProviders(it, region) } ?: emptyList()
-        return title to providers
+        val original = if (media == "movie") o.optStringOrNull("original_title") else o.optStringOrNull("original_name")
+        return TmdbDetails(title, media, original, englishTitle(o, media), o.optStringOrNull("original_language"))
     }
 
-    fun parseProviders(wp: JSONObject, region: String = "BR"): List<WatchProvider> {
-        val r = wp.optJSONObject("results")?.optJSONObject(region) ?: return emptyList()
-        val out = ArrayList<WatchProvider>()
-        fun read(key: String, offer: Offer) {
-            val a = r.optJSONArray(key) ?: return
-            for (i in 0 until a.length()) {
-                val p = a.optJSONObject(i) ?: continue
-                out += WatchProvider(p.optInt("provider_id"), p.optString("provider_name"), logo(p.optStringOrNull("logo_path")), offer, p.optInt("display_priority", 999))
-            }
+    /** Título em inglês (append translations): é como as obras aparecem no Internet Archive. */
+    fun englishTitle(o: JSONObject, media: String): String? {
+        val arr = o.optJSONObject("translations")?.optJSONArray("translations") ?: return null
+        var any: String? = null
+        for (i in 0 until arr.length()) {
+            val t = arr.optJSONObject(i) ?: continue
+            if (t.optString("iso_639_1") != "en") continue
+            val name = t.optJSONObject("data")?.let { if (media == "movie") it.optStringOrNull("title") else it.optStringOrNull("name") } ?: continue
+            if (t.optString("iso_3166_1") == "US") return name
+            if (any == null) any = name
         }
-        read("flatrate", Offer.SUBSCRIPTION)
-        read("free", Offer.FREE)
-        read("ads", Offer.ADS)
-        read("rent", Offer.RENT)
-        read("buy", Offer.BUY)
-        // Um provedor aparece uma vez, na melhor oferta (assinatura > grátis > anúncios > aluguel > compra).
-        return out.sortedWith(compareBy({ it.offer.order }, { it.priority }))
-            .distinctBy { StreamingApps.canonical(it.name) }
+        return any
     }
 
     /** Classificação indicativa brasileira (L, 10, 12, 14, 16, 18). */
@@ -179,22 +155,6 @@ object TmdbParser {
         "", "NR" -> null
         "AL", "LIVRE" -> "L"
         else -> v.removePrefix("A").takeIf { it.isNotBlank() }
-    }
-
-    /** Catálogo de provedores do país (/watch/providers/movie). */
-    fun parseProviderCatalog(json: String): List<WatchProvider> {
-        val arr = JSONObject(json).optJSONArray("results") ?: return emptyList()
-        return (0 until arr.length()).mapNotNull { i ->
-            val p = arr.optJSONObject(i) ?: return@mapNotNull null
-            val prio = p.optJSONObject("display_priorities")?.optInt("BR", 999) ?: p.optInt("display_priority", 999)
-            WatchProvider(p.optInt("provider_id"), p.optString("provider_name"), logo(p.optStringOrNull("logo_path")), Offer.SUBSCRIPTION, prio)
-        }.sortedBy { it.priority }
-    }
-
-    fun providersToJson(list: List<WatchProvider>): String = JSONArray().apply { list.forEach { put(it.toJson()) } }.toString()
-    fun providersFromJson(json: String): List<WatchProvider> {
-        val a = JSONArray(json)
-        return (0 until a.length()).map { WatchProvider.fromJson(a.getJSONObject(it)) }
     }
 
     /** Gêneros do TMDB em português (ids estáveis). */

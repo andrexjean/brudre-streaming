@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 enum class SourceMode(val label: String, val description: String) {
-    AUTO("Automático", "Usa a fonte oficial de cada título e troca sozinho se ela falhar"),
-    DIRECT("Somente direto", "Streaming HTTP do servidor oficial (mais leve)"),
-    TORRENT("Preferir torrent", "BitTorrent primeiro; direto como alternativa"),
+    AUTO("Automático", "HTTP/HLS primeiro; BitTorrent oficial só se o direto falhar"),
+    DIRECT("Somente direto", "Só streaming HTTP/HLS (mais leve; nunca inicia o BitTorrent)"),
+    TORRENT("Preferir torrent", "BitTorrent oficial primeiro; direto como alternativa"),
 }
 
 enum class Quality(val label: String) {
@@ -32,10 +32,10 @@ data class SettingsValues(
     val subtitleLanguage: String = "pt",
     val cacheLimitMb: Int = 1024,
     val torrentConnections: Int = 40,
-    /** Serviços que a família assina (chaves de [StreamingApps]). */
-    val myServices: Set<String> = emptySet(),
-    /** Mostrar no catálogo de lançamentos só o que está nos meus serviços (ou grátis). */
-    val onlyMine: Boolean = false,
+    /** Fontes desativadas pelo usuário no Source Manager (ids de provedor). */
+    val disabledSources: Set<String> = emptySet(),
+    /** Listas M3U adicionadas pelo usuário: "nome|url" (gratuitas e autorizadas). */
+    val customLists: List<String> = emptyList(),
     /** Controle dos pais: hash SHA-256 do PIN (vazio = sem senha definida). */
     val pinHash: String = "",
     /** Classificação máxima liberada sem senha (L, 10, 12, 14, 16, 18). */
@@ -59,8 +59,8 @@ class AppSettings(context: Context) {
             subtitleLanguage = prefs.getString("subtitles", d.subtitleLanguage) ?: d.subtitleLanguage,
             cacheLimitMb = prefs.getInt("cacheMb", d.cacheLimitMb),
             torrentConnections = prefs.getInt("connections", d.torrentConnections),
-            myServices = prefs.getStringSet("myServices", emptySet())?.toSet() ?: emptySet(),
-            onlyMine = prefs.getBoolean("onlyMine", d.onlyMine),
+            disabledSources = prefs.getStringSet("disabledSources", d.disabledSources)?.toSet() ?: d.disabledSources,
+            customLists = prefs.getString("customLists", null)?.let { s -> s.split('\n').filter { it.contains('|') } } ?: d.customLists,
             pinHash = prefs.getString("pinHash", "") ?: "",
             maxRating = prefs.getString("maxRating", d.maxRating) ?: d.maxRating,
             intro = prefs.getBoolean("intro", d.intro),
@@ -76,8 +76,10 @@ class AppSettings(context: Context) {
             .putString("subtitles", v.subtitleLanguage)
             .putInt("cacheMb", v.cacheLimitMb)
             .putInt("connections", v.torrentConnections)
-            .putStringSet("myServices", v.myServices)
-            .putBoolean("onlyMine", v.onlyMine)
+            .putStringSet("disabledSources", v.disabledSources)
+            .putString("customLists", v.customLists.joinToString("\n"))
+            .remove("myServices")
+            .remove("onlyMine")
             .putString("pinHash", v.pinHash)
             .putString("maxRating", v.maxRating)
             .putBoolean("intro", v.intro)

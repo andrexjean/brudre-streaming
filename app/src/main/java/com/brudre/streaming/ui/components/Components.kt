@@ -289,6 +289,19 @@ fun TitleCard(
                     .align(Alignment.BottomStart)
                     .padding(start = 10.dp, end = 10.dp, bottom = if (progress != null) 16.dp else 8.dp),
             )
+            // Diferencia "com fonte gratuita" de "só catálogo" (a fonte é procurada ao abrir).
+            val badge = when {
+                title.isTmdb -> "CATÁLOGO" to Color(0xCC3A4466)
+                title.isArchive || title.isCurated -> "GRÁTIS" to Color(0xCC0E6E8C)
+                else -> null
+            }
+            if (badge != null && progress == null) {
+                Text(
+                    badge.first, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.TopStart).padding(6.dp).clip(RoundedCornerShape(5.dp))
+                        .background(badge.second).padding(horizontal = 5.dp, vertical = 1.dp),
+                )
+            }
             if (progress != null) {
                 ProgressBar(
                     progress,
