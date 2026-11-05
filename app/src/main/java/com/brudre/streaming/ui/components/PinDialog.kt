@@ -166,6 +166,8 @@ fun FullScreenDialogWindow() {
         window.setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT)
         window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
         window.decorView.setPadding(0, 0, 0, 0)
+        // Ocupa também a área da barra de navegação (existe em alguns aparelhos; na TV normalmente não)
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         window.attributes = window.attributes.apply {
             gravity = android.view.Gravity.FILL
             horizontalMargin = 0f
