@@ -39,11 +39,14 @@ class CoreLogicTest {
     @Test fun playbackOrderRespectsModeAndSource() {
         val p = Playable("main", "x", 1, 1, "https://d/x.mp4", TorrentRef("https://t/x.torrent", null, "x.mp4"), emptyList(), null, preferTorrent = false)
         assertTrue(PlaybackPlan.attempts(p, SourceMode.AUTO)[0] is SourceAttempt.Direct)
-        assertTrue(PlaybackPlan.attempts(p.copy(preferTorrent = true), SourceMode.AUTO)[0] is SourceAttempt.Torrent)
+        // Source Manager: HTTP/HLS sempre antes do BitTorrent no modo Automático
+        assertTrue(PlaybackPlan.attempts(p.copy(preferTorrent = true), SourceMode.AUTO)[0] is SourceAttempt.Direct)
         assertTrue(PlaybackPlan.attempts(p, SourceMode.TORRENT)[0] is SourceAttempt.Torrent)
-        assertEquals(2, PlaybackPlan.attempts(p, SourceMode.DIRECT).size)
+        // "Somente direto" nunca inicia o motor BitTorrent
+        assertEquals(1, PlaybackPlan.attempts(p, SourceMode.DIRECT).size)
         val onlyTorrent = p.copy(directUrl = null)
-        assertEquals(1, PlaybackPlan.attempts(onlyTorrent, SourceMode.DIRECT).size)
+        assertEquals(0, PlaybackPlan.attempts(onlyTorrent, SourceMode.DIRECT).size)
+        assertEquals(1, PlaybackPlan.attempts(onlyTorrent, SourceMode.AUTO).size)
         assertTrue(PlaybackPlan.attempts(onlyTorrent.copy(torrent = null), SourceMode.AUTO).isEmpty())
     }
 
