@@ -255,8 +255,14 @@ class UiFlowTest {
         }
         Thread.sleep(3_000); TestUtil.shot("home")
         // Telas principais para validação visual
-        rule.onNodeWithTag("nav_MOVIES").performClick(); Thread.sleep(4_000); TestUtil.shot("filmes")
-        rule.onNodeWithTag("nav_SETTINGS").performClick(); Thread.sleep(1_500); TestUtil.shot("configuracoes")
+        // A Home deve abrir com um lançamento em destaque (TMDB), não com o filme aberto padrão
+        diagnose("herói com lançamento") {
+            rule.waitUntil(30_000) { runCatching { rule.onNodeWithTag("hero_title").assert(hasText("SINTEL").not()); true }.getOrDefault(false) }
+        }
+        rule.onNodeWithTag("nav_MOVIES").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("movies"); Thread.sleep(4_000); TestUtil.shot("filmes")
+        rule.onNodeWithTag("nav_SETTINGS").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("settings"); Thread.sleep(1_500); TestUtil.shot("configuracoes")
         val t = runBlocking { TestUtil.services.catalog.row("tmdb_trending") }.first()
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].openDetails(t) }
         waitTag("details"); Thread.sleep(4_000); TestUtil.shot("detalhes")

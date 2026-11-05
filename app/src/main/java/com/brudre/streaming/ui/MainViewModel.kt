@@ -70,7 +70,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 android.util.Log.w("BruDre", "Falha ao carregar a linha $key", e)
                 Load.Error(e.message ?: "Falha ao carregar")
             }
-            if (key == "featured" || key == "tmdb_trending") rebuildHero()
+            // Passa o estado direto: com cache em memória a carga termina antes de a linha entrar no mapa.
+            if (key == "featured" || key == "tmdb_trending") rebuildHero(key, state.value)
         }
     }
 
@@ -78,13 +79,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _hero = MutableStateFlow(catalog.curated.featured())
     val hero: StateFlow<List<Title>> = _hero.asStateFlow()
 
-    private fun rebuildHero() {
-        val trending = (rows["tmdb_trending"]?.value as? Load.Ok)?.value.orEmpty().filter { it.bannerUrl != null }.take(5)
+    private fun rebuildHero(changedKey: String, changed: Load<List<Title>>) {
+        fun stateOf(k: String) = if (k == changedKey) changed else rows[k]?.value
+        val trending = (stateOf("tmdb_trending") as? Load.Ok)?.value.orEmpty().filter { it.bannerUrl != null }.take(5)
         if (trending.isNotEmpty()) {
             _hero.value = (trending + catalog.curated.featured().take(1)).distinctBy { it.id }
             return
         }
-        val extra = (rows["featured"]?.value as? Load.Ok)?.value.orEmpty().take(2)
+        val extra = (stateOf("featured") as? Load.Ok)?.value.orEmpty().take(2)
         _hero.value = (catalog.curated.featured() + extra).distinctBy { it.id }.take(6)
     }
 
