@@ -212,6 +212,16 @@ class UiFlowTest {
     }
 
     @Test fun t08_introPlaysThenSkips() {
+        // O CI desliga as animações do sistema (escala 0); a abertura precisa da escala normal.
+        TestUtil.shell("settings put global animator_duration_scale 1")
+        TestUtil.shell("settings put global transition_animation_scale 1")
+        try { introFlow() } finally {
+            TestUtil.shell("settings put global animator_duration_scale 0")
+            TestUtil.shell("settings put global transition_animation_scale 0")
+        }
+    }
+
+    private fun introFlow() {
         com.brudre.streaming.ui.components.IntroState.shown = false
         rule.activityRule.scenario.recreate()
         waitTag("intro", 5_000)
