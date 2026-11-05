@@ -127,6 +127,16 @@ class LiveHealth(guarded: OkHttpClient, private val dir: File) {
 
     /** null = canal no ar; senão o motivo da falha. */
     fun probe(url: String, headers: Map<String, String>): String? = try {
+        probeOrThrow(url, headers)
+    } catch (e: BlockedUrlException) {
+        "bloqueado: ${e.message}"
+    } catch (e: IOException) {
+        e.message?.take(60) ?: "falha de rede"
+    } catch (e: Exception) {
+        e.javaClass.simpleName
+    }
+
+    private fun probeOrThrow(url: String, headers: Map<String, String>): String? {
         val top = fetchPlaylist(url, headers) ?: return "não é HLS"
         var (playlistUrl, playlist) = top
         if (playlist.isMaster) {
@@ -142,13 +152,7 @@ class LiveHealth(guarded: OkHttpClient, private val dir: File) {
             seg = HlsProbe.probeSegment(nested.second) ?: return "sem segmentos"
             segUrl = HlsProbe.resolve(nested.first, seg) ?: return "segmento inválido"
         }
-        segmentReason(segUrl, headers)
-    } catch (e: BlockedUrlException) {
-        "bloqueado: ${e.message}"
-    } catch (e: IOException) {
-        e.message?.take(60) ?: "falha de rede"
-    } catch (e: Exception) {
-        e.javaClass.simpleName
+        return segmentReason(segUrl, headers)
     }
 
     private fun request(url: String, headers: Map<String, String>) = Request.Builder().url(url)
