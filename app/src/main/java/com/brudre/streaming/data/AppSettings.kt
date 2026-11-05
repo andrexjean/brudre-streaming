@@ -32,6 +32,10 @@ data class SettingsValues(
     val subtitleLanguage: String = "pt",
     val cacheLimitMb: Int = 1024,
     val torrentConnections: Int = 40,
+    /** Serviços que a família assina (chaves de [StreamingApps]). */
+    val myServices: Set<String> = emptySet(),
+    /** Mostrar no catálogo de lançamentos só o que está nos meus serviços (ou grátis). */
+    val onlyMine: Boolean = false,
 )
 
 class AppSettings(context: Context) {
@@ -49,6 +53,8 @@ class AppSettings(context: Context) {
             subtitleLanguage = prefs.getString("subtitles", d.subtitleLanguage) ?: d.subtitleLanguage,
             cacheLimitMb = prefs.getInt("cacheMb", d.cacheLimitMb),
             torrentConnections = prefs.getInt("connections", d.torrentConnections),
+            myServices = prefs.getStringSet("myServices", emptySet())?.toSet() ?: emptySet(),
+            onlyMine = prefs.getBoolean("onlyMine", d.onlyMine),
         )
     }
 
@@ -61,6 +67,8 @@ class AppSettings(context: Context) {
             .putString("subtitles", v.subtitleLanguage)
             .putInt("cacheMb", v.cacheLimitMb)
             .putInt("connections", v.torrentConnections)
+            .putStringSet("myServices", v.myServices)
+            .putBoolean("onlyMine", v.onlyMine)
             .apply()
         state.value = v
     }

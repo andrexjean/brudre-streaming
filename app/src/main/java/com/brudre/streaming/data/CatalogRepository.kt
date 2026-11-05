@@ -22,7 +22,11 @@ class CatalogRepository(
     val curated: CuratedCatalog,
     private val settings: AppSettings,
     private val isOnline: () -> Boolean = { true },
+    tmdbApiKey: String = "",
 ) {
+
+    /** Catálogo completo de lançamentos (TMDB). Desligado se o app foi compilado sem a chave. */
+    val tmdb = TmdbSource(tmdbApiKey, settings) { url -> get(url) }
 
     data class RowSpec(val key: String, val label: String, val query: String?, val sort: String, val kind: Kind, val rows: Int = 30)
 
@@ -34,6 +38,7 @@ class CatalogRepository(
     // ------------------------------------------------------------------ linhas
 
     suspend fun row(key: String, force: Boolean = false): List<Title> {
+        if (key.startsWith("tmdb_")) return tmdbRow(key, force)
         val spec = ROWS[key] ?: throw CatalogException("Seção desconhecida: $key")
         if (spec.query == null) return curatedRow(key)
         if (!force) memory[key]?.let { return it }
@@ -55,6 +60,26 @@ class CatalogRepository(
         }
     }
 
+    private suspend fun tmdbRow(key: String, force: Boolean): List<Title> {
+        if (!tmdb.enabled) throw CatalogException("Catálogo de lançamentos desativado (app compilado sem a chave do TMDB)")
+        val cacheKey = tmdb.cacheKey(key)
+        if (!force) memory[cacheKey]?.let { return it }
+        return withContext(Dispatchers.IO) {
+            val cached = db.catalogCache().get(cacheKey)
+            if (!force && cached != null && System.currentTimeMillis() - cached.fetchedAt < CACHE_TTL_MS) {
+                return@withContext Title.listFromJson(cached.json).also { memory[cacheKey] = it }
+            }
+            try {
+                val list = parseOrThrow { tmdb.row(key) }
+                memory[cacheKey] = list
+                db.catalogCache().put(CatalogCacheEntity(cacheKey, Title.listToJson(list), System.currentTimeMillis()))
+                list
+            } catch (e: IOException) {
+                cached?.let { Title.listFromJson(it.json).also { l -> memory[cacheKey] = l } } ?: throw e
+            }
+        }
+    }
+
     private fun curatedRow(key: String): List<Title> = when (key) {
         "curated_featured" -> curated.featured()
         "curated_torrent" -> curated.torrentTitles()
@@ -72,15 +97,22 @@ class CatalogRepository(
         val byTitle = terms.joinToString(" AND ") { "title:($it*)" }
         val bySubject = terms.joinToString(" AND ") { "subject:($it)" }
         val q = "(($byTitle) OR ($bySubject)) AND collection:($SEARCH_COLLECTIONS)$NOT_RESTRICTED"
-        val remote = withContext(Dispatchers.IO) {
-            parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40)), Kind.MOVIE) }.filter { ArchiveParser.isFamilySafe(it) }
+        val fromTmdb = if (tmdb.enabled) withContext(Dispatchers.IO) { runCatching { tmdb.search(clean) }.getOrDefault(emptyList()) } else emptyList()
+        val remote = try {
+            withContext(Dispatchers.IO) {
+                parseOrThrow { ArchiveParser.parseSearch(get(searchUrl(q, "downloads desc", 40)), Kind.MOVIE) }.filter { ArchiveParser.isFamilySafe(it) }
+            }
+        } catch (e: IOException) {
+            // Acervo público fora do ar não impede mostrar os lançamentos encontrados.
+            if (fromTmdb.isNotEmpty() || local.isNotEmpty()) emptyList() else throw e
         }
-        return (local + remote).distinctBy { it.id }
+        return (local + fromTmdb + remote).distinctBy { it.id }
     }
 
     // --------------------------------------------------------------- detalhes
 
     suspend fun details(title: Title): TitleDetails = withContext(Dispatchers.IO) {
+        if (title.isTmdb) return@withContext parseOrThrow { tmdb.details(title) }
         val entry = if (title.isCurated) curated.find(title.id) else null
         when {
             entry?.playable != null -> TitleDetails(
@@ -147,6 +179,7 @@ class CatalogRepository(
             if (attempt > 0) Thread.sleep(1500L * attempt)
             try {
                 http.newCall(req).execute().use { resp ->
+                    if (resp.code == 401) throw CatalogException("Chave do catálogo (TMDB) inválida ou revogada")
                     if (!resp.isSuccessful) throw CatalogException("Servidor do catálogo respondeu ${resp.code}")
                     return resp.body?.string() ?: throw CatalogException("Resposta vazia do catálogo")
                 }
@@ -190,18 +223,18 @@ class CatalogRepository(
             RowSpec("curated_featured", "Destaques", null, "", Kind.MOVIE),
             RowSpec("curated_torrent", "Filmes abertos via torrent", null, "", Kind.MOVIE),
             RowSpec("curated_kids", "Animações abertas", null, "", Kind.KIDS),
-            RowSpec("featured", "Filmes em Destaque", ia("feature_films"), "downloads desc", Kind.MOVIE),
+            RowSpec("featured", "Clássicos Grátis — tocam no BruDre", ia("feature_films"), "downloads desc", Kind.MOVIE),
             RowSpec("recent", "Adicionados Recentemente", ia("feature_films", " AND year:[1910 TO 1963]"), "publicdate desc", Kind.MOVIE),
             RowSpec("scifi", "Ficção Científica e Terror", ia("SciFi_Horror"), "downloads desc", Kind.MOVIE),
             RowSpec("noir", "Film Noir", ia("Film_Noir"), "downloads desc", Kind.MOVIE),
             RowSpec("comedy", "Comédia", ia("Comedy_Films"), "downloads desc", Kind.MOVIE),
             RowSpec("silent", "Cinema Mudo", ia("silent_films"), "downloads desc", Kind.MOVIE),
-            RowSpec("series", "Séries Clássicas", ia("classic_tv"), "downloads desc", Kind.SERIES),
+            RowSpec("series", "Séries Clássicas Grátis", ia("classic_tv"), "downloads desc", Kind.SERIES),
             RowSpec("series_recent", "Séries Adicionadas Recentemente", ia("classic_tv"), "publicdate desc", Kind.SERIES),
-            RowSpec("kids", "Desenhos Clássicos", ia("classic_cartoons"), "downloads desc", Kind.KIDS),
+            RowSpec("kids", "Desenhos Clássicos Grátis", ia("classic_cartoons"), "downloads desc", Kind.KIDS),
             RowSpec("kids_animation", "Animação", ia("animationandcartoons"), "downloads desc", Kind.KIDS),
         ).associateBy { it.key }
 
-        fun label(key: String) = ROWS[key]?.label ?: key
+        fun label(key: String) = ROWS[key]?.label ?: TmdbSource.ROWS[key]?.label ?: key
     }
 }

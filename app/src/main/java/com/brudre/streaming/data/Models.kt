@@ -27,6 +27,7 @@ data class Title(
 ) {
     val isArchive: Boolean get() = id.startsWith(ARCHIVE_PREFIX)
     val isCurated: Boolean get() = id.startsWith(CURATED_PREFIX)
+    val isTmdb: Boolean get() = id.startsWith(TmdbParser.PREFIX)
     val archiveId: String? get() = if (isArchive) id.removePrefix(ARCHIVE_PREFIX) else null
 
     fun toJson(): JSONObject = JSONObject()
@@ -127,7 +128,10 @@ data class TitleDetails(
     val title: Title,
     val playables: List<Playable>,
     val sourceLabel: String,
+    /** Streamings onde o título está no Brasil (catálogo TMDB). Reproduzidos pelo app oficial. */
+    val providers: List<WatchProvider> = emptyList(),
 ) {
+    val isExternal: Boolean get() = title.isTmdb
     val available: Boolean get() = playables.any { it.hasSource }
     val seasons: List<Int> get() = playables.map { it.season }.distinct().sorted()
     val isEpisodic: Boolean get() = playables.size > 1

@@ -12,6 +12,13 @@ val media3Version = "1.5.1"
 val roomVersion = "2.6.1"
 
 // Assinatura fixa: permite atualizar o app no Mi Stick sem desinstalar (preserva Minha Lista e progresso).
+// Chave da API do TMDB: variável de ambiente (CI, segredo do GitHub) ou local.properties (tmdb.apiKey).
+// Nunca versionada no repositório.
+val tmdbApiKey: String = System.getenv("TMDB_API_KEY")?.trim()?.takeIf { it.isNotEmpty() }
+    ?: rootProject.file("local.properties").takeIf { it.exists() }?.let { f ->
+        Properties().apply { f.inputStream().use { load(it) } }.getProperty("tmdb.apiKey")
+    } ?: ""
+
 val keystoreProps = Properties().apply {
     val f = rootProject.file("keystore/keystore.properties")
     if (f.exists()) f.inputStream().use { load(it) }
@@ -25,9 +32,10 @@ android {
         applicationId = "com.brudre.streaming"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
-        versionName = "6.0"
+        versionCode = 7
+        versionName = "7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
     }
 
     signingConfigs {

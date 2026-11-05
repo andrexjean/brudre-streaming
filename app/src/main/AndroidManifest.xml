@@ -7,6 +7,38 @@
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
+    <!-- Apps de streaming que o BruDre abre (visibilidade de pacotes, Android 11+) -->
+    <queries>
+        <package android:name="com.netflix.ninja" />
+        <package android:name="com.netflix.mediaclient" />
+        <package android:name="com.amazon.amazonvideo.livingroom" />
+        <package android:name="com.amazon.avod.thirdpartyclient" />
+        <package android:name="com.disney.disneyplus" />
+        <package android:name="com.wbd.stream" />
+        <package android:name="com.hbo.hbonow" />
+        <package android:name="com.hbo.android.app" />
+        <package android:name="com.globo.globotv" />
+        <package android:name="com.cbs.ott" />
+        <package android:name="com.cbs.app" />
+        <package android:name="com.apple.atve.androidtv.appletv" />
+        <package android:name="com.apple.atve.amazon.appletv" />
+        <package android:name="com.crunchyroll.crunchyroid" />
+        <package android:name="tv.pluto.android" />
+        <package android:name="com.plexapp.android" />
+        <package android:name="com.mubi" />
+        <package android:name="com.google.android.youtube.tv" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.google.android.videos" />
+        <package android:name="com.clarobr.tvmais" />
+        <package android:name="br.com.claro.now" />
+        <package android:name="com.clarovideo.android" />
+        <package android:name="br.com.looke" />
+        <package android:name="com.looke.android" />
+        <package android:name="com.mercadolibre.mercadoplay" />
+        <package android:name="com.mercadolibre" />
+        <package android:name="com.android.vending" />
+    </queries>
+
     <application
         android:name=".BruDreApp"
         android:allowBackup="false"

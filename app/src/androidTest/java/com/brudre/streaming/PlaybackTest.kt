@@ -176,4 +176,31 @@ class PlaybackTest {
             TestUtil.log("Heap usado: ${(rt.totalMemory() - rt.freeMemory()) / 1048576} MB de ${rt.maxMemory() / 1048576} MB")
         }
     }
+
+    @Test fun t15_releaseCatalogWhereToWatch() {
+        assertTrue("app compilado sem a chave do TMDB", services.catalog.tmdb.enabled)
+        val trending = runBlocking { services.catalog.row("tmdb_trending", force = true) }
+        assertTrue("Em Alta vazio", trending.size >= 5)
+        for (key in listOf("tmdb_new_movies", "tmdb_series", "tmdb_kids_series", "tmdb_free")) {
+            val r = runBlocking { services.catalog.row(key, force = true) }
+            TestUtil.log("$key: ${r.size} títulos, ex.: ${r.take(3).joinToString { it.name }}")
+            assertTrue("$key vazio", r.isNotEmpty())
+        }
+        // Títulos populares no streaming brasileiro precisam trazer "onde assistir"
+        val popular = runBlocking { services.catalog.row("tmdb_movies", force = true) }
+        val withProviders = popular.take(5).map { runBlocking { services.catalog.details(it) } }
+        withProviders.forEach { d -> TestUtil.log("${d.title.name} [${d.title.rating}]: ${d.providers.joinToString { it.name + "/" + it.offer }}") }
+        assertTrue("nenhum provedor encontrado", withProviders.any { it.providers.isNotEmpty() })
+        // Abrir um serviço não instalado no emulador leva à Play Store sem travar
+        val d = withProviders.first { it.providers.isNotEmpty() }
+        var msg = ""
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            msg = com.brudre.streaming.ui.StreamingLauncher.open(ctx, d.providers.first(), d.title)
+        }
+        TestUtil.log("Launcher: $msg")
+        assertTrue(msg.isNotBlank())
+        // Busca encontra lançamentos
+        val found = runBlocking { services.catalog.search("Divertida Mente") }
+        assertTrue("busca sem lançamentos", found.any { it.isTmdb })
+    }
 }

@@ -78,13 +78,23 @@ fun HomeScreen(
     val hero by vm.hero.collectAsStateWithLifecycle()
     val continueWatching by vm.continueWatching.collectAsStateWithLifecycle()
     val loadingId by vm.playLoading.collectAsStateWithLifecycle()
-    val rows = listOf(
-        RowRef("featured", BruIcons.Movie),
+    val settings by vm.settings.collectAsStateWithLifecycle()
+    val classics = listOf(
+        RowRef("featured", Icons.Filled.PlayArrow),
+        RowRef("curated_torrent", Icons.Filled.PlayArrow),
         RowRef("series", BruIcons.Layers),
         RowRef("kids", Icons.Filled.Face),
-        RowRef("recent", Icons.Filled.Star),
-        RowRef("curated_torrent", Icons.Filled.PlayArrow),
     )
+    val rows = if (vm.tmdbEnabled) {
+        listOfNotNull(
+            RowRef("tmdb_trending", Icons.Filled.Star),
+            if (settings.myServices.isNotEmpty()) RowRef("tmdb_mine", BruIcons.Bookmark) else null,
+            RowRef("tmdb_new_movies", BruIcons.Movie),
+            RowRef("tmdb_series", BruIcons.Layers),
+            RowRef("tmdb_kids_series", Icons.Filled.Face),
+            RowRef("tmdb_free", Icons.Filled.PlayArrow),
+        ) + classics
+    } else classics
     LazyColumn(Modifier.fillMaxSize().testTag("home"), contentPadding = PaddingValues(bottom = 48.dp)) {
         item(key = "hero") {
             Hero(hero, playFocus, loadingId, onPlay, onOpen)

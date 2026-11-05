@@ -71,7 +71,7 @@ class Services(private val app: Context) {
     val settings = AppSettings(app)
     val database: BruDreDatabase by lazy { BruDreDatabase.create(app) }
     val curated: CuratedCatalog by lazy { CuratedCatalog(app.assets.open("authorized_sources.json").bufferedReader().use { it.readText() }) }
-    val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline) }
+    val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline, BuildConfig.TMDB_API_KEY) }
     val library: LibraryRepository by lazy { LibraryRepository(database) }
     val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
 

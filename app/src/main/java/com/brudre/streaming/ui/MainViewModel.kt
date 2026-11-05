@@ -5,7 +5,10 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.brudre.streaming.BruDreApp
+import com.brudre.streaming.data.Offer
 import com.brudre.streaming.data.Playable
+import com.brudre.streaming.data.StreamingApps
+import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.data.SettingsValues
 import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.TitleDetails
@@ -41,6 +44,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     val services = BruDreApp.services(app)
     private val catalog = services.catalog
+    val tmdbEnabled: Boolean get() = catalog.tmdb.enabled
     private val library = services.library
 
     // ------------------------------------------------------------- linhas
@@ -64,7 +68,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 android.util.Log.w("BruDre", "Falha ao carregar a linha $key", e)
                 Load.Error(e.message ?: "Falha ao carregar")
             }
-            if (key == "featured") rebuildHero()
+            if (key == "featured" || key == "tmdb_trending") rebuildHero()
         }
     }
 
@@ -73,8 +77,17 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val hero: StateFlow<List<Title>> = _hero.asStateFlow()
 
     private fun rebuildHero() {
+        val trending = (rows["tmdb_trending"]?.value as? Load.Ok)?.value.orEmpty().filter { it.bannerUrl != null }.take(5)
+        if (trending.isNotEmpty()) {
+            _hero.value = (trending + catalog.curated.featured().take(1)).distinctBy { it.id }
+            return
+        }
         val extra = (rows["featured"]?.value as? Load.Ok)?.value.orEmpty().take(2)
         _hero.value = (catalog.curated.featured() + extra).distinctBy { it.id }.take(6)
+    }
+
+    init {
+        if (catalog.tmdb.enabled) row("tmdb_trending")
     }
 
     // ----------------------------------------------------------- biblioteca
@@ -142,11 +155,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         details: TitleDetails? = null,
         onLaunch: (Intent) -> Unit,
         onError: (String) -> Unit,
+        onExternal: (TitleDetails, WatchProvider?) -> Unit = { _, _ -> },
     ) {
         if (_playLoading.value != null) return
         _playLoading.value = title.id
         viewModelScope.launch {
             try {
+                if (title.isTmdb) {
+                    // Lançamentos tocam no app oficial: escolhe o melhor serviço disponível.
+                    val d = details ?: catalog.details(title)
+                    onExternal(d, bestProvider(d.providers))
+                    return@launch
+                }
                 val d = details ?: if (playable == null) catalog.details(title) else null
                 val target = playable ?: run {
                     val list = d!!.playables.filter { it.hasSource }
@@ -167,6 +187,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 _playLoading.value = null
             }
         }
+    }
+
+    /** Prioriza serviços que a família assina; depois grátis; nunca escolhe aluguel/compra sozinho. */
+    fun bestProvider(list: List<WatchProvider>): WatchProvider? {
+        val mine = services.settings.current.myServices
+        return list.firstOrNull { it.offer == Offer.SUBSCRIPTION && StreamingApps.canonical(it.name) in mine }
+            ?: list.firstOrNull { (it.offer == Offer.FREE || it.offer == Offer.ADS) }
+            ?: list.firstOrNull { it.offer == Offer.SUBSCRIPTION && mine.isEmpty() }
     }
 
     // ---------------------------------------------------------------- busca
@@ -203,7 +231,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun updateSettings(transform: (SettingsValues) -> SettingsValues) {
         val before = services.settings.current
         services.settings.update(transform)
-        if (before.quality != services.settings.current.quality) reloadDetails()
+        val after = services.settings.current
+        if (before.quality != after.quality) reloadDetails()
+        if (before.myServices != after.myServices || before.onlyMine != after.onlyMine) {
+            rows.forEach { (k, v) -> if (k.startsWith("tmdb_")) load(k, v, false) }
+        }
     }
 
     private val _cacheUsage = MutableStateFlow(0L)

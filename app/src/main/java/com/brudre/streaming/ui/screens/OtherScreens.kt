@@ -55,6 +55,7 @@ import com.brudre.streaming.BuildConfig
 import com.brudre.streaming.data.LanguageChoices
 import com.brudre.streaming.data.Quality
 import com.brudre.streaming.data.SourceMode
+import com.brudre.streaming.data.StreamingApps
 import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.db.fraction
 import com.brudre.streaming.torrent.CacheManager
@@ -196,6 +197,29 @@ fun SettingsScreen(vm: MainViewModel) {
     LazyColumn(Modifier.fillMaxSize().testTag("settings"), contentPadding = PaddingValues(start = 40.dp, end = 40.dp, bottom = 48.dp)) {
         item { Text("Configurações", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) }
         item {
+            Text("Meus streamings", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
+            Text(
+                "Marque os serviços que vocês assinam. Eles aparecem primeiro em \"Onde assistir\" e o \"Assistir Agora\" abre direto neles.",
+                color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
+            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 10.dp), modifier = Modifier.testTag("my_services")) {
+                items(StreamingApps.SELECTABLE, key = { it.key }) { app ->
+                    val on = app.key in s.myServices
+                    BruChip(if (on) "✓ ${app.label}" else app.label, selected = on, modifier = Modifier.testTag("service_${app.key}")) {
+                        vm.updateSettings { v -> v.copy(myServices = if (on) v.myServices - app.key else v.myServices + app.key) }
+                    }
+                }
+            }
+        }
+        item {
+            SettingRow(
+                "Lançamentos: só o que eu assino",
+                if (s.onlyMine) "Sim" else "Não",
+                if (s.myServices.isEmpty()) "Marque seus streamings acima para usar este filtro" else "Esconde títulos que estão só em serviços que vocês não assinam",
+                "set_only_mine",
+            ) { vm.updateSettings { it.copy(onlyMine = !it.onlyMine) } }
+        }
+        item {
             SettingRow("Fonte de reprodução", s.sourceMode.label, s.sourceMode.description, "set_source") {
                 vm.updateSettings { it.copy(sourceMode = next(SourceMode.entries.toList(), it.sourceMode)) }
             }
@@ -247,7 +271,9 @@ fun SettingsScreen(vm: MainViewModel) {
             Text(
                 "BruDre Streaming ${BuildConfig.VERSION_NAME} — uso doméstico.\n" +
                     "Catálogo: Internet Archive (acervo público) e obras abertas publicadas pelos titulares. " +
-                    "O app não usa indexadores de terceiros nem contorna DRM. Títulos sem fonte autorizada aparecem como indisponíveis.",
+                    "O app não usa indexadores de terceiros nem contorna DRM. Títulos sem fonte autorizada aparecem como indisponíveis.\n" +
+                    "Lançamentos: catálogo do TMDB; disponibilidade por streaming fornecida pela JustWatch. " +
+                    "Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.",
                 color = BruColors.TextFaint,
                 fontSize = 13.sp,
                 lineHeight = 19.sp,

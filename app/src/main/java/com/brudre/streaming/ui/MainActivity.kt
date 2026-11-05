@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
@@ -60,6 +61,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.brudre.streaming.data.Title
+import com.brudre.streaming.data.TitleDetails
+import com.brudre.streaming.data.WatchProvider
 import com.brudre.streaming.ui.components.AppBackground
 import com.brudre.streaming.ui.components.BruLogo
 import com.brudre.streaming.ui.screens.BrowseScreen
@@ -97,9 +100,15 @@ fun BruDreRoot(vm: MainViewModel) {
     var userNavigated by remember { mutableStateOf(false) }
 
     val toast: (String) -> Unit = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
-    val playTitle: (Title) -> Unit = { t ->
-        vm.play(t, onLaunch = { context.startActivity(it) }, onError = toast)
+    val openProvider: (Title, WatchProvider) -> Unit = { t, p -> toast(StreamingLauncher.open(context, p, t)) }
+    val external: (TitleDetails, WatchProvider?) -> Unit = { d, p ->
+        if (p != null) openProvider(d.title, p) else vm.openDetails(d.title)
     }
+    val playTitle: (Title) -> Unit = { t ->
+        vm.play(t, onLaunch = { context.startActivity(it) }, onError = toast, onExternal = external)
+    }
+    val tmdbOn = vm.tmdbEnabled
+    fun tmdb(vararg refs: RowRef): List<RowRef> = if (tmdbOn) refs.toList() else emptyList()
     val open: (Title) -> Unit = { t -> vm.openDetails(t) }
 
     AppBackground {
@@ -110,13 +119,21 @@ fun BruDreRoot(vm: MainViewModel) {
                     Section.HOME -> HomeScreen(vm, playFocus, open, playTitle)
                     Section.MOVIES -> BrowseScreen(
                         vm, "Filmes",
-                        listOf(RowRef("featured", BruIcons.Movie), RowRef("curated_torrent"), RowRef("scifi"), RowRef("comedy"), RowRef("noir"), RowRef("silent"), RowRef("recent")),
+                        tmdb(RowRef("tmdb_new_movies", BruIcons.Movie), RowRef("tmdb_movies"), RowRef("tmdb_top_movies", Icons.Filled.Star),
+                            RowRef("tmdb_action"), RowRef("tmdb_comedy"), RowRef("tmdb_horror"), RowRef("tmdb_free")) +
+                            listOf(RowRef("featured", Icons.Filled.PlayArrow), RowRef("curated_torrent"), RowRef("scifi"), RowRef("noir"), RowRef("silent")),
                         "movies", open,
                     )
-                    Section.SERIES -> BrowseScreen(vm, "Séries", listOf(RowRef("series", BruIcons.Layers), RowRef("series_recent")), "series", open)
+                    Section.SERIES -> BrowseScreen(
+                        vm, "Séries",
+                        tmdb(RowRef("tmdb_series", BruIcons.Layers), RowRef("tmdb_new_series"), RowRef("tmdb_top_series", Icons.Filled.Star), RowRef("tmdb_free_series")) +
+                            listOf(RowRef("series", Icons.Filled.PlayArrow), RowRef("series_recent")),
+                        "series", open,
+                    )
                     Section.KIDS -> BrowseScreen(
                         vm, "Infantil",
-                        listOf(RowRef("curated_kids", Icons.Filled.Star), RowRef("kids", Icons.Filled.Face), RowRef("kids_animation")),
+                        tmdb(RowRef("tmdb_kids_series", Icons.Filled.Face), RowRef("tmdb_anim_movies"), RowRef("tmdb_family")) +
+                            listOf(RowRef("curated_kids", Icons.Filled.PlayArrow), RowRef("kids"), RowRef("kids_animation")),
                         "kids", open,
                     )
                     Section.MY_LIST -> MyListScreen(vm, open)
@@ -133,8 +150,9 @@ fun BruDreRoot(vm: MainViewModel) {
             title = t,
             onDismiss = { vm.closeDetails() },
             onPlay = { title, playable, fromStart, details ->
-                vm.play(title, playable, fromStart, details, onLaunch = { context.startActivity(it) }, onError = toast)
+                vm.play(title, playable, fromStart, details, onLaunch = { context.startActivity(it) }, onError = toast, onExternal = external)
             },
+            onProvider = openProvider,
         )
     }
 
