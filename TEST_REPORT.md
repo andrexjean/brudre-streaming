@@ -1,6 +1,6 @@
 # BruDre Streaming 8.0 — Relatório de testes
 
-Data: 05/11/2026 · Pipeline: GitHub Actions (`.github/workflows/android.yml`) · Commit e release: ver o final deste arquivo
+Data: 05/11/2026 · Commit testado: `70ec607` · Release: **v8.0.24** (versionCode 80024) · Pipeline: GitHub Actions (`.github/workflows/android.yml`)
 
 Todos os resultados abaixo vêm de execuções reais:
 
@@ -50,11 +50,11 @@ Os logs, capturas de tela e relatórios ficam nos branches `ci-build` e `ci-test
 | 16 | Falhas de conexão | `PlaybackTest.t10`: Wi-Fi e dados desligados. A busca mostra "Sem conexão com a internet", o player mostra erro sem fechar, e tudo volta a funcionar ao religar | Aprovado |
 | 17 | Baixa memória | `PlaybackTest.t14`: `onTrimMemory(RUNNING_CRITICAL)` durante a reprodução libera os caches e o vídeo continua. Heap Java de 27 MB | Aprovado |
 | 18 | Remoção de redirecionamentos pagos | `SourcesTest.noPaidServiceRedirectsInSource` varre o código-fonte e não encontra referências a Netflix, Prime, Disney+, HBO, Globoplay, `watch/providers`, aluguel/compra ou JustWatch. `PlaybackTest.t15`: lançamento recente fica só como catálogo, sem fonte e sem redirecionamento. `UiFlowTest.t06`: sem fonte, não há botão Assistir | Aprovado |
-| 19 | Abertura cinematográfica | `UiFlowTest.t08`: vídeo iniciou e terminou sozinho em cerca de 7,6 s; não precisou da animação reserva. Capturas em 1,0 / 2,3 / 3,7 / 5,4 / 6,3 s | Aprovado |
+| 19 | Abertura cinematográfica | `UiFlowTest.t08`: o vídeo iniciou e terminou sozinho, sem precisar da animação reserva. Capturas em 1,0 / 2,3 / 3,7 / 5,4 / 6,3 s. No emulador (decodificação de vídeo por software), as execuções mediram de 7,6 a 10,1 s contando a preparação do player; o vídeo em si tem 7,0 s | Aprovado |
 | 20 | Pular a abertura | `UiFlowTest.t08`: OK e Voltar pulam em menos de 2 s, e Voltar não fecha o app | Aprovado |
 | 21 | Desativar a abertura | `UiFlowTest.t08`: com a opção desligada, o app abre direto no Início | Aprovado |
 | 22 | Transição para a tela inicial | `UiFlowTest.t08`: ao fim do vídeo, o Início com foco em "Assistir Agora" aparece sem espera extra (captura `intro_transicao_inicio`) | Aprovado |
-| 23 | Compatibilidade de codecs | `PlaybackTest.t20` (`DeviceInfo`: decodificadores H.264 e AAC presentes; resultado registrado no log), `t13` (arquivo não-vídeo exibe "Formato de vídeo incompatível com este aparelho." sem travar) e `t19` (H.264 1080p via HLS) | Aprovado |
+| 23 | Compatibilidade de codecs | `PlaybackTest.t20` (`DeviceInfo` no emulador: "H.264 HW até 2160p, H.265 software, VP9 HW, AV1 não, AAC software"), `t13` (arquivo não-vídeo exibe "Formato de vídeo incompatível com este aparelho." sem travar) e `t19` (H.264 1080p via HLS) | Aprovado |
 | 24 | Integridade das funcionalidades existentes | Todos os testes da 7.0 continuam aprovados: controle dos pais com PIN (`t07`), atualização dentro do app (`t16`), título sem fonte (`t06`, `t13b`), Minha Lista e retomada | Aprovado |
 
 ## Fontes e segurança
@@ -63,7 +63,8 @@ Os logs, capturas de tela e relatórios ficam nos branches `ci-build` e `ci-test
 - `PlaybackTest.t20`, pelo cliente HTTP protegido:
   - recusa loopback, `localhost`, `[::1]`, `169.254.169.254` e arquivo `.apk`;
   - recusa tráfego sem TLS;
-  - `StreamValidator` confirma uma fonte válida e rejeita link inexistente e `file://`.
+  - `StreamValidator` confirma uma fonte válida e rejeita 404, página HTML no lugar do vídeo e `file://`.
+  - Item inexistente no Internet Archive: o acervo não devolve 404 imediato, então o resultado é "não foi possível confirmar". Nesse caso o app também não mostra Assistir; oferece **Verificar de novo**.
 - `SourcesTest` (10 testes):
   - casamento de títulos: o mesmo nome com outro ano é recusado;
   - prioridade HTTP → alternativas → BitTorrent;
