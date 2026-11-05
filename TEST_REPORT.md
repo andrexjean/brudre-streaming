@@ -1,6 +1,6 @@
 # BruDre Streaming 6.0 — Relatório de testes
 
-Data: 04/11/2026 · Commit testado: `fa4f7ea` · Pipeline: GitHub Actions (`.github/workflows/android.yml`)
+Data: 04/11/2026 · Commit testado: `31125c7` (release v6.0.10) · Pipeline: GitHub Actions (`.github/workflows/android.yml`)
 
 ## Resumo
 
@@ -40,7 +40,7 @@ Feita com `aapt dump badging` e `apksigner verify`:
 | 11 | Retomada de reprodução | `PlaybackTest.t11` (inicia em 5:00 a partir da posição salva) e `LibraryDbTest.resumePositionRules` | Aprovado |
 | 12 | Limpeza de cache | `PlaybackTest.t12`: dados de torrent, imagens e catálogo apagados e espaço liberado conferido | Aprovado |
 | 13 | Erros de codec | `PlaybackTest.t13`: arquivo não-vídeo exibe "Formato de vídeo incompatível com este aparelho." sem travar. `t13b`: título sem fonte avisa e não reproduz | Aprovado |
-| 14 | Baixa memória | `PlaybackTest.t14`: `onTrimMemory(RUNNING_CRITICAL)` durante a reprodução esvazia o cache de imagens e o vídeo continua tocando. Heap Java medido: 23 MB | Aprovado |
+| 14 | Baixa memória | `PlaybackTest.t14`: `onTrimMemory(RUNNING_CRITICAL)` durante a reprodução esvazia o cache de imagens e o vídeo continua tocando. Heap Java medido: 38 MB durante a reprodução | Aprovado |
 
 Extra: `UiFlowTest.t06` confirma que um título sem fonte autorizada **não** exibe o botão Assistir.
 
@@ -59,6 +59,8 @@ Extra: `UiFlowTest.t06` confirma que um título sem fonte autorizada **não** ex
 5. **Barra superior cortada em telas menores.** Agora existe modo compacto abaixo de 900 dp.
 6. **Foco inicial puxava o usuário de volta ao herói.** Agora as tentativas param na primeira tecla do controle.
 7. **Vídeo travado no meio.** Agora a fonte é trocada automaticamente: torrent após 45 s sem dados, direto após 60 s.
+8. **Torrent seguinte travava ao abrir.** O encerramento da sessão anterior segurava o motor. Agora ele acontece em segundo plano, a sessão fica ociosa por 20 s (abrir outro título é imediato) e há um prazo total de 90 s para começar, com troca de fonte.
+9. **Primeira consulta após o Wi-Fi voltar falhava.** Agora o catálogo tenta de novo sozinho (3 tentativas) em falhas de rede transitórias.
 
 ## Limitações conhecidas
 
