@@ -4,14 +4,17 @@ App de streaming para Android TV, otimizado para o Xiaomi Mi TV Stick (MDZ-24-AA
 
 Instalação na TV: veja [INSTALL.md](INSTALL.md).
 
-## Fontes de conteúdo (somente autorizadas)
+## Fontes de conteúdo (gratuitas, gerenciadas pelo BruDre Source Manager)
 
 | Fonte | O que fornece | Transporte |
 |---|---|---|
-| Internet Archive (coleções `feature_films`, `classic_tv`, `classic_cartoons` e outras) | Catálogo, capas, sinopses, vídeos MP4/H.264 | HTTP direto e `.torrent` oficial do acervo (com web seed) |
-| Índice curado (`app/src/main/assets/authorized_sources.json`) | Filmes abertos publicados pelos titulares (Blender Foundation) | `.torrent`/magnet oficiais + HTTP |
+| Internet Archive (`feature_films`, `classic_tv`, `classic_cartoons`, `prelinger` e outras) | Catálogo, capas, sinopses, vídeos MP4/H.264. Só domínio público ou Creative Commons | HTTP direto e `.torrent` oficial (web seed) |
+| Índice curado (`app/src/main/assets/authorized_sources.json`) | Filmes abertos publicados pelos titulares (Blender Foundation) | HTTP + `.torrent`/magnet oficiais |
+| TMDB | **Só metadados** (capas, sinopses em português, classificação). Clássicos até 1930 são procurados no Internet Archive | — |
+| iptv-org (`countries/br`, `languages/por`, `categories/*`) | Canais de TV abertos, filtrados (sem pagos, adultos ou http) | HLS |
+| Listas M3U do usuário | Canais adicionais gratuitos e autorizados | HLS (https) |
 
-O app não integra indexadores de terceiros nem contorna DRM. Capa e sinopse não implicam disponibilidade: o botão **Assistir** só aparece quando existe uma fonte reproduzível.
+O app não tem serviços pagos, não integra indexadores de pirataria e não contorna DRM. Capa e sinopse não implicam disponibilidade: o botão **Assistir** só aparece quando a fonte foi verificada. Detalhes das mudanças em [CHANGELOG.md](CHANGELOG.md).
 
 ## Arquitetura
 
@@ -32,8 +35,17 @@ app/src/main/java/com/brudre/streaming/
 │   ├── TorrentDataSource.kt  DataSource do Media3 lendo o arquivo parcial + roteador torrent:// / https://
 │   ├── PieceMath.kt          Posição no arquivo ↔ peças (testado)
 │   └── CacheManager.kt       Limite e limpeza do armazenamento temporário
+├── sources/
+│   ├── SourceProvider.kt     Interface ContentProvider, estados, TitleMatcher (catálogo → acervo)
+│   ├── Providers.kt          Internet Archive, filmes abertos, TMDB (metadados)
+│   ├── SourceManager.kt      Busca unificada, detalhes, verificação, isolamento de falhas, StatusBoard
+│   ├── GuardedHttp.kt        Interceptor/DNS de segurança e StreamValidator
+│   └── UrlGuard.kt           Regras de URL (esquemas, destinos locais, executáveis)
+├── live/
+│   ├── M3uParser.kt          Parser M3U, ChannelPolicy (filtros), LiveCategories
+│   └── LiveRepository.kt     Listas iptv-org e do usuário, cache, favoritos, canais fora do ar
 ├── player/
-│   ├── PlayerActivity.kt     ExoPlayer, troca automática de fonte, retomada, controle remoto
+│   ├── PlayerActivity.kt     ExoPlayer (HTTP, HLS, torrent), troca de fonte, reconexão ao vivo, controle remoto
 │   └── PlaybackPlan.kt       Ordem de fontes + mensagens de erro
 └── ui/                       Jetpack Compose para TV (foco por D-pad), telas e tema
 ```

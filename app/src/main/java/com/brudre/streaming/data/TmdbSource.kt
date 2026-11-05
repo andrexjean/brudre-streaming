@@ -54,7 +54,7 @@ class TmdbSource(
         val all = LinkedHashMap<String, String>()
         all["api_key"] = apiKey
         all["language"] = "pt-BR"
-        all["region"] = REGION
+        // Sem "region": com ela o TMDB troca a data pela do relançamento no Brasil (ex.: Metrópolis "2010").
         all["include_adult"] = "false"
         all.putAll(params)
         return "$BASE/$path?" + all.entries.joinToString("&") { "${it.key}=${URLEncoder.encode(it.value, "UTF-8")}" }

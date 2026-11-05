@@ -47,6 +47,8 @@ object GuardedHttp {
     fun client(base: OkHttpClient): OkHttpClient = base.newBuilder()
         .cache(null)
         .dns(GuardDns)
+        // Antes de conectar (IPs literais não passam pelo DNS) e em cada redirecionamento.
+        .addInterceptor(GuardInterceptor())
         .addNetworkInterceptor(GuardInterceptor())
         .followRedirects(true)
         .followSslRedirects(true)

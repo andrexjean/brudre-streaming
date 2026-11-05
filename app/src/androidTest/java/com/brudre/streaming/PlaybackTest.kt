@@ -252,8 +252,13 @@ class PlaybackTest {
     /** Segurança: destinos locais, esquemas perigosos e executáveis bloqueados; fonte válida confirmada. */
     @Test fun t20_urlGuardAndValidation() {
         val client = services.guardedHttp
-        val blocked = runCatching { client.newCall(okhttp3.Request.Builder().url("http://127.0.0.1:9/x.m3u8").build()).execute().close() }.exceptionOrNull()
-        assertTrue("loopback deveria ser bloqueado: $blocked", blocked is com.brudre.streaming.sources.BlockedUrlException)
+        for (u in listOf("https://127.0.0.1:9/x.m3u8", "https://localhost/x.m3u8", "https://[::1]/x.m3u8", "https://169.254.169.254/latest", "https://archive.org/download/x/setup.apk")) {
+            val blocked = runCatching { client.newCall(okhttp3.Request.Builder().url(u).build()).execute().close() }.exceptionOrNull()
+            TestUtil.log("UrlGuard $u → ${blocked?.javaClass?.simpleName}: ${blocked?.message}")
+            assertTrue("$u deveria ser bloqueado: $blocked", blocked is com.brudre.streaming.sources.BlockedUrlException)
+        }
+        // Tráfego sem criptografia continua proibido pelo app
+        assertTrue(runCatching { client.newCall(okhttp3.Request.Builder().url("http://example.com/").build()).execute().close() }.isFailure)
         val v = com.brudre.streaming.sources.StreamValidator(client)
         assertEquals(com.brudre.streaming.sources.StreamValidator.Result.OK, runBlocking { v.validate(sintelPlayable.copy(torrent = null)) })
         assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID,
