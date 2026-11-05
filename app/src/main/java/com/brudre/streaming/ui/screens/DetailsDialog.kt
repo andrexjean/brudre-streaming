@@ -66,6 +66,7 @@ import com.brudre.streaming.ui.Load
 import com.brudre.streaming.ui.MainViewModel
 import com.brudre.streaming.ui.components.BruButton
 import com.brudre.streaming.ui.components.BruChip
+import com.brudre.streaming.ui.components.FullScreenDialogWindow
 import com.brudre.streaming.ui.components.PinDialog
 import com.brudre.streaming.ui.components.ProgressBar
 import com.brudre.streaming.ui.components.RatingBadge
@@ -87,6 +88,7 @@ fun DetailsDialog(
     onProvider: (Title, WatchProvider) -> Unit = { _, _ -> },
 ) {
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+        FullScreenDialogWindow()
         val state by vm.details.collectAsStateWithLifecycle()
         val favoriteFlow = remember(title.id) { vm.isFavorite(title.id) }
         val isFavorite by favoriteFlow.collectAsStateWithLifecycle(initialValue = false)

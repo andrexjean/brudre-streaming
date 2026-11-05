@@ -71,6 +71,7 @@ fun PinDialog(
     }
 
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+        FullScreenDialogWindow()
         Box(
             Modifier
                 .fillMaxSize()
@@ -155,3 +156,20 @@ private val DIGIT_KEYS = mapOf(
     Key.NumPad0 to "0", Key.NumPad1 to "1", Key.NumPad2 to "2", Key.NumPad3 to "3", Key.NumPad4 to "4",
     Key.NumPad5 to "5", Key.NumPad6 to "6", Key.NumPad7 to "7", Key.NumPad8 to "8", Key.NumPad9 to "9",
 )
+
+/** Faz a janela do Dialog ocupar a tela inteira da TV (sem margens nem faixas do conteúdo de trás). */
+@Composable
+fun FullScreenDialogWindow() {
+    val view = androidx.compose.ui.platform.LocalView.current
+    androidx.compose.runtime.SideEffect {
+        val window = (view.parent as? androidx.compose.ui.window.DialogWindowProvider)?.window ?: return@SideEffect
+        window.setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT)
+        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        window.decorView.setPadding(0, 0, 0, 0)
+        window.attributes = window.attributes.apply {
+            gravity = android.view.Gravity.FILL
+            horizontalMargin = 0f
+            verticalMargin = 0f
+        }
+    }
+}
