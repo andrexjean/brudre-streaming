@@ -179,7 +179,8 @@ object ArchiveParser {
 
     /** Filtro local de conteúdo adulto (o catálogo é para a família). */
     fun isFamilySafe(t: Title): Boolean =
-        !UNSAFE.containsMatchIn(t.name) && t.genres.none { UNSAFE.containsMatchIn(it) }
+        !UNSAFE.containsMatchIn(t.name) && t.genres.none { UNSAFE.containsMatchIn(it) } &&
+            !Parental.isExplicit(t.name, t.synopsis)
 
     fun isPlayableVideo(f: IaFile): Boolean {
         val n = f.name.lowercase()

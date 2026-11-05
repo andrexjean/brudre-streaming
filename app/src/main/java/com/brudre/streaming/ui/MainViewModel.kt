@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.brudre.streaming.BruDreApp
 import com.brudre.streaming.data.Offer
+import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.Playable
 import com.brudre.streaming.data.StreamingApps
 import com.brudre.streaming.data.WatchProvider
@@ -164,7 +165,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 if (title.isTmdb) {
                     // Lançamentos tocam no app oficial: escolhe o melhor serviço disponível.
                     val d = details ?: catalog.details(title)
-                    onExternal(d, bestProvider(d.providers))
+                    // Acima da classificação liberada: vai para os detalhes, que pedem a senha.
+                    onExternal(d, if (isLocked(d.title.rating)) null else bestProvider(d.providers))
                     return@launch
                 }
                 val d = details ?: if (playable == null) catalog.details(title) else null
@@ -195,6 +197,34 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return list.firstOrNull { it.offer == Offer.SUBSCRIPTION && StreamingApps.canonical(it.name) in mine }
             ?: list.firstOrNull { (it.offer == Offer.FREE || it.offer == Offer.ADS) }
             ?: list.firstOrNull { it.offer == Offer.SUBSCRIPTION && mine.isEmpty() }
+    }
+
+    // ------------------------------------------------------- controle dos pais
+    private val _unlockedUntil = MutableStateFlow(0L)
+    val unlockedUntil: StateFlow<Long> = _unlockedUntil.asStateFlow()
+
+    fun isUnlocked(): Boolean = System.currentTimeMillis() < _unlockedUntil.value
+
+    /** O título passa da classificação liberada e a sessão não foi desbloqueada com o PIN. */
+    fun isLocked(rating: String?): Boolean =
+        Parental.needsPin(rating, services.settings.current.maxRating) && !isUnlocked()
+
+    /** Verifica o PIN (ou cria, se ainda não existir). Desbloqueia por 30 min. Retorna erro ou null. */
+    fun submitPin(pin: String): String? {
+        val hash = services.settings.current.pinHash
+        if (hash.isEmpty()) {
+            services.settings.update { it.copy(pinHash = Parental.hash(pin)) }
+        } else if (!Parental.check(pin, hash)) {
+            return "Senha incorreta"
+        }
+        _unlockedUntil.value = System.currentTimeMillis() + 30 * 60_000L
+        return null
+    }
+
+    fun lockNow() { _unlockedUntil.value = 0L }
+
+    fun changePin(newPin: String) {
+        services.settings.update { it.copy(pinHash = Parental.hash(newPin)) }
     }
 
     // ---------------------------------------------------------------- busca

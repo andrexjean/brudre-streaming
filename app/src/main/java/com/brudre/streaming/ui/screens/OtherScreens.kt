@@ -54,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brudre.streaming.BuildConfig
 import com.brudre.streaming.data.LanguageChoices
 import com.brudre.streaming.data.Quality
+import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.SourceMode
 import com.brudre.streaming.data.StreamingApps
 import com.brudre.streaming.data.Title
@@ -63,6 +64,7 @@ import com.brudre.streaming.ui.Load
 import com.brudre.streaming.ui.MainViewModel
 import com.brudre.streaming.ui.components.BruButton
 import com.brudre.streaming.ui.components.BruChip
+import com.brudre.streaming.ui.components.PinDialog
 import com.brudre.streaming.ui.components.SectionHeader
 import com.brudre.streaming.ui.components.TitleCard
 import com.brudre.streaming.ui.theme.BruColors
@@ -191,11 +193,69 @@ fun SettingsScreen(vm: MainViewModel) {
     val usage by vm.cacheUsage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(Unit) { vm.refreshCacheUsage() }
-
     fun <T> next(list: List<T>, current: T): T = list[(list.indexOf(current) + 1).mod(list.size)]
+    var pinMode by remember { mutableStateOf<PinMode?>(null) }
+    var pendingRating by remember { mutableStateOf(false) }
+
+    when (pinMode) {
+        PinMode.CREATE, PinMode.NEW -> PinDialog(
+            title = "Nova senha dos pais",
+            subtitle = "Escolha 4 números. Guarde bem: ela libera títulos acima da classificação.",
+            onDismiss = { pinMode = null },
+            onSubmit = { pin ->
+                vm.changePin(pin)
+                pinMode = null
+                Toast.makeText(context, "Senha salva", Toast.LENGTH_SHORT).show()
+                null
+            },
+        )
+        PinMode.VERIFY, PinMode.VERIFY_FOR_CHANGE -> PinDialog(
+            title = "Senha dos pais",
+            subtitle = "Digite a senha atual para continuar.",
+            onDismiss = { pinMode = null; pendingRating = false },
+            onSubmit = { pin ->
+                vm.submitPin(pin)?.let { return@PinDialog it }
+                if (pinMode == PinMode.VERIFY_FOR_CHANGE) pinMode = PinMode.NEW
+                else {
+                    pinMode = null
+                    if (pendingRating) {
+                        pendingRating = false
+                        vm.updateSettings { v -> v.copy(maxRating = next(Parental.RATINGS, v.maxRating)) }
+                    }
+                }
+                null
+            },
+        )
+        null -> Unit
+    }
 
     LazyColumn(Modifier.fillMaxSize().testTag("settings"), contentPadding = PaddingValues(start = 40.dp, end = 40.dp, bottom = 48.dp)) {
         item { Text("Configurações", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) }
+        item {
+            Text("Controle dos pais", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
+            Text(
+                "Pornografia e conteúdo explícito são bloqueados sempre, sem senha que libere. A senha protege títulos acima da classificação escolhida.",
+                color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
+            )
+            SettingRow(
+                "Senha dos pais (PIN)",
+                if (s.pinHash.isEmpty()) "Criar" else "Trocar",
+                if (s.pinHash.isEmpty()) "Nenhuma senha definida ainda" else "Pedida para títulos acima do limite e para mudar estas opções",
+                "set_pin",
+            ) {
+                if (s.pinHash.isEmpty()) pinMode = PinMode.CREATE else pinMode = PinMode.VERIFY_FOR_CHANGE
+            }
+            SettingRow(
+                "Liberado sem senha até",
+                if (s.maxRating == "L") "Livre" else "${s.maxRating} anos",
+                "Títulos com classificação maior pedem a senha (Livre, 10, 12, 14, 16, 18)",
+                "set_max_rating",
+            ) {
+                val applyNext = { vm.updateSettings { v -> v.copy(maxRating = next(Parental.RATINGS, v.maxRating)) } }
+                if (s.pinHash.isEmpty() || vm.isUnlocked()) applyNext() else { pendingRating = true; pinMode = PinMode.VERIFY }
+            }
+            Spacer(Modifier.height(12.dp))
+        }
         item {
             Text("Meus streamings", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
             Text(
@@ -282,6 +342,8 @@ fun SettingsScreen(vm: MainViewModel) {
         }
     }
 }
+
+private enum class PinMode { CREATE, NEW, VERIFY, VERIFY_FOR_CHANGE }
 
 @Composable
 private fun SettingRow(label: String, value: String, hint: String, tag: String, onClick: () -> Unit) {

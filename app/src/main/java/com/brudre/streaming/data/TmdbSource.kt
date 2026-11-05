@@ -37,7 +37,8 @@ class TmdbSource(
     /** Chave de cache: as linhas mudam quando o filtro "só os meus" muda. */
     fun cacheKey(rowKey: String): String {
         val s = settings.current
-        return if (s.onlyMine && s.myServices.isNotEmpty() && rowKey !in FREE_ROWS) "$rowKey|${s.myServices.sorted().joinToString(",")}" else rowKey
+        val mine = if (s.onlyMine && s.myServices.isNotEmpty() && rowKey !in FREE_ROWS) "|${s.myServices.sorted().joinToString(",")}" else ""
+        return "$rowKey|r${s.maxRating}$mine"
     }
 
     fun row(key: String): List<Title> {
@@ -61,6 +62,11 @@ class TmdbSource(
                 p[if (media == "movie") "primary_release_date.lte" else "first_air_date.lte"] = today()
             }
             if (ids.isNotEmpty()) p["with_watch_providers"] = ids.joinToString("|")
+            // Filmes acima do limite do controle dos pais nem aparecem nas listas.
+            if (media == "movie" && s.maxRating != "18") {
+                p["certification_country"] = REGION
+                p["certification.lte"] = s.maxRating
+            }
             Triple<String, String?, Map<String, String>>("discover/$media", media, p)
         }
         val json = fetch(url(path, params))

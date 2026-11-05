@@ -196,6 +196,8 @@ class CatalogRepository(
         block()
     } catch (e: IOException) {
         throw e
+    } catch (e: BlockedContentException) {
+        throw CatalogException("Conteúdo bloqueado pelo BruDre", e)
     } catch (e: Exception) {
         throw CatalogException("Resposta inesperada do catálogo", e)
     }

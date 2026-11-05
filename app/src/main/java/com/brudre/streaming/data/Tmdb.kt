@@ -3,6 +3,9 @@ package com.brudre.streaming.data
 import org.json.JSONArray
 import org.json.JSONObject
 
+/** Título adulto/explícito: nunca exibido. */
+class BlockedContentException : IllegalStateException("Conteúdo bloqueado pelo BruDre")
+
 /** Tipo de oferta de um streaming para um título (dados JustWatch via TMDB). */
 enum class Offer(val label: String, val order: Int) {
     SUBSCRIPTION("Assinatura", 0),
@@ -65,10 +68,11 @@ object TmdbParser {
             val o = arr.optJSONObject(i) ?: continue
             val media = o.optStringOrNull("media_type") ?: defaultMedia ?: continue
             if (media != "movie" && media != "tv") continue // ignora pessoas na busca
-            if (o.optBoolean("adult", false)) continue
+            if (o.optBoolean("adult", false)) continue // conteúdo adulto: bloqueado sempre
             val name = (if (media == "movie") o.optStringOrNull("title") else o.optStringOrNull("name")) ?: continue
             val date = if (media == "movie") o.optStringOrNull("release_date") else o.optStringOrNull("first_air_date")
             val genres = o.optJSONArray("genre_ids")?.let { a -> (0 until a.length()).map { a.optInt(it) } } ?: emptyList()
+            if (Parental.isExplicit(name, o.optStringOrNull("overview"), o.optStringOrNull("original_title"), o.optStringOrNull("original_name"))) continue
             val poster = poster(o.optStringOrNull("poster_path"))
             if (poster == null && o.optStringOrNull("backdrop_path") == null) continue // sem imagem = catálogo pobre
             out += Title(
@@ -94,6 +98,9 @@ object TmdbParser {
     fun parseDetails(json: String, media: String, base: Title?, region: String = "BR"): Pair<Title, List<WatchProvider>> {
         val o = JSONObject(json)
         if (o.has("status_message") && !o.has("id")) throw IllegalStateException("TMDB: ${o.optString("status_message")}")
+        if (o.optBoolean("adult", false) || Parental.isExplicit(o.optStringOrNull("title"), o.optStringOrNull("name"), o.optStringOrNull("overview"))) {
+            throw BlockedContentException()
+        }
         val tmdbId = o.getInt("id")
         val name = (if (media == "movie") o.optStringOrNull("title") else o.optStringOrNull("name")) ?: base?.name ?: "?"
         val date = if (media == "movie") o.optStringOrNull("release_date") else o.optStringOrNull("first_air_date")

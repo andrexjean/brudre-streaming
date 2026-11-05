@@ -36,6 +36,10 @@ data class SettingsValues(
     val myServices: Set<String> = emptySet(),
     /** Mostrar no catálogo de lançamentos só o que está nos meus serviços (ou grátis). */
     val onlyMine: Boolean = false,
+    /** Controle dos pais: hash SHA-256 do PIN (vazio = sem senha definida). */
+    val pinHash: String = "",
+    /** Classificação máxima liberada sem senha (L, 10, 12, 14, 16, 18). */
+    val maxRating: String = "16",
 )
 
 class AppSettings(context: Context) {
@@ -55,6 +59,8 @@ class AppSettings(context: Context) {
             torrentConnections = prefs.getInt("connections", d.torrentConnections),
             myServices = prefs.getStringSet("myServices", emptySet())?.toSet() ?: emptySet(),
             onlyMine = prefs.getBoolean("onlyMine", d.onlyMine),
+            pinHash = prefs.getString("pinHash", "") ?: "",
+            maxRating = prefs.getString("maxRating", d.maxRating) ?: d.maxRating,
         )
     }
 
@@ -69,7 +75,36 @@ class AppSettings(context: Context) {
             .putInt("connections", v.torrentConnections)
             .putStringSet("myServices", v.myServices)
             .putBoolean("onlyMine", v.onlyMine)
+            .putString("pinHash", v.pinHash)
+            .putString("maxRating", v.maxRating)
             .apply()
         state.value = v
     }
+}
+
+/** Controle dos pais: classificação indicativa brasileira e PIN. */
+object Parental {
+    val RATINGS = listOf("L", "10", "12", "14", "16", "18")
+
+    fun level(rating: String?): Int = rating?.let { RATINGS.indexOf(it.uppercase()) }?.takeIf { it >= 0 } ?: -1
+
+    /** true se o título passa do limite liberado sem senha. Sem classificação conhecida = não bloqueia. */
+    fun needsPin(rating: String?, maxRating: String): Boolean {
+        val l = level(rating)
+        return l >= 0 && l > level(maxRating)
+    }
+
+    fun hash(pin: String): String {
+        val md = java.security.MessageDigest.getInstance("SHA-256")
+        return md.digest("brudre:$pin".toByteArray()).joinToString("") { "%02x".format(it) }
+    }
+
+    fun check(pin: String, pinHash: String): Boolean = pinHash.isNotEmpty() && hash(pin) == pinHash
+
+    /** Conteúdo pornográfico/explícito: bloqueado sempre, sem senha que libere. */
+    private val EXPLICIT = Regex(
+        "(?i)(porn|pornô|porno|xxx|hentai|sexo explícito|sexo explicito|explicit sex|erótic|erotic|softcore|hardcore sex|adult film|filme adulto|sex tape|playboy|penthouse|onlyfans|strip ?tease|nudismo|nudist|orgia|orgy)"
+    )
+
+    fun isExplicit(vararg texts: String?): Boolean = texts.any { it != null && EXPLICIT.containsMatchIn(it) }
 }

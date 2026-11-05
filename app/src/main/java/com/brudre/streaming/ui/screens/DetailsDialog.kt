@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
@@ -53,6 +54,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.brudre.streaming.data.Offer
+import com.brudre.streaming.data.Parental
 import com.brudre.streaming.data.Playable
 import com.brudre.streaming.data.StreamingApps
 import com.brudre.streaming.data.WatchProvider
@@ -64,6 +66,7 @@ import com.brudre.streaming.ui.Load
 import com.brudre.streaming.ui.MainViewModel
 import com.brudre.streaming.ui.components.BruButton
 import com.brudre.streaming.ui.components.BruChip
+import com.brudre.streaming.ui.components.PinDialog
 import com.brudre.streaming.ui.components.ProgressBar
 import com.brudre.streaming.ui.components.RatingBadge
 import com.brudre.streaming.ui.components.formatDuration
@@ -91,6 +94,8 @@ fun DetailsDialog(
         val progress by progressFlow.collectAsStateWithLifecycle(initialValue = emptyList())
         val loadingId by vm.playLoading.collectAsStateWithLifecycle()
         val mySettings by vm.settings.collectAsStateWithLifecycle()
+        val unlockedUntil by vm.unlockedUntil.collectAsStateWithLifecycle()
+        var showPin by remember { mutableStateOf(false) }
         val primaryFocus = remember { FocusRequester() }
         val details = (state as? Load.Ok)?.value
         val shown = details?.title ?: title
@@ -166,7 +171,14 @@ fun DetailsDialog(
                         Spacer(Modifier.width(12.dp))
                         FavoriteButton(isFavorite) { vm.toggleFavorite(shown) }
                     }
-                    is Load.Ok -> if (s.value.isExternal) ProvidersSection(
+                    is Load.Ok -> if (unlockedUntil >= 0 && Parental.needsPin(s.value.title.rating, mySettings.maxRating) && !vm.isUnlocked()) {
+                        LockedSection(
+                            rating = s.value.title.rating ?: "",
+                            hasPin = mySettings.pinHash.isNotEmpty(),
+                            primaryFocus = primaryFocus,
+                            onUnlock = { showPin = true },
+                        )
+                    } else if (s.value.isExternal) ProvidersSection(
                         details = s.value,
                         myServices = mySettings.myServices,
                         isFavorite = isFavorite,
@@ -186,10 +198,44 @@ fun DetailsDialog(
             }
         }
 
-        LaunchedEffect(state::class) {
+        if (showPin) {
+            PinDialog(
+                title = if (mySettings.pinHash.isEmpty()) "Crie a senha dos pais" else "Senha dos pais",
+                subtitle = if (mySettings.pinHash.isEmpty()) "Escolha 4 números. Ela será pedida para títulos acima da classificação liberada."
+                else "Digite a senha de 4 números para liberar este título por 30 minutos.",
+                onDismiss = { showPin = false },
+                onSubmit = { pin -> vm.submitPin(pin).also { if (it == null) showPin = false } },
+            )
+        }
+
+        LaunchedEffect(state::class, unlockedUntil) {
             delay(120)
             runCatching { primaryFocus.requestFocus() }
         }
+    }
+}
+
+@Composable
+private fun LockedSection(rating: String, hasPin: Boolean, primaryFocus: FocusRequester, onUnlock: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color(0x33FF6B7A))
+                .border(1.dp, BruColors.Danger, RoundedCornerShape(10.dp))
+                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .testTag("details_locked"),
+        ) {
+            Text("Classificação $rating anos — protegido pelo controle dos pais", color = Color.White, fontSize = 15.sp)
+        }
+        Spacer(Modifier.width(16.dp))
+        BruButton(
+            if (hasPin) "Digite a senha" else "Criar senha",
+            icon = Icons.Filled.Lock,
+            primary = true,
+            modifier = Modifier.focusRequester(primaryFocus).testTag("btn_unlock"),
+            onClick = onUnlock,
+        )
     }
 }
 

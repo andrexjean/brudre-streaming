@@ -86,3 +86,32 @@ class TmdbTest {
         TmdbParser.parseList("""{"status_code":7,"status_message":"Invalid API key","success":false}""", "movie")
     }
 }
+
+class ParentalTest {
+    @org.junit.Test fun explicitContentAlwaysBlocked() {
+        val json = """{"results":[
+          {"id":1,"media_type":"movie","title":"Filme Normal","overview":"Uma família viaja.","poster_path":"/a.jpg"},
+          {"id":2,"media_type":"movie","title":"Qualquer","overview":"Um filme pornô de 1999.","poster_path":"/b.jpg"},
+          {"id":3,"media_type":"movie","title":"Erotic Tales","overview":"x","poster_path":"/c.jpg"},
+          {"id":4,"media_type":"movie","title":"Outro","adult":true,"poster_path":"/d.jpg"}]}"""
+        org.junit.Assert.assertEquals(listOf("tmdb:movie:1"), com.brudre.streaming.data.TmdbParser.parseList(json, null).map { it.id })
+    }
+
+    @org.junit.Test(expected = com.brudre.streaming.data.BlockedContentException::class)
+    fun explicitDetailsAreRefused() {
+        com.brudre.streaming.data.TmdbParser.parseDetails("""{"id":9,"title":"X","adult":true}""", "movie", null)
+    }
+
+    @org.junit.Test fun ratingGateAndPin() {
+        val P = com.brudre.streaming.data.Parental
+        org.junit.Assert.assertTrue(P.needsPin("18", "16"))
+        org.junit.Assert.assertFalse(P.needsPin("16", "16"))
+        org.junit.Assert.assertFalse(P.needsPin("L", "L"))
+        org.junit.Assert.assertTrue(P.needsPin("12", "L"))
+        org.junit.Assert.assertFalse(P.needsPin(null, "L"))
+        val h = P.hash("1234")
+        org.junit.Assert.assertTrue(P.check("1234", h))
+        org.junit.Assert.assertFalse(P.check("4321", h))
+        org.junit.Assert.assertFalse(P.check("1234", ""))
+    }
+}

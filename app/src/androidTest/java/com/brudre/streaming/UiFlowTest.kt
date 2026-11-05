@@ -177,4 +177,36 @@ class UiFlowTest {
         check(rule.onAllNodes(tagPrefix("btn_play")).fetchSemanticsNodes().isEmpty()) { "Botão Assistir não deveria existir" }
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
     }
+
+    @Test fun t07_parentalControlAsksPin() {
+        val services = TestUtil.services
+        // Um filme popular com classificação acima de "Livre"
+        val candidates = runBlocking { services.catalog.row("tmdb_movies", force = true) }
+        val target = candidates.take(10).firstNotNullOfOrNull { t ->
+            val d = runBlocking { services.catalog.details(t) }
+            if (com.brudre.streaming.data.Parental.level(d.title.rating) > 0) d.title else null
+        } ?: error("nenhum filme classificado encontrado")
+        services.settings.update { it.copy(maxRating = "L", pinHash = "") }
+        try {
+            waitTag("hero_play")
+            rule.runOnUiThread {
+                val vm = ViewModelProvider(rule.activity)[MainViewModel::class.java]
+                vm.lockNow()
+                vm.openDetails(target)
+            }
+            waitTag("details_locked", 30_000)
+            check(rule.onAllNodes(tagPrefix("provider_")).fetchSemanticsNodes().isEmpty()) { "Onde assistir visível sem senha" }
+            rule.onNodeWithTag("btn_unlock").performClick()
+            waitTag("pin_dialog")
+            listOf("1", "2", "3", "4").forEach { rule.onNodeWithTag("pin_key_$it").performClick() }
+            diagnose("detalhes liberados após a senha") {
+                rule.waitUntil(10_000) { rule.onAllNodes(tagPrefix("details_locked")).fetchSemanticsNodes().isEmpty() }
+            }
+            check(com.brudre.streaming.data.Parental.check("1234", services.settings.current.pinHash))
+            rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].closeDetails() }
+        } finally {
+            services.settings.update { it.copy(maxRating = "16", pinHash = "") }
+            rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].lockNow() }
+        }
+    }
 }
