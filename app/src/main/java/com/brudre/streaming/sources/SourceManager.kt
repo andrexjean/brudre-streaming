@@ -138,15 +138,52 @@ class SourceManager(
         val owner = providers.firstOrNull { it.handles(title) }
             ?: return TitleDetails(title, emptyList(), "Fonte desconhecida para este título")
         var d = guarded(owner) { owner.getDetails(title) }.getOrThrow()
+        if (owner === external) return confirm(enrichFromCatalog(d))
         if (!d.available && owner === tmdb) {
-            // 1º: vídeo dentro do BruDre (acervo público). 2º: app oficial gratuito.
+            // 1º: vídeo dentro do BruDre (acervo público).
             if (tmdb.worthArchiveSearch(d.title)) d = findFreeSource(d).let { if (it.available) it else d }
-            if (!d.available && d.freeProviders.isNotEmpty()) {
-                val names = d.freeProviders.joinToString(", ") { com.brudre.streaming.data.FreeApps.label(it.name) }
-                return d.copy(sourceLabel = "Grátis no app oficial: $names (com anúncios, sem assinatura) • Disponibilidade: JustWatch")
-            }
+        }
+        // 2º: fontes cadastradas pelo usuário (Gerenciar fontes), na ordem de prioridade.
+        d = attachUserSources(d, title)
+        if (!d.available && d.freeProviders.isNotEmpty()) {
+            // 3º: app oficial gratuito.
+            val names = d.freeProviders.joinToString(", ") { com.brudre.streaming.data.FreeApps.label(it.name) }
+            return d.copy(sourceLabel = "Grátis no app oficial: $names (com anúncios, sem assinatura) • Disponibilidade: JustWatch")
         }
         return confirm(d)
+    }
+
+    /** Associa o título do catálogo a um título das fontes cadastradas (mesmo nome e ano). */
+    private suspend fun attachUserSources(d: TitleDetails, original: Title): TitleDetails {
+        if (feeds.enabledFeeds().isEmpty()) return d
+        val names = (TitleMatcher.names(d.title.name, original.name) + (tmdb.hintFor(d.title)?.names ?: emptyList())).distinct()
+        val match = runCatching { feeds.matches(names, d.title.year) }.getOrDefault(emptyList()).firstOrNull() ?: return d
+        val extra = match.second.playables()
+        if (extra.isEmpty()) return d
+        return if (!d.available) {
+            d.copy(playables = extra, sourceLabel = "Fonte cadastrada: ${match.first.name}", providerId = match.first.id, confirmed = false)
+        } else {
+            val first = d.playables.first()
+            val q = extra.first()
+            val merged = first.copy(
+                mirrors = (first.mirrors + listOfNotNull(q.directUrl) + q.mirrors).distinct().filter { it != first.directUrl },
+                torrent = first.torrent ?: q.torrent,
+            )
+            d.copy(playables = listOf(merged) + d.playables.drop(1), sourceLabel = "${d.sourceLabel} • também em ${match.first.name}")
+        }
+    }
+
+    /** Título de fonte externa sem capa: usa capa, sinopse e classificação do catálogo (TMDB) quando nome e ano batem. */
+    private suspend fun enrichFromCatalog(d: TitleDetails): TitleDetails {
+        val t = d.title
+        if (t.posterUrl != null || !catalog.tmdb.enabled || !isEnabled(TmdbProvider.ID)) return d
+        val names = TitleMatcher.names(t.name.replace(Regex("\\((magnet|\\.torrent|hls|http[^)]*)\\)", RegexOption.IGNORE_CASE), ""))
+        val found = runCatching { kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { catalog.tmdb.search(t.name) } }.getOrDefault(emptyList())
+        val m = TitleMatcher.best(found, names, t.year) ?: return d
+        return d.copy(title = t.copy(
+            posterUrl = m.posterUrl, bannerUrl = m.bannerUrl ?: m.posterUrl, synopsis = t.synopsis ?: m.synopsis,
+            year = t.year ?: m.year, genres = t.genres.ifEmpty { m.genres }, rating = t.rating ?: m.rating,
+        ))
     }
 
     /** Obra só catalogada: procura a mesma obra nas fontes com vídeo, uma por vez (motores leves primeiro). */

@@ -77,14 +77,20 @@ class Services(private val app: Context) {
     /** Cliente para mídia e listas de terceiros: valida cada redirecionamento e bloqueia executáveis. */
     val guardedHttp: OkHttpClient by lazy { com.brudre.streaming.sources.GuardedHttp.client(http) }
     val sourceStatus = com.brudre.streaming.sources.StatusBoard()
+    /** Fontes cadastradas pelo usuário (Gerenciar fontes), salvas no aparelho. */
+    val sourceStore: com.brudre.streaming.sources.SourceStore by lazy { com.brudre.streaming.sources.SourceStore(app, settings) }
     val feeds: com.brudre.streaming.sources.FeedRepository by lazy {
-        com.brudre.streaming.sources.FeedRepository(guardedHttp, settings, sourceStatus, File(app.cacheDir, "feeds"))
+        com.brudre.streaming.sources.FeedRepository(guardedHttp, settings, sourceStatus, File(app.cacheDir, "feeds"), sourceStore)
+    }
+    val validator: com.brudre.streaming.sources.StreamValidator by lazy { com.brudre.streaming.sources.StreamValidator(guardedHttp) }
+    val inspector: com.brudre.streaming.sources.SourceInspector by lazy {
+        com.brudre.streaming.sources.SourceInspector(guardedHttp, { feeds }, { live }, validator)
     }
     val sources: com.brudre.streaming.sources.SourceManager by lazy {
-        com.brudre.streaming.sources.SourceManager(catalog, settings, com.brudre.streaming.sources.StreamValidator(guardedHttp), sourceStatus, feeds)
+        com.brudre.streaming.sources.SourceManager(catalog, settings, validator, sourceStatus, feeds)
     }
     val live: com.brudre.streaming.live.LiveRepository by lazy {
-        com.brudre.streaming.live.LiveRepository(app, guardedHttp, settings, sourceStatus, ::isOnline)
+        com.brudre.streaming.live.LiveRepository(app, guardedHttp, settings, sourceStatus, ::isOnline, sourceStore)
     }
     val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }

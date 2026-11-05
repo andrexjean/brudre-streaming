@@ -342,6 +342,117 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    // ------------------------------------------------------- Gerenciar fontes
+    val userSources: StateFlow<List<com.brudre.streaming.sources.UserSource>> = services.sourceStore.sources
+    private val _testingSources = MutableStateFlow<Set<String>>(emptySet())
+    val testingSources: StateFlow<Set<String>> = _testingSources.asStateFlow()
+
+    private fun afterSourcesChanged(vararg ids: String) {
+        ids.forEach { id -> services.feeds.invalidate(id); live.invalidate(id); feedRows.remove(id); liveLists.remove(id) }
+        services.feeds.invalidate(com.brudre.streaming.sources.FeedRepository.LINKS_ID)
+        feedRows[com.brudre.streaming.sources.FeedRepository.LINKS_ID]?.let { loadFeed(com.brudre.streaming.sources.FeedRepository.LINKS_ID, it, true) }
+        services.feeds.refreshRegistry()
+        live.refreshRegistry()
+    }
+
+    /** Identifica o formato, valida estrutura e conexão e só então salva (nova fonte ou edição de [oldId]). */
+    fun saveSource(oldId: String?, name: String, url: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val r = services.inspector.inspect(url)
+            val type = r.type
+            if (type == null || !r.test.ok) {
+                onResult(false, (type?.let { "${it.label}: " } ?: "") + r.test.message)
+                return@launch
+            }
+            val clean = url.trim()
+            val src = com.brudre.streaming.sources.UserSource(
+                id = com.brudre.streaming.sources.UserSource.idFor(type, clean),
+                name = name.trim().ifBlank { r.suggestedName ?: type.label }.take(60),
+                url = clean, type = type, priority = services.sourceStore.current.size, lastTest = r.test,
+            )
+            try {
+                if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
+                afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
+                onResult(true, "${type.label} salvo: ${r.test.message}")
+            } catch (e: Exception) {
+                onResult(false, e.message ?: "Não foi possível salvar")
+            }
+        }
+    }
+
+    fun testSource(id: String, onResult: (String) -> Unit = {}) {
+        val src = services.sourceStore.get(id) ?: return
+        _testingSources.value = _testingSources.value + id
+        viewModelScope.launch {
+            try {
+                val r = services.inspector.inspect(src.url, forcedType = src.type)
+                services.sourceStore.saveTest(id, r.test)
+                onResult("${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}")
+            } finally {
+                _testingSources.value = _testingSources.value - id
+            }
+        }
+    }
+
+    /** Atualiza as informações: descarta o cache, baixa de novo e testa. */
+    fun refreshSource(id: String, onResult: (String) -> Unit = {}) {
+        afterSourcesChanged(id)
+        testSource(id, onResult)
+    }
+
+    fun testAllSources(onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            val list = services.sourceStore.current
+            var ok = 0
+            list.forEach { s ->
+                _testingSources.value = _testingSources.value + s.id
+                val r = runCatching { services.inspector.inspect(s.url, forcedType = s.type) }.getOrNull()
+                if (r != null) { services.sourceStore.saveTest(s.id, r.test); if (r.test.ok) ok++ }
+                _testingSources.value = _testingSources.value - s.id
+            }
+            onResult("$ok de ${list.size} fontes funcionando")
+        }
+    }
+
+    fun moveSource(id: String, delta: Int) { services.sourceStore.move(id, delta); afterSourcesChanged() }
+
+    fun toggleSource(id: String) {
+        val s = services.sourceStore.get(id) ?: return
+        services.sourceStore.setEnabled(id, !s.enabled)
+        afterSourcesChanged(id)
+    }
+
+    fun deleteSource(id: String) { services.sourceStore.remove(id); afterSourcesChanged(id) }
+
+    /** Exporta para um arquivo na pasta do app (acessível por gerenciadores de arquivos da TV). */
+    fun exportSources(onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            onResult(runCatching {
+                withContext(Dispatchers.IO) {
+                    val f = services.inspector.exportFile(getApplication())
+                    f.parentFile?.mkdirs()
+                    f.writeText(services.sourceStore.export())
+                    "${services.sourceStore.current.size} fontes exportadas para ${f.absolutePath}"
+                }
+            }.getOrElse { "Falha ao exportar: ${it.message}" })
+        }
+    }
+
+    /** Importa do arquivo exportado (endereço vazio) ou de um endereço https:// com o mesmo formato. */
+    fun importSources(url: String?, onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            onResult(runCatching {
+                val text = withContext(Dispatchers.IO) {
+                    if (url.isNullOrBlank() || url.trim() == "https://") services.inspector.exportFile(getApplication()).readText()
+                    else services.inspector.fetchText(url.trim())
+                }
+                val n = services.sourceStore.import(text)
+                afterSourcesChanged(*services.sourceStore.current.map { it.id }.toTypedArray())
+                "$n fontes importadas"
+            }.getOrElse { "Falha ao importar: ${if (it is java.io.FileNotFoundException) "nenhum arquivo exportado encontrado" else it.message}" })
+        }
+    }
+
     /** Abre no player um magnet, .torrent, HLS ou vídeo HTTPS colado pelo usuário. */
     fun openLink(input: String, onLaunch: (Intent) -> Unit, onError: (String) -> Unit) {
         val (t, p) = com.brudre.streaming.sources.FeedParser.manual(input)

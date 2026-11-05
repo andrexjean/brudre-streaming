@@ -415,8 +415,9 @@ private fun SourcesSection(vm: MainViewModel) {
     val status by vm.sourceStatus.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var adding by remember { mutableStateOf(false) }
-    var addingFeed by remember { mutableStateOf(false) }
     var openingLink by remember { mutableStateOf(false) }
+    var managing by remember { mutableStateOf(false) }
+    val userSources by vm.userSources.collectAsStateWithLifecycle()
     Column(Modifier.padding(top = 4.dp)) {
         Text("Fontes de conteúdo", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(
@@ -424,7 +425,13 @@ private fun SourcesSection(vm: MainViewModel) {
                 "Ordem de reprodução: HTTP/HLS direto → endereços alternativos → BitTorrent oficial.",
             color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(760.dp),
         )
-        status.forEach { st ->
+        SettingRow(
+            "Gerenciar fontes",
+            "${userSources.size} cadastradas",
+            "Adicionar, editar, testar, priorizar, importar e exportar fontes: magnet, .torrent, HTTP, HLS, IPTV M3U e catálogos",
+            "manage_sources",
+        ) { managing = true }
+        status.filter { !it.removable }.forEach { st ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val health = when {
                     !st.enabled -> "Desativada"
@@ -441,12 +448,6 @@ private fun SourcesSection(vm: MainViewModel) {
                 }
             }
         }
-        SettingRow("Adicionar catálogo de vídeos", "Adicionar", "Feed JSON do BruDre ou RSS com filmes/séries em HTTPS, HLS, magnet ou .torrent (só conteúdo autorizado)", "add_feed") {
-            addingFeed = true
-        }
-        SettingRow("Adicionar lista M3U (TV ao vivo)", "Adicionar", "Listas gratuitas e autorizadas (só canais HLS por https; executáveis e endereços locais são bloqueados)", "add_m3u") {
-            adding = true
-        }
         SettingRow("Abrir link de vídeo", "Abrir", "Cole um magnet, um .torrent, um HLS (.m3u8) ou um vídeo https:// para tocar no player do BruDre", "open_link") {
             openingLink = true
         }
@@ -461,18 +462,7 @@ private fun SourcesSection(vm: MainViewModel) {
             },
         )
     }
-    if (addingFeed) {
-        AddListDialog(
-            title = "Novo catálogo de vídeos",
-            subtitle = "Use apenas catálogos de conteúdo com distribuição autorizada (obras abertas, conteúdo próprio, projetos comunitários).",
-            urlLabel = "Endereço (https://…/catalogo.json ou feed RSS)",
-            onDismiss = { addingFeed = false },
-            onAdd = { name, url ->
-                vm.addFeed(name, url) { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
-                addingFeed = false
-            },
-        )
-    }
+    if (managing) SourceManagerScreen(vm) { managing = false }
     if (openingLink) {
         AddListDialog(
             title = "Abrir link de vídeo",

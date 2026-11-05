@@ -12,6 +12,7 @@ import com.brudre.streaming.data.Title
 import com.brudre.streaming.player.PlayerActivity
 import com.brudre.streaming.player.SourceAttempt
 import com.brudre.streaming.torrent.CacheManager
+import com.brudre.streaming.sources.SourceType as SourceTypeAlias
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -352,6 +353,92 @@ class PlaybackTest {
             TestUtil.log("Magnet manual: começou a tocar com ${onDisk / 1048576} MB em disco")
         }
         assertTrue(com.brudre.streaming.sources.FeedParser.manual("http://example.com/x.mp4") == null)
+    }
+
+    /** Gerenciar fontes: cadastro, formato, reprodução, ativar/desativar, prioridade, persistência, exportar/importar, exclusão. */
+    @Test fun t24_sourceManagerLifecycle() {
+        val store = services.sourceStore
+        val insp = services.inspector
+        val feeds = services.feeds
+        store.current.forEach { store.remove(it.id) }
+        val raw = "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/feeds"
+        val cases = listOf(
+            "Blender JSON" to "$raw/blender-open-movies.json",
+            "Blender RSS" to "$raw/blender-open-movies.rss",
+            "HLS de teste" to "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+            "Sintel magnet" to sintelPlayable.torrent!!.magnet!!,
+            "Sintel .torrent" to "https://webtorrent.io/torrents/sintel.torrent",
+            "Sintel HTTP" to "https://webtorrent.io/torrents/Sintel/Sintel.mp4",
+            "IPTV Brasil" to "https://raw.githubusercontent.com/iptv-org/iptv/gh-pages/countries/br.m3u",
+        )
+        val expected = listOf(SourceTypeAlias.CATALOG_JSON, SourceTypeAlias.RSS, SourceTypeAlias.HLS, SourceTypeAlias.MAGNET, SourceTypeAlias.TORRENT, SourceTypeAlias.VIDEO, SourceTypeAlias.M3U)
+        for ((i, c) in cases.withIndex()) {
+            val r = runBlocking { insp.inspect(c.second) }
+            TestUtil.log("Fonte '${c.first}': formato=${r.type?.label} ok=${r.test.ok} • ${r.test.message}")
+            assertEquals("formato de ${c.first}", expected[i], r.type)
+            assertTrue("${c.first} não validou: ${r.test.message}", r.test.ok)
+            store.put(com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(r.type!!, c.second), c.first, c.second, r.type!!, priority = i, lastTest = r.test))
+        }
+        // Endereços que não são fontes: recusados sem salvar
+        for (bad in listOf("https://github.com/", "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/gradlew", "http://example.com/a.mp4", "file:///system/build.prop")) {
+            val r = runBlocking { insp.inspect(bad) }
+            TestUtil.log("Recusado '$bad': ${r.test.message}")
+            assertTrue(r.type == null || !r.test.ok)
+        }
+        assertEquals(7, store.current.size)
+        services.feeds.refreshRegistry(); services.live.refreshRegistry()
+
+        // Reprodução: vídeo de um catálogo cadastrado e um link único (HLS)
+        val catalogId = store.current.first { it.type == SourceTypeAlias.CATALOG_JSON }.id
+        val item = runBlocking { feeds.items(catalogId) }.first { it.title.name.startsWith("Sintel (HTTP") }
+        val d = runBlocking { services.sources.details(item.title) }
+        assertTrue(d.confirmed)
+        launch(d.title, d.playables.first().copy(key = "src_catalog")).use { sc -> sc.awaitPlaying(60_000, 1_500) }
+        val links = runBlocking { feeds.items(com.brudre.streaming.sources.FeedRepository.LINKS_ID) }
+        TestUtil.log("Minhas fontes (links): ${links.map { it.title.name }}")
+        assertEquals(4, links.size)
+        val hls = runBlocking { services.sources.details(links.first { it.title.name == "HLS de teste" }.title) }
+        launch(hls.title, hls.playables.first().copy(key = "src_hls")).use { sc -> sc.awaitPlaying(60_000, 1_500) }
+        // Associação ao catálogo: "Sintel" (obra aberta do índice) também encontra as fontes cadastradas
+        val assoc = runBlocking { services.sources.details(sintelTitle) }
+        TestUtil.log("Associação: ${assoc.sourceLabel}")
+        // TV ao vivo: a playlist M3U cadastrada aparece como lista
+        assertTrue(services.live.customLists().any { it.name == "IPTV Brasil" })
+
+        // Desativar e ativar
+        store.setEnabled(catalogId, false); feeds.invalidate(catalogId)
+        assertTrue(feeds.enabledFeeds().none { it.id == catalogId })
+        assertTrue(runBlocking { services.sources.search("Tears of Steel") }.none { it.id.startsWith("feed:") && !it.id.contains("links") })
+        store.setEnabled(catalogId, true); feeds.invalidate(catalogId)
+        assertTrue(feeds.enabledFeeds().any { it.id == catalogId })
+        assertTrue(runBlocking { services.sources.search("Tears of Steel") }.any { it.id.startsWith("feed:") })
+
+        // Prioridade
+        val hlsId = store.current.first { it.type == SourceTypeAlias.HLS }.id
+        store.move(hlsId, -1); store.move(hlsId, -1)
+        assertEquals(hlsId, store.current.first().id)
+
+        // Persistência após reiniciar: as fontes estão gravadas em disco e são relidas por uma nova instância
+        val prefsFile = java.io.File(ctx.applicationInfo.dataDir, "shared_prefs/brudre_sources.xml")
+        assertTrue("configuração não gravada em disco", prefsFile.exists() && prefsFile.readText().contains(catalogId))
+        val reloaded = com.brudre.streaming.sources.SourceStore(ctx, services.settings).current
+        assertEquals(store.current.map { it.id to it.enabled }, reloaded.map { it.id to it.enabled })
+
+        // Exportar → apagar → importar
+        val file = services.inspector.exportFile(ctx)
+        file.writeText(store.export())
+        TestUtil.log("Exportado para ${file.absolutePath} (${file.length()} bytes)")
+        val before = store.current.map { it.id }
+        store.current.forEach { store.remove(it.id) }
+        assertEquals(0, store.current.size)
+        assertEquals(7, store.import(file.readText()))
+        assertEquals(before, store.current.map { it.id })
+
+        // Exclusão
+        store.remove(catalogId); feeds.invalidate(catalogId)
+        assertTrue(store.get(catalogId) == null && feeds.feeds().none { it.id == catalogId })
+        store.current.forEach { store.remove(it.id) }
+        services.feeds.refreshRegistry(); services.live.refreshRegistry()
     }
 
     /** Teste 11: reprodução HLS (stream público de teste da Mux). */

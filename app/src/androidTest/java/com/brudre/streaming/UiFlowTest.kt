@@ -302,6 +302,27 @@ class UiFlowTest {
         rule.onNodeWithTag("nav_SETTINGS").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("settings"); Thread.sleep(1_500); TestUtil.shot("configuracoes")
         waitTag("source_archive"); rule.onNodeWithTag("source_archive").requestFocus(); Thread.sleep(800); TestUtil.shot("configuracoes_fontes")
+        // Gerenciar fontes (com duas fontes de exemplo)
+        val st = TestUtil.services.sourceStore
+        val ex = listOf(
+            com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(com.brudre.streaming.sources.SourceType.CATALOG_JSON, "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/feeds/blender-open-movies.json"),
+                "Filmes abertos da Blender", "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/feeds/blender-open-movies.json",
+                com.brudre.streaming.sources.SourceType.CATALOG_JSON, lastTest = com.brudre.streaming.sources.SourceTest(true, System.currentTimeMillis(), "5 títulos", 5)),
+            com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(com.brudre.streaming.sources.SourceType.HLS, "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"),
+                "HLS de teste", "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", com.brudre.streaming.sources.SourceType.HLS, priority = 1),
+        )
+        ex.forEach { st.put(it) }
+        try {
+            rule.onNodeWithTag("manage_sources").performClick()
+            waitTag("source_manager"); waitTag("src_card_${ex[0].id}")
+            Thread.sleep(1_000); TestUtil.shot("gerenciar_fontes")
+            rule.onNodeWithTag("src_add").performClick()
+            waitTag("src_dialog"); Thread.sleep(600); TestUtil.shot("gerenciar_fontes_adicionar")
+            remote(KeyEvent.KEYCODE_BACK)
+            rule.onNodeWithTag("src_close").performClick()
+        } finally {
+            ex.forEach { st.remove(it.id) }
+        }
         // Detalhes de um clássico do catálogo TMDB (fonte procurada no acervo)
         val t = runBlocking { TestUtil.services.catalog.row("tmdb_pd_classics") }.first()
         rule.runOnUiThread { ViewModelProvider(rule.activity)[MainViewModel::class.java].openDetails(t) }
