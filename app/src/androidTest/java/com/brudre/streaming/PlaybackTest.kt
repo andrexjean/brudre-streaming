@@ -261,8 +261,11 @@ class PlaybackTest {
         assertTrue(runCatching { client.newCall(okhttp3.Request.Builder().url("http://example.com/").build()).execute().close() }.isFailure)
         val v = com.brudre.streaming.sources.StreamValidator(client)
         assertEquals(com.brudre.streaming.sources.StreamValidator.Result.OK, runBlocking { v.validate(sintelPlayable.copy(torrent = null)) })
+        // 404 garantido e página HTML no lugar do vídeo: link descartado
         assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID,
-            runBlocking { v.validate(sintelPlayable.copy(directUrl = "https://archive.org/download/brudre_nao_existe_123/x.mp4", torrent = null)) })
+            runBlocking { v.validate(sintelPlayable.copy(directUrl = "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/nao-existe.mp4", torrent = null)) })
+        assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID, v.check("https://github.com/", emptyMap()))
+        TestUtil.log("Validador, item inexistente no acervo: ${runBlocking { v.validate(sintelPlayable.copy(directUrl = "https://archive.org/download/brudre_nao_existe_123/x.mp4", torrent = null)) }}")
         assertEquals(com.brudre.streaming.sources.StreamValidator.Result.INVALID, v.check("file:///system/build.prop", emptyMap()))
         // Device: versão, ABI e decodificadores (teste 23)
         val info = DeviceInfo.collect(ctx)
