@@ -79,6 +79,8 @@ fun HomeScreen(
     val hero by vm.hero.collectAsStateWithLifecycle()
     val continueWatching by vm.continueWatching.collectAsStateWithLifecycle()
     val loadingId by vm.playLoading.collectAsStateWithLifecycle()
+    val sourceStatus by vm.sourceStatus.collectAsStateWithLifecycle()
+    val feeds = remember(sourceStatus) { vm.enabledFeeds() }
     // Início: só linhas que tocam no BruDre; o catálogo TMDB entra com clássicos que têm cópia gratuita.
     val tm = vm.tmdbEnabled
     val rows = listOfNotNull(
@@ -119,6 +121,11 @@ fun HomeScreen(
             }
         }
         items(rows.take(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
+        // Catálogos externos cadastrados pelo usuário
+        items(feeds, key = { it.id }) { f ->
+            val state by vm.feedRow(f.id).collectAsStateWithLifecycle()
+            TitleRow(label = f.name, state = state, icon = Icons.Filled.PlayArrow, tag = f.id, onRetry = { vm.retryFeed(f.id) }, onOpen = onOpen)
+        }
         if (vm.liveEnabled) {
             item(key = "live_home") {
                 LiveCategoryRow(vm, "iptv_br", "news", "TV ao Vivo — Notícias do Brasil", onPlay = onPlayChannel)

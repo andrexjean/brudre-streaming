@@ -300,6 +300,60 @@ class PlaybackTest {
         assertTrue("verificação aprovou canais que não tocam ($played/${sample.size})", played >= sample.size * 7 / 10)
     }
 
+    /** Fontes externas: catálogo cadastrado (JSON) com magnet, .torrent, HTTP e HLS de obras abertas da Blender. */
+    @Test fun t22_externalCatalogPlaysEverySourceType() {
+        val url = "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/feeds/blender-open-movies.json"
+        val feeds = services.feeds
+        runCatching { feeds.feeds().forEach { feeds.remove(it.id) } }
+        val n = runBlocking { feeds.add("Blender (teste)", url) }
+        TestUtil.log("Catálogo externo cadastrado: $n títulos")
+        assertEquals(5, n)
+        val feedId = feeds.feeds().single().id
+        val items = runBlocking { feeds.items(feedId) }
+        // Busca unificada encontra títulos do catálogo externo
+        assertTrue(runBlocking { services.sources.search("Tears of Steel") }.any { it.id.startsWith("feed:") })
+        fun detailsOf(prefix: String) = runBlocking { services.sources.details(items.first { it.title.name.startsWith(prefix) }.title) }
+        val results = LinkedHashMap<String, String>()
+        try {
+            for ((prefix, timeout, expectTorrent) in listOf(
+                Triple("Sintel (HTTP", 60_000L, false),
+                Triple("Big Buck Bunny (HLS)", 60_000L, false),
+                Triple("Sintel (magnet)", 240_000L, true),
+                Triple("Big Buck Bunny (.torrent)", 240_000L, true),
+                Triple("Tears of Steel", 240_000L, true),
+            )) {
+                val d = detailsOf(prefix)
+                assertTrue("$prefix sem fonte confirmada: ${d.sourceLabel}", d.available && d.confirmed)
+                val ok = launch(d.title, d.playables.first().copy(key = "feed_$prefix")).use { sc ->
+                    val played = runCatching { sc.awaitPlaying(timeout, 1_500) }.isSuccess
+                    val attempt = sc.read { it.currentAttemptForTest() }
+                    results[prefix] = "${if (played) "TOCOU" else "falhou"} via ${attempt?.label} (${sc.error() ?: "sem erro"})"
+                    if (played) assertEquals(expectTorrent, attempt is SourceAttempt.Torrent)
+                    played
+                }
+                TestUtil.log("Fonte externa: $prefix → ${results[prefix]}")
+                if (!prefix.startsWith("Tears")) assertTrue("$prefix não tocou: ${results[prefix]}", ok)
+                TestUtil.waitFor(20_000, "torrent encerrado") { services.torrent.activeCount == 0 }
+            }
+        } finally {
+            feeds.remove(feedId)
+        }
+        assertTrue(feeds.feeds().isEmpty())
+    }
+
+    /** Abrir link: magnet colado à mão toca no player (progressivo, sem baixar o arquivo inteiro). */
+    @Test fun t23_manualMagnetLinkPlaysProgressively() {
+        val (t, p) = com.brudre.streaming.sources.FeedParser.manual(sintelPlayable.torrent!!.magnet!!)!!
+        launch(t, p).use { sc ->
+            sc.awaitPlaying(240_000, 1_000)
+            assertTrue(sc.read { it.currentAttemptForTest() } is SourceAttempt.Torrent)
+            val dir = services.torrent.saveDir
+            val onDisk = CacheManager.dirSize(dir)
+            TestUtil.log("Magnet manual: começou a tocar com ${onDisk / 1048576} MB em disco")
+        }
+        assertTrue(com.brudre.streaming.sources.FeedParser.manual("http://example.com/x.mp4") == null)
+    }
+
     /** Teste 11: reprodução HLS (stream público de teste da Mux). */
     @Test fun t19_hlsPlayback() {
         val hls = Playable("hls", "HLS", 1, 1, "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", null, emptyList(), null, false)

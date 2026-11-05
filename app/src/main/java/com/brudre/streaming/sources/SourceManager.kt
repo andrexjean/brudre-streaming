@@ -66,12 +66,16 @@ class SourceManager(
     private val settings: AppSettings,
     private val validator: StreamValidator,
     val board: StatusBoard,
+    val feeds: FeedRepository,
 ) {
     private val curated = CuratedProvider(catalog)
     private val archive = ArchiveProvider(catalog)
     private val tmdb = TmdbProvider(catalog)
 
-    val providers: List<ContentProvider> = listOf(curated, archive, tmdb)
+    private val external = FeedProvider(feeds)
+
+    /** Ordem da busca: catálogos externos e obras abertas (tocam no app), acervo, e por fim só catálogo. */
+    val providers: List<ContentProvider> = listOf(external, curated, archive, tmdb)
 
     init {
         refreshRegistry()
@@ -80,12 +84,13 @@ class SourceManager(
     fun isEnabled(id: String): Boolean = id !in settings.current.disabledSources
 
     fun setEnabled(id: String, enabled: Boolean) {
+        if (id.startsWith(FeedRepository.PREFIX)) { feeds.setEnabled(id, enabled); return }
         settings.update { s -> s.copy(disabledSources = if (enabled) s.disabledSources - id else s.disabledSources + id) }
         refreshRegistry()
     }
 
     fun refreshRegistry() {
-        providers.forEach { p ->
+        providers.filter { it !== external }.forEach { p ->
             val on = isEnabled(p.id) && (p !== tmdb || catalog.tmdb.enabled)
             board.register(p.id, p.name, if (p === tmdb && !catalog.tmdb.enabled) "App compilado sem a chave do TMDB" else p.description, on)
         }

@@ -296,8 +296,58 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun removeCustomList(id: String) {
+        if (id.startsWith(com.brudre.streaming.sources.FeedRepository.PREFIX)) {
+            services.feeds.remove(id)
+            feedRows.remove(id)
+            return
+        }
         live.removeCustomList(id)
         liveLists.remove(id)
+    }
+
+    // ------------------------------------------------------- catálogos externos
+    private val feedRows = ConcurrentHashMap<String, MutableStateFlow<Load<List<Title>>>>()
+
+    fun enabledFeeds() = services.feeds.enabledFeeds()
+
+    fun feedRow(id: String): StateFlow<Load<List<Title>>> =
+        feedRows.getOrPut(id) { MutableStateFlow<Load<List<Title>>>(Load.Loading).also { loadFeed(id, it, false) } }
+
+    fun retryFeed(id: String) { feedRows[id]?.let { loadFeed(id, it, true) } }
+
+    private fun loadFeed(id: String, state: MutableStateFlow<Load<List<Title>>>, force: Boolean) {
+        state.value = Load.Loading
+        viewModelScope.launch {
+            state.value = try {
+                Load.Ok(services.feeds.items(id, force).map { it.title })
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Load.Error(e.message ?: "Falha ao carregar o catálogo")
+            }
+        }
+    }
+
+    fun addFeed(name: String, url: String, onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            onResult(
+                try {
+                    "Catálogo adicionado: ${services.feeds.add(name, url)} títulos"
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    e.message ?: "Não foi possível adicionar o catálogo"
+                },
+            )
+        }
+    }
+
+    /** Abre no player um magnet, .torrent, HLS ou vídeo HTTPS colado pelo usuário. */
+    fun openLink(input: String, onLaunch: (Intent) -> Unit, onError: (String) -> Unit) {
+        val (t, p) = com.brudre.streaming.sources.FeedParser.manual(input)
+            ?: return onError("Link inválido ou bloqueado. Use magnet:, um arquivo .torrent ou um endereço https:// de vídeo/HLS.")
+        if (p.directUrl == null && !sources.torrentAllowed) return onError("BitTorrent está desativado em Configurações > Fontes de conteúdo.")
+        onLaunch(PlayerActivity.intent(getApplication<Application>(), t, p, 0L))
     }
 
     // ------------------------------------------------------------ atualização

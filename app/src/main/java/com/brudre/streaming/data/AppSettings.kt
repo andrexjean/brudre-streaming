@@ -36,6 +36,8 @@ data class SettingsValues(
     val disabledSources: Set<String> = emptySet(),
     /** Listas M3U adicionadas pelo usuário: "nome|url" (gratuitas e autorizadas). */
     val customLists: List<String> = emptyList(),
+    /** Catálogos externos de vídeo (JSON do BruDre ou RSS) cadastrados pelo usuário: "nome|url". */
+    val feeds: List<String> = emptyList(),
     /** Controle dos pais: hash SHA-256 do PIN (vazio = sem senha definida). */
     val pinHash: String = "",
     /** Classificação máxima liberada sem senha (L, 10, 12, 14, 16, 18). */
@@ -64,6 +66,7 @@ class AppSettings(context: Context) {
             torrentConnections = prefs.getInt("connections", d.torrentConnections),
             disabledSources = prefs.getStringSet("disabledSources", d.disabledSources)?.toSet() ?: d.disabledSources,
             customLists = prefs.getString("customLists", null)?.let { s -> s.split('\n').filter { it.contains('|') } } ?: d.customLists,
+            feeds = prefs.getString("feeds", null)?.let { s -> s.split('\n').filter { it.contains('|') } } ?: d.feeds,
             pinHash = prefs.getString("pinHash", "") ?: "",
             maxRating = prefs.getString("maxRating", d.maxRating) ?: d.maxRating,
             intro = prefs.getBoolean("intro", d.intro),
@@ -81,6 +84,7 @@ class AppSettings(context: Context) {
             .putInt("connections", v.torrentConnections)
             .putStringSet("disabledSources", v.disabledSources)
             .putString("customLists", v.customLists.joinToString("\n"))
+            .putString("feeds", v.feeds.joinToString("\n"))
             .remove(LEGACY_KEYS[0])
             .remove(LEGACY_KEYS[1])
             .putString("pinHash", v.pinHash)

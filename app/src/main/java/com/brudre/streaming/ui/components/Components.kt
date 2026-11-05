@@ -294,6 +294,7 @@ fun TitleCard(
                 title.isTmdb && title.license == com.brudre.streaming.data.TmdbSource.FREE_LICENSE -> "GRÁTIS" to Color(0xCC0E6E8C)
                 title.isTmdb -> "CATÁLOGO" to Color(0xCC3A4466)
                 title.isArchive || title.isCurated -> "GRÁTIS" to Color(0xCC0E6E8C)
+                title.id.startsWith("feed:") -> "FONTE EXTERNA" to Color(0xCC5B3FB0)
                 else -> null
             }
             if (badge != null && progress == null) {

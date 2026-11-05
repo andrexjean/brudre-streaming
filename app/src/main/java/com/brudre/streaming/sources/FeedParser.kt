@@ -63,7 +63,8 @@ object FeedParser {
         var rejected = 0
         for (i in 0 until minOf(arr.length(), MAX_ITEMS)) {
             val o = arr.optJSONObject(i) ?: continue
-            val name = o.optStringOrNull("title") ?: o.optStringOrNull("name") ?: run { rejected++; continue }
+            val name = o.optStringOrNull("title") ?: o.optStringOrNull("name")
+            if (name == null) { rejected++; continue }
             val synopsis = o.optStringOrNull("synopsis") ?: o.optStringOrNull("description")
             if (Parental.isExplicit(name, synopsis)) { rejected++; continue }
             val sources = sources(o.optJSONArray("sources"))
@@ -129,6 +130,19 @@ object FeedParser {
         return FeedSource(t, u, file)
     }
 
+    /** Link colado à mão (Configurações → Abrir link): magnet, .torrent, HLS ou vídeo HTTPS. */
+    fun manual(input: String): Pair<Title, Playable>? {
+        val u = input.trim()
+        val src = source(null, u) ?: if (u.startsWith("https://", true) && UrlGuard.isAllowed(u)) FeedSource(FeedSource.Type.HTTP, u) else return null
+        val name = when (src.type) {
+            FeedSource.Type.MAGNET -> Regex("[?&]dn=([^&]+)").find(u)?.groupValues?.get(1)?.let { java.net.URLDecoder.decode(it, "UTF-8") } ?: "Link magnet"
+            else -> u.substringBefore('?').substringAfterLast('/').ifBlank { UrlGuard.hostOf(u) ?: "Link" }
+        }.take(80)
+        val id = "link:" + com.brudre.streaming.live.M3uParser.stableId("link", u)
+        val p = playable(id, name, 1, 1, listOf(src), emptyList()) ?: return null
+        return Title(id, Kind.MOVIE, name, license = "Link aberto pelo usuário") to p
+    }
+
     private val BTIH = Regex("(?i)[?&]xt=urn:(btih:([a-f0-9]{40}|[a-z2-7]{32})|btmh:1220[a-f0-9]{64})(&|$)")
 
     /** Magnet com hash de torrent válido (v1 hex/base32 ou v2), sem caracteres de controle. */
@@ -159,7 +173,8 @@ object FeedParser {
         var rejected = 0
         for (m in ITEM.findAll(xml).take(MAX_ITEMS)) {
             val body = m.groupValues[1]
-            val name = tag(body, "title") ?: run { rejected++; continue }
+            val name = tag(body, "title")
+            if (name == null) { rejected++; continue }
             val desc = tag(body, "description")?.replace(Regex("<[^>]+>"), " ")?.replace(Regex("\\s+"), " ")?.trim()
             if (Parental.isExplicit(name, desc)) { rejected++; continue }
             val candidates = ArrayList<Pair<String?, String>>()

@@ -77,8 +77,11 @@ class Services(private val app: Context) {
     /** Cliente para mídia e listas de terceiros: valida cada redirecionamento e bloqueia executáveis. */
     val guardedHttp: OkHttpClient by lazy { com.brudre.streaming.sources.GuardedHttp.client(http) }
     val sourceStatus = com.brudre.streaming.sources.StatusBoard()
+    val feeds: com.brudre.streaming.sources.FeedRepository by lazy {
+        com.brudre.streaming.sources.FeedRepository(guardedHttp, settings, sourceStatus, File(app.cacheDir, "feeds"))
+    }
     val sources: com.brudre.streaming.sources.SourceManager by lazy {
-        com.brudre.streaming.sources.SourceManager(catalog, settings, com.brudre.streaming.sources.StreamValidator(guardedHttp), sourceStatus)
+        com.brudre.streaming.sources.SourceManager(catalog, settings, com.brudre.streaming.sources.StreamValidator(guardedHttp), sourceStatus, feeds)
     }
     val live: com.brudre.streaming.live.LiveRepository by lazy {
         com.brudre.streaming.live.LiveRepository(app, guardedHttp, settings, sourceStatus, ::isOnline)
@@ -122,7 +125,7 @@ class Services(private val app: Context) {
         val httpBytes = CacheManager.dirSize(File(app.cacheDir, "http"))
         runCatching { http.cache?.evictAll() }
         catalog.clearCache()
-        val liveBytes = live.clearCache()
+        val liveBytes = live.clearCache() + CacheManager.dirSize(File(app.cacheDir, "feeds")).also { feeds.clearCache() }
         return torrentBytes + imageBytes + httpBytes + liveBytes
     }
 

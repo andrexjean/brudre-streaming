@@ -415,6 +415,8 @@ private fun SourcesSection(vm: MainViewModel) {
     val status by vm.sourceStatus.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var adding by remember { mutableStateOf(false) }
+    var addingFeed by remember { mutableStateOf(false) }
+    var openingLink by remember { mutableStateOf(false) }
     Column(Modifier.padding(top = 4.dp)) {
         Text("Fontes de conteúdo", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(
@@ -439,8 +441,14 @@ private fun SourcesSection(vm: MainViewModel) {
                 }
             }
         }
-        SettingRow("Adicionar lista M3U", "Adicionar", "Listas gratuitas e autorizadas (só canais HLS por http/https; executáveis e endereços locais são bloqueados)", "add_m3u") {
+        SettingRow("Adicionar catálogo de vídeos", "Adicionar", "Feed JSON do BruDre ou RSS com filmes/séries em HTTPS, HLS, magnet ou .torrent (só conteúdo autorizado)", "add_feed") {
+            addingFeed = true
+        }
+        SettingRow("Adicionar lista M3U (TV ao vivo)", "Adicionar", "Listas gratuitas e autorizadas (só canais HLS por https; executáveis e endereços locais são bloqueados)", "add_m3u") {
             adding = true
+        }
+        SettingRow("Abrir link de vídeo", "Abrir", "Cole um magnet, um .torrent, um HLS (.m3u8) ou um vídeo https:// para tocar no player do BruDre", "open_link") {
+            openingLink = true
         }
         Spacer(Modifier.height(12.dp))
     }
@@ -453,12 +461,48 @@ private fun SourcesSection(vm: MainViewModel) {
             },
         )
     }
+    if (addingFeed) {
+        AddListDialog(
+            title = "Novo catálogo de vídeos",
+            subtitle = "Use apenas catálogos de conteúdo com distribuição autorizada (obras abertas, conteúdo próprio, projetos comunitários).",
+            urlLabel = "Endereço (https://…/catalogo.json ou feed RSS)",
+            onDismiss = { addingFeed = false },
+            onAdd = { name, url ->
+                vm.addFeed(name, url) { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
+                addingFeed = false
+            },
+        )
+    }
+    if (openingLink) {
+        AddListDialog(
+            title = "Abrir link de vídeo",
+            subtitle = "magnet:, arquivo .torrent, HLS (.m3u8) ou vídeo https://. No BitTorrent seu IP fica visível aos outros participantes.",
+            urlLabel = "Link",
+            initialUrl = "",
+            showName = false,
+            action = "Tocar",
+            onDismiss = { openingLink = false },
+            onAdd = { _, url ->
+                openingLink = false
+                vm.openLink(url, onLaunch = { context.startActivity(it) }, onError = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() })
+            },
+        )
+    }
 }
 
 @Composable
-private fun AddListDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit) {
+private fun AddListDialog(
+    title: String = "Nova lista M3U",
+    subtitle: String = "Use apenas listas de canais gratuitos e autorizados.",
+    urlLabel: String = "Endereço (https://…/lista.m3u)",
+    initialUrl: String = "https://",
+    showName: Boolean = true,
+    action: String = "Adicionar",
+    onDismiss: () -> Unit,
+    onAdd: (String, String) -> Unit,
+) {
     var name by remember { mutableStateOf("") }
-    var url by remember { mutableStateOf("https://") }
+    var url by remember { mutableStateOf(initialUrl) }
     val fieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = BruColors.Cyan, unfocusedBorderColor = BruColors.CardBorder,
         focusedTextColor = Color.White, unfocusedTextColor = Color.White, cursorColor = BruColors.Cyan,
@@ -473,18 +517,20 @@ private fun AddListDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit
                 .width(620.dp)
                 .testTag("add_m3u_dialog"),
         ) {
-            Text("Nova lista M3U", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-            Text("Use apenas listas de canais gratuitos e autorizados.", color = BruColors.TextFaint, fontSize = 13.sp)
+            Text(title, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(subtitle, color = BruColors.TextFaint, fontSize = 13.sp)
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(name, { name = it.take(40) }, singleLine = true, label = { Text("Nome") }, colors = fieldColors, modifier = Modifier.fillMaxWidth().testTag("m3u_name"))
-            Spacer(Modifier.height(8.dp))
+            if (showName) {
+                OutlinedTextField(name, { name = it.take(40) }, singleLine = true, label = { Text("Nome") }, colors = fieldColors, modifier = Modifier.fillMaxWidth().testTag("m3u_name"))
+                Spacer(Modifier.height(8.dp))
+            }
             OutlinedTextField(
-                url, { url = it.trim().take(2048) }, singleLine = true, label = { Text("Endereço (https://…/lista.m3u)") },
+                url, { url = it.trim().take(4096) }, singleLine = true, label = { Text(urlLabel) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), colors = fieldColors, modifier = Modifier.fillMaxWidth().testTag("m3u_url"),
             )
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                BruButton("Adicionar", primary = true, modifier = Modifier.testTag("m3u_add")) { onAdd(name.ifBlank { "Minha lista" }, url) }
+                BruButton(action, primary = true, modifier = Modifier.testTag("m3u_add")) { onAdd(name, url) }
                 BruButton("Cancelar", onClick = onDismiss)
             }
         }
