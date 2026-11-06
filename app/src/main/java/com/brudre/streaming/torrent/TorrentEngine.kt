@@ -67,7 +67,12 @@ class TorrentEngine(
         pack.setDhtBootstrapNodes(DHT_BOOTSTRAP)
         // Android não tem o repositório de certificados do OpenSSL: sem isto, web seeds/trackers HTTPS falham sempre.
         // A integridade não depende do TLS: cada peça é conferida pelo hash SHA-1 do .torrent antes de ir ao player.
-        runCatching { pack.setBoolean(org.libtorrent4j.swig.settings_pack.bool_types.valueOf("validate_https_trackers").swigValue(), false) }
+        runCatching {
+            // Enum SWIG (classe com campos estáticos): lido por reflexão para não quebrar com outra versão da biblioteca.
+            val field = org.libtorrent4j.swig.settings_pack.bool_types::class.java.getField("validate_https_trackers")
+            val v = field.get(null) as org.libtorrent4j.swig.settings_pack.bool_types
+            pack.setBoolean(v.swigValue(), false)
+        }
             .onFailure { Log.w(TAG, "validate_https_trackers indisponível nesta versão", it) }
         val s = SessionManager(false)
         // Diagnóstico: falhas de web seed (servidor HTTPS do titular) aparecem no log.
