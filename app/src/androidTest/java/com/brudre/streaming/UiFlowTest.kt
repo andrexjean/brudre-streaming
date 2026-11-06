@@ -372,8 +372,9 @@ class UiFlowTest {
         remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("src_dialog"); Thread.sleep(500); TestUtil.shot("fontes_colar_magnet")
         remote(KeyEvent.KEYCODE_BACK)
-        // Volta às abas: Fontes nativas e Diagnóstico
-        rule.onNodeWithTag("src_tab_torrent").requestFocus(); waitFocused("src_tab_torrent")
+        // Fechou o diálogo: o foco volta para a janela do gerenciador (leva um instante); retorna às abas.
+        rule.waitUntil(10_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "src_dialog")).fetchSemanticsNodes().isEmpty() }
+        rule.waitUntil(10_000) { runCatching { rule.onNodeWithTag("src_tab_torrent").requestFocus(); rule.onNodeWithTag("src_tab_torrent").assertIsFocused(); true }.getOrDefault(false) }
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_native"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("order_native_first"); waitPrefix("native_"); Thread.sleep(800); TestUtil.shot("fontes_nativas")
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_diag"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
