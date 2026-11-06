@@ -387,7 +387,7 @@ class UiFlowTest {
         rule.onNodeWithTag("nav_LIVE").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("live")
         rule.onNodeWithTag("live").performScrollToKey("world_iptv_movies")
-        waitPrefix("live_iptv_movies_", 90_000)
+        waitPrefix("row_live_iptv_movies_", 90_000)
         Thread.sleep(4_000); TestUtil.shot("ao_vivo_mundo_filmes")
         rule.onNodeWithTag("nav_MOVIES").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("movies")
