@@ -65,7 +65,18 @@ class TorrentEngine(
             .maxQueuedDiskBytes(4 * 1024 * 1024)
             .stopTrackerTimeout(1)
         pack.setDhtBootstrapNodes(DHT_BOOTSTRAP)
+        // Android não tem o repositório de certificados do OpenSSL: sem isto, web seeds/trackers HTTPS falham sempre.
+        // A integridade não depende do TLS: cada peça é conferida pelo hash SHA-1 do .torrent antes de ir ao player.
+        runCatching { pack.setBoolean(org.libtorrent4j.swig.settings_pack.bool_types.valueOf("validate_https_trackers").swigValue(), false) }
+            .onFailure { Log.w(TAG, "validate_https_trackers indisponível nesta versão", it) }
         val s = SessionManager(false)
+        // Diagnóstico: falhas de web seed (servidor HTTPS do titular) aparecem no log.
+        runCatching {
+            s.addListener(object : org.libtorrent4j.AlertListener {
+                override fun types(): IntArray = intArrayOf(org.libtorrent4j.alerts.AlertType.URL_SEED.swig())
+                override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) { Log.w(TAG, "Web seed: ${alert.message()}") }
+            })
+        }
         s.start(SessionParams(pack))
         session = s
         Log.i(TAG, "Sessão BitTorrent iniciada (conexões=${values.torrentConnections})")
@@ -211,7 +222,7 @@ class TorrentEngine(
             .filter { it.startsWith("https://") && com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
             .forEach { url -> runCatching { th.addUrlSeed(url) } }
         runCatching { th.forceReannounce() }
-        Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers, ${magnet?.webSeeds?.size ?: 0} web seeds")
+        Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers, ${runCatching { th.urlSeeds().size }.getOrDefault(-1)} web seeds")
     }
 
     private suspend fun loadTorrentBytes(s: SessionManager, ref: TorrentRef): ByteArray {

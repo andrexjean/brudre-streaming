@@ -363,8 +363,11 @@ class UiFlowTest {
         waitTag("tor_paste"); waitTag("tor_cleanup_ON_CLOSE")
         Thread.sleep(800); TestUtil.shot("fontes_bittorrent")
         // Para baixo chega aos botões; OK em "Colar magnet" abre o diálogo
+        // O foco desce pela coluna mais próxima: pode cair em "Importar arquivo"; à esquerda chega em "Colar".
+        fun focused(tag: String) = runCatching { rule.onNodeWithTag(tag).assertIsFocused(); true }.getOrDefault(false)
         var guard = 0
-        while (runCatching { rule.onNodeWithTag("tor_paste").assertIsFocused(); true }.getOrDefault(false).not() && guard++ < 6) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+        while (!focused("tor_paste") && !focused("tor_import") && guard++ < 6) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+        if (focused("tor_import")) remote(KeyEvent.KEYCODE_DPAD_LEFT)
         waitFocused("tor_paste")
         remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("src_dialog"); Thread.sleep(500); TestUtil.shot("fontes_colar_magnet")
@@ -376,5 +379,19 @@ class UiFlowTest {
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_diag"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("diag"); waitTag("diag_summary"); Thread.sleep(800); TestUtil.shot("fontes_diagnostico")
         rule.onNodeWithTag("src_close").performClick()
+    }
+
+    /** Validação visual: conteúdo do mundo separado por idioma (TV ao vivo e Cinema Brasileiro). */
+    @Test fun t11_worldContentSeparatedByLanguage() {
+        waitTag("hero_play")
+        rule.onNodeWithTag("nav_LIVE").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("live")
+        rule.onNodeWithTag("live").performScrollToKey("world_iptv_movies")
+        waitPrefix("live_iptv_movies_", 90_000)
+        Thread.sleep(4_000); TestUtil.shot("ao_vivo_mundo_filmes")
+        rule.onNodeWithTag("nav_MOVIES").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("movies")
+        rule.onNodeWithTag("movies").performScrollToKey("tmdb_br_movies")
+        Thread.sleep(5_000); TestUtil.shot("filmes_cinema_brasileiro")
     }
 }
