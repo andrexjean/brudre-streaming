@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Executado dentro do emulador pelo GitHub Actions.
 set -u
+adb logcat -G 16M || true
 adb logcat -c || true
 ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace > instrumented.log 2>&1
 code=$?

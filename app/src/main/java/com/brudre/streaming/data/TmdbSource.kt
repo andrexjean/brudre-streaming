@@ -131,7 +131,7 @@ class TmdbSource(
             "tmdb_free_docs" to Spec("Documentários Grátis (apps)", "movie", genres = "99", free = true, minVotes = 5),
             "tmdb_free_series" to Spec("Séries Grátis", "tv", free = true, minVotes = 20),
             "tmdb_free_new_series" to Spec("Séries Novas Grátis", "tv", sort = "first_air_date.desc", free = true, minVotes = 5),
-            "tmdb_free_kids" to Spec("Desenhos Grátis", "tv", genres = "16|10762", free = true, minVotes = 5),
+            "tmdb_free_kids" to Spec("Desenhos Grátis", "tv", genres = "10762", free = true, minVotes = 5),
             // Lançamentos e em alta (catálogo completo)
             "tmdb_new_movies" to Spec("Filmes Lançados Recentemente", "movie", recentDays = 120, minVotes = 15),
             "tmdb_upcoming_streaming" to Spec("Lançamentos do Ano", "movie", recentDays = 365, minVotes = 100),

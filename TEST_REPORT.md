@@ -1,4 +1,53 @@
-# BruDre Streaming 8.0 — Relatório de testes
+# BruDre Streaming — Relatório de testes
+
+## Atualização 8.1 (build 8.0.29+) — 05/11/2026
+
+Executado no GitHub Actions: testes unitários (JVM) e testes instrumentados em emulador Android 11 x86_64 (TV 1080p, 2 GB) **com internet real**, a partir dos EUA (alguns canais brasileiros bloqueiam acesso de fora do Brasil). Commit testado `5199d83`, release publicada **v8.0.29**. Logs, capturas e relatórios nos branches `ci-build` e `ci-tests`.
+
+| Etapa | Resultado |
+|---|---|
+| Compilação debug + release com R8 | Aprovada (APK caiu de 24,5 MB para **15,9 MB**) |
+| Testes unitários | **61/61 aprovados** |
+| Testes instrumentados | **32/32 aprovados** |
+| APK release instalado e navegado pelo controle no emulador | Sem travamentos nem crashes; abre em 0,8 s (`am start -W`) |
+| Validação no Mi Stick físico | **Pendente** (sem acesso ao aparelho) |
+
+### Gerenciar fontes — testes obrigatórios (`PlaybackTest.t24`, `UiFlowTest.t09`)
+
+| Teste | Como | Resultado |
+|---|---|---|
+| Cadastro de fonte autorizada | 7 fontes reais cadastradas: catálogo JSON e RSS (filmes abertos da Blender), HLS de teste da Mux, magnet e .torrent do Sintel, vídeo HTTPS do Sintel, playlist IPTV do Brasil | Aprovado |
+| Identificação do formato | O formato detectado bateu com o esperado nas 7; página web (github.com), script de texto, `http://` e `file://` foram recusados sem salvar | Aprovado |
+| Reprodução de um vídeo | Filme do catálogo cadastrado (HTTP) e link único HLS tocaram no player | Aprovado |
+| Ativação e desativação | Catálogo desativado some das linhas e da pesquisa; reativado volta | Aprovado |
+| Prioridade | "Subir" duas vezes leva a fonte ao topo | Aprovado |
+| Persistência após reinicialização | Configuração gravada em disco (`shared_prefs/brudre_sources.xml`) e relida por uma nova instância com a mesma ordem e estado | Aprovado |
+| Exportar / importar | Exportado para `Android/data/com.brudre.streaming/files/brudre-fontes.json`, tudo apagado e reimportado com as mesmas 7 fontes | Aprovado |
+| Exclusão | Fonte excluída some do armazenamento e do catálogo | Aprovado |
+| Tela pelo controle remoto | `UiFlowTest.t09` abre Configurações → Gerenciar fontes e o diálogo de adicionar (capturas `gerenciar_fontes*.png`) | Aprovado |
+
+Também: `t22` (catálogo externo: Sintel por HTTP e HLS, Sintel só magnet, Big Buck Bunny só .torrent, Tears of Steel — todos tocaram e o tipo de fonte escolhido foi o esperado) e `t23` (magnet colado à mão toca por BitTorrent progressivo). Unitários: `FeedTest` (6), `SourceManagerTest` (3).
+
+### TV ao Vivo — verificação de todos os canais (`PlaybackTest.t21`)
+- **457 canais testados em 80 s** (Brasil + português): **360 no ar**, 97 fora do ar. Brasil: **213 de 294 no ar**. Principais motivos de falha: servidor responde erro HTTP (50), servidor inexistente/sem conexão.
+- Precisão: dos canais aprovados na verificação, **10 de 10 sorteados tocaram de verdade no player**.
+- **Defeito encontrado e corrigido:** os canais Pluto TV (≈200) redirecionam para endereços assinados com mais de 2 KB, que a proteção de URL recusava. Na 8.0.24 eles falhavam no player — era parte dos "vários canais não funcionam". O limite passou para 16 KB.
+
+### Filmes e séries atuais (`PlaybackTest.t15`, `UiFlowTest.t03/t09`)
+- Linhas grátis, Lançamentos e Em Alta carregadas (todas não vazias). Ex.: "Homem-Aranha: Sem Volta Para Casa", "Jogos Vorazes", "John Wick 4" grátis no **Mercado Play**; séries "Sherlock", "Luther", "One Piece".
+- Nenhum serviço pago na lista de apps gratuitos; abrir o app não instalado leva à Play Store sem travar.
+
+### Outros defeitos corrigidos nesta rodada
+1. **Motor BitTorrent encerrava a sessão durante a abertura de outro magnet** (o desligamento por ociosidade não via a busca de metadados em andamento). Corrigido; o teste `t23` passou.
+2. Tela Infantil: animes 16+ (ex.: JoJo) apareciam em "Desenhos Grátis" — a linha passou a usar só o gênero infantil do TMDB.
+
+### Desempenho
+- Medido com o APK **release** no emulador (`ci/perf-release.sh`): abre em 0,8 s, sem crash, memória total (PSS) ≈ 120 MB durante a navegação.
+- Os números de quadros do emulador **não representam o Mi Stick**: o emulador do CI desenha por software (sem GPU), então todos os quadros passam de 16 ms. A fluidez real precisa ser conferida no aparelho.
+
+---
+
+## Versão 8.0 (v8.0.24)
 
 Data: 05/11/2026 · Commit testado: `70ec607` · Release: **v8.0.24** (versionCode 80024) · Pipeline: GitHub Actions (`.github/workflows/android.yml`)
 
