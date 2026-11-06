@@ -23,7 +23,7 @@ class TmdbSource(
 
     @Volatile private var freeIds: Map<String, String>? = null
 
-    fun cacheKey(rowKey: String): String = "$rowKey|r${settings.current.maxRating}|v3"
+    fun cacheKey(rowKey: String): String = "$rowKey|r${settings.current.maxRating}|v4"
 
     /** Ids TMDB dos serviços gratuitos conhecidos no Brasil (para não misturar planos pagos com anúncios). */
     private fun freeProviderIds(media: String): String? {
@@ -46,6 +46,8 @@ class TmdbSource(
         val p = LinkedHashMap<String, String>()
         p["sort_by"] = spec.sort
         spec.genres?.let { p["with_genres"] = it }
+        spec.originalLanguage?.let { p["with_original_language"] = it }
+        spec.originCountry?.let { p["with_origin_country"] = it }
         p["vote_count.gte"] = spec.minVotes.toString()
         val dateKey = if (spec.media == "movie") "primary_release_date" else "first_air_date"
         when {
@@ -109,6 +111,9 @@ class TmdbSource(
         val trending: Boolean = false,
         val recentDays: Int? = null,
         val minYear: Int? = null,
+        /** Idioma original (ISO 639-1): separa produções brasileiras das do mundo. */
+        val originalLanguage: String? = null,
+        val originCountry: String? = null,
     )
 
     companion object {
@@ -132,6 +137,10 @@ class TmdbSource(
             "tmdb_free_series" to Spec("Séries Grátis", "tv", free = true, minVotes = 20),
             "tmdb_free_new_series" to Spec("Séries Novas Grátis", "tv", sort = "first_air_date.desc", free = true, minVotes = 5),
             "tmdb_free_kids" to Spec("Desenhos Grátis", "tv", genres = "10762", free = true, minVotes = 5),
+            // Produções brasileiras (áudio original em português)
+            "tmdb_br_free" to Spec("Filmes Brasileiros Grátis", "movie", free = true, minVotes = 5, originalLanguage = "pt", originCountry = "BR"),
+            "tmdb_br_movies" to Spec("Cinema Brasileiro", "movie", minYear = 1990, minVotes = 40, originalLanguage = "pt", originCountry = "BR"),
+            "tmdb_br_series" to Spec("Séries Brasileiras", "tv", minVotes = 10, originalLanguage = "pt", originCountry = "BR"),
             // Lançamentos e em alta (catálogo completo)
             "tmdb_new_movies" to Spec("Filmes Lançados Recentemente", "movie", recentDays = 120, minVotes = 15),
             "tmdb_upcoming_streaming" to Spec("Lançamentos do Ano", "movie", recentDays = 365, minVotes = 100),

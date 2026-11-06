@@ -8,17 +8,21 @@ import com.brudre.streaming.data.TorrentRef
 /** Fonte concreta a tentar, em ordem. */
 sealed class SourceAttempt {
     abstract val label: String
+    /** Fonte cadastrada que forneceu esta tentativa (histórico de sucesso/falha), se houver. */
+    abstract val sourceId: String?
 
-    data class Direct(val url: String) : SourceAttempt() {
+    data class Direct(val url: String, override val sourceId: String? = null) : SourceAttempt() {
         override val label = if (url.substringBefore('?').lowercase().contains(".m3u8")) "streaming HLS" else "streaming direto"
     }
 
-    data class Torrent(val ref: TorrentRef) : SourceAttempt() {
+    data class Torrent(val ref: TorrentRef, override val sourceId: String? = null) : SourceAttempt() {
         override val label = "BitTorrent"
     }
 }
 
 object PlaybackPlan {
+    const val MAX_TORRENTS = 4
+
     /**
      * Ordem de tentativas (BruDre Source Manager):
      * 1) HTTP/HLS direto, 2) endereços diretos alternativos, 3) BitTorrent autorizado.
@@ -28,8 +32,12 @@ object PlaybackPlan {
         val direct = (listOfNotNull(playable.directUrl) + playable.mirrors)
             .distinct()
             .filter { com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
-            .map { SourceAttempt.Direct(it) }
-        val torrent = playable.torrent?.takeIf { allowTorrent && !playable.live }?.let { listOf(SourceAttempt.Torrent(it)) } ?: emptyList()
+            .map { SourceAttempt.Direct(it, playable.origins[it]) }
+        // Todos os torrents equivalentes (fontes cadastradas), na ordem; no máximo 4 para não prender o usuário.
+        val torrent = if (!allowTorrent || playable.live) emptyList()
+        else (listOfNotNull(playable.torrent) + playable.altTorrents)
+            .distinctBy { com.brudre.streaming.sources.SourceRanker.refKey(it) }.take(MAX_TORRENTS)
+            .map { SourceAttempt.Torrent(it, playable.origins[com.brudre.streaming.sources.SourceRanker.refKey(it)]) }
         return when (mode) {
             SourceMode.DIRECT -> direct
             SourceMode.TORRENT -> torrent + direct

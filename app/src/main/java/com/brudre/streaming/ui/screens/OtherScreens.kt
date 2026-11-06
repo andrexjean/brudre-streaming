@@ -145,6 +145,8 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
     val context = LocalContext.current
     val keyboard = LocalSoftwareKeyboardController.current
     val submit = { q: String -> keyboard?.hide(); vm.search(q) }
+    // Saiu da Pesquisa com consulta em andamento: cancela (libera rede e as APIs de pesquisa).
+    androidx.compose.runtime.DisposableEffect(Unit) { onDispose { vm.cancelSearch() } }
 
     Column(Modifier.fillMaxSize().padding(horizontal = 40.dp).testTag("search")) {
         Text("Pesquisa", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp, bottom = 12.dp))

@@ -17,7 +17,14 @@ data class FeedSource(val type: Type, val url: String, val file: String? = null)
 
 data class FeedEpisode(val season: Int, val number: Int, val label: String, val sources: List<FeedSource>)
 
-data class FeedItem(val title: Title, val sources: List<FeedSource>, val episodes: List<FeedEpisode> = emptyList(), val subtitles: List<SubtitleRef> = emptyList()) {
+data class FeedItem(
+    val title: Title,
+    val sources: List<FeedSource>,
+    val episodes: List<FeedEpisode> = emptyList(),
+    val subtitles: List<SubtitleRef> = emptyList(),
+    /** Identificador TMDB da obra ("movie:603" / "tv:1399"), quando a fonte informa: associação exata. */
+    val tmdbId: String? = null,
+) {
     /** Uma unidade reproduzível por filme/episódio, juntando HTTP/HLS (diretas) e torrent. */
     fun playables(): List<Playable> {
         if (episodes.isNotEmpty()) {
@@ -38,7 +45,8 @@ data class Feed(val name: String, val items: List<FeedItem>, val rejected: Int)
  * {"name": "Minha fonte", "items": [{"id": "x", "title": "Nome", "year": "2010", "kind": "MOVIE",
  *   "synopsis": "...", "poster": "https://...", "license": "CC BY",
  *   "sources": [{"type": "magnet", "url": "magnet:?xt=..."}, {"type": "http", "url": "https://.../x.mp4"}],
- *   "episodes": [{"season": 1, "number": 1, "title": "Ep. 1", "sources": [...]}]}]}
+ *   "episodes": [{"season": 1, "number": 1, "title": "Ep. 1", "sources": [...]}],
+ *   "tmdb": "movie:10378", "language": "en", "audio": ["en", "pt"], "subtitles": [{"lang": "pt", "url": "https://..."}]}]}
  * ```
  */
 object FeedParser {
@@ -79,6 +87,13 @@ object FeedParser {
             val itemId = o.optStringOrNull("id") ?: com.brudre.streaming.live.M3uParser.stableId(feedId, name)
             val kind = Kind.parse(o.optStringOrNull("kind")?.uppercase()).let { if (it == Kind.LIVE) Kind.MOVIE else it }
             val poster = o.optStringOrNull("poster")?.takeIf { UrlGuard.isAllowed(it) }
+            val subs = o.optJSONArray("subtitles")?.let { sa ->
+                (0 until sa.length()).mapNotNull { k ->
+                    sa.optJSONObject(k)?.let { s -> s.optStringOrNull("url")?.takeIf { UrlGuard.isAllowed(it) }?.let { SubtitleRef(it, s.optString("lang", "und"), s.optString("label", s.optString("lang"))) } }
+                }
+            } ?: emptyList()
+            val audio = o.optJSONArray("audio")?.let { a -> (0 until a.length()).map { a.optString(it) } }.orEmpty()
+            val language = o.optStringOrNull("language")?.take(8)?.lowercase()
             out += FeedItem(
                 Title(
                     id = "$PREFIX$feedId:${itemId.replace(Regex("[^A-Za-z0-9_.-]"), "_").take(80)}",
@@ -92,16 +107,27 @@ object FeedParser {
                     posterUrl = poster,
                     bannerUrl = o.optStringOrNull("banner")?.takeIf { UrlGuard.isAllowed(it) } ?: poster,
                     license = o.optStringOrNull("license") ?: "Fonte externa",
+                    language = language,
+                    ptAudio = com.brudre.streaming.data.Languages.isPortuguese(language) || audio.any { com.brudre.streaming.data.Languages.isPortuguese(it) },
+                    ptSubtitles = subs.any { com.brudre.streaming.data.Languages.isPortuguese(it.language) },
                 ),
                 sources, episodes,
-                subtitles = o.optJSONArray("subtitles")?.let { sa ->
-                    (0 until sa.length()).mapNotNull { k ->
-                        sa.optJSONObject(k)?.let { s -> s.optStringOrNull("url")?.takeIf { UrlGuard.isAllowed(it) }?.let { SubtitleRef(it, s.optString("lang", "und"), s.optString("label", s.optString("lang"))) } }
-                    }
-                } ?: emptyList(),
+                subtitles = subs,
+                tmdbId = tmdbIdOf(o),
             )
         }
         return Feed(root.optString("name", "Fonte externa"), out.distinctBy { it.title.id }, rejected)
+    }
+
+    /** "tmdb": "movie:603", 603 com "kind", ou "tmdb_id". Normaliza para "movie:603"/"tv:1399". */
+    fun tmdbIdOf(o: JSONObject): String? {
+        val raw = o.opt("tmdb") ?: o.opt("tmdb_id") ?: return null
+        val text = raw.toString().trim().removePrefix("tmdb:")
+        Regex("^(movie|tv):(\\d{1,9})$").find(text)?.let { return it.value }
+        val n = text.toIntOrNull() ?: return null
+        val kind = o.optString("kind").uppercase()
+        val episodic = o.optJSONArray("episodes") != null
+        return (if (kind == "SERIES" || episodic) "tv:" else "movie:") + n
     }
 
     private fun sources(arr: JSONArray?): List<FeedSource> {
@@ -202,13 +228,41 @@ object FeedParser {
         return Feed(channelTitle, out.distinctBy { it.title.id }, rejected)
     }
 
+    /**
+     * Índice leve do catálogo (uma linha por título: nome normalizado, ano, TMDB, posição).
+     * A associação de títulos lê só os índices; o catálogo inteiro é carregado apenas quando há correspondência.
+     */
+    fun indexOf(items: List<FeedItem>): String = items.mapIndexed { i, it ->
+        listOf(TitleMatcher.normalize(cleanName(it.title.name)), it.title.year ?: "", it.tmdbId ?: "", i.toString()).joinToString("\t")
+    }.joinToString("\n")
+
+    data class IndexEntry(val name: String, val year: String?, val tmdbId: String?, val position: Int)
+
+    fun parseIndexLine(line: String): IndexEntry? {
+        val p = line.split('\t')
+        if (p.size < 4) return null
+        return IndexEntry(p[0], p[1].ifBlank { null }, p[2].ifBlank { null }, p[3].toIntOrNull() ?: return null)
+    }
+
+    /** Remove marcas de formato do nome ("Filme (magnet)", "Filme [1080p]") antes de comparar. */
+    fun cleanName(name: String) = name.replace(Regex("\\s*[(\\[](magnet|\\.torrent|hls|http[^)\\]]*|\\d{3,4}p|4k|web-?dl|bluray)[)\\]]", RegexOption.IGNORE_CASE), "").trim()
+
+    /** "1080p", "720p", "4K"… no nome ou no endereço. */
+    fun qualityOf(vararg texts: String?): String? {
+        val t = texts.filterNotNull().joinToString(" ")
+        Regex("(?i)\\b(2160|1080|720|576|480|360)p\\b").find(t)?.let { return it.groupValues[1] + "p" }
+        if (Regex("(?i)\\b(4k|uhd)\\b").containsMatchIn(t)) return "4K"
+        return null
+    }
+
     fun itemsToJson(items: List<FeedItem>): String = JSONArray().apply {
         items.forEach { it ->
             put(JSONObject().put("t", it.title.toJson())
                 .put("s", JSONArray().apply { it.sources.forEach { s -> put(JSONObject().put("type", s.type.name).put("url", s.url).put("file", s.file ?: JSONObject.NULL)) } })
                 .put("e", JSONArray().apply { it.episodes.forEach { e -> put(JSONObject().put("season", e.season).put("number", e.number).put("label", e.label)
                     .put("s", JSONArray().apply { e.sources.forEach { s -> put(JSONObject().put("type", s.type.name).put("url", s.url).put("file", s.file ?: JSONObject.NULL)) } })) } })
-                .put("sub", JSONArray().apply { it.subtitles.forEach { sb -> put(sb.toJson()) } }))
+                .put("sub", JSONArray().apply { it.subtitles.forEach { sb -> put(sb.toJson()) } })
+                .put("tmdb", it.tmdbId ?: JSONObject.NULL))
         }
     }.toString()
 
@@ -222,6 +276,7 @@ object FeedParser {
                 src(o.getJSONArray("s")),
                 o.optJSONArray("e")?.let { ea -> (0 until ea.length()).map { j -> ea.getJSONObject(j).let { e -> FeedEpisode(e.getInt("season"), e.getInt("number"), e.getString("label"), src(e.getJSONArray("s"))) } } } ?: emptyList(),
                 o.optJSONArray("sub")?.let { sa -> (0 until sa.length()).map { SubtitleRef.fromJson(sa.getJSONObject(it)) } } ?: emptyList(),
+                o.optStringOrNull("tmdb"),
             )
         }
     }

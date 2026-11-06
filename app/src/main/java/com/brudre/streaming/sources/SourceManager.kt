@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withTimeout
+import com.brudre.streaming.data.SourceOption
+import com.brudre.streaming.data.TmdbParser
 import java.util.concurrent.ConcurrentHashMap
 
 /** Estado de todas as fontes, atualizado a cada uso (sucesso, falha, latência). */
@@ -67,12 +69,15 @@ class SourceManager(
     private val validator: StreamValidator,
     val board: StatusBoard,
     val feeds: FeedRepository,
+    private val store: SourceStore? = null,
+    val searchRepo: SearchRepository? = null,
+    private val torrents: (() -> com.brudre.streaming.torrent.TorrentLibrary)? = null,
 ) {
     private val curated = CuratedProvider(catalog)
     private val archive = ArchiveProvider(catalog)
     private val tmdb = TmdbProvider(catalog)
 
-    private val external = FeedProvider(feeds)
+    private val external = FeedProvider(feeds, searchRepo)
 
     /** Ordem da busca: catálogos externos e obras abertas (tocam no app), acervo, e por fim só catálogo. */
     val providers: List<ContentProvider> = listOf(external, curated, archive, tmdb)
@@ -153,24 +158,75 @@ class SourceManager(
         return confirm(d)
     }
 
-    /** Associa o título do catálogo a um título das fontes cadastradas (mesmo nome e ano). */
+    /**
+     * Junta TODAS as fontes cadastradas que têm a obra (catálogos, APIs de pesquisa e torrents associados),
+     * na ordem configurada (prioridade + histórico) e na posição escolhida em relação às nativas.
+     * A primeira fonte vira a principal; as demais viram alternativas automáticas no player e na escolha manual.
+     */
     private suspend fun attachUserSources(d: TitleDetails, original: Title): TitleDetails {
-        if (feeds.enabledFeeds().isEmpty()) return d
         val names = (TitleMatcher.names(d.title.name, original.name) + (tmdb.hintFor(d.title)?.names ?: emptyList())).distinct()
-        val match = runCatching { feeds.matches(names, d.title.year) }.getOrDefault(emptyList()).firstOrNull() ?: return d
-        val extra = match.second.playables()
-        if (extra.isEmpty()) return d
-        return if (!d.available) {
-            d.copy(playables = extra, sourceLabel = "Fonte cadastrada: ${match.first.name}", providerId = match.first.id, confirmed = false)
-        } else {
-            val first = d.playables.first()
-            val q = extra.first()
-            val merged = first.copy(
-                mirrors = (first.mirrors + listOfNotNull(q.directUrl) + q.mirrors).distinct().filter { it != first.directUrl },
-                torrent = first.torrent ?: q.torrent,
-            )
-            d.copy(playables = listOf(merged) + d.playables.drop(1), sourceLabel = "${d.sourceLabel} • também em ${match.first.name}")
+        val tmdbId = TmdbParser.parseId(d.title.id)?.let { "${it.first}:${it.second}" }
+        val user = runCatching { userCandidates(names, d.title, tmdbId) }.getOrElse { if (it is CancellationException) throw it; emptyList() }
+        if (user.isEmpty()) return d
+        val native = if (d.available) SourceOption(d.providerId ?: "native", nativeName(d), d.playables, SourceRanker.formats(d.playables), native = true) else null
+        val options = SourceRanker.order(native, user, settings.current.userSourcesFirst)
+        val merged = SourceRanker.merge(options)
+        val first = options.first()
+        val label = when {
+            options.size == 1 -> if (first.native) d.sourceLabel else "Fonte cadastrada: ${first.name}"
+            first.native -> "${d.sourceLabel} • mais ${options.size - 1} fonte(s) cadastrada(s)"
+            else -> "Fonte: ${first.name} • ${options.size} fontes encontradas"
         }
+        return d.copy(playables = merged, sourceLabel = label, providerId = first.sourceId, confirmed = false, options = options)
+    }
+
+    private fun nativeName(d: TitleDetails) = when (d.providerId) {
+        "archive" -> "Internet Archive"
+        "curated" -> "Obras abertas (BruDre)"
+        else -> d.sourceLabel.substringBefore(" •").take(40)
+    }
+
+    /** Fontes cadastradas com a obra, consultadas em paralelo e com tempo-limite (uma lenta não segura as outras). */
+    private suspend fun userCandidates(names: List<String>, t: Title, tmdbId: String?): List<SourceRanker.Candidate> = coroutineScope {
+        val st = store?.current.orEmpty()
+        fun rank(id: String) = st.indexOfFirst { it.id == id }.let { if (it < 0) 500 else it }
+        fun unreliable(id: String) = st.firstOrNull { it.id == id }?.stats?.unreliable == true
+        fun health(id: String) = st.firstOrNull { it.id == id }?.stats?.summary
+        val catalogJob = async {
+            if (feeds.enabledFeeds().isEmpty()) emptyList()
+            else runCatching { withTimeout(15_000) { feeds.matches(names, t.year, tmdbId) } }.getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
+        }
+        val searchJob = async {
+            val repo = searchRepo ?: return@async emptyList()
+            if (repo.sources().isEmpty() || names.isEmpty()) return@async emptyList()
+            val q = SearchTemplate.Query(t.name, tmdbId, t.year, tmdbId?.substringBefore(':'))
+            runCatching { withTimeout(SearchRepository.PER_SOURCE_MS + 4_000) { repo.search(q) } }
+                .getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
+                .filter { h -> if (tmdbId != null && h.item.tmdbId != null) h.item.tmdbId == tmdbId else TitleMatcher.matches(h.item.title.copy(name = FeedParser.cleanName(h.item.title.name)), names, t.year) }
+        }
+        val out = ArrayList<SourceRanker.Candidate>()
+        catalogJob.await().forEach { (f, item) ->
+            val id = if (f.id == FeedRepository.LINKS_ID) item.title.id.substringAfterLast(':') else f.id
+            val name = if (f.id == FeedRepository.LINKS_ID) item.title.name else f.name
+            val ps = item.playables()
+            if (ps.isNotEmpty()) out += SourceRanker.Candidate(
+                SourceOption(id, name, SourceRanker.tag(ps, id), SourceRanker.formats(ps), FeedParser.qualityOf(item.title.name, ps.firstOrNull()?.directUrl), health = health(id)),
+                rank(id), unreliable(id),
+            )
+        }
+        searchJob.await().forEach { h ->
+            val ps = h.item.playables()
+            if (ps.isNotEmpty()) out += SourceRanker.Candidate(
+                SourceOption(h.source.id, "${h.source.name} (pesquisa)", SourceRanker.tag(ps, h.source.id), SourceRanker.formats(ps), FeedParser.qualityOf(h.item.title.name), health = health(h.source.id)),
+                rank(h.source.id), unreliable(h.source.id),
+            )
+        }
+        torrents?.invoke()?.matches(names, t.year, tmdbId)?.forEach { e ->
+            val p = Playable("${e.hash}:auto", e.displayName, 1, 1, null, e.ref, emptyList(), null, preferTorrent = true)
+            out += SourceRanker.Candidate(SourceOption("torrent:${e.hash}", "Meu torrent: ${e.name}", listOf(p), "BitTorrent", FeedParser.qualityOf(e.name)), 900, false)
+        }
+        // Mesma fonte com o mesmo vídeo duas vezes (catálogo e pesquisa) entra uma vez só.
+        out.distinctBy { c -> c.option.sourceId + "|" + c.option.playables.joinToString { it.directUrl ?: it.torrent?.magnet ?: it.torrent?.torrentUrl ?: it.key } }
     }
 
     /** Título de fonte externa sem capa: usa capa, sinopse e classificação do catálogo (TMDB) quando nome e ano batem. */
@@ -199,12 +255,15 @@ class SourceManager(
     }
 
     /** Verifica o vídeo principal; links mortos são descartados e o resto continua disponível. */
-    private suspend fun confirm(d: TitleDetails): TitleDetails {
+    private suspend fun confirm(d0: TitleDetails): TitleDetails {
+        // Legenda em português disponível na fonte → selo "LEG PT" na tela de detalhes.
+        val d = if (!d0.title.ptSubtitles && d0.playables.any { p -> p.subtitles.any { com.brudre.streaming.data.Languages.isPortuguese(it.language) } })
+            d0.copy(title = d0.title.copy(ptSubtitles = true)) else d0
         if (!d.available) return d
         val list = d.playables.filter { it.hasSource }
         val first = list.first()
         val probe = if (!torrentAllowed && first.directUrl == null && first.mirrors.isEmpty()) StreamValidator.Result.INVALID
-        else validator.validate(if (torrentAllowed) first else first.copy(torrent = null))
+        else validator.validate(if (torrentAllowed) first else first.copy(torrent = null, altTorrents = emptyList()))
         return when (probe) {
             StreamValidator.Result.OK -> d.copy(confirmed = true)
             StreamValidator.Result.UNKNOWN -> d.copy(confirmed = false, sourceLabel = "${d.sourceLabel} • não foi possível confirmar agora")
@@ -225,5 +284,69 @@ class SourceManager(
         private const val TAG = "BruDreSources"
         private const val TIMEOUT_MS = 25_000L
         const val BITTORRENT = "bittorrent"
+    }
+}
+
+/** Ordem e junção das fontes de um título (funções puras, testadas em SourceManagerTest). */
+object SourceRanker {
+    data class Candidate(val option: SourceOption, val priority: Int, val unreliable: Boolean)
+
+    /**
+     * Ordem final: fontes cadastradas pela prioridade do usuário (as que falharam 3x seguidas vão para o fim),
+     * antes ou depois da fonte nativa conforme a configuração.
+     */
+    fun order(native: SourceOption?, user: List<Candidate>, userFirst: Boolean): List<SourceOption> {
+        val users = user.sortedWith(compareBy<Candidate>({ it.unreliable }, { it.priority })).map { it.option }
+        return when {
+            native == null -> users
+            userFirst -> users + native
+            else -> listOf(native) + users
+        }
+    }
+
+    /** Marca a origem de cada endereço/torrent (histórico de sucesso e falha no player). */
+    fun tag(ps: List<Playable>, sourceId: String): List<Playable> = ps.map { p ->
+        val keys = listOfNotNull(p.directUrl) + p.mirrors + listOfNotNull(p.torrent?.let { refKey(it) }) + p.altTorrents.map { refKey(it) }
+        p.copy(origins = p.origins + keys.associateWith { sourceId })
+    }
+
+    fun refKey(t: com.brudre.streaming.data.TorrentRef): String = t.magnet ?: t.torrentUrl ?: t.localFile ?: ""
+
+    /**
+     * Junta as opções: os vídeos da primeira fonte, com os endereços e torrents equivalentes das outras
+     * (mesmo episódio) como alternativas, na ordem. O player tenta a próxima diante de erro recuperável.
+     */
+    fun merge(options: List<SourceOption>): List<Playable> {
+        if (options.isEmpty()) return emptyList()
+        val primary = options.first().playables
+        return primary.map { p ->
+            var out = p
+            for (o in options.drop(1)) {
+                val q = o.playables.firstOrNull { it.season == p.season && it.number == p.number }
+                    ?: o.playables.singleOrNull()?.takeIf { primary.size == 1 } ?: continue
+                val newDirect = out.directUrl ?: q.directUrl ?: q.mirrors.firstOrNull()
+                val allDirect = (listOfNotNull(out.directUrl) + out.mirrors + listOfNotNull(q.directUrl) + q.mirrors).distinct()
+                val newTorrent = out.torrent ?: q.torrent ?: q.altTorrents.firstOrNull()
+                val allTorrents = (listOfNotNull(out.torrent) + out.altTorrents + listOfNotNull(q.torrent) + q.altTorrents).distinctBy { refKey(it) }
+                out = out.copy(
+                    directUrl = newDirect,
+                    mirrors = allDirect.filter { it != newDirect },
+                    torrent = newTorrent,
+                    altTorrents = allTorrents.filter { refKey(it) != newTorrent?.let(::refKey) },
+                    origins = q.origins + out.origins,
+                    subtitles = (out.subtitles + q.subtitles).distinctBy { it.url },
+                )
+            }
+            out
+        }
+    }
+
+    fun formats(ps: List<Playable>): String {
+        val all = ps.flatMap { listOfNotNull(it.directUrl) + it.mirrors }
+        val f = ArrayList<String>()
+        if (all.any { !it.substringBefore('?').endsWith(".m3u8", true) }) f += "HTTP"
+        if (all.any { it.substringBefore('?').endsWith(".m3u8", true) }) f += "HLS"
+        if (ps.any { it.torrent != null || it.altTorrents.isNotEmpty() }) f += "BitTorrent"
+        return f.joinToString(" • ").ifEmpty { "—" }
     }
 }

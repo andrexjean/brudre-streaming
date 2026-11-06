@@ -1,0 +1,7 @@
+1
+00:00:01,000 --> 00:00:08,000
+Legenda de teste do BruDre (episódio 1)
+
+2
+00:00:10,000 --> 00:00:28,000
+Arquivo de legenda dentro do torrent

@@ -83,7 +83,9 @@ fun DetailsDialog(
     onDismiss: () -> Unit,
     onPlay: (Title, Playable?, Boolean, TitleDetails?) -> Unit,
     onFreeApp: (Title, com.brudre.streaming.data.FreeProvider) -> Unit = { _, _ -> },
+    onPlayOption: (TitleDetails, com.brudre.streaming.data.SourceOption, Playable?) -> Unit = { _, _, _ -> },
 ) {
+    var choosing by remember { mutableStateOf(false) }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         FullScreenDialogWindow()
         val state by vm.details.collectAsStateWithLifecycle()
@@ -143,6 +145,21 @@ fun DetailsDialog(
                     formatDuration(shown.durationMin)?.let { Text(it, color = BruColors.TextDim, fontSize = 15.sp) }
                     if (shown.genres.isNotEmpty()) Text(shown.genres.joinToString(" • "), color = BruColors.TextDim, fontSize = 15.sp, maxLines = 1)
                 }
+                shown.languageLine?.let { line ->
+                    Spacer(Modifier.height(6.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        shown.languageBadge?.let { b ->
+                            Text(
+                                b, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                                modifier = Modifier.clip(RoundedCornerShape(5.dp))
+                                    .background(if (shown.ptAudio) Color(0xCC1F8A4C) else if (shown.ptSubtitles) Color(0xCC2F4C9C) else Color(0xCC5A5F73))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp).testTag("details_lang_badge"),
+                            )
+                            Spacer(Modifier.width(10.dp))
+                        }
+                        Text(line, color = BruColors.TextDim, fontSize = 14.sp, modifier = Modifier.testTag("details_language"))
+                    }
+                }
                 Spacer(Modifier.height(12.dp))
                 Text(
                     shown.synopsis ?: "Sinopse não informada pela fonte.",
@@ -195,9 +212,15 @@ fun DetailsDialog(
                         onToggleFavorite = { vm.toggleFavorite(s.value.title) },
                         onPlay = { p, fromStart -> onPlay(s.value.title, p, fromStart, s.value) },
                         onRetry = { vm.reloadDetails() },
+                        onChoose = { choosing = true },
                     )
                 }
             }
+        }
+
+        val ok = (state as? Load.Ok)?.value
+        if (choosing && ok != null) {
+            SourceOptionsDialog(ok, onDismiss = { choosing = false }) { option -> choosing = false; onPlayOption(ok, option, null) }
         }
 
         if (showPin) {
@@ -293,6 +316,7 @@ private fun AvailableSection(
     onToggleFavorite: () -> Unit,
     onPlay: (Playable, Boolean) -> Unit,
     onRetry: () -> Unit,
+    onChoose: () -> Unit = {},
 ) {
     val playables = details.playables.filter { it.hasSource }
     val byKey = progress.associateBy { it.episodeKey }
@@ -357,6 +381,9 @@ private fun AvailableSection(
                 if (canResume) {
                     BruButton("Do início", icon = Icons.Filled.Refresh, modifier = Modifier.testTag("btn_restart")) { onPlay(target, true) }
                 }
+                if (details.options.size > 1) {
+                    BruButton("Escolher fonte (${details.options.size})", modifier = Modifier.testTag("btn_sources"), onClick = onChoose)
+                }
                 FavoriteButton(isFavorite, onClick = onToggleFavorite)
             }
         }
@@ -420,4 +447,46 @@ private fun EpisodeCard(p: Playable, progress: ProgressEntity?, modifier: Modifi
             ProgressBar(progress.fraction())
         }
     }
+}
+
+/** Escolha manual da fonte: todas as fontes compatíveis encontradas, na ordem automática. */
+@Composable
+private fun SourceOptionsDialog(details: TitleDetails, onDismiss: () -> Unit, onPick: (com.brudre.streaming.data.SourceOption) -> Unit) {
+    val first = remember { FocusRequester() }
+    Dialog(onDismissRequest = onDismiss) {
+        Column(
+            Modifier.clip(RoundedCornerShape(16.dp)).background(BruColors.Navy).border(1.dp, BruColors.CardBorder, RoundedCornerShape(16.dp))
+                .padding(24.dp).width(720.dp).testTag("source_options"),
+        ) {
+            Text("Fontes encontradas", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(
+                "Na ordem automática (prioridade e histórico). Se a escolhida falhar, o player tenta as seguintes.",
+                color = BruColors.TextFaint, fontSize = 13.sp,
+            )
+            Spacer(Modifier.height(12.dp))
+            details.options.forEachIndexed { i, o ->
+                var focused by remember { mutableStateOf(false) }
+                val shape = RoundedCornerShape(10.dp)
+                Column(
+                    Modifier.padding(vertical = 4.dp).width(672.dp).clip(shape)
+                        .background(if (focused) BruColors.NavyLight else BruColors.Card)
+                        .border(if (focused) 2.dp else 1.dp, if (focused) BruColors.Cyan else BruColors.CardBorder, shape)
+                        .then(if (i == 0) Modifier.focusRequester(first) else Modifier)
+                        .onFocusChanged { focused = it.isFocused }
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { onPick(o) }
+                        .padding(horizontal = 14.dp, vertical = 10.dp)
+                        .testTag("option_$i"),
+                ) {
+                    Text("${i + 1}. ${o.name}${if (o.native) " (nativa)" else ""}", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        listOfNotNull(o.formats, o.quality, "${o.playables.size} vídeo(s)", o.health).joinToString(" • "),
+                        color = BruColors.TextFaint, fontSize = 13.sp,
+                    )
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            BruButton("Cancelar", onClick = onDismiss)
+        }
+    }
+    LaunchedEffect(Unit) { delay(100); runCatching { first.requestFocus() } }
 }

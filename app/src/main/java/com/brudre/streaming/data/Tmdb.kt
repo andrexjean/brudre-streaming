@@ -84,6 +84,8 @@ object TmdbParser {
                 posterUrl = backdropSmall(o.optStringOrNull("backdrop_path")) ?: poster,
                 bannerUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: poster,
                 license = "TMDB",
+                language = o.optStringOrNull("original_language"),
+                ptAudio = o.optStringOrNull("original_language") == "pt",
             )
         }
         return out
@@ -123,6 +125,10 @@ object TmdbParser {
             posterUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: poster(o.optStringOrNull("poster_path")) ?: base?.posterUrl,
             bannerUrl = backdrop(o.optStringOrNull("backdrop_path")) ?: base?.bannerUrl,
             license = "Metadados: TMDB",
+            language = o.optStringOrNull("original_language"),
+            // Áudio em português só quando a obra é originalmente em português (dublagem não é informada pelo TMDB).
+            ptAudio = o.optStringOrNull("original_language") == "pt" ||
+                (o.optJSONArray("spoken_languages")?.let { a -> (0 until a.length()).any { a.optJSONObject(it)?.optString("iso_639_1") == "pt" } } ?: false),
         )
         val original = if (media == "movie") o.optStringOrNull("original_title") else o.optStringOrNull("original_name")
         val free = o.optJSONObject("watch/providers")?.let { parseFreeProviders(it, region) } ?: emptyList()

@@ -93,7 +93,9 @@ class StreamValidator(guarded: OkHttpClient) {
                 Result.INVALID -> Unit
             }
         }
-        p.torrent?.let { t ->
+        for (t in listOfNotNull(p.torrent) + p.altTorrents) {
+            // .torrent importado (já validado ao importar) ou magnet com hash válido.
+            if (t.localFile != null && java.io.File(t.localFile).exists()) return Result.OK
             if (t.magnet != null && MagnetLink.parse(t.magnet) != null) return Result.OK
             t.torrentUrl?.let { url ->
                 when (check(url, emptyMap())) {

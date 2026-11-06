@@ -75,6 +75,7 @@ class PlayerActivity : ComponentActivity() {
     private var errorDialog: AlertDialog? = null
     private var reconnects = 0
     private var reconnectJob: Job? = null
+    private val recorded = HashSet<String>()
     private val isLive: Boolean get() = ::playable.isInitialized && playable.live
 
     /** Último estado observado, para testes instrumentados. */
@@ -197,6 +198,8 @@ class PlayerActivity : ComponentActivity() {
                     stallJob?.cancel()
                     if (currentAttempt !is SourceAttempt.Torrent) showStatus(null)
                     if (isLive) services.live.markOnline(title.id.removePrefix(com.brudre.streaming.data.Title.LIVE_PREFIX))
+                    currentAttempt?.sourceId?.let { id -> if (recorded.add(id)) services.appScope.launch(Dispatchers.IO) { services.sourceStore.recordResult(id, true) } }
+                    com.brudre.streaming.torrent.TorrentLibrary.hashOf(title.id)?.let { h -> services.appScope.launch(Dispatchers.IO) { services.torrentLibrary.markPlayed(h) } }
                 }
                 if (state == Player.STATE_BUFFERING && hasBeenReady) {
                     // Travou no meio: se não voltar em pouco tempo, troca de fonte.
@@ -264,22 +267,33 @@ class PlayerActivity : ComponentActivity() {
                         val stream = services.torrent.open(attempt.ref) { msg -> runOnUiThread { showStatus("BitTorrent: $msg") } }
                         if (!isActive || isFinishing) { services.torrent.close(stream); return@launch }
                         torrentStream = stream
-                        prepare(p, stream.uri, guessMime(stream.file.name))
+                        prepare(p, stream.uri, guessMime(stream.file.name), stream.subtitles)
                         startTicker()
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
                         Log.w(TAG, "Falha no torrent", e)
-                        failCurrent(e.message ?: "Falha no BitTorrent", true)
+                        val f = com.brudre.streaming.sources.ErrorClassifier.classify(e)
+                        failCurrent("${f.kind.title}: ${f.message}", true)
                     }
                 }
             }
         }
     }
 
-    private fun prepare(p: ExoPlayer, uri: Uri, mime: String?) {
+    private fun prepare(p: ExoPlayer, uri: Uri, mime: String?, torrentSubs: List<com.brudre.streaming.torrent.TorrentSubtitle> = emptyList()) {
         val subtitlePref = services.settings.current.subtitleLanguage
-        val subs = playable.subtitles.map { s ->
+        // Legendas que vieram dentro do torrent (.srt/.vtt/.ass), lidas pelo mesmo motor.
+        val fromTorrent = torrentSubs.map { t ->
+            MediaItem.SubtitleConfiguration.Builder(t.stream.uri)
+                .setMimeType(when (t.ext) { "vtt" -> MimeTypes.TEXT_VTT; "ass", "ssa" -> MimeTypes.TEXT_SSA; else -> MimeTypes.APPLICATION_SUBRIP })
+                .setLanguage(t.language)
+                .setLabel(t.label)
+                .setSelectionFlags(if (t.language == subtitlePref) C.SELECTION_FLAG_DEFAULT else 0)
+                .build()
+        }
+        lastSubtitleCount = fromTorrent.size + playable.subtitles.size
+        val subs = fromTorrent + playable.subtitles.map { s ->
             MediaItem.SubtitleConfiguration.Builder(Uri.parse(s.url))
                 .setMimeType(if (s.url.endsWith(".vtt", true)) MimeTypes.TEXT_VTT else MimeTypes.APPLICATION_SUBRIP)
                 .setLanguage(s.language)
@@ -332,6 +346,8 @@ class PlayerActivity : ComponentActivity() {
             if (isFinishing || isDestroyed) return@runOnUiThread
             openJob?.cancel()
             lastErrorMessage = message
+            // Falha antes de começar a tocar conta no histórico da fonte cadastrada (se for dela).
+            if (!hasBeenReady && !isLive) currentAttempt?.sourceId?.let { id -> services.appScope.launch(Dispatchers.IO) { services.sourceStore.recordResult(id, false, message) } }
             if (isLive && reconnects < LIVE_RECONNECTS) {
                 // Reconexão automática do mesmo sinal, com espera crescente (3 s, 6 s).
                 reconnects++
@@ -521,6 +537,10 @@ class PlayerActivity : ComponentActivity() {
     /** Acesso para testes instrumentados. */
     fun playerForTest(): ExoPlayer? = player
     fun currentAttemptForTest(): SourceAttempt? = currentAttempt
+    fun attemptsForTest(): List<SourceAttempt> = attempts
+    fun torrentStreamForTest(): TorrentStream? = torrentStream
+    @Volatile var lastSubtitleCount = 0
+        private set
 
     companion object {
         private const val TAG = "BruDrePlayer"

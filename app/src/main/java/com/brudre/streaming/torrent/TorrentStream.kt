@@ -22,6 +22,8 @@ class TorrentStream(
     val key: String = "${handle.infoHash().toHex()}/$fileIndex"
     val uri: Uri = Uri.parse("torrent://$key")
     val fileSize: Long get() = math.fileSize
+    /** Legendas encontradas dentro do torrent para este vídeo. */
+    @Volatile var subtitles: List<TorrentSubtitle> = emptyList()
 
     @Volatile var closed = false
         private set
@@ -113,3 +115,6 @@ class TorrentStream(
         const val PIECE_TIMEOUT_MS = 30_000L
     }
 }
+
+/** Legenda (.srt/.vtt/.ass) lida do próprio torrent pelo mesmo caminho torrent://. */
+data class TorrentSubtitle(val stream: TorrentStream, val language: String, val label: String, val ext: String)

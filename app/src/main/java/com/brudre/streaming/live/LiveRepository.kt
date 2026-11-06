@@ -91,7 +91,7 @@ class LiveRepository(
         val file = File(dir, "${l.id}.json")
         val fresh = file.exists() && System.currentTimeMillis() - file.lastModified() < TTL_MS
         if (!force && fresh) {
-            runCatching { LiveChannel.listFromJson(file.readText()) }.getOrNull()?.let { memory[l.id] = it; return it }
+            runCatching { LiveChannel.listFromJson(file.readText()) }.getOrNull()?.let { keep(l.id, it); return it }
         }
         val statusId = if (l.builtIn) PROVIDER_ID else l.id
         val t0 = System.currentTimeMillis()
@@ -101,20 +101,20 @@ class LiveRepository(
             }
             Log.i(TAG, "Lista ${l.id}: ${result.channels.size} canais de ${result.total} (removidos: ${result.rejected})")
             board.success(statusId, System.currentTimeMillis() - t0)
-            memory[l.id] = result.channels
+            keep(l.id, result.channels)
             runCatching { file.writeText(LiveChannel.listToJson(result.channels)) }
             result.channels
         } catch (e: Exception) {
             val fallback = l.fallbackUrl?.takeIf { e !is BlockedUrlException }?.let { runCatching { fetch(it, l.id) }.getOrNull() }
             if (fallback != null) {
                 board.success(statusId, System.currentTimeMillis() - t0)
-                memory[l.id] = fallback.channels
+                keep(l.id, fallback.channels)
                 runCatching { file.writeText(LiveChannel.listToJson(fallback.channels)) }
                 return fallback.channels
             }
             board.failure(statusId, e.message ?: "Falha ao baixar a lista")
             if (file.exists()) {
-                runCatching { LiveChannel.listFromJson(file.readText()) }.getOrNull()?.let { memory[l.id] = it; return it }
+                runCatching { LiveChannel.listFromJson(file.readText()) }.getOrNull()?.let { keep(l.id, it); return it }
             }
             throw if (e is IOException) CatalogException(if (isOnline()) "Não foi possível baixar a lista de canais" else "Sem conexão com a internet", e)
             else CatalogException(e.message ?: "Lista inválida", e)
@@ -198,6 +198,14 @@ class LiveRepository(
         runCatching { health.check(channels("iptv_por").filter { it.country != "br" }) }
     }
 
+    /** Guarda a lista em memória; acima de [MAX_LISTS_IN_MEMORY] listas, as do mundo mais antigas saem (ficam no disco). */
+    private fun keep(id: String, list: List<LiveChannel>) {
+        memory[id] = list
+        if (memory.size > MAX_LISTS_IN_MEMORY) {
+            memory.keys.filter { it != id && it != "iptv_br" && it != "iptv_por" }.take(memory.size - MAX_LISTS_IN_MEMORY).forEach { memory.remove(it) }
+        }
+    }
+
     fun trimMemory() {
         memory.keys.filter { it != "iptv_br" }.forEach { memory.remove(it) }
     }
@@ -218,6 +226,7 @@ class LiveRepository(
         private const val MAX_BYTES = 8L * 1024 * 1024
         private const val MAX_LINES = 60_000
         private const val MAX_CUSTOM = 10
+        private const val MAX_LISTS_IN_MEMORY = 7
         private const val IPTV = "https://iptv-org.github.io/iptv"
         private const val IPTV_MIRROR = "https://raw.githubusercontent.com/iptv-org/iptv/gh-pages"
 
@@ -229,7 +238,31 @@ class LiveRepository(
             builtIn("iptv_news", "Mundo — Notícias", "categories/news.m3u"),
             builtIn("iptv_kids", "Mundo — Infantil", "categories/kids.m3u"),
             builtIn("iptv_docs", "Mundo — Documentários", "categories/documentary.m3u"),
+            builtIn("iptv_movies", "Mundo — Filmes", "categories/movies.m3u"),
+            builtIn("iptv_series", "Mundo — Séries", "categories/series.m3u"),
+            builtIn("iptv_ent", "Mundo — Entretenimento", "categories/entertainment.m3u"),
+            builtIn("iptv_music", "Mundo — Música", "categories/music.m3u"),
+            builtIn("iptv_sports", "Mundo — Esportes", "categories/sports.m3u"),
+            builtIn("iptv_c_us", "Estados Unidos", "countries/us.m3u"),
+            builtIn("iptv_c_es", "Espanha", "countries/es.m3u"),
+            builtIn("iptv_c_mx", "México", "countries/mx.m3u"),
+            builtIn("iptv_c_ar", "Argentina", "countries/ar.m3u"),
+            builtIn("iptv_c_fr", "França", "countries/fr.m3u"),
+            builtIn("iptv_c_it", "Itália", "countries/it.m3u"),
         )
+
+        /** Países de língua portuguesa (canais deles contam como "em português"). */
+        val LUSOPHONE = setOf("br", "pt", "ao", "mz", "cv", "gw", "st", "tl")
+
+        /**
+         * Separa canais em português dos demais: país lusófono ou presente na lista "Em português" do iptv-org
+         * (mesmo nome ou mesmo endereço). [portuguese] = canais da lista languages/por.
+         */
+        fun splitByPortuguese(list: List<LiveChannel>, portuguese: List<LiveChannel>): Pair<List<LiveChannel>, List<LiveChannel>> {
+            val names = portuguese.map { M3uParser.normalizeName(it.name) }.toHashSet()
+            val urls = portuguese.flatMap { listOf(it.url) + it.mirrors }.toHashSet()
+            return list.partition { ch -> ch.country in LUSOPHONE || M3uParser.normalizeName(ch.name) in names || ch.url in urls || ch.mirrors.any { it in urls } }
+        }
 
         fun LiveChannel.toTitle(): Title = Title(
             id = titleId,

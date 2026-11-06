@@ -1,5 +1,31 @@
 # Changelog — BruDre Streaming
 
+## 9.0 (novembro de 2026) — Source Engine 2.0
+
+### Fontes
+- **Todas as fontes com a mesma obra** são usadas (antes só a primeira): catálogos, APIs de pesquisa e torrents associados. A ordem segue a prioridade da lista; fontes com 3 falhas seguidas vão para o fim. Em "Fontes nativas" escolha se as suas fontes vêm antes ou depois das nativas.
+- **Troca automática de fonte**: se uma fonte falha antes de tocar, o player tenta a próxima (endereços e torrents equivalentes). Sem repetição em loop quando todas falham.
+- **Escolher fonte (N)** na tela do título: lista das fontes encontradas com formato, qualidade (1080p/720p…) e histórico de uso.
+- **API de pesquisa do BruDre**: cadastre um endereço com `{query}`/`{slug}` (e opcionais `{tmdb}`, `{year}`, `{type}`, `{season}`, `{page}`) que responda JSON no formato de catálogo. Consulta dinâmica, até 3 fontes em paralelo, 12 s por fonte, cancelada ao sair da tela.
+- Associação por **identificador TMDB** (`"tmdb": "movie:603"`) antes de nome + ano.
+- Catálogos não ficam mais todos na memória: índice leve por catálogo e no máximo 4 catálogos carregados ao mesmo tempo.
+- **Erros em português, por tipo**: DNS, servidor indisponível, tempo esgotado, HTTP, certificado TLS, formato incompatível, catálogo inválido, magnet inválido, sem peers, sem vídeo, bloqueio de segurança e armazenamento — com **Detalhes técnicos** (erro original).
+- **Salvar sem validar**: a fonte fica desativada até um teste dar certo; aí é ativada sozinha. **Testar novamente** no próprio diálogo.
+- Gerenciar fontes em seções: **Minhas fontes, Catálogos, BitTorrent, Fontes nativas e Diagnóstico** (prioridade, situação, última verificação, resultados e histórico de cada fonte).
+
+### BitTorrent
+- **Torrents do usuário sem catálogo**: colar magnet, importar `.torrent` (seletor de arquivos, quando o aparelho tiver), **Abrir com BruDre** em gerenciadores de arquivos e **Compartilhar** (texto com magnet ou arquivo).
+- **Histórico de torrents** com associação opcional a filme/série (passa a aparecer como fonte do título).
+- **Lista de arquivos e episódios**: S01E01, 1x01, "Temporada 1 Episódio 1", pastas "Season 1". Agrupado por temporada, progresso individual por episódio; só o vídeo escolhido é baixado. O app não presume mais que o maior arquivo é o desejado.
+- **Legendas que vêm dentro do torrent** (.srt, .vtt, .ass) entram no player, com o idioma reconhecido pelo nome.
+- Magnet com `xs=` (fonte exata): baixa o `.torrent` por HTTPS quando não há peers (hash conferido).
+- **Depois de assistir**: apagar ao fechar (padrão) ou manter até o limite do cache para rever mais rápido.
+
+### Conteúdo do Brasil e do mundo
+- Selos de idioma em todos os cards: **PT-BR** (áudio em português), **LEG PT** (legenda em português) e **ORIGINAL XX** (só no idioma original). Na tela do título, a linha de idioma explica o que existe.
+- TV ao vivo do mundo: Notícias, Filmes, Séries, Infantil, Documentários, Entretenimento, Música, Esportes e países (EUA, Espanha, México, Argentina, França, Itália), cada um separado em **"em português"** e **"outros idiomas"**.
+- Linhas **Cinema Brasileiro**, **Filmes Brasileiros Grátis** e **Séries Brasileiras**.
+
 ## 8.1 (novembro de 2026)
 
 ### Gerenciar fontes (Configurações → Gerenciar fontes)

@@ -69,7 +69,7 @@ import com.brudre.streaming.ui.components.SkeletonRow
 import com.brudre.streaming.ui.theme.BruColors
 import com.brudre.streaming.ui.theme.BruIcons
 
-/** TV ao Vivo: canais abertos por categoria (Brasil), por país (língua portuguesa) e do mundo. */
+/** TV ao Vivo: canais abertos do Brasil (por categoria), em português de outros países e do mundo (separados por idioma). */
 @Composable
 fun LiveScreen(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
     val favorites by vm.favorites.collectAsStateWithLifecycle()
@@ -128,10 +128,47 @@ fun LiveScreen(vm: MainViewModel, onPlay: (LiveChannel) -> Unit) {
             }
         }
         item(key = "por") { PortugueseRows(vm, onPlay) }
-        item(key = "world_news") { WholeListRow(vm, "iptv_news", "Mundo — Notícias", onPlay) }
-        item(key = "world_kids") { WholeListRow(vm, "iptv_kids", "Mundo — Infantil", onPlay) }
-        item(key = "world_docs") { WholeListRow(vm, "iptv_docs", "Mundo — Documentários", onPlay) }
+        // Mundo: cada categoria/país em duas linhas — com português e só no idioma original.
+        WORLD_ROWS.forEach { (id, label) -> item(key = "world_$id") { WorldListRows(vm, id, label, onPlay) } }
         items(vm.liveListsInfo().filter { !it.builtIn }, key = { it.id }) { l -> WholeListRow(vm, l.id, "Minha lista: ${l.name}", onPlay) }
+    }
+}
+
+/** Listas do mundo exibidas em TV ao Vivo (categoria ou país). */
+val WORLD_ROWS = listOf(
+    "iptv_news" to "Mundo — Notícias", "iptv_movies" to "Mundo — Filmes", "iptv_series" to "Mundo — Séries",
+    "iptv_kids" to "Mundo — Infantil", "iptv_docs" to "Mundo — Documentários", "iptv_ent" to "Mundo — Entretenimento",
+    "iptv_music" to "Mundo — Música", "iptv_sports" to "Mundo — Esportes",
+    "iptv_c_us" to "Estados Unidos", "iptv_c_es" to "Espanha", "iptv_c_mx" to "México", "iptv_c_ar" to "Argentina",
+    "iptv_c_fr" to "França", "iptv_c_it" to "Itália",
+)
+
+/**
+ * Lista do mundo separada por idioma: "em português" (países lusófonos ou canal da lista em português)
+ * e "outros idiomas" (sem áudio em português informado).
+ */
+@Composable
+fun WorldListRows(vm: MainViewModel, listId: String, label: String, onPlay: (LiveChannel) -> Unit) {
+    val state by vm.liveList(listId).collectAsStateWithLifecycle()
+    val por by vm.liveList("iptv_por").collectAsStateWithLifecycle()
+    when (val s = state) {
+        is Load.Loading -> Column(Modifier.padding(top = 18.dp)) { SectionHeader(label, BruIcons.LiveTv); SkeletonRow() }
+        is Load.Error -> ErrorRow(label, s.message, "live_$listId") { vm.retryLive(listId) }
+        is Load.Ok -> {
+            val portuguese = (por as? Load.Ok)?.value.orEmpty()
+            val (pt, other) = remember(s.value, portuguese) {
+                val sorted = s.value.sortedBy { if (it.logo != null) 0 else 1 }
+                val split = LiveRepository.splitByPortuguese(sorted, portuguese)
+                split.first.take(60) to split.second.take(80)
+            }
+            androidx.compose.runtime.LaunchedEffect(pt, other) { vm.checkChannels(pt + other) }
+            val ptVisible = rememberVisible(vm, pt)
+            val otherVisible = rememberVisible(vm, other)
+            Column {
+                if (ptVisible.isNotEmpty()) ChannelRow(vm, "$label — em português", ptVisible, "live_${listId}_pt", onPlay)
+                if (otherVisible.isNotEmpty()) ChannelRow(vm, "$label — outros idiomas (sem áudio em português)", otherVisible, "live_${listId}_world", onPlay)
+            }
+        }
     }
 }
 

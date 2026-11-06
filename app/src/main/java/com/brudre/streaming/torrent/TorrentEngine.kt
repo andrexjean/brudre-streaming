@@ -5,7 +5,10 @@ import android.net.Uri
 import android.util.Log
 import com.brudre.streaming.data.AppSettings
 import com.brudre.streaming.data.CatalogRepository
+import com.brudre.streaming.data.TorrentCleanup
 import com.brudre.streaming.data.TorrentRef
+import com.brudre.streaming.sources.ClassifiedException
+import com.brudre.streaming.sources.ErrorKind
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
@@ -26,7 +29,7 @@ import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.coroutineContext
 
-class TorrentException(message: String, cause: Throwable? = null) : IOException(message, cause)
+class TorrentException(message: String, cause: Throwable? = null, kind: ErrorKind = ErrorKind.UNKNOWN) : ClassifiedException(kind, message, cause)
 
 /**
  * Motor BitTorrent real (libtorrent via libtorrent4j).
@@ -43,6 +46,8 @@ class TorrentEngine(
     private val active = ConcurrentHashMap<String, TorrentStream>()
 
     val saveDir: File get() = File(context.cacheDir, "torrent-stream").apply { mkdirs() }
+    /** .torrent importados e metadados de magnets já obtidos (pequenos; evitam buscar de novo na DHT). */
+    val metaDir: File get() = File(context.filesDir, "torrents").apply { mkdirs() }
 
     val isRunning: Boolean get() = session?.isRunning == true
     val activeCount: Int get() = active.size
@@ -90,23 +95,33 @@ class TorrentEngine(
         val ti = try {
             TorrentInfo(bytes)
         } catch (e: Throwable) {
-            throw TorrentException("Arquivo .torrent inválido", e)
+            throw TorrentException("Arquivo .torrent inválido", e, ErrorKind.FORMAT)
         }
         val files = ti.files()
-        val index = pickFile(ti, ref.filePathHint)
-            ?: throw TorrentException("O torrent não contém um vídeo compatível")
+        val index = pickFile(ti, ref.fileIndex, ref.filePathHint)
+            ?: throw TorrentException("O torrent não contém um vídeo compatível", kind = ErrorKind.NO_VIDEO)
         val size = files.fileSize(index)
+        // Legendas do próprio torrent para este vídeo (arquivos pequenos, baixados junto).
+        val meta = runCatching { TorrentContent.parse(bytes) }.getOrNull()
+        val subtitleFiles = meta?.let { m ->
+            val video = m.files.firstOrNull { it.index == index }
+            if (video == null) emptyList() else TorrentContent.subtitlesFor(video, m.files.filter { it.isSubtitle && it.size in 1..MAX_SUBTITLE_BYTES })
+        }.orEmpty()
 
-        CacheManager.trimTorrentDir(saveDir, keep = active.values.map { it.file }.toSet(), limitBytes = settings.current.cacheLimitMb * 1024L * 1024L)
+        val limit = if (settings.current.torrentCleanup == TorrentCleanup.KEEP_LIMIT) settings.current.cacheLimitMb * 1024L * 1024L else 0L
+        CacheManager.trimTorrentDir(saveDir, keep = active.values.map { it.file }.toSet() + File(saveDir, files.filePath(index)), limitBytes = maxOf(limit, settings.current.cacheLimitMb * 1024L * 1024L))
         val free = saveDir.usableSpace
         if (free < size + FREE_SPACE_MARGIN) {
             throw TorrentException(
-                "Armazenamento insuficiente: o vídeo precisa de ${CacheManager.formatBytes(size)} e há ${CacheManager.formatBytes(free)} livres. Limpe o cache em Configurações."
+                "Armazenamento insuficiente: o vídeo precisa de ${CacheManager.formatBytes(size)} e há ${CacheManager.formatBytes(free)} livres. Limpe o cache em Configurações.",
+                kind = ErrorKind.STORAGE,
             )
         }
 
+        // Só o vídeo escolhido (e as legendas dele) é baixado: os outros vídeos ficam ignorados.
         val priorities = Priority.array(Priority.IGNORE, ti.numFiles())
         priorities[index] = Priority.TOP_PRIORITY
+        subtitleFiles.forEach { priorities[it.index] = Priority.TOP_PRIORITY }
         coroutineContext.ensureActive()
         onStatus("Conectando aos peers…")
         s.download(ti, saveDir, null, priorities, null, TorrentFlags.SEQUENTIAL_DOWNLOAD)
@@ -120,21 +135,66 @@ class TorrentEngine(
             delay(100)
         }
         val th = handle ?: throw TorrentException("Não foi possível iniciar o torrent")
-        addSources(th, ref)
+        // Torrent já aberto antes (outro episódio): aplica as prioridades deste vídeo.
+        runCatching { th.prioritizeFiles(priorities) }
+        addSources(th, ref, meta)
         th.resume()
 
-        val stream = TorrentStream(
-            handle = th,
-            info = ti,
-            fileIndex = index,
-            file = File(saveDir, files.filePath(index)),
-            math = PieceMath(files.fileOffset(index), size, ti.pieceLength(), ti.numPieces()),
+        fun streamFor(i: Int) = TorrentStream(
+            handle = th, info = ti, fileIndex = i, file = File(saveDir, files.filePath(i)),
+            math = PieceMath(files.fileOffset(i), files.fileSize(i), ti.pieceLength(), ti.numPieces()),
         )
+        val subtitleStreams = subtitleFiles.map { f ->
+            val sub = streamFor(f.index)
+            val lang = TorrentContent.subtitleLanguage(f.name)
+            TorrentStreams.register(sub)
+            sub.prime()
+            TorrentSubtitle(sub, lang, "${TorrentContent.languageLabel(lang)} (do torrent)", f.ext)
+        }
+        val stream = streamFor(index).also { it.subtitles = subtitleStreams }
         stream.prime()
         active[stream.key] = stream
         TorrentStreams.register(stream)
-        Log.i(TAG, "Torrent pronto: ${files.fileName(index)} (${CacheManager.formatBytes(size)}), peças=${ti.numPieces()}")
+        Log.i(TAG, "Torrent pronto: ${files.fileName(index)} (${CacheManager.formatBytes(size)}), peças=${ti.numPieces()}, legendas=${subtitleStreams.size}")
         stream
+    }
+
+    /**
+     * Metadados (.torrent) de um magnet, .torrent remoto ou importado, para listar os arquivos antes de tocar.
+     * O resultado fica guardado em [metaDir] (pelo hash) e não é buscado de novo.
+     */
+    suspend fun metadata(ref: TorrentRef, onStatus: (String) -> Unit = {}): ByteArray {
+        opening.incrementAndGet()
+        try {
+            return withContext(Dispatchers.IO) {
+                cachedBytes(ref)?.let { return@withContext it }
+                onStatus("Obtendo a lista de arquivos do torrent…")
+                loadTorrentBytes(ensureSession(), ref)
+            }
+        } finally {
+            opening.decrementAndGet()
+        }
+    }
+
+    private fun cachedBytes(ref: TorrentRef): ByteArray? {
+        ref.localFile?.let { path ->
+            val f = File(path).canonicalFile
+            if (!f.path.startsWith(metaDir.canonicalPath + File.separator)) throw TorrentException("Arquivo .torrent fora da pasta do app", kind = ErrorKind.BLOCKED)
+            if (!f.exists()) throw TorrentException("O arquivo .torrent importado não existe mais", kind = ErrorKind.STORAGE)
+            if (f.length() > TorrentContent.MAX_TORRENT_BYTES) throw TorrentException("Arquivo .torrent grande demais", kind = ErrorKind.FORMAT)
+            return f.readBytes()
+        }
+        val hash = ref.magnet?.let { TorrentContent.magnetHash(it) } ?: return null
+        val f = File(metaDir, "$hash.torrent")
+        return if (f.exists() && f.length() in 1..TorrentContent.MAX_TORRENT_BYTES.toLong()) f.readBytes() else null
+    }
+
+    private fun remember(bytes: ByteArray) {
+        runCatching {
+            val meta = TorrentContent.parse(bytes)
+            val f = File(metaDir, "${meta.infoHash}.torrent")
+            if (!f.exists()) f.writeBytes(bytes)
+        }
     }
 
     /**
@@ -142,20 +202,24 @@ class TorrentEngine(
      * (o .torrent publicado pode trazer só trackers WebRTC, inúteis fora do navegador)
      * e trackers públicos de apoio. Web seed = servidor HTTP do próprio titular.
      */
-    private fun addSources(th: TorrentHandle, ref: TorrentRef) {
+    private fun addSources(th: TorrentHandle, ref: TorrentRef, meta: TorrentMeta?) {
         val magnet = ref.magnet?.let { MagnetLink.parse(it) }
         val trackers = (magnet?.trackers.orEmpty().filter { it.startsWith("udp://") || it.startsWith("http") } + FALLBACK_TRACKERS).distinct()
         trackers.forEach { url -> runCatching { th.addTracker(AnnounceEntry(url)) } }
-        magnet?.webSeeds.orEmpty().forEach { url -> runCatching { th.addUrlSeed(url) } }
+        // Web seeds: só HTTPS e só destinos permitidos pelo UrlGuard.
+        (magnet?.webSeeds.orEmpty() + meta?.webSeeds.orEmpty()).distinct()
+            .filter { it.startsWith("https://") && com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
+            .forEach { url -> runCatching { th.addUrlSeed(url) } }
         runCatching { th.forceReannounce() }
         Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers, ${magnet?.webSeeds?.size ?: 0} web seeds")
     }
 
     private suspend fun loadTorrentBytes(s: SessionManager, ref: TorrentRef): ByteArray {
+        cachedBytes(ref)?.let { return it }
         var lastError: Throwable? = null
         ref.torrentUrl?.let { url ->
             try {
-                return downloadTorrentFile(url)
+                return downloadTorrentFile(url).also { remember(it) }
             } catch (e: Exception) {
                 lastError = e
                 Log.w(TAG, "Falha ao baixar .torrent, tentando magnet", e)
@@ -163,21 +227,31 @@ class TorrentEngine(
         }
         ref.magnet?.let { magnet ->
             coroutineContext.ensureActive()
+            if (!com.brudre.streaming.sources.FeedParser.isValidMagnet(magnet)) throw TorrentException("Magnet sem hash de torrent válido", kind = ErrorKind.MAGNET)
+            // "xs" (fonte exata): o .torrent publicado em HTTPS, aceito só se o hash bater com o do magnet.
+            val expected = TorrentContent.magnetHash(magnet)
+            MagnetLink.parse(magnet)?.exactSources.orEmpty().take(2).forEach { xs ->
+                runCatching { downloadTorrentFile(xs) }.getOrNull()?.let { bytes ->
+                    if (runCatching { TorrentContent.parse(bytes).infoHash }.getOrNull() == expected) return bytes.also { remember(it) }
+                }
+            }
             val data = s.fetchMagnet(magnet, MAGNET_TIMEOUT_S, saveDir)
-            if (data != null && data.isNotEmpty()) return data
-            throw TorrentException("Torrent sem peers: metadados não encontrados em ${MAGNET_TIMEOUT_S}s", lastError)
+            if (data != null && data.isNotEmpty()) return data.also { remember(it) }
+            throw TorrentException("Nenhum participante enviou os metadados em ${MAGNET_TIMEOUT_S}s (torrent sem peers no momento).", lastError, ErrorKind.NO_PEERS)
         }
-        throw TorrentException("Não foi possível obter o .torrent oficial", lastError)
+        lastError?.let { throw it }
+        throw TorrentException("Não foi possível obter o .torrent", lastError)
     }
 
     private fun downloadTorrentFile(url: String): ByteArray {
         val req = Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT).build()
+        com.brudre.streaming.sources.UrlGuard.check(url)?.let { throw com.brudre.streaming.sources.BlockedUrlException(it) }
         http.newCall(req).execute().use { resp ->
-            if (!resp.isSuccessful) throw TorrentException("Servidor do .torrent respondeu ${resp.code}")
+            if (!resp.isSuccessful) throw com.brudre.streaming.sources.HttpStatusException(resp.code, "Servidor do .torrent respondeu ${resp.code}")
             val body = resp.body ?: throw TorrentException("Resposta vazia")
-            if (body.contentLength() > MAX_TORRENT_BYTES) throw TorrentException("Arquivo .torrent grande demais")
+            if (body.contentLength() > MAX_TORRENT_BYTES) throw TorrentException("Arquivo .torrent grande demais", kind = ErrorKind.FORMAT)
             val bytes = body.bytes()
-            if (bytes.size > MAX_TORRENT_BYTES || bytes.isEmpty() || bytes[0] != 'd'.code.toByte()) throw TorrentException("Conteúdo não é um .torrent")
+            if (bytes.size > MAX_TORRENT_BYTES || bytes.isEmpty() || bytes[0] != 'd'.code.toByte()) throw TorrentException("Conteúdo não é um .torrent", kind = ErrorKind.FORMAT)
             return bytes
         }
     }
@@ -185,11 +259,15 @@ class TorrentEngine(
     /** Fecha o stream e apaga os dados baixados (streaming, não download permanente). */
     fun close(stream: TorrentStream) {
         stream.close()
+        stream.subtitles.forEach { it.stream.close(); TorrentStreams.unregister(it.stream) }
         active.remove(stream.key)
         TorrentStreams.unregister(stream)
         val s = session ?: return
         try {
-            if (stream.handle.isValid) s.remove(stream.handle, SessionHandle.DELETE_FILES)
+            val keep = settings.current.torrentCleanup == TorrentCleanup.KEEP_LIMIT
+            if (stream.handle.isValid) {
+                if (keep) s.remove(stream.handle) else s.remove(stream.handle, SessionHandle.DELETE_FILES)
+            }
         } catch (e: Throwable) {
             Log.w(TAG, "Falha ao remover torrent", e)
         }
@@ -208,7 +286,10 @@ class TorrentEngine(
         }
         try { toStop.stop() } catch (e: Throwable) { Log.w(TAG, "Falha ao encerrar sessão", e) }
         Log.i(TAG, "Sessão BitTorrent encerrada")
-        if (active.isEmpty()) CacheManager.trimTorrentDir(saveDir, keep = emptySet(), limitBytes = 0)
+        if (active.isEmpty()) {
+            val keep = settings.current.torrentCleanup == TorrentCleanup.KEEP_LIMIT
+            CacheManager.trimTorrentDir(saveDir, keep = emptySet(), limitBytes = if (keep) settings.current.cacheLimitMb * 1024L * 1024L else 0)
+        }
     }
 
     companion object {
@@ -224,11 +305,14 @@ class TorrentEngine(
             "udp://tracker.torrent.eu.org:451/announce",
             "udp://exodus.desync.com:6969/announce",
         )
-        private val VIDEO_EXT = listOf(".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi")
+        private val VIDEO_EXT = listOf(".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi", ".ts", ".m2ts")
+        private const val MAX_SUBTITLE_BYTES = 2L * 1024 * 1024
 
-        fun pickFile(ti: TorrentInfo, hint: String?): Int? {
+        /** Arquivo escolhido pelo usuário ([index]); senão a dica do catálogo; senão o único/maior vídeo. */
+        fun pickFile(ti: TorrentInfo, index: Int?, hint: String?): Int? {
             val fs = ti.files()
             val n = ti.numFiles()
+            if (index != null && index in 0 until n && VIDEO_EXT.any { fs.fileName(index).lowercase().endsWith(it) }) return index
             if (!hint.isNullOrBlank()) {
                 for (i in 0 until n) {
                     val path = fs.filePath(i).replace('\\', '/')
@@ -249,7 +333,7 @@ class TorrentEngine(
 }
 
 /** Leitura dos parâmetros de um link magnet (BEP 9). */
-data class MagnetLink(val infoHash: String?, val trackers: List<String>, val webSeeds: List<String>) {
+data class MagnetLink(val infoHash: String?, val trackers: List<String>, val webSeeds: List<String>, val exactSources: List<String> = emptyList()) {
     companion object {
         fun parse(uri: String): MagnetLink? {
             if (!uri.startsWith("magnet:?")) return null
@@ -258,7 +342,10 @@ data class MagnetLink(val infoHash: String?, val trackers: List<String>, val web
                 if (i <= 0) null else part.substring(0, i) to java.net.URLDecoder.decode(part.substring(i + 1), "UTF-8")
             }
             val hash = params.firstOrNull { it.first == "xt" }?.second?.removePrefix("urn:btih:")?.lowercase()
-            return MagnetLink(hash, params.filter { it.first == "tr" }.map { it.second }, params.filter { it.first == "ws" }.map { it.second })
+            return MagnetLink(
+                hash, params.filter { it.first == "tr" }.map { it.second }, params.filter { it.first == "ws" }.map { it.second },
+                params.filter { it.first == "xs" || it.first == "as" }.map { it.second }.filter { it.startsWith("https://") },
+            )
         }
     }
 }

@@ -66,3 +66,41 @@ Exemplos prontos: [`samples/feeds/blender-open-movies.json`](../samples/feeds/bl
 As fontes ficam salvas no aparelho e continuam lá depois de reiniciar.
 
 Use apenas fontes com conteúdo de distribuição autorizada. O BruDre não inclui nem recomenda indexadores de pirataria.
+
+
+## API de pesquisa do BruDre (9.0)
+
+Para fontes autorizadas com busca própria. Cadastre o endereço com marcadores; o BruDre troca os marcadores
+pelos dados do título e espera **JSON no mesmo formato do catálogo** (`{"items": [...]}`, pode vir vazio).
+
+```
+https://minha-fonte.org/api/busca?q={query}&ano={year}&tmdb={tmdb}
+https://minha-fonte.org/busca/{slug}.json
+```
+
+| Marcador | Valor |
+|---|---|
+| `{query}` | texto pesquisado (codificado) |
+| `{slug}` | texto em minúsculas com hífens (`auto-da-compadecida`) |
+| `{tmdb}` | `movie:603` ou `tv:1399`, quando o título vem do catálogo |
+| `{year}` `{type}` `{season}` `{page}` | ano, `movie`/`tv`, temporada, página (1) |
+
+Regras: só `https://`; o servidor não pode depender do texto pesquisado; resposta até 512 KB e 50 resultados;
+12 s por fonte, até 3 fontes ao mesmo tempo; páginas HTML e RSS são recusadas.
+
+## Campos opcionais dos itens (9.0)
+
+| Campo | Uso |
+|---|---|
+| `"tmdb": "movie:10378"` (ou número + `"kind"`) | associação exata com o título do catálogo |
+| `"language": "en"` | idioma original do áudio |
+| `"audio": ["en", "pt"]` | idiomas de áudio disponíveis (com `pt` → selo PT-BR) |
+| `"subtitles": [{"lang": "pt", "url": "https://…/x.srt"}]` | legendas (com `pt` → selo LEG PT) |
+
+## Torrents do próprio usuário (9.0)
+
+Não precisam de catálogo: Configurações → Gerenciar fontes → **BitTorrent** → "Colar magnet ou .torrent" /
+"Importar arquivo .torrent", ou "Abrir com"/"Compartilhar" a partir de outro app. Torrents com vários vídeos
+mostram a lista de episódios; só o vídeo escolhido é baixado. Legendas `.srt/.vtt/.ass` do torrent são carregadas.
+Magnet com `xs=https://…/arquivo.torrent` baixa o `.torrent` quando ainda não há participantes (o hash é conferido).
+Use apenas conteúdo com distribuição autorizada.

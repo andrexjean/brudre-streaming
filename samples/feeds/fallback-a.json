@@ -1,0 +1,3 @@
+{"name": "Teste de troca de fonte A (endereço quebrado)", "items": [
+  {"id": "ed-a", "title": "Elephants Dream", "year": "2006", "kind": "MOVIE", "license": "Teste",
+   "sources": [{"type": "http", "url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/nao-existe.mp4"}]}]}

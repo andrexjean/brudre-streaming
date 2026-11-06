@@ -8,6 +8,7 @@ import com.brudre.streaming.data.Title
 import com.brudre.streaming.data.TitleDetails
 import com.brudre.streaming.live.M3uParser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -30,7 +31,10 @@ class FeedRepository(
     private val dir: File,
     private val store: SourceStore,
 ) {
-    private val memory = ConcurrentHashMap<String, List<com.brudre.streaming.sources.FeedItem>>()
+    /** Até [MEMORY_FEEDS] catálogos em memória (LRU); o resto fica só em disco (Mi Stick: 1 GB de RAM). */
+    private val memory = java.util.Collections.synchronizedMap(object : LinkedHashMap<String, List<FeedItem>>(8, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, List<FeedItem>>?) = size > MEMORY_FEEDS
+    })
 
     init { refreshRegistry() }
 
@@ -78,14 +82,18 @@ class FeedRepository(
         if (!force) memory[f.id]?.let { return@withContext it }
         val file = File(dir.apply { mkdirs() }, "${f.id}.json")
         if (!force && file.exists() && System.currentTimeMillis() - file.lastModified() < TTL_MS) {
-            runCatching { FeedParser.itemsFromJson(file.readText()) }.getOrNull()?.let { memory[f.id] = it; return@withContext it }
+            runCatching { FeedParser.itemsFromJson(file.readText()) }.getOrNull()?.let {
+                memory[f.id] = it
+                if (!indexFile(f.id).exists()) runCatching { indexFile(f.id).writeText(FeedParser.indexOf(it)) }
+                return@withContext it
+            }
         }
         val t0 = System.currentTimeMillis()
         try {
             val feed = download(f.url, f.id)
             board.success(f.id, System.currentTimeMillis() - t0)
             memory[f.id] = feed.items
-            runCatching { file.writeText(FeedParser.itemsToJson(feed.items)) }
+            runCatching { file.writeText(FeedParser.itemsToJson(feed.items)); indexFile(f.id).writeText(FeedParser.indexOf(feed.items)) }
             Log.i(TAG, "Catálogo ${f.name}: ${feed.items.size} títulos (${feed.rejected} descartados)")
             feed.items
         } catch (e: Exception) {
@@ -132,7 +140,10 @@ class FeedRepository(
         memory.remove(id)
         memory.remove(LINKS_ID)
         File(dir, "$id.json").delete()
+        indexFile(id).delete()
     }
+
+    private fun indexFile(id: String) = File(dir.apply { mkdirs() }, "$id.idx")
 
     fun remove(id: String) {
         store.remove(id)
@@ -146,17 +157,43 @@ class FeedRepository(
         refreshRegistry()
     }
 
-    /** Itens das fontes ativas que correspondem à obra (nome + ano), na ordem de prioridade das fontes. */
-    suspend fun matches(names: List<String>, year: String?): List<Pair<FeedInfo, FeedItem>> {
-        if (names.isEmpty()) return emptyList()
-        return enabledFeeds().flatMap { f ->
-            runCatching { items(f.id) }.getOrDefault(emptyList())
-                .filter { TitleMatcher.matches(it.title.copy(name = it.title.name.replace(Regex("\\s*\\((magnet|\\.torrent|hls|http[^)]*)\\)", RegexOption.IGNORE_CASE), "")), names, year) }
-                .map { f to it }
+    /**
+     * Itens das fontes ativas que correspondem à obra, na ordem de prioridade das fontes.
+     * 1º pelo identificador TMDB (exato); 2º por nome original/alternativo + ano (±1).
+     * Lê só o índice de cada catálogo; o catálogo é aberto apenas se houver correspondência.
+     */
+    suspend fun matches(names: List<String>, year: String?, tmdbId: String? = null): List<Pair<FeedInfo, FeedItem>> = withContext(Dispatchers.IO) {
+        if (names.isEmpty() && tmdbId == null) return@withContext emptyList()
+        val out = ArrayList<Pair<FeedInfo, FeedItem>>()
+        for (f in enabledFeeds()) {
+            ensureActive()
+            if (f.id == LINKS_ID) {
+                linkItems().filter { matchesItem(it, names, year, tmdbId) }.forEach { out += f to it }
+                continue
+            }
+            val idx = indexFile(f.id)
+            if (!idx.exists() || System.currentTimeMillis() - idx.lastModified() > TTL_MS) runCatching { items(f.id) }
+            val hits = runCatching {
+                idx.useLines { lines -> lines.mapNotNull { FeedParser.parseIndexLine(it) }.filter { e -> indexMatches(e, names, year, tmdbId) }.map { it.position }.toList() }
+            }.getOrDefault(emptyList())
+            if (hits.isEmpty()) continue
+            val items = runCatching { items(f.id) }.getOrDefault(emptyList())
+            hits.mapNotNull { items.getOrNull(it) }.filter { matchesItem(it, names, year, tmdbId) }.forEach { out += f to it }
         }
+        out
     }
 
-    fun find(titleId: String): FeedItem? = memory.values.asSequence().flatten().firstOrNull { it.title.id == titleId }
+    private fun indexMatches(e: FeedParser.IndexEntry, names: List<String>, year: String?, tmdbId: String?): Boolean {
+        if (tmdbId != null && e.tmdbId != null) return e.tmdbId == tmdbId
+        return TitleMatcher.matches(com.brudre.streaming.data.Title("x", com.brudre.streaming.data.Kind.MOVIE, e.name, e.year), names, year)
+    }
+
+    private fun matchesItem(it: FeedItem, names: List<String>, year: String?, tmdbId: String?): Boolean {
+        if (tmdbId != null && it.tmdbId != null) return it.tmdbId == tmdbId
+        return TitleMatcher.matches(it.title.copy(name = FeedParser.cleanName(it.title.name)), names, year)
+    }
+
+    fun find(titleId: String): FeedItem? = synchronized(memory) { memory.values.toList() }.asSequence().flatten().firstOrNull { it.title.id == titleId }
 
     fun feedIdOf(titleId: String): String? = titleId.removePrefix(FeedParser.PREFIX).substringBefore(':').let { PREFIX + it }.takeIf { titleId.startsWith(FeedParser.PREFIX) }
 
@@ -170,11 +207,12 @@ class FeedRepository(
         const val LINKS_ID = "feed_links"
         private const val TTL_MS = 6 * 60 * 60 * 1000L
         private const val MAX_BYTES = 2L * 1024 * 1024
+        private const val MEMORY_FEEDS = 4
     }
 }
 
 /** Provedor do Source Manager que reúne todos os catálogos externos ativos. */
-class FeedProvider(private val repo: FeedRepository) : ContentProvider {
+class FeedProvider(private val repo: FeedRepository, private val search: SearchRepository? = null) : ContentProvider {
     override val id = "feeds"
     override val name = "Catálogos externos"
     override val description = "Fontes cadastradas por você (HTTP, HLS, magnet e .torrent autorizados)"
@@ -185,14 +223,19 @@ class FeedProvider(private val repo: FeedRepository) : ContentProvider {
     override suspend fun search(query: String): List<Title> {
         val words = M3uParser.normalizeName(query).split(' ').filter { it.length > 1 }
         if (words.isEmpty()) return emptyList()
-        return repo.enabledFeeds().flatMap { f -> runCatching { repo.items(f.id) }.getOrDefault(emptyList()) }
-            .map { it.title }
-            .filter { t -> val n = M3uParser.normalizeName(t.name + " " + (t.synopsis ?: "")); words.all { n.contains(it) } }
+        // Catálogos: um por vez (a memória guarda só os mais recentes). APIs de pesquisa: consulta dinâmica.
+        val fromCatalogs = repo.enabledFeeds().flatMap { f ->
+            runCatching { repo.items(f.id) }.getOrDefault(emptyList()).map { it.title }
+                .filter { t -> val n = M3uParser.normalizeName(t.name + " " + (t.synopsis ?: "")); words.all { n.contains(it) } }
+        }
+        val fromApis = search?.let { s -> runCatching { s.search(SearchTemplate.Query(query)) }.getOrElse { if (it is kotlinx.coroutines.CancellationException) throw it; emptyList() } }
+            .orEmpty().map { it.item.title }
+        return (fromCatalogs + fromApis).distinctBy { it.id }
     }
 
     override suspend fun getDetails(title: Title): TitleDetails {
         val feedId = repo.feedIdOf(title.id) ?: throw CatalogException("Título inválido")
-        val item = repo.find(title.id) ?: repo.items(feedId).firstOrNull { it.title.id == title.id }
+        val item = repo.find(title.id) ?: search?.find(title.id) ?: repo.items(feedId).firstOrNull { it.title.id == title.id }
             ?: throw CatalogException("Título não está mais no catálogo")
         val playables = item.playables()
         val kinds = item.sources.map { it.type }.toSet() + item.episodes.flatMap { e -> e.sources.map { it.type } }
@@ -202,6 +245,6 @@ class FeedProvider(private val repo: FeedRepository) : ContentProvider {
             if (FeedSource.Type.HLS in kinds) append(" • HLS")
             if (FeedSource.Type.MAGNET in kinds || FeedSource.Type.TORRENT in kinds) append(" • BitTorrent (seu IP fica visível aos outros participantes)")
         }
-        return TitleDetails(item.title, playables, label, providerId = feedId)
+        return TitleDetails(item.title, SourceRanker.tag(playables, feedId), label, providerId = feedId)
     }
 }

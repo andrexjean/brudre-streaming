@@ -78,20 +78,32 @@ import com.brudre.streaming.ui.screens.MyListScreen
 import com.brudre.streaming.ui.screens.RowRef
 import com.brudre.streaming.ui.screens.SearchScreen
 import com.brudre.streaming.ui.screens.SettingsScreen
+import com.brudre.streaming.ui.screens.TorrentFilesDialog
 import com.brudre.streaming.ui.theme.BruColors
 import com.brudre.streaming.ui.theme.BruDreTheme
 import com.brudre.streaming.ui.theme.BruIcons
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        vm.handleIncoming(intent)
+    }
+
     override fun onResume() {
         super.onResume()
         // Voltando da tela "instalar apps desconhecidos": retoma a atualização.
         androidx.lifecycle.ViewModelProvider(this)[MainViewModel::class.java].resumeUpdateIfPending()
     }
 
+    private val vm: MainViewModel by lazy { androidx.lifecycle.ViewModelProvider(this)[MainViewModel::class.java] }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        vm.launcher = { startActivity(it) }
+        // Magnet / .torrent aberto ou compartilhado por outro app.
+        if (savedInstanceState == null) vm.handleIncoming(intent)
         setContent {
             BruDreTheme {
                 val vm: MainViewModel = viewModel()
@@ -159,6 +171,7 @@ fun BruDreRoot(vm: MainViewModel) {
                         vm, "Filmes",
                         tmdb(RowRef("tmdb_free_movies", Icons.Filled.PlayArrow), RowRef("tmdb_free_new", BruIcons.NewReleases)) +
                             listOf(RowRef("featured", Icons.Filled.PlayArrow)) +
+                            tmdb(RowRef("tmdb_br_free", Icons.Filled.PlayArrow), RowRef("tmdb_br_movies")) +
                             tmdb(RowRef("tmdb_trending_movies", BruIcons.Trending), RowRef("tmdb_free_action"), RowRef("tmdb_free_comedy"), RowRef("tmdb_free_horror")) +
                             listOf(RowRef("curated_torrent", BruIcons.Movie), RowRef("adventure"), RowRef("westerns"), RowRef("comedy"), RowRef("scifi"), RowRef("noir")) +
                             tmdb(RowRef("tmdb_pd_classics", Icons.Filled.Star)),
@@ -167,6 +180,7 @@ fun BruDreRoot(vm: MainViewModel) {
                     Section.SERIES -> BrowseScreen(
                         vm, "Séries",
                         tmdb(RowRef("tmdb_free_series", Icons.Filled.PlayArrow), RowRef("tmdb_trending_series", BruIcons.Trending)) +
+                            tmdb(RowRef("tmdb_br_series")) +
                             tmdb(RowRef("tmdb_new_series", BruIcons.NewReleases), RowRef("tmdb_free_new_series")) +
                             listOf(RowRef("series", BruIcons.Layers), RowRef("series_recent")),
                         "series", open, onPlayChannel = playChannel, liveGroup = "Series",
@@ -203,6 +217,10 @@ fun BruDreRoot(vm: MainViewModel) {
     if (showIntro) BruVideoIntro(skip = skipIntro) { showIntro = false }
     }
 
+    LaunchedEffect(Unit) { vm.toastFlow.collect { toast(it) } }
+    val torrentPick by vm.torrentPick.collectAsStateWithLifecycle()
+    torrentPick?.let { TorrentFilesDialog(vm, it) }
+
     detailsTitle?.let { t ->
         DetailsDialog(
             vm = vm,
@@ -212,6 +230,7 @@ fun BruDreRoot(vm: MainViewModel) {
                 vm.play(title, playable, fromStart, details, onLaunch = launch, onError = toast, onFreeApp = freeApp)
             },
             onFreeApp = freeApp,
+            onPlayOption = { d, option, p -> vm.playWithOption(d, option, p, onLaunch = launch, onError = toast) },
         )
     }
 

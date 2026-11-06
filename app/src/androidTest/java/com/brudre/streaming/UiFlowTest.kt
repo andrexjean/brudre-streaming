@@ -345,4 +345,36 @@ class UiFlowTest {
         waitPrefix("result_", 90_000)
         Thread.sleep(3_000); TestUtil.shot("pesquisa")
     }
+
+    /** Item 17 (v9.0): Gerenciar fontes inteiro pelo controle remoto — seções, BitTorrent e Diagnóstico. */
+    @Test fun t10_sourceManagerSectionsWithDpad() {
+        waitTag("hero_play")
+        rule.onNodeWithTag("nav_SETTINGS").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("settings")
+        waitTag("manage_sources")
+        rule.onNodeWithTag("manage_sources").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("source_manager")
+        waitFocused("src_tab_mine")
+        TestUtil.shot("fontes_minhas")
+        // Direita → Catálogos → BitTorrent, OK abre a seção
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_catalogs")
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_torrent")
+        remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("tor_paste"); waitTag("tor_cleanup_ON_CLOSE")
+        Thread.sleep(800); TestUtil.shot("fontes_bittorrent")
+        // Para baixo chega aos botões; OK em "Colar magnet" abre o diálogo
+        var guard = 0
+        while (runCatching { rule.onNodeWithTag("tor_paste").assertIsFocused(); true }.getOrDefault(false).not() && guard++ < 6) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+        waitFocused("tor_paste")
+        remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("src_dialog"); Thread.sleep(500); TestUtil.shot("fontes_colar_magnet")
+        remote(KeyEvent.KEYCODE_BACK)
+        // Volta às abas: Fontes nativas e Diagnóstico
+        rule.onNodeWithTag("src_tab_torrent").requestFocus(); waitFocused("src_tab_torrent")
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_native"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("order_native_first"); waitPrefix("native_"); Thread.sleep(800); TestUtil.shot("fontes_nativas")
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_diag"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        waitTag("diag"); waitTag("diag_summary"); Thread.sleep(800); TestUtil.shot("fontes_diagnostico")
+        rule.onNodeWithTag("src_close").performClick()
+    }
 }

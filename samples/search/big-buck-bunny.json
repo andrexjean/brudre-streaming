@@ -1,0 +1,17 @@
+{
+  "name": "API de pesquisa de teste do BruDre (respostas estáticas por {slug})",
+  "items": [
+    {
+      "id": "bbb-teste",
+      "title": "Big Buck Bunny",
+      "year": "2008",
+      "tmdb": "movie:10378",
+      "kind": "MOVIE",
+      "language": "en",
+      "audio": ["en"],
+      "synopsis": "Resultado de teste da API de pesquisa (vídeo sintético do BruDre).",
+      "license": "Vídeo sintético de teste (uso livre)",
+      "sources": [{"type": "http", "url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.01/BruDre.Teste.S01E01.mp4"}]
+    }
+  ]
+}

@@ -299,6 +299,9 @@ fun BrowseScreen(
             item(key = "live_g_$liveGroup") {
                 LiveGroupRow(vm, "iptv_br", liveGroup, "Canais de ${title.lowercase()} 24 h grátis", onPlay = onPlayChannel)
             }
+            // Canais 24 h do mundo, separados: em português e no idioma original.
+            val world = when (liveGroup) { "Movies" -> "iptv_movies"; "Series" -> "iptv_series"; else -> null }
+            if (world != null) item(key = "live_world_$liveGroup") { WorldListRows(vm, world, "Canais de ${title.lowercase()} do mundo", onPlayChannel) }
         }
         items(rows.drop(2), key = { it.key }) { ref -> CatalogRow(vm, ref, onOpen) }
         if (liveCategory != null && vm.liveEnabled) {

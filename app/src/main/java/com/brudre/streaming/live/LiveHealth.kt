@@ -136,7 +136,7 @@ class LiveHealth(guarded: OkHttpClient, private val dir: File) {
         e.javaClass.simpleName
     }
 
-    private fun probeOrThrow(url: String, headers: Map<String, String>): String? {
+    fun probeOrThrow(url: String, headers: Map<String, String>): String? {
         val top = fetchPlaylist(url, headers) ?: return "não é HLS"
         var (playlistUrl, playlist) = top
         if (playlist.isMaster) {
@@ -163,7 +163,7 @@ class LiveHealth(guarded: OkHttpClient, private val dir: File) {
     private fun fetchPlaylist(url: String, headers: Map<String, String>): Pair<String, HlsProbe.Playlist>? {
         if (!UrlGuard.isAllowed(url)) throw BlockedUrlException(UrlGuard.check(url) ?: "url")
         client.newCall(request(url, headers).get().build()).execute().use { r ->
-            if (!r.isSuccessful) throw IOException("HTTP ${r.code}")
+            if (!r.isSuccessful) throw com.brudre.streaming.sources.HttpStatusException(r.code, "HTTP ${r.code}")
             val src = r.body?.source() ?: throw IOException("vazio")
             src.request(MAX_PLAYLIST)
             val text = src.buffer.snapshot().utf8().take(MAX_PLAYLIST.toInt())

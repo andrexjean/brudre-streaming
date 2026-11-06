@@ -84,15 +84,19 @@ class Services(private val app: Context) {
     }
     val validator: com.brudre.streaming.sources.StreamValidator by lazy { com.brudre.streaming.sources.StreamValidator(guardedHttp) }
     val inspector: com.brudre.streaming.sources.SourceInspector by lazy {
-        com.brudre.streaming.sources.SourceInspector(guardedHttp, { feeds }, { live }, validator)
+        com.brudre.streaming.sources.SourceInspector(guardedHttp, { feeds }, { live }, validator, { searchRepo })
     }
     val sources: com.brudre.streaming.sources.SourceManager by lazy {
-        com.brudre.streaming.sources.SourceManager(catalog, settings, validator, sourceStatus, feeds)
+        com.brudre.streaming.sources.SourceManager(catalog, settings, validator, sourceStatus, feeds, sourceStore, searchRepo, { torrentLibrary })
     }
     val live: com.brudre.streaming.live.LiveRepository by lazy {
         com.brudre.streaming.live.LiveRepository(app, guardedHttp, settings, sourceStatus, ::isOnline, sourceStore)
     }
-    val torrent: TorrentEngine by lazy { TorrentEngine(app, http, settings) }
+    val torrent: TorrentEngine by lazy { TorrentEngine(app, guardedHttp, settings) }
+    /** Torrents adicionados pelo usuário (magnet, .torrent importado ou compartilhado). */
+    val torrentLibrary: com.brudre.streaming.torrent.TorrentLibrary by lazy { com.brudre.streaming.torrent.TorrentLibrary(app, torrent) }
+    /** APIs de pesquisa autorizadas cadastradas pelo usuário. */
+    val searchRepo: com.brudre.streaming.sources.SearchRepository by lazy { com.brudre.streaming.sources.SearchRepository(guardedHttp, sourceStore) }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 
     val imageCacheDir: File get() = File(app.cacheDir, "images")
@@ -119,6 +123,7 @@ class Services(private val app: Context) {
         imageLoader.memoryCache?.clear()
         catalog.trimMemory()
         live.trimMemory()
+        searchRepo.clear()
     }
 
     @OptIn(coil.annotation.ExperimentalCoilApi::class)

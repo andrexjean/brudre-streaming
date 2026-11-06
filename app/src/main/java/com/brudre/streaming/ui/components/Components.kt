@@ -304,6 +304,14 @@ fun TitleCard(
                         .background(badge.second).padding(horizontal = 5.dp, vertical = 1.dp),
                 )
             }
+            title.languageBadge?.let { lb ->
+                Text(
+                    lb, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.TopEnd).padding(6.dp).clip(RoundedCornerShape(5.dp))
+                        .background(if (title.ptAudio) Color(0xCC1F8A4C) else if (title.ptSubtitles) Color(0xCC2F4C9C) else Color(0xCC5A5F73))
+                        .padding(horizontal = 5.dp, vertical = 1.dp),
+                )
+            }
             if (progress != null) {
                 ProgressBar(
                     progress,

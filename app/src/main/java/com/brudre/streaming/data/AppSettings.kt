@@ -16,6 +16,12 @@ enum class Quality(val label: String) {
     BEST("Melhor disponível (até 1080p)"),
 }
 
+/** O que fazer com os dados baixados por BitTorrent depois de assistir. */
+enum class TorrentCleanup(val label: String, val description: String) {
+    ON_CLOSE("Apagar ao fechar o vídeo", "Libera o espaço logo depois de assistir (recomendado no Mi Stick)"),
+    KEEP_LIMIT("Manter até o limite do cache", "Retomar ou rever é mais rápido; o mais antigo é apagado ao passar do limite"),
+}
+
 data class Choice(val code: String, val label: String)
 
 object LanguageChoices {
@@ -44,6 +50,9 @@ data class SettingsValues(
     val maxRating: String = "16",
     /** Abertura animada ao iniciar o app. */
     val intro: Boolean = true,
+    /** Ordem entre fontes: true = fontes cadastradas antes das nativas (Internet Archive, obras abertas). */
+    val userSourcesFirst: Boolean = false,
+    val torrentCleanup: TorrentCleanup = TorrentCleanup.ON_CLOSE,
 )
 
 class AppSettings(context: Context) {
@@ -70,6 +79,8 @@ class AppSettings(context: Context) {
             pinHash = prefs.getString("pinHash", "") ?: "",
             maxRating = prefs.getString("maxRating", d.maxRating) ?: d.maxRating,
             intro = prefs.getBoolean("intro", d.intro),
+            userSourcesFirst = prefs.getBoolean("userSourcesFirst", d.userSourcesFirst),
+            torrentCleanup = runCatching { TorrentCleanup.valueOf(prefs.getString("torrentCleanup", d.torrentCleanup.name)!!) }.getOrDefault(d.torrentCleanup),
         )
     }
 
@@ -90,6 +101,8 @@ class AppSettings(context: Context) {
             .putString("pinHash", v.pinHash)
             .putString("maxRating", v.maxRating)
             .putBoolean("intro", v.intro)
+            .putBoolean("userSourcesFirst", v.userSourcesFirst)
+            .putString("torrentCleanup", v.torrentCleanup.name)
             .apply()
         state.value = v
     }

@@ -120,6 +120,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private var detailsJob: Job? = null
 
     fun openDetails(title: Title) {
+        com.brudre.streaming.torrent.TorrentLibrary.hashOf(title.id)?.let { h ->
+            services.torrentLibrary.get(h)?.let { openTorrentEntry(it); return }
+        }
         _detailsTitle.value = title
         loadDetails(title)
     }
@@ -192,6 +195,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     val last = library.latestFor(title.id)
                     list.firstOrNull { it.key == last?.episodeKey } ?: list.first()
                 }
+                // Torrent com vários vídeos e sem arquivo definido: o usuário escolhe (não presume o maior arquivo).
+                val t = target.torrent
+                if (t != null && t.fileIndex == null && t.filePathHint == null && target.directUrl == null && target.mirrors.isEmpty()) {
+                    val resolved = resolveTorrentFile(d.title, target) ?: return@launch
+                    val start = if (fromStart) 0L else library.resumePosition(d.title.id, resolved.key)
+                    onLaunch(PlayerActivity.intent(getApplication<Application>(), d.title, resolved, start))
+                    return@launch
+                }
                 val start = if (fromStart) 0L else library.resumePosition(title.id, target.key)
                 onLaunch(PlayerActivity.intent(getApplication<Application>(), d.title, target, start))
             } catch (e: CancellationException) {
@@ -202,6 +213,196 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 _playLoading.value = null
             }
         }
+    }
+
+
+    // ------------------------------------------------------------- BitTorrent do usuário
+    /** Escolha de vídeo/episódio dentro de um torrent (tela "Arquivos do torrent"). */
+    data class TorrentPick(
+        val title: Title,
+        val baseKey: String,
+        val base: Playable,
+        val meta: com.brudre.streaming.torrent.TorrentMeta? = null,
+        val status: String? = null,
+        val error: com.brudre.streaming.sources.SourceFailure? = null,
+    )
+
+    private val _torrentPick = MutableStateFlow<TorrentPick?>(null)
+    val torrentPick: StateFlow<TorrentPick?> = _torrentPick.asStateFlow()
+    private var torrentJob: Job? = null
+    /** Para o player ser aberto a partir da tela de arquivos. */
+    var launcher: ((Intent) -> Unit)? = null
+    val torrentHistory = services.torrentLibrary.entries
+
+    fun closeTorrentPick() { torrentJob?.cancel(); _torrentPick.value = null }
+
+    fun retryTorrentPick() {
+        val p = _torrentPick.value ?: return
+        torrentJob?.cancel()
+        torrentJob = viewModelScope.launch {
+            val r = resolveTorrentFile(p.title, p.base) ?: return@launch
+            launcher?.invoke(PlayerActivity.intent(getApplication<Application>(), p.title, r, library.resumePosition(p.title.id, r.key)))
+        }
+    }
+
+    /** Lista os vídeos do torrent; um vídeo só → toca direto; vários → o usuário escolhe. */
+    private suspend fun resolveTorrentFile(title: Title, base: Playable): Playable? {
+        val ref = base.torrent ?: return base
+        _torrentPick.value = TorrentPick(title, base.key, base, status = "Obtendo a lista de arquivos do torrent…")
+        return try {
+            val meta = services.torrentLibrary.meta(ref) { msg -> _torrentPick.value = _torrentPick.value?.copy(status = msg) }
+            val videos = meta.videos
+            when {
+                videos.isEmpty() -> {
+                    _torrentPick.value = TorrentPick(title, base.key, base, meta, error = com.brudre.streaming.sources.SourceFailure(
+                        com.brudre.streaming.sources.ErrorKind.NO_VIDEO, "Nenhum vídeo compatível entre ${meta.files.size} arquivo(s).", "files=${meta.files.map { it.path }.take(10)}"))
+                    null
+                }
+                videos.size == 1 -> { _torrentPick.value = null; videoPlayable(base, videos.first()) }
+                else -> { _torrentPick.value = TorrentPick(title, base.key, base, meta); null }
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            _torrentPick.value = TorrentPick(title, base.key, base, error = com.brudre.streaming.sources.ErrorClassifier.classify(e))
+            null
+        }
+    }
+
+    private fun videoPlayable(base: Playable, v: com.brudre.streaming.torrent.TorrentVideo): Playable {
+        val ref = base.torrent!!.copy(fileIndex = v.file.index, filePathHint = v.file.path)
+        return base.copy(
+            key = "${base.key.removeSuffix(":auto")}#${v.file.index}",
+            label = v.episode?.let { "T${it.season}:E${it.episode} — ${v.file.name}" } ?: v.file.name,
+            season = v.episode?.season ?: base.season, number = v.episode?.episode ?: base.number,
+            torrent = ref, altTorrents = emptyList(), directUrl = null, mirrors = emptyList(),
+        )
+    }
+
+    /** Vídeo escolhido na tela de arquivos: abre o player retomando de onde parou. */
+    fun playTorrentVideo(v: com.brudre.streaming.torrent.TorrentVideo, fromStart: Boolean = false) {
+        val pick = _torrentPick.value ?: return
+        val p = videoPlayable(pick.base, v)
+        viewModelScope.launch {
+            val start = if (fromStart) 0L else library.resumePosition(pick.title.id, p.key)
+            _torrentPick.value = null
+            launcher?.invoke(PlayerActivity.intent(getApplication<Application>(), pick.title, p, start))
+        }
+    }
+
+    /** Torrent do histórico (ou recém-adicionado): lista os arquivos e permite escolher o vídeo. */
+    fun openTorrentEntry(e: com.brudre.streaming.torrent.TorrentEntry) {
+        if (!sources.torrentAllowed) { _torrentPick.value = null; toastFlow.tryEmit("BitTorrent está desativado em Configurações > Fontes de conteúdo."); return }
+        val title = com.brudre.streaming.torrent.TorrentLibrary.title(e)
+        val base = Playable(e.titleId.removePrefix(com.brudre.streaming.torrent.TorrentLibrary.PREFIX), e.displayName, 1, 1, null, e.ref, emptyList(), null, preferTorrent = true)
+        torrentJob?.cancel()
+        torrentJob = viewModelScope.launch {
+            val p = resolveTorrentFile(title, base.copy(key = e.hash)) ?: return@launch
+            val start = library.resumePosition(title.id, p.key)
+            launcher?.invoke(PlayerActivity.intent(getApplication<Application>(), title, p, start))
+        }
+    }
+
+    /** Avisos curtos para a interface (toast). */
+    val toastFlow = kotlinx.coroutines.flow.MutableSharedFlow<String>(extraBufferCapacity = 4)
+
+    fun addMagnet(magnet: String, open: Boolean = true): String = try {
+        val e = services.torrentLibrary.addMagnet(magnet)
+        if (open) openTorrentEntry(e)
+        "Magnet adicionado: ${e.name}"
+    } catch (e: Exception) {
+        com.brudre.streaming.sources.ErrorClassifier.classify(e).summary
+    }
+
+    /** Lê um .torrent recebido de outro app (content://) com limite de tamanho e o adiciona ao histórico. */
+    fun importTorrentUri(uri: android.net.Uri, open: Boolean = true, onResult: (String) -> Unit = { toastFlow.tryEmit(it) }) {
+        viewModelScope.launch {
+            onResult(try {
+                val bytes = withContext(Dispatchers.IO) {
+                    val cr = getApplication<Application>().contentResolver
+                    cr.openInputStream(uri)?.use { input ->
+                        val max = com.brudre.streaming.torrent.TorrentContent.MAX_TORRENT_BYTES
+                        val buf = java.io.ByteArrayOutputStream()
+                        val chunk = ByteArray(64 * 1024)
+                        while (true) {
+                            val n = input.read(chunk); if (n < 0) break
+                            buf.write(chunk, 0, n)
+                            if (buf.size() > max) throw com.brudre.streaming.sources.ClassifiedException(com.brudre.streaming.sources.ErrorKind.FORMAT, "Arquivo grande demais para ser um .torrent")
+                        }
+                        buf.toByteArray()
+                    } ?: throw com.brudre.streaming.sources.ClassifiedException(com.brudre.streaming.sources.ErrorKind.STORAGE, "Não foi possível ler o arquivo recebido")
+                }
+                val e = withContext(Dispatchers.IO) { services.torrentLibrary.importBytes(bytes) }
+                if (open) openTorrentEntry(e)
+                ".torrent importado: ${e.name} (${e.videoCount} vídeo(s))"
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                com.brudre.streaming.sources.ErrorClassifier.classify(e).summary
+            })
+        }
+    }
+
+    fun addTorrentUrl(url: String): String = try {
+        val e = services.torrentLibrary.addUrl(url.trim(), null)
+        openTorrentEntry(e)
+        ".torrent adicionado: ${e.name}"
+    } catch (e: Exception) {
+        com.brudre.streaming.sources.ErrorClassifier.classify(e).summary
+    }
+
+    /** Só adiciona ao histórico (sem abrir). */
+    fun addTorrentUrlOnly(url: String): String = try {
+        if (!url.trim().startsWith("https://", true)) throw com.brudre.streaming.sources.ClassifiedException(com.brudre.streaming.sources.ErrorKind.BLOCKED, "Use magnet: ou um endereço https:// de .torrent")
+        ".torrent adicionado: ${services.torrentLibrary.addUrl(url.trim(), null).name}"
+    } catch (e: Exception) {
+        com.brudre.streaming.sources.ErrorClassifier.classify(e).summary
+    }
+
+    fun removeTorrent(hash: String) = services.torrentLibrary.remove(hash)
+    fun linkTorrent(hash: String, name: String?, year: String?) = services.torrentLibrary.link(hash, name, year)
+
+    /** Intents de outros apps: magnet:, .torrent (Abrir com) e Compartilhar (texto com magnet ou arquivo). */
+    fun handleIncoming(intent: Intent?): Boolean {
+        intent ?: return false
+        val data = intent.data
+        when (intent.action) {
+            Intent.ACTION_VIEW -> {
+                if (data == null) return false
+                if (data.scheme.equals("magnet", true)) { toastFlow.tryEmit(addMagnet(data.toString())); return true }
+                if (data.scheme == "content" || data.scheme == "file") { importTorrentUri(data); return true }
+                if (data.scheme == "https" && data.path?.endsWith(".torrent", true) == true) { toastFlow.tryEmit(addTorrentUrl(data.toString())); return true }
+            }
+            Intent.ACTION_SEND -> {
+                @Suppress("DEPRECATION")
+                val stream = intent.getParcelableExtra<android.net.Uri>(Intent.EXTRA_STREAM)
+                if (stream != null) { importTorrentUri(stream); return true }
+                val text = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return false
+                Regex("magnet:\\?[^\\s\"'<>]+").find(text)?.let { toastFlow.tryEmit(addMagnet(it.value)); return true }
+                Regex("https://[^\\s\"'<>]+\\.torrent").find(text)?.let { toastFlow.tryEmit(addTorrentUrl(it.value)); return true }
+                toastFlow.tryEmit("O texto compartilhado não tem um link magnet ou .torrent")
+                return true
+            }
+        }
+        return false
+    }
+
+    // -------------------------------------------------------- escolha manual de fonte
+    /** Toca a partir da fonte escolhida; as seguintes continuam como alternativas automáticas. */
+    fun playWithOption(details: TitleDetails, option: com.brudre.streaming.data.SourceOption, playable: Playable?, onLaunch: (Intent) -> Unit, onError: (String) -> Unit) {
+        val ordered = listOf(option) + details.options.filter { it !== option }
+        val merged = com.brudre.streaming.sources.SourceRanker.merge(ordered)
+        val target = playable?.let { p -> merged.firstOrNull { it.season == p.season && it.number == p.number } } ?: merged.firstOrNull()
+            ?: return onError("Essa fonte não tem vídeo para este título.")
+        play(details.title, target, details = details.copy(playables = merged, confirmed = true), onLaunch = onLaunch, onError = onError)
+    }
+
+    /** Cancela a pesquisa em andamento (ao sair da tela); resultados já prontos são mantidos. */
+    fun cancelSearch(): Boolean {
+        if (searchJob?.isActive != true) return false
+        searchJob?.cancel()
+        if (_searchResults.value is Load.Loading) _searchResults.value = null
+        return true
     }
 
     // ------------------------------------------------------------- TV ao Vivo
@@ -356,12 +557,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /** Identifica o formato, valida estrutura e conexão e só então salva (nova fonte ou edição de [oldId]). */
-    fun saveSource(oldId: String?, name: String, url: String, onResult: (Boolean, String) -> Unit) {
+    fun saveSource(oldId: String?, name: String, url: String, onResult: (Boolean, String, String?) -> Unit) {
         viewModelScope.launch {
             val r = services.inspector.inspect(url)
             val type = r.type
             if (type == null || !r.test.ok) {
-                onResult(false, (type?.let { "${it.label}: " } ?: "") + r.test.message)
+                onResult(false, (type?.let { "${it.label} — " } ?: "") + r.test.message, r.test.detail)
                 return@launch
             }
             val clean = url.trim()
@@ -371,12 +572,38 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 url = clean, type = type, priority = services.sourceStore.current.size, lastTest = r.test,
             )
             try {
-                if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
+                if (oldId != null) services.sourceStore.replace(oldId, src.copy(stats = services.sourceStore.get(oldId)?.stats ?: src.stats)) else services.sourceStore.put(src)
                 afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
-                onResult(true, "${type.label} salvo: ${r.test.message}")
+                onResult(true, "${type.label} salvo: ${r.test.message}", null)
             } catch (e: Exception) {
-                onResult(false, e.message ?: "Não foi possível salvar")
+                onResult(false, e.message ?: "Não foi possível salvar", e.toString())
             }
+        }
+    }
+
+    /**
+     * Salvar sem validar: registra uma fonte temporariamente indisponível, DESATIVADA até um teste dar certo.
+     * O formato vem do endereço (extensão/marcadores); as regras de segurança continuam valendo.
+     */
+    fun saveSourceUnvalidated(oldId: String?, name: String, url: String, onResult: (Boolean, String, String?) -> Unit) {
+        val clean = url.trim()
+        val type = com.brudre.streaming.sources.SourceDetector.guessByAddress(clean)
+            ?: return onResult(false, "Não dá para saber o formato só pelo endereço. Use um endereço terminado em .json, .rss, .m3u, .m3u8, .torrent, .mp4 ou um modelo com {query}.", null)
+        if (!com.brudre.streaming.sources.UserSourcesJson.isSafe(type, clean)) {
+            return onResult(false, "${com.brudre.streaming.sources.ErrorKind.BLOCKED.title}: ${com.brudre.streaming.sources.ErrorKind.BLOCKED.hint}", com.brudre.streaming.sources.UrlGuard.check(clean))
+        }
+        val src = com.brudre.streaming.sources.UserSource(
+            id = com.brudre.streaming.sources.UserSource.idFor(type, clean),
+            name = name.trim().ifBlank { com.brudre.streaming.sources.UrlGuard.hostOf(clean) ?: type.label }.take(60),
+            url = clean, type = type, enabled = false, pending = true, priority = services.sourceStore.current.size,
+            lastTest = com.brudre.streaming.sources.SourceTest(false, System.currentTimeMillis(), "Salva sem validar: fica desativada até um teste dar certo", 0),
+        )
+        try {
+            if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
+            afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
+            onResult(true, "${type.label} salva sem validar (desativada até o próximo teste com sucesso)", null)
+        } catch (e: Exception) {
+            onResult(false, e.message ?: "Não foi possível salvar", e.toString())
         }
     }
 
@@ -387,7 +614,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 val r = services.inspector.inspect(src.url, forcedType = src.type)
                 services.sourceStore.saveTest(id, r.test)
-                onResult("${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}")
+                if (r.test.ok && src.pending) afterSourcesChanged(id)
+                onResult("${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}" + if (r.test.ok && src.pending) " • fonte ativada" else "")
             } finally {
                 _testingSources.value = _testingSources.value - id
             }
@@ -407,7 +635,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             list.forEach { s ->
                 _testingSources.value = _testingSources.value + s.id
                 val r = runCatching { services.inspector.inspect(s.url, forcedType = s.type) }.getOrNull()
-                if (r != null) { services.sourceStore.saveTest(s.id, r.test); if (r.test.ok) ok++ }
+                if (r != null) { services.sourceStore.saveTest(s.id, r.test); if (r.test.ok) ok++; if (r.test.ok && s.pending) afterSourcesChanged(s.id) }
                 _testingSources.value = _testingSources.value - s.id
             }
             onResult("$ok de ${list.size} fontes funcionando")
@@ -455,6 +683,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Abre no player um magnet, .torrent, HLS ou vídeo HTTPS colado pelo usuário. */
     fun openLink(input: String, onLaunch: (Intent) -> Unit, onError: (String) -> Unit) {
+        val clean = input.trim()
+        // Magnet e .torrent entram no histórico e passam pela lista de arquivos (escolha do episódio).
+        if (clean.startsWith("magnet:", true)) {
+            if (!sources.torrentAllowed) return onError("BitTorrent está desativado em Configurações > Fontes de conteúdo.")
+            launcher = launcher ?: onLaunch
+            val msg = addMagnet(clean)
+            if (!msg.startsWith("Magnet adicionado")) onError(msg)
+            return
+        }
+        if (clean.startsWith("https://", true) && clean.substringBefore('?').endsWith(".torrent", true)) {
+            if (!sources.torrentAllowed) return onError("BitTorrent está desativado em Configurações > Fontes de conteúdo.")
+            launcher = launcher ?: onLaunch
+            val msg = addTorrentUrl(clean)
+            if (!msg.startsWith(".torrent adicionado")) onError(msg)
+            return
+        }
         val (t, p) = com.brudre.streaming.sources.FeedParser.manual(input)
             ?: return onError("Link inválido ou bloqueado. Use magnet:, um arquivo .torrent ou um endereço https:// de vídeo/HLS.")
         if (p.directUrl == null && !sources.torrentAllowed) return onError("BitTorrent está desativado em Configurações > Fontes de conteúdo.")
