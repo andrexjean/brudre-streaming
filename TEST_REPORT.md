@@ -1,8 +1,8 @@
 # BruDre Streaming — Relatório de testes
 
-## Atualização 8.1 (build 8.0.29+) — 05/11/2026
+## Atualização 8.1 (v8.0.30) — 05/11/2026
 
-Executado no GitHub Actions: testes unitários (JVM) e testes instrumentados em emulador Android 11 x86_64 (TV 1080p, 2 GB) **com internet real**, a partir dos EUA (alguns canais brasileiros bloqueiam acesso de fora do Brasil). Commit testado `5199d83`, release publicada **v8.0.29**. Logs, capturas e relatórios nos branches `ci-build` e `ci-tests`.
+Executado no GitHub Actions: testes unitários (JVM) e testes instrumentados em emulador Android 11 x86_64 (TV 1080p, 2 GB) **com internet real**, a partir dos EUA (alguns canais brasileiros bloqueiam acesso de fora do Brasil). Commits testados `5199d83` (v8.0.29) e `0f992bc` (**v8.0.30**, release atual: as duas rodadas passaram inteiras). Logs, capturas e relatórios nos branches `ci-build` e `ci-tests`.
 
 | Etapa | Resultado |
 |---|---|
@@ -29,7 +29,7 @@ Executado no GitHub Actions: testes unitários (JVM) e testes instrumentados em 
 Também: `t22` (catálogo externo: Sintel por HTTP e HLS, Sintel só magnet, Big Buck Bunny só .torrent, Tears of Steel — todos tocaram e o tipo de fonte escolhido foi o esperado) e `t23` (magnet colado à mão toca por BitTorrent progressivo). Unitários: `FeedTest` (6), `SourceManagerTest` (3).
 
 ### TV ao Vivo — verificação de todos os canais (`PlaybackTest.t21`)
-- **457 canais testados em 80 s** (Brasil + português): **360 no ar**, 97 fora do ar. Brasil: **213 de 294 no ar**. Principais motivos de falha: servidor responde erro HTTP (50), servidor inexistente/sem conexão.
+- **457 canais testados em cerca de 80 s** (Brasil + português): **367 no ar**, 90 fora do ar. Brasil: **215 de 294 no ar** (rodada da v8.0.30; a anterior deu 360 e 213). Principais motivos de falha: servidor responde erro HTTP (50), servidor inexistente/sem conexão.
 - Precisão: dos canais aprovados na verificação, **10 de 10 sorteados tocaram de verdade no player**.
 - **Defeito encontrado e corrigido:** os canais Pluto TV (≈200) redirecionam para endereços assinados com mais de 2 KB, que a proteção de URL recusava. Na 8.0.24 eles falhavam no player — era parte dos "vários canais não funcionam". O limite passou para 16 KB.
 
