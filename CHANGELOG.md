@@ -1,5 +1,34 @@
 # Changelog — BruDre Streaming
 
+## 8.1 (novembro de 2026)
+
+### Gerenciar fontes (Configurações → Gerenciar fontes)
+- Adicionar fonte pelo controle remoto: o formato é **identificado sozinho** pelos primeiros bytes e a fonte só é salva depois de validada (estrutura + conexão). Formatos: magnet, .torrent, vídeo HTTP/HTTPS, HLS/M3U8, playlist IPTV M3U, catálogo JSON do BruDre e RSS. Documentação em [`docs/FONTES.md`](docs/FONTES.md).
+- Cada fonte: **ativar/desativar**, **testar** (resultado com data e hora), **atualizar** (baixa de novo), **subir/descer** (prioridade de reprodução), **editar** e **excluir** (com confirmação).
+- **Exportar/importar** a configuração (`brudre-fontes.json` na pasta do app, ou importar de um endereço https).
+- Fontes salvas no aparelho: continuam após reiniciar. As listas M3U e catálogos da 8.0 migram sozinhos.
+- Integração com o catálogo: catálogos viram linhas no Início; links únicos aparecem em "Minhas fontes (links)"; títulos do app com mesmo nome e ano ganham o botão Assistir com a fonte cadastrada; títulos sem capa recebem capa e sinopse do TMDB.
+- **Abrir link de vídeo**: magnet, .torrent, HLS ou vídeo https colado à mão toca direto no player.
+- Recusa páginas web, executáveis (APK/EXE/ELF/DEX/ZIP), endereços locais, `http://` sem criptografia e formatos desconhecidos.
+
+### Filmes e séries atuais (gratuitos e legais)
+- Abas novas **Lançamentos** e **Em Alta** (filmes e séries), e linhas "Filmes Recentes Grátis", "Séries Grátis", "Desenhos Grátis" etc.
+- Títulos grátis em apps oficiais (Pluto TV, YouTube, Plex, Mercado Play, ViX, Tubi) mostram **"Assistir grátis no …"**: abre o app oficial (ou a Play Store para instalar sem custo). Serviços pagos, mesmo os planos "com anúncios", nunca aparecem.
+- Canais de filmes e de séries 24 h grátis dentro das seções Filmes e Séries.
+- Lançamentos sem versão gratuita continuam no catálogo como "sem fonte gratuita". O BruDre não integra fontes de pirataria.
+
+### TV ao Vivo
+- **Teste de sinal de todos os canais**, feito no próprio aparelho (manifesto → variante → segmento mais recente). Canais fora do ar ficam ocultos; o endereço que respondeu passa a ser o principal. Resultado vale 6 h (2 h para falhas) e pode ser refeito em "Testar de novo".
+
+### Desempenho (Mi Stick, 1 GB)
+- APK release otimizado com R8 (código e recursos não usados removidos) e perfis de compilação do Compose instalados mesmo fora da Play Store.
+- Sombras só no card focado, capas sem animação de troca, capas do TMDB em tamanho de card, cálculos das linhas de canais memorizados, decodificadores lidos fora da thread da interface.
+- Verificação de fonte e busca no acervo em cache (20 min e 7 dias): abrir um título pela segunda vez é imediato.
+- Vinheta em 720p (1,3 MB, mais leve para decodificar).
+
+### Abertura
+- Som cerca de 15 dB mais baixo (−32 LUFS), audível sem assustar.
+
 ## 8.0 (build de novembro de 2026)
 
 Atualização sobre a 7.0.20. A interface, a navegação pelo controle remoto, Minha Lista, Histórico, Continuar Assistindo e o controle dos pais foram preservados. Antes das mudanças estruturais foi criado o backup `backup-v7.0.20`, um branch no repositório.

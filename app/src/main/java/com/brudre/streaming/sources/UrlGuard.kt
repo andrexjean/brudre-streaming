@@ -24,7 +24,8 @@ object UrlGuard {
         "application/x-msi", "application/x-apple-diskimage",
     )
 
-    const val MAX_URL_LENGTH = 2048
+    /** Canais FAST (Pluto TV) redirecionam para URLs assinadas de vários KB. */
+    const val MAX_URL_LENGTH = 16_384
 
     /** Motivo do bloqueio, ou null se a URL pode ser acessada. */
     fun check(url: String?): String? {

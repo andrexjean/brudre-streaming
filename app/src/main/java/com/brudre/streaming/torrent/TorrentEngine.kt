@@ -71,7 +71,19 @@ class TorrentEngine(
      * Abre um torrent autorizado e prepara o arquivo de vídeo para leitura progressiva.
      * Lança [TorrentException] com mensagem amigável em caso de falha.
      */
-    suspend fun open(ref: TorrentRef, onStatus: (String) -> Unit = {}): TorrentStream = withContext(Dispatchers.IO) {
+    /** Aberturas em andamento (buscando metadados): a sessão não pode ser desligada nesse intervalo. */
+    private val opening = java.util.concurrent.atomic.AtomicInteger(0)
+
+    suspend fun open(ref: TorrentRef, onStatus: (String) -> Unit = {}): TorrentStream {
+        opening.incrementAndGet()
+        try {
+            return openNow(ref, onStatus)
+        } finally {
+            opening.decrementAndGet()
+        }
+    }
+
+    private suspend fun openNow(ref: TorrentRef, onStatus: (String) -> Unit): TorrentStream = withContext(Dispatchers.IO) {
         val s = ensureSession()
         onStatus("Obtendo metadados do torrent…")
         val bytes = loadTorrentBytes(s, ref)
@@ -188,7 +200,8 @@ class TorrentEngine(
         // A sessão é desligada FORA do lock: stop() pode demorar (trackers/DHT) e não pode
         // bloquear a abertura de um novo vídeo.
         val toStop: SessionManager = synchronized(lock) {
-            if (active.isNotEmpty()) return
+            // Outro vídeo pode estar abrindo (metadados do magnet): não derruba a sessão dele.
+            if (active.isNotEmpty() || opening.get() > 0) return
             val s = session ?: return
             session = null
             s

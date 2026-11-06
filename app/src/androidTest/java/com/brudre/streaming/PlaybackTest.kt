@@ -274,14 +274,10 @@ class PlaybackTest {
         TestUtil.log("Brasil: ${br.count { res[it.id]?.ok == true }} de ${br.size} no ar")
         fail.groupingBy { (res[it.id]?.reason ?: "?").replace(Regex("\\d{3}"), "NNN").take(40) }.eachCount()
             .entries.sortedByDescending { it.value }.take(10).forEach { TestUtil.log("  motivo: ${it.key} → ${it.value}") }
-        // Relatório completo (CSV) junto das capturas
-        runCatching {
-            val f = File("/sdcard/brudre_shots/live_health.csv")
-            f.parentFile?.mkdirs()
-            f.writeText("lista;canal;resultado;motivo;url\n" + all.joinToString("\n") { c ->
-                val e = res[c.id]
-                "${c.source};${c.name.replace(';', ',')};${if (e?.ok == true) "no ar" else "fora"};${e?.reason ?: ""};${e?.workingUrl ?: c.url}"
-            })
+        // Relatório completo, um canal por linha (vai para o logcat publicado no CI)
+        all.forEach { c ->
+            val e = res[c.id]
+            TestUtil.log("CANAL;${c.source};${c.name.replace(';', ',')};${if (e?.ok == true) "no ar" else "fora"};${e?.reason ?: ""};${(e?.workingUrl ?: c.url).take(120)}")
         }
         assertTrue("nenhum canal no ar", ok.size >= 20)
         // Precisão da verificação: canais aprovados precisam tocar de verdade no player
