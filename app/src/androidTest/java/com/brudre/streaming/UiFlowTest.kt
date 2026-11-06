@@ -390,9 +390,15 @@ class UiFlowTest {
         rule.onNodeWithTag("live").performScrollToKey("world_iptv_movies")
         waitPrefix("row_live_iptv_movies_", 90_000)
         Thread.sleep(4_000); TestUtil.shot("ao_vivo_mundo_filmes")
+        // Linhas brasileiras: o TMDB precisa devolver títulos em português (idioma original pt, país BR)
+        val br = runBlocking { TestUtil.services.catalog.row("tmdb_br_movies") }
+        val brSeries = runBlocking { runCatching { TestUtil.services.catalog.row("tmdb_br_series") }.getOrDefault(emptyList()) }
+        val brFree = runBlocking { runCatching { TestUtil.services.catalog.row("tmdb_br_free") }.getOrDefault(emptyList()) }
+        TestUtil.log("Cinema Brasileiro: ${br.size} filmes (${br.take(5).map { it.name }}) • séries BR: ${brSeries.size} • grátis BR: ${brFree.size}")
+        org.junit.Assert.assertTrue(br.isNotEmpty() && br.all { it.ptAudio && it.languageBadge == "PT-BR" })
         rule.onNodeWithTag("nav_MOVIES").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("movies")
         rule.onNodeWithTag("movies").performScrollToKey("tmdb_br_movies")
-        Thread.sleep(5_000); TestUtil.shot("filmes_cinema_brasileiro")
+        Thread.sleep(6_000); TestUtil.shot("filmes_cinema_brasileiro")
     }
 }
