@@ -1,5 +1,43 @@
 # BruDre Streaming — Relatório de testes
 
+## Versão 9.0 (v9.0.37) — 06/11/2026 — Source Engine 2.0
+
+GitHub Actions, emulador Android 11 x86_64 (TV 1080p) **com internet real** (EUA). Commit `37737ac`, release **v9.0.37**.
+Conteúdo de teste próprio: série sintética `samples/test-torrent` (3 episódios + legenda .srt, web seed HTTPS no GitHub),
+API de pesquisa estática `samples/search` e catálogos de troca de fonte `samples/feeds/fallback-*.json`.
+
+| Etapa | Resultado |
+|---|---|
+| Compilação debug + release (R8) | Aprovada — APK 15,9 MB, versionCode 90037 |
+| Testes unitários | **80/80** (19 novos em `V9Test`) |
+| Testes instrumentados | **41/41** (9 novos: `SourceEngineTest` t25–t31, `UiFlowTest` t10–t11) |
+| Release instalado no emulador | Abre a frio em 0,54 s, 0 crashes, 131 MB PSS |
+| Mi Stick físico | **Pendente** (fluidez no emulador sem GPU não é representativa) |
+
+| # | Teste obrigatório | Evidência | Resultado |
+|---|---|---|---|
+| 1 | Magnet válido/inválido | magnet compartilhado → 3 vídeos listados (t27); `btih:123` → "Magnet inválido" | Aprovado |
+| 2 | Importar .torrent | content:// ("Abrir com") e bytes → histórico, hash `bf16e86e…` | Aprovado |
+| 3 | Reprodução progressiva | episódio de 445 KB tocou em ~5 s pelo web seed | Aprovado |
+| 4 | Seleção de episódio | S01E02 escolhido: arquivo certo no motor; outros vídeos **não** gravados (0 bytes) | Aprovado |
+| 5 | Legendas do torrent | `.pt-BR.srt` virou faixa de texto no player | Aprovado |
+| 6 | Catálogo JSON | t24 (regressão) + campos tmdb/idioma (unit) | Aprovado |
+| 7 | Pesquisa dinâmica | API `{slug}` → 1 resultado; aparece na Pesquisa e nos detalhes | Aprovado |
+| 8 | Associação título ↔ resultado | por TMDB `movie:10378` e nome+ano | Aprovado |
+| 9 | Várias fontes e prioridade | Big Buck Bunny: 4 fontes; nativas primeiro × minhas fontes primeiro | Aprovado |
+| 10 | Falha de DNS | "Endereço não encontrado (DNS)…" + UnknownHostException nos detalhes | Aprovado |
+| 11 | Timeout | 10.255.255.1 → "Tempo esgotado" em 10 s | Aprovado |
+| 12 | Servidor indisponível / HTTP | 404 → "Arquivo não encontrado no servidor (HTTP 404)"; ConnectException → "Servidor indisponível" (unit) | Aprovado |
+| 13 | Fonte offline | salva sem validar (desativada) → teste OK → ativada sozinha; fonte quebrada → player trocou para a próxima e gravou ✗1 / ✓1 | Aprovado |
+| 14 | Retomada | parou em 15,7 s → retomou em 15,9 s | Aprovado |
+| 15 | Cancelamento de pesquisa | cancelado em 1 ms; fonte lenta não segura as outras | Aprovado |
+| 16 | Limpeza de cache | apagar ao fechar: 0 bytes; manter até o limite: 517 KB mantidos | Aprovado |
+| 17 | D-pad | abas, BitTorrent, colar magnet, nativas e diagnóstico só com setas/OK | Aprovado |
+| 18 | Regressão | todos os 32 testes da 8.1 aprovados | Aprovado |
+
+Conteúdo do mundo: "Cinema Brasileiro" devolveu 20 filmes, todos com selo PT-BR; TV ao vivo do mundo separada em
+"em português" (26 canais de filmes) e "outros idiomas" (80).
+
 ## Atualização 8.1 (v8.0.30) — 05/11/2026
 
 Executado no GitHub Actions: testes unitários (JVM) e testes instrumentados em emulador Android 11 x86_64 (TV 1080p, 2 GB) **com internet real**, a partir dos EUA (alguns canais brasileiros bloqueiam acesso de fora do Brasil). Commits testados `5199d83` (v8.0.29) e `0f992bc` (**v8.0.30**, release atual: as duas rodadas passaram inteiras). Logs, capturas e relatórios nos branches `ci-build` e `ci-tests`.
