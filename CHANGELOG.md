@@ -1,5 +1,28 @@
 # Changelog — BruDre Streaming
 
+## 9.1 (novembro de 2026) — Segurança, descoberta de fontes e reprodução
+
+### Segurança TLS (crítico)
+- **Removido** o desligamento da validação de certificados da 9.0.37.
+- Causa encontrada: o OpenSSL 3.5 do libtorrent4j foi compilado apontando para certificados da máquina de build, inexistentes no Android.
+- Servidores web dos torrents (web seeds) agora são baixados pelo **OkHttp protegido do app**: certificado e hostname validados pelo Android, cada redirecionamento conferido (sem http://, destino local ou executável). Cada peça entra no motor por `add_piece`, que confere o hash SHA-1 antes de aceitar.
+- O libtorrent mantém a validação ligada, com as CAs do sistema Android entregues ao OpenSSL (para trackers HTTPS).
+
+### Fontes (Source Engine 3.0)
+- Adaptadores com **capacidades declaradas** (pesquisa por texto, por identificador, episódios, paginação, formatos, autenticação, limite por minuto): API BruDre, **OpenSearch**, **RSS/Atom** e **API REST por descritor** (`brudre-adapter`), cadastráveis sem recompilar.
+- **Paginação sob demanda**: "Carregar mais resultados" na Pesquisa e "Carregar mais" nos catálogos paginados (`next` no JSON, `rel="next"` no RSS/Atom). Sem consultas repetidas, com teto de memória.
+- Associação mais rigorosa: **filme × série** nunca se misturam; TMDB diferente rejeita. Fonte encontrada só pelo nome (sem ano) **não entra na troca automática**: aparece em "Escolher fonte" como "(sem ano: confirme)".
+- **Preferências**: idioma de áudio e de legenda, resolução, fonte preferida e histórico. O que a fonte não informa aparece como "desconhecido" e nunca é presumido.
+
+### Gerenciar fontes
+- Capacidades, falhas de uso, **duplicadas** (recusadas ao cadastrar e marcadas), **Atualizar redetecta o formato**, **revalidação automática** configurável (só com o app aberto), status do TLS no Diagnóstico.
+- Fonte salva sem validação **não é ativada sozinha**: passa pela identificação completa do formato, fica "VALIDADA — ATIVE" e só liga quando você ativa.
+
+### Reprodução
+- Falha **no meio do vídeo**: tenta de novo a mesma fonte, depois a próxima, **na mesma posição** e com o mesmo idioma de áudio e legenda. Há limite de trocas, sem ciclos. Quando nada funciona: botão "Escolher outra fonte".
+- BitTorrent: participantes conectados e conhecidos, servidores web, velocidade real, buffer e "início em ~X s" (só com taxa estável). "Sem participantes" identificado.
+- **Faixas reais**: o player lê os idiomas de áudio e legenda do arquivo e mostra ao abrir. Esses idiomas confirmam os selos PT-BR e LEG PT. A troca de faixa no menu do player vira preferência salva.
+
 ## 9.0 (novembro de 2026) — Source Engine 2.0
 
 ### Fontes

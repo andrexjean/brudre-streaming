@@ -1,5 +1,39 @@
 # BruDre Streaming — Relatório de testes
 
+## Versão 9.1 (v9.1.39) — 07/11/2026
+
+Resultados separados por ambiente. **Nada aqui foi executado no Mi Stick físico.**
+
+| Ambiente | Resultado |
+|---|---|
+| Testes unitários (JVM) | **93/93** (13 novos em `V91Test`) |
+| Emulador Android 11 x86_64, TV 1080p, internet real (GitHub Actions) | **50/50** (9 novos em `V91DeviceTest` + `UiFlowTest.t10` ampliado) |
+| Release instalado no emulador | Abre a frio em 0,64 s, 0 crashes, 110 MB PSS no Início |
+| Mi Stick físico | **Não executado** (sem acesso ao aparelho) |
+
+| # | Teste | Evidência (emulador) | Resultado |
+|---|---|---|---|
+| 1 | Certificado TLS válido | web seed do GitHub pelo OkHttp: episódio tocou | Aprovado |
+| 2 | Certificado inválido/expirado | expired, wrong.host, self-signed, untrusted-root (badssl.com): recusados no OkHttp; como web seed, nenhuma peça aceita | Aprovado |
+| 3 | Redirecionamento HTTPS | github.com → raw seguiu; → http:// e → .apk bloqueados no salto | Aprovado |
+| 4 | Fonte indisponível | salva sem validar fica desativada; validada não ativa sozinha; pendente não pode ser ativada | Aprovado |
+| 5 | Redetecção de formato | salva como JSON → "Atualizar" → RSS, mantendo nome e histórico | Aprovado |
+| 6 | Pesquisa em várias fontes | OpenSearch (Atom) + REST (descritor) + API BruDre na mesma página | Aprovado |
+| 7 | Paginação | página 2 só da fonte com mais; catálogo paginado 2 → 3 títulos sem repetir | Aprovado |
+| 8 | Cancelamento de pesquisa | 2 ms | Aprovado |
+| 9 | Associação de filmes | Alien × Aliens, Duna 1984 × 2021, TMDB diferente, filme × série (unit) | Aprovado |
+| 10 | Temporadas e episódios | junção por temporada/episódio, série × filme (unit); episódios do torrent (t25) | Aprovado |
+| 11 | Áudio e legenda | MKV com áudio pt+en e legenda pt embutida: lidos; troca para inglês salva como preferência | Aprovado |
+| 12 | Retomada | parou em 15,6 s → retomou em 15,6 s | Aprovado |
+| 13 | Falha durante a reprodução | vídeo truncado: tentou a mesma fonte, trocou para a completa em 17 s; todas falhando → para, sem ciclo | Aprovado |
+| 14 | Sem peers | "Sem participantes" após 30 s | Aprovado |
+| 15 | Cache | apagar ao fechar: 0 B; manter até o limite: 517 KB | Aprovado |
+| 16 | Duplicadas | variação de maiúsculas/barra recusada; importação ignora repetida | Aprovado |
+| 17 | Persistência | 7 preferências relidas por nova instância | Aprovado |
+| 18 | D-pad | abas, BitTorrent, colar magnet, preferências e diagnóstico só pelas setas/OK | Aprovado |
+| 19 | Memória e liberação | PSS (processo de teste) 224 → 213 → 210 MB; sessão BitTorrent encerrada; 0 streams | Aprovado (emulador) |
+| 20 | Regressão v9.0.37 | todos os 41 testes anteriores | Aprovado |
+
 ## Versão 9.0 (v9.0.37) — 06/11/2026 — Source Engine 2.0
 
 GitHub Actions, emulador Android 11 x86_64 (TV 1080p) **com internet real** (EUA). Commit `37737ac`, release **v9.0.37**.

@@ -104,3 +104,43 @@ Não precisam de catálogo: Configurações → Gerenciar fontes → **BitTorren
 mostram a lista de episódios; só o vídeo escolhido é baixado. Legendas `.srt/.vtt/.ass` do torrent são carregadas.
 Magnet com `xs=https://…/arquivo.torrent` baixa o `.torrent` quando ainda não há participantes (o hash é conferido).
 Use apenas conteúdo com distribuição autorizada.
+
+
+## OpenSearch (9.1)
+
+Cadastre o endereço da **descrição OpenSearch** (XML). O BruDre usa o modelo `<Url>` que responde **Atom ou RSS**
+(resultados com `enclosure` de vídeo, magnet ou `.torrent`); modelos só HTML são recusados. Marcadores:
+`{searchTerms}`, `{startPage?}`, `{startIndex?}`, `{count?}`. Exemplo: `samples/opensearch/descricao.xml`.
+
+## API REST por descritor (9.1)
+
+Para APIs JSON documentadas (ex.: um servidor de mídia próprio), cadastre o endereço de um descritor:
+
+```json
+{"format": "brudre-adapter", "version": 1, "name": "Meu servidor",
+ "search": {"url": "https://host/api/busca?q={query}&p={page}", "items": "data.results", "hasMore": "data.has_more"},
+ "lookup": {"url": "https://host/api/tmdb?id={tmdb}"},
+ "fields": {"id": "uid", "title": "name", "year": "released", "tmdb": "ids.tmdb", "kind": "type",
+            "season": "season", "episode": "episode", "series": "show", "language": "lang"},
+ "kinds": {"movie": "MOVIE", "episode": "SERIES"},
+ "media": [{"type": "http", "url": "{files.mp4}"}, {"type": "magnet", "url": "{magnet}"}],
+ "headers": {"X-Api-Key": "…"}, "rateLimitPerMinute": 30}
+```
+
+- Caminhos com ponto (`ids.tmdb`).
+- `{campo}` nos modelos é trocado pelo valor do item.
+- Só https.
+- Cabeçalhos permitidos (autenticação): `Authorization`, `X-Api-Key`, `X-Emby-Token`, `X-MediaBrowser-Token`, `X-Plex-Token`. Com cabeçalhos, redirecionamentos não são seguidos (o token não vai para outro servidor).
+- Todos os itens passam pelas mesmas validações do catálogo JSON.
+
+## Paginação (9.1)
+
+- Catálogo JSON: `"next": "https://…/pagina-2.json"`.
+- RSS/Atom: `<link rel="next" href="…"/>`.
+- API de pesquisa: `{page}`, `{offset}`, `{limit}` (50 por página) e, na resposta, `"more": true|false` (opcional).
+- Cada página é carregada só quando pedida, até 1.500 títulos por catálogo e 300 resultados na Pesquisa.
+
+## Duplicadas e validação (9.1)
+
+- O mesmo endereço (com variação de maiúsculas, barra final ou ordem de parâmetros) ou o mesmo hash de magnet é recusado como duplicado.
+- Fonte salva sem validar fica desativada. O teste identifica o formato do zero. Se o formato bater e passar nas regras de segurança e de estrutura, ela fica "VALIDADA — ATIVE" e você decide quando ativar.
