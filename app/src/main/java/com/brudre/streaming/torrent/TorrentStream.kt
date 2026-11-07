@@ -24,6 +24,18 @@ class TorrentStream(
     val fileSize: Long get() = math.fileSize
     /** Legendas encontradas dentro do torrent para este vídeo. */
     @Volatile var subtitles: List<TorrentSubtitle> = emptyList()
+    /** Servidor web do titular baixado pelo OkHttp protegido (null se o torrent não tem web seed). */
+    @Volatile var webSeed: WebSeedFetcher? = null
+
+    /** Peças que o player precisa agora: janela à frente da leitura, fim do arquivo (índice do MP4) e legendas. */
+    fun wantedPieces(): List<Int> {
+        val from = lastWindowStart.takeIf { it >= 0 } ?: math.firstPiece
+        val out = ArrayList<Int>()
+        out += math.window(from, readAhead)
+        if (from == math.firstPiece) { out += math.lastPiece; if (math.lastPiece - 1 > math.firstPiece) out += math.lastPiece - 1 }
+        subtitles.forEach { s -> out += s.stream.math.window(s.stream.math.firstPiece, s.stream.math.lastPiece - s.stream.math.firstPiece + 1) }
+        return out.distinct()
+    }
 
     @Volatile var closed = false
         private set
@@ -93,8 +105,9 @@ class TorrentStream(
 
     fun stats(): Stats? = safe {
         val st = handle.status()
-        Stats(st.numPeers(), st.numSeeds(), st.downloadPayloadRate(), st.progress(),
-            runCatching { handle.urlSeeds().size }.getOrDefault(0), runCatching { st.listPeers() }.getOrDefault(0))
+        val ws = webSeed
+        Stats(st.numPeers(), st.numSeeds(), st.downloadPayloadRate() + (ws?.bytesPerSecond ?: 0), st.progress(),
+            ws?.activeSeeds ?: 0, runCatching { st.listPeers() }.getOrDefault(0))
     }
 
     /** Bytes que ainda faltam na janela inicial (para estimar o tempo até começar). */
@@ -123,6 +136,7 @@ class TorrentStream(
 
     fun close() {
         closed = true
+        webSeed?.stop()
     }
 
     private inline fun <T> safe(block: () -> T): T? = try {

@@ -173,6 +173,9 @@ class TorrentEngine(
         }
         val stream = streamFor(index).also { it.subtitles = subtitleStreams }
         stream.prime()
+        webSeedsOf(ref, meta).takeIf { it.isNotEmpty() }?.let { seeds ->
+            stream.webSeed = WebSeedFetcher(stream, seeds, http) { err -> lastWebSeedError = err }.also { it.start() }
+        }
         active[stream.key] = stream
         TorrentStreams.register(stream)
         Log.i(TAG, "Torrent pronto: ${files.fileName(index)} (${CacheManager.formatBytes(size)}), peças=${ti.numPieces()}, legendas=${subtitleStreams.size}")
@@ -227,12 +230,17 @@ class TorrentEngine(
         val trackers = (magnet?.trackers.orEmpty().filter { it.startsWith("udp://") || it.startsWith("http") } + FALLBACK_TRACKERS).distinct()
         trackers.forEach { url -> runCatching { th.addTracker(AnnounceEntry(url)) } }
         // Web seeds: só HTTPS e só destinos permitidos pelo UrlGuard.
-        (magnet?.webSeeds.orEmpty() + meta?.webSeeds.orEmpty()).distinct()
-            .filter { it.startsWith("https://") && com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
-            .forEach { url -> runCatching { th.addUrlSeed(url) } }
+        // Web seeds HTTPS NÃO passam pelo libtorrent (o HTTPS interno dele não conseguiu validar certificados no Android):
+        // ficam com o [WebSeedFetcher], que usa o OkHttp protegido. Os do .torrent são retirados do motor.
+        runCatching { th.urlSeeds().forEach { th.removeUrlSeed(it) } }
         runCatching { th.forceReannounce() }
-        Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers, ${runCatching { th.urlSeeds().size }.getOrDefault(-1)} web seeds")
+        Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers; web seeds pelo OkHttp: ${webSeedsOf(ref, meta).size}")
     }
+
+    /** Servidores web do titular (magnet ws= e url-list do .torrent): só https e permitidos pelo UrlGuard. */
+    private fun webSeedsOf(ref: TorrentRef, meta: TorrentMeta?): List<String> =
+        (ref.magnet?.let { MagnetLink.parse(it) }?.webSeeds.orEmpty() + meta?.webSeeds.orEmpty()).distinct()
+            .filter { it.startsWith("https://") && com.brudre.streaming.sources.UrlGuard.isAllowed(it) }
 
     private suspend fun loadTorrentBytes(s: SessionManager, ref: TorrentRef): ByteArray {
         cachedBytes(ref)?.let { return it }

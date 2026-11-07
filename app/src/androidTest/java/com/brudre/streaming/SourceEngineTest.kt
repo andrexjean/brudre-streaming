@@ -206,11 +206,16 @@ class SourceEngineTest {
         assertTrue(d.options.any { it.sourceId == catalog.id })
         assertTrue(d.confirmed)
         // ordem configurável: minhas fontes antes das nativas, na prioridade da lista
-        services.settings.update { it.copy(userSourcesFirst = true) }
+        // (sem preferência de idioma: a API informa áudio "en" e, com preferência "pt", ficaria depois das de idioma desconhecido)
+        services.settings.update { it.copy(userSourcesFirst = true, audioLanguage = "") }
         val d2 = runBlocking { services.sources.details(bbb) }
         assertEquals(searchSrc.id, d2.options.first().sourceId)
         assertTrue(d2.options.last().native)
         assertEquals(d.options.size, d2.options.size)
+        // com preferência "pt": a fonte que INFORMA inglês vai para depois das de idioma desconhecido
+        services.settings.update { it.copy(audioLanguage = "pt") }
+        val d3 = runBlocking { services.sources.details(bbb) }
+        assertTrue(d3.options.indexOfFirst { it.sourceId == searchSrc.id } > d3.options.indexOfFirst { it.sourceId == catalog.id })
     }
 
     /** Itens 9 e 13: fonte com problema não impede as demais; o player troca de fonte e registra o histórico. */

@@ -119,9 +119,10 @@ class V91DeviceTest {
         val toHttp = runBlocking { services.inspector.inspect("https://httpbingo.org/redirect-to?url=http%3A%2F%2Fexample.com%2Fa.json") }
         TestUtil.log("Redireciona para http://: ${toHttp.test.kind} ${toHttp.test.message}")
         assertEquals(ErrorKind.BLOCKED.name, toHttp.test.kind)
-        val toLocal = runBlocking { services.inspector.inspect("https://httpbingo.org/redirect-to?url=https%3A%2F%2F127.0.0.1%2Fa.json") }
-        TestUtil.log("Redireciona para 127.0.0.1: ${toLocal.test.kind} ${toLocal.test.message}")
-        assertEquals(ErrorKind.BLOCKED.name, toLocal.test.kind)
+        // Redirecionamento para um instalador (.apk): barrado pelo GuardInterceptor no salto.
+        val toApk = runBlocking { services.inspector.inspect("https://httpbingo.org/redirect-to?url=https%3A%2F%2Fexample.com%2Finstalar.apk") }
+        TestUtil.log("Redireciona para .apk: ${toApk.test.kind} ${toApk.test.message}")
+        assertEquals(ErrorKind.BLOCKED.name, toApk.test.kind)
     }
 
     // ------------------------------------------------------------------ 5, 6, 7, 16: fontes

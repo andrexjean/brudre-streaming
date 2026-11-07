@@ -58,7 +58,7 @@ object TlsTrust {
             Os.setenv("SSL_CERT_FILE", file.absolutePath, true)
             // Diretório inexistente: impede o OpenSSL de procurar no caminho da máquina de build.
             Os.setenv("SSL_CERT_DIR", dir.absolutePath, true)
-            status = "validação ativa • $certificateCount CAs do sistema Android"
+            status = "validação ativa • $certificateCount CAs do sistema Android (trackers HTTPS); servidores web pela conexão segura do Android"
             Log.i(TAG, "OpenSSL do libtorrent usando ${file.absolutePath} ($certificateCount CAs)")
             true
         } catch (e: Exception) {
