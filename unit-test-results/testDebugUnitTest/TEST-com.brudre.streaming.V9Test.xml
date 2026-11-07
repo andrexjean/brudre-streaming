@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.V9Test" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-11-07T01:45:46" hostname="runnervm7aw5e" time="0.061">
+  <properties/>
+  <testcase name="searchTemplateExpansionAndSafety" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <testcase name="catalogTmdbLanguageAndIndex" classname="com.brudre.streaming.V9Test" time="0.005"/>
+  <testcase name="mergeMatchesEpisodes" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <testcase name="timeoutUnreachableTlsHttpStorageBlocked" classname="com.brudre.streaming.V9Test" time="0.004"/>
+  <testcase name="titleJsonKeepsLanguage" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="rejectsInvalidTorrent" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <testcase name="parsesMultiFileTorrent" classname="com.brudre.streaming.V9Test" time="0.012"/>
+  <testcase name="pathTraversalIsNeutralized" classname="com.brudre.streaming.V9Test" time="0.009"/>
+  <testcase name="mergeKeepsAllSourcesAsFallbackInOrder" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="statsDemoteRepeatedFailures" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <testcase name="messagesArePortuguese" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="torrentRefJsonKeepsFileIndex" classname="com.brudre.streaming.V9Test" time="0.003"/>
+  <testcase name="searchResponseMustBeBruDreJson" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="dnsFailureIsClassified" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <testcase name="episodePatterns" classname="com.brudre.streaming.V9Test" time="0.006"/>
+  <testcase name="orderRespectsPriorityHistoryAndNativePosition" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="pendingSourceRoundTripAndGuess" classname="com.brudre.streaming.V9Test" time="0.004"/>
+  <testcase name="magnetValidation" classname="com.brudre.streaming.V9Test" time="0.0"/>
+  <testcase name="samplesAreHiddenAndLargestIsNotAssumed" classname="com.brudre.streaming.V9Test" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

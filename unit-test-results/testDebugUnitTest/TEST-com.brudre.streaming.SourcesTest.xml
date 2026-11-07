@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.SourcesTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-07T01:45:46" hostname="runnervm7aw5e" time="0.194">
+  <properties/>
+  <testcase name="directHttpComesBeforeTorrentEvenWhenTorrentPreferredByTheSource" classname="com.brudre.streaming.SourcesTest" time="0.001"/>
+  <testcase name="archiveQueryEscapesQuotes" classname="com.brudre.streaming.SourcesTest" time="0.002"/>
+  <testcase name="tmdbRowsAreFreeClassicOrCatalogOnly" classname="com.brudre.streaming.SourcesTest" time="0.001"/>
+  <testcase name="unsafeUrlsNeverReachThePlayer" classname="com.brudre.streaming.SourcesTest" time="0.0"/>
+  <testcase name="refusesDifferentWorksWithSameName" classname="com.brudre.streaming.SourcesTest" time="0.004"/>
+  <testcase name="livePlayableRoundTripKeepsHeadersAndMirrors" classname="com.brudre.streaming.SourcesTest" time="0.001"/>
+  <testcase name="freeAppsNeverIncludePaidServices" classname="com.brudre.streaming.SourcesTest" time="0.001"/>
+  <testcase name="normalizesTitles" classname="com.brudre.streaming.SourcesTest" time="0.001"/>
+  <testcase name="torrentEngineNeverStartsWhenDisabledOrDirectOnly" classname="com.brudre.streaming.SourcesTest" time="0.0"/>
+  <testcase name="noPaidServiceRedirectsInSource" classname="com.brudre.streaming.SourcesTest" time="0.175"/>
+  <testcase name="picksTheSameWorkByTitleAndYear" classname="com.brudre.streaming.SourcesTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
