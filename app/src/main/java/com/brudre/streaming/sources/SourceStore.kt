@@ -76,12 +76,27 @@ class SourceStore(context: Context, settings: AppSettings) {
 
     fun remove(id: String) = save(current.filterNot { it.id == id })
     fun setEnabled(id: String, on: Boolean) = save(current.map { if (it.id == id) it.copy(enabled = on) else it })
-    /** Grava o teste. Fonte salva sem validação é ativada automaticamente no primeiro teste bem-sucedido. */
-    fun saveTest(id: String, test: SourceTest) = save(current.map {
-        if (it.id != id) it
-        else if (it.pending && test.ok) it.copy(lastTest = test, pending = false, enabled = true)
-        else it.copy(lastTest = test)
+    /** Grava o teste. NUNCA ativa a fonte sozinho: fonte salva sem validação exige [markValidated] + ação do usuário. */
+    fun saveTest(id: String, test: SourceTest, config: String? = null) = save(current.map {
+        if (it.id != id) it else it.copy(lastTest = test, config = config ?: it.config)
     })
+
+    /**
+     * Fonte salva sem validação passou na validação completa (formato redetectado igual, segurança e estrutura):
+     * deixa de ser "pendente", mas continua DESATIVADA até o usuário ativar.
+     */
+    fun markValidated(id: String, test: SourceTest, config: String?) = save(current.map {
+        if (it.id != id) it else it.copy(lastTest = test, pending = false, validatedAt = test.at, config = config ?: it.config)
+    })
+
+    /** Outra fonte com o mesmo endereço (normalizado), ou null. */
+    fun duplicateOf(url: String, exceptId: String? = null): UserSource? {
+        val n = UserSource.normalizedUrl(url)
+        return current.firstOrNull { it.id != exceptId && UserSource.normalizedUrl(it.url) == n }
+    }
+
+    /** Ids das fontes que repetem o endereço de outra já cadastrada (mantém a primeira). */
+    fun duplicates(): Set<String> = current.groupBy { UserSource.normalizedUrl(it.url) }.values.filter { it.size > 1 }.flatMap { it.drop(1) }.map { it.id }.toSet()
 
     /** Resultado real de uso (reprodução/pesquisa). Gravado sem bloquear: chamado de várias threads. */
     @Synchronized
@@ -124,7 +139,8 @@ class SourceInspector(
 ) {
     private val client = guarded.newBuilder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).callTimeout(25, TimeUnit.SECONDS).build()
 
-    data class Inspection(val type: SourceType?, val test: SourceTest, val suggestedName: String?)
+    /** [config] = configuração resolvida no teste (modelo OpenSearch, descritor REST), gravada com a fonte. */
+    data class Inspection(val type: SourceType?, val test: SourceTest, val suggestedName: String?, val config: String? = null)
 
     suspend fun inspect(url: String, forcedType: SourceType? = null): Inspection = withContext(Dispatchers.IO) {
         val u = url.trim()
@@ -178,6 +194,21 @@ class SourceInspector(
     private suspend fun test(url: String, type: SourceType): Inspection {
         val now = System.currentTimeMillis()
         return when (type) {
+            SourceType.OPENSEARCH -> {
+                val os = OpenSearch.parseDescription(fetchText(url))
+                val adapter = OpenSearchAdapter(os)
+                val sample = SearchTemplate.Query("big buck bunny", null, "2008", "movie", 1)
+                val pg = adapter.parse(search().fetch(adapter.url(sample, 1)!!), "teste")
+                Inspection(type, SourceTest(true, now, "OpenSearch (${os.responseType.substringAfter('/')}) respondeu: ${pg.items.size} resultado(s) para \"${sample.text}\"", pg.items.size), os.name, os.toConfig())
+            }
+            SourceType.REST -> {
+                val text = fetchText(url)
+                val d = RestDescriptor.parse(text)
+                val adapter = RestAdapter(d)
+                val sample = SearchTemplate.Query("big buck bunny", null, "2008", "movie", 1)
+                val pg = adapter.parse(search().fetch(adapter.url(sample, 1)!!, d.headers), "teste")
+                Inspection(type, SourceTest(true, now, "API REST respondeu: ${pg.items.size} resultado(s) para \"${sample.text}\"", pg.items.size), d.name, text.take(UserSource.MAX_CONFIG))
+            }
             SourceType.SEARCH -> {
                 SearchTemplate.check(url)?.let { throw BlockedUrlException(it) }
                 val sample = SearchTemplate.Query("big buck bunny", "movie:10378", "2008", "movie", 1)

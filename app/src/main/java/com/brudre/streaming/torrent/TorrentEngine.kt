@@ -50,6 +50,8 @@ class TorrentEngine(
     val metaDir: File get() = File(context.filesDir, "torrents").apply { mkdirs() }
 
     val isRunning: Boolean get() = session?.isRunning == true
+    /** Último erro de web seed (ex.: certificado inválido) — diagnóstico e testes. */
+    @Volatile var lastWebSeedError: String? = null
     val activeCount: Int get() = active.size
 
     private fun ensureSession(): SessionManager = synchronized(lock) {
@@ -65,21 +67,23 @@ class TorrentEngine(
             .maxQueuedDiskBytes(4 * 1024 * 1024)
             .stopTrackerTimeout(1)
         pack.setDhtBootstrapNodes(DHT_BOOTSTRAP)
-        // Android não tem o repositório de certificados do OpenSSL: sem isto, web seeds/trackers HTTPS falham sempre.
-        // A integridade não depende do TLS: cada peça é conferida pelo hash SHA-1 do .torrent antes de ir ao player.
+        // Validação TLS LIGADA (certificado + hostname) para web seeds e trackers HTTPS.
+        // As CAs do sistema Android são entregues ao OpenSSL do libtorrent por [TlsTrust].
+        val caReady = TlsTrust.install(context)
         runCatching {
-            // Enum SWIG (classe com campos estáticos): lido por reflexão para não quebrar com outra versão da biblioteca.
             val field = org.libtorrent4j.swig.settings_pack.bool_types::class.java.getField("validate_https_trackers")
-            val v = field.get(null) as org.libtorrent4j.swig.settings_pack.bool_types
-            pack.setBoolean(v.swigValue(), false)
-        }
-            .onFailure { Log.w(TAG, "validate_https_trackers indisponível nesta versão", it) }
+            pack.setBoolean((field.get(null) as org.libtorrent4j.swig.settings_pack.bool_types).swigValue(), true)
+        }.onFailure { Log.w(TAG, "validate_https_trackers indisponível nesta versão", it) }
+        if (!caReady) Log.e(TAG, "Sem CAs: web seeds HTTPS vão falhar com segurança (não há conexão sem validação)")
         val s = SessionManager(false)
         // Diagnóstico: falhas de web seed (servidor HTTPS do titular) aparecem no log.
         runCatching {
             s.addListener(object : org.libtorrent4j.AlertListener {
                 override fun types(): IntArray = intArrayOf(org.libtorrent4j.alerts.AlertType.URL_SEED.swig())
-                override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) { Log.w(TAG, "Web seed: ${alert.message()}") }
+                override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) {
+                    lastWebSeedError = alert.message()
+                    Log.w(TAG, "Web seed: ${alert.message()}")
+                }
             })
         }
         s.start(SessionParams(pack))

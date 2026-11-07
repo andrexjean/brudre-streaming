@@ -21,11 +21,12 @@ import java.util.concurrent.TimeUnit
  * Modelo de endereço de uma API de pesquisa autorizada (documentada em docs/FONTES.md).
  *
  * Ex.: `https://minha-fonte.org/api/busca?q={query}&ano={year}&tmdb={tmdb}`
- * Marcadores: {query} (texto), {slug} (texto-com-hifens), {tmdb} (movie:603), {year}, {type} (movie|tv), {season}, {page}.
+ * Marcadores: {query} (texto), {slug} (texto-com-hifens), {tmdb} (movie:603), {year}, {type} (movie|tv), {season},
+ * {page} (1, 2, …), {offset} (0, 50, …) e {limit} (itens por página).
  * A resposta deve ser JSON no formato de catálogo do BruDre (`{"items": [...]}`), mesmo vazio.
  */
 object SearchTemplate {
-    private val MARKERS = listOf("{query}", "{slug}", "{tmdb}", "{year}", "{type}", "{season}", "{page}")
+    private val MARKERS = listOf("{query}", "{slug}", "{tmdb}", "{year}", "{type}", "{season}", "{page}", "{offset}", "{limit}")
 
     fun isTemplate(url: String) = url.contains("{query}") || url.contains("{slug}")
 
@@ -33,7 +34,7 @@ object SearchTemplate {
 
     fun slug(text: String) = TitleMatcher.normalize(text).replace(' ', '-')
 
-    fun expand(template: String, q: Query): String {
+    fun expand(template: String, q: Query, limit: Int = 50): String {
         fun enc(v: String?) = URLEncoder.encode(v ?: "", "UTF-8").replace("+", "%20")
         return template
             .replace("{query}", enc(q.text))
@@ -43,6 +44,8 @@ object SearchTemplate {
             .replace("{type}", enc(q.type))
             .replace("{season}", enc(q.season?.toString()))
             .replace("{page}", q.page.toString())
+            .replace("{offset}", ((q.page - 1).coerceAtLeast(0) * limit).toString())
+            .replace("{limit}", limit.toString())
     }
 
     /** Motivo de bloqueio do modelo (validado com valores de exemplo), ou null. */
@@ -58,65 +61,87 @@ object SearchTemplate {
 /** Resultado de uma fonte de pesquisa. */
 data class SearchHit(val source: UserSource, val item: FeedItem)
 
+/** Uma página de resultados; [moreFrom] = fontes que têm mais páginas. */
+data class SearchPage(val hits: List<SearchHit>, val moreFrom: Set<String>)
+
 /**
- * Pesquisa dinâmica nas APIs autorizadas cadastradas (Gerenciar fontes → API de pesquisa).
- * - Consultas em paralelo com no máximo [MAX_PARALLEL] ao mesmo tempo e tempo-limite por fonte.
+ * Pesquisa dinâmica nas fontes autorizadas que oferecem busca (API BruDre, OpenSearch, REST por descritor).
+ * - Página a página, sob demanda; cada página é consultada uma vez (cache de 10 min, no máximo [CACHE_QUERIES]).
+ * - No máximo [MAX_PARALLEL] fontes ao mesmo tempo, tempo-limite por fonte e respeito ao limite por minuto declarado.
  * - Falha de uma fonte não afeta as outras (vira histórico de falha da própria fonte).
  * - Cancelável: ao sair da tela, a coroutine é cancelada e as chamadas HTTP são abortadas.
- * - Resultados recentes ficam em memória por 10 min (no máximo [CACHE_QUERIES] pesquisas).
  */
 class SearchRepository(
     guarded: OkHttpClient,
     private val store: SourceStore,
 ) {
     private val client = guarded.newBuilder().connectTimeout(8, TimeUnit.SECONDS).readTimeout(10, TimeUnit.SECONDS).callTimeout(PER_SOURCE_MS, TimeUnit.MILLISECONDS).build()
+    /** Fontes com autenticação: sem seguir redirecionamentos (o token nunca vai para outro servidor). */
+    private val authClient = client.newBuilder().followRedirects(false).followSslRedirects(false).build()
     private val semaphore = Semaphore(MAX_PARALLEL)
-    private val cache = java.util.Collections.synchronizedMap(object : LinkedHashMap<String, Pair<Long, List<SearchHit>>>(16, 0.75f, true) {
-        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Pair<Long, List<SearchHit>>>?) = size > CACHE_QUERIES
+    private val lastCall = java.util.concurrent.ConcurrentHashMap<String, Long>()
+    private val cache = java.util.Collections.synchronizedMap(object : LinkedHashMap<String, Pair<Long, SearchPage>>(16, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Pair<Long, SearchPage>>?) = size > CACHE_QUERIES
     })
 
-    fun sources(): List<UserSource> = store.current.filter { it.type == SourceType.SEARCH && it.enabled }
+    fun sources(): List<UserSource> = store.current.filter { it.type.isSearchable && it.enabled }
 
-    suspend fun search(q: SearchTemplate.Query): List<SearchHit> = coroutineScope {
-        val list = sources()
-        if (list.isEmpty() || q.text.isBlank()) return@coroutineScope emptyList()
-        val key = listOf(q.text, q.tmdbId, q.year, q.type, q.season, q.page, list.joinToString { it.id }).joinToString("|")
-        cache[key]?.let { (at, hits) -> if (System.currentTimeMillis() - at < CACHE_MS) return@coroutineScope hits }
+    /** Primeira página de todas as fontes de pesquisa (compatível com a 9.0). */
+    suspend fun search(q: SearchTemplate.Query): List<SearchHit> = page(q, 1).hits
+
+    /** Página [page] (1, 2…). Com [only], consulta só as fontes indicadas (as que ainda têm resultados). */
+    suspend fun page(q: SearchTemplate.Query, page: Int, only: Set<String>? = null): SearchPage = coroutineScope {
+        val list = sources().filter { only == null || it.id in only }
+        if (list.isEmpty() || q.text.isBlank()) return@coroutineScope SearchPage(emptyList(), emptySet())
+        val key = listOf(q.text, q.tmdbId, q.year, q.type, q.season, page, list.joinToString { it.id }).joinToString("|")
+        cache[key]?.let { (at, p) -> if (System.currentTimeMillis() - at < CACHE_MS) return@coroutineScope p }
         val results = list.map { src ->
             async {
                 semaphore.withPermit {
                     try {
-                        val items = withTimeout(PER_SOURCE_MS + 2_000) { query(src, q) }
+                        val adapter = Adapters.forSource(src)
+                        val r = withTimeout(PER_SOURCE_MS + 2_000) { query(src, adapter, q, page) } ?: return@withPermit null
                         store.recordResult(src.id, true)
-                        items.map { SearchHit(src, it) }
+                        src to r
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
                         val f = ErrorClassifier.classify(e)
                         Log.w(TAG, "Pesquisa em ${src.name} falhou: ${f.technical}")
                         store.recordResult(src.id, false, f.summary)
-                        emptyList()
+                        null
                     }
                 }
             }
-        }.awaitAll().flatten()
-        // Mesma obra vinda de duas fontes fica nas duas (são fontes alternativas); duplicatas da MESMA fonte saem.
-        val dedup = results.distinctBy { it.source.id + "|" + (it.item.tmdbId ?: TitleMatcher.normalize(it.item.title.name)) + "|" + it.item.title.year }
-        cache[key] = System.currentTimeMillis() to dedup
-        dedup
+        }.awaitAll().filterNotNull()
+        val hits = results.flatMap { (src, r) -> r.items.take(MAX_RESULTS).map { SearchHit(src, it) } }
+        // Mesma obra vinda de duas fontes fica nas duas (são alternativas); duplicatas da MESMA fonte saem.
+        val dedup = hits.distinctBy { it.source.id + "|" + (it.item.tmdbId ?: TitleMatcher.normalize(it.item.title.name)) + "|" + it.item.title.year + "|" + it.item.episodes.firstOrNull()?.let { e -> "${e.season}x${e.number}" } }
+        val p = SearchPage(dedup, results.filter { it.second.hasMore }.map { it.first.id }.toSet())
+        cache[key] = System.currentTimeMillis() to p
+        p
     }
 
-    /** Uma consulta HTTP (cancelável) a uma fonte; resposta limitada a [MAX_BYTES] e só JSON do BruDre. */
-    suspend fun query(src: UserSource, q: SearchTemplate.Query): List<FeedItem> {
-        val url = SearchTemplate.expand(src.url, q)
+    /** Uma consulta HTTP (cancelável) a uma fonte, com limite por minuto e resposta limitada a [MAX_BYTES]. */
+    suspend fun query(src: UserSource, adapter: SearchAdapter, q: SearchTemplate.Query, page: Int): AdapterPage? {
+        val url = adapter.url(q, page) ?: return null
         UrlGuard.check(url)?.let { throw BlockedUrlException(it) }
-        val text = fetch(url)
-        return parse(text, src.id).items.take(MAX_RESULTS)
+        adapter.capabilities.ratePerMinute?.let { rate ->
+            val interval = 60_000L / rate
+            val wait = (lastCall[src.id] ?: 0L) + interval - System.currentTimeMillis()
+            if (wait > 0) kotlinx.coroutines.delay(wait.coerceAtMost(PER_SOURCE_MS / 2))
+        }
+        lastCall[src.id] = System.currentTimeMillis()
+        val text = fetch(url, adapter.headers)
+        return adapter.parse(text, src.id)
     }
 
     /** Chamada HTTP cancelável de verdade: ao cancelar a coroutine (saiu da tela), a conexão é abortada. */
-    suspend fun fetch(url: String): String {
-        val call: Call = client.newCall(Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT).header("Accept", "application/json").build())
+    suspend fun fetch(url: String, headers: Map<String, String> = emptyMap()): String {
+        val req = Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT)
+            .header("Accept", "application/json, application/atom+xml, application/rss+xml;q=0.9, */*;q=0.5")
+            .apply { headers.forEach { (k, v) -> header(k, v) } }.build()
+        val call: Call = (if (headers.isEmpty()) client else authClient).newCall(req)
         val response = kotlinx.coroutines.suspendCancellableCoroutine<okhttp3.Response> { cont ->
             cont.invokeOnCancellation { call.cancel() }
             call.enqueue(object : okhttp3.Callback {
@@ -128,8 +153,9 @@ class SearchRepository(
         }
         return withContext(Dispatchers.IO) {
             response.use { r ->
+                if (r.isRedirect) throw ClassifiedException(ErrorKind.BLOCKED, "Fonte com autenticação tentou redirecionar para ${r.header("Location")?.let { UrlGuard.hostOf(it) } ?: "outro endereço"}: bloqueado")
                 if (!r.isSuccessful) throw HttpStatusException(r.code)
-                val src = r.body?.source() ?: throw ClassifiedException(ErrorKind.CATALOG, "Resposta vazia da API de pesquisa")
+                val src = r.body?.source() ?: throw ClassifiedException(ErrorKind.CATALOG, "Resposta vazia da fonte de pesquisa")
                 src.request(MAX_BYTES)
                 src.buffer.snapshot().utf8().take(MAX_BYTES.toInt())
             }
@@ -137,7 +163,7 @@ class SearchRepository(
     }
 
     fun find(titleId: String): FeedItem? = synchronized(cache) { cache.values.toList() }.asSequence()
-        .flatMap { it.second.asSequence() }.map { it.item }.firstOrNull { it.title.id == titleId }
+        .flatMap { it.second.hits.asSequence() }.map { it.item }.firstOrNull { it.title.id == titleId }
 
     fun clear() = cache.clear()
 
@@ -145,6 +171,7 @@ class SearchRepository(
         private const val TAG = "BruDreSearch"
         const val MAX_PARALLEL = 3
         const val PER_SOURCE_MS = 12_000L
+        /** Por fonte e por página; mais resultados vêm em "Carregar mais". */
         const val MAX_RESULTS = 50
         private const val MAX_BYTES = 512L * 1024
         private const val CACHE_MS = 10 * 60_000L

@@ -91,6 +91,7 @@ class FeedRepository(
         val t0 = System.currentTimeMillis()
         try {
             val feed = download(f.url, f.id)
+            saveNext(f.id, feed.next)
             board.success(f.id, System.currentTimeMillis() - t0)
             memory[f.id] = feed.items
             runCatching { file.writeText(FeedParser.itemsToJson(feed.items)); indexFile(f.id).writeText(FeedParser.indexOf(feed.items)) }
@@ -101,6 +102,34 @@ class FeedRepository(
             runCatching { FeedParser.itemsFromJson(file.readText()) }.getOrNull()?.let { memory[f.id] = it; return@withContext it }
             throw if (e is CatalogException) e else CatalogException(e.message ?: "Falha ao ler o catálogo", e)
         }
+    }
+
+    /** Próxima página de cada catálogo paginado ("next" no JSON, rel="next" no RSS/Atom). */
+    private val nextPages = ConcurrentHashMap<String, String>()
+    fun hasMore(id: String) = nextPages.containsKey(id) || File(dir, "$id.next").exists()
+
+    private fun nextOf(id: String): String? = nextPages[id] ?: runCatching { File(dir, "$id.next").readText().trim() }.getOrNull()?.takeIf { it.startsWith("https://") }
+
+    private fun saveNext(id: String, next: String?) {
+        val f = File(dir.apply { mkdirs() }, "$id.next")
+        if (next == null) { nextPages.remove(id); f.delete() } else { nextPages[id] = next; runCatching { f.writeText(next) } }
+    }
+
+    /**
+     * Carrega a PRÓXIMA página de um catálogo paginado (sob demanda, sem baixar tudo de uma vez).
+     * Até [MAX_TOTAL] títulos por catálogo; páginas repetidas e títulos repetidos são ignorados.
+     */
+    suspend fun loadMore(feedId: String): List<FeedItem> = withContext(Dispatchers.IO) {
+        val current = items(feedId)
+        val next = nextOf(feedId) ?: return@withContext current
+        if (current.size >= MAX_TOTAL) { saveNext(feedId, null); return@withContext current }
+        val page = download(next, feedId)
+        val merged = (current + page.items).distinctBy { it.title.id }.take(MAX_TOTAL)
+        memory[feedId] = merged
+        saveNext(feedId, page.next?.takeIf { it != next && merged.size > current.size })
+        runCatching { File(dir, "$feedId.json").writeText(FeedParser.itemsToJson(merged)); indexFile(feedId).writeText(FeedParser.indexOf(merged)) }
+        Log.i(TAG, "Catálogo $feedId: +${merged.size - current.size} títulos (página seguinte)")
+        merged
     }
 
     fun download(url: String, feedId: String): Feed {
@@ -141,6 +170,7 @@ class FeedRepository(
         memory.remove(LINKS_ID)
         File(dir, "$id.json").delete()
         indexFile(id).delete()
+        File(dir, "$id.next").delete(); nextPages.remove(id)
     }
 
     private fun indexFile(id: String) = File(dir.apply { mkdirs() }, "$id.idx")
@@ -162,36 +192,37 @@ class FeedRepository(
      * 1º pelo identificador TMDB (exato); 2º por nome original/alternativo + ano (±1).
      * Lê só o índice de cada catálogo; o catálogo é aberto apenas se houver correspondência.
      */
-    suspend fun matches(names: List<String>, year: String?, tmdbId: String? = null): List<Pair<FeedInfo, FeedItem>> = withContext(Dispatchers.IO) {
+    suspend fun matches(names: List<String>, year: String?, tmdbId: String? = null, series: Boolean? = null): List<Pair<FeedInfo, FeedItem>> = withContext(Dispatchers.IO) {
         if (names.isEmpty() && tmdbId == null) return@withContext emptyList()
         val out = ArrayList<Pair<FeedInfo, FeedItem>>()
         for (f in enabledFeeds()) {
             ensureActive()
             if (f.id == LINKS_ID) {
-                linkItems().filter { matchesItem(it, names, year, tmdbId) }.forEach { out += f to it }
+                linkItems().filter { matchesItem(it, names, year, tmdbId, series) }.forEach { out += f to it }
                 continue
             }
             val idx = indexFile(f.id)
             if (!idx.exists() || System.currentTimeMillis() - idx.lastModified() > TTL_MS) runCatching { items(f.id) }
             val hits = runCatching {
-                idx.useLines { lines -> lines.mapNotNull { FeedParser.parseIndexLine(it) }.filter { e -> indexMatches(e, names, year, tmdbId) }.map { it.position }.toList() }
+                idx.useLines { lines -> lines.mapNotNull { FeedParser.parseIndexLine(it) }.filter { e -> indexMatches(e, names, year, tmdbId, series) }.map { it.position }.toList() }
             }.getOrDefault(emptyList())
             if (hits.isEmpty()) continue
             val items = runCatching { items(f.id) }.getOrDefault(emptyList())
-            hits.mapNotNull { items.getOrNull(it) }.filter { matchesItem(it, names, year, tmdbId) }.forEach { out += f to it }
+            hits.mapNotNull { items.getOrNull(it) }.filter { matchesItem(it, names, year, tmdbId, series) }.forEach { out += f to it }
         }
         out
     }
 
-    private fun indexMatches(e: FeedParser.IndexEntry, names: List<String>, year: String?, tmdbId: String?): Boolean {
+    private fun indexMatches(e: FeedParser.IndexEntry, names: List<String>, year: String?, tmdbId: String?, series: Boolean?): Boolean {
         if (tmdbId != null && e.tmdbId != null) return e.tmdbId == tmdbId
+        // Filme nunca casa com série (e vice-versa), mesmo com nome igual.
+        if (series != null && e.series != series) return false
         return TitleMatcher.matches(com.brudre.streaming.data.Title("x", com.brudre.streaming.data.Kind.MOVIE, e.name, e.year), names, year)
     }
 
-    private fun matchesItem(it: FeedItem, names: List<String>, year: String?, tmdbId: String?): Boolean {
-        if (tmdbId != null && it.tmdbId != null) return it.tmdbId == tmdbId
-        return TitleMatcher.matches(it.title.copy(name = FeedParser.cleanName(it.title.name)), names, year)
-    }
+    private fun matchesItem(it: FeedItem, names: List<String>, year: String?, tmdbId: String?, series: Boolean? = null): Boolean =
+        TitleMatcher.matchesItem(it, names, year, tmdbId, series)
+
 
     fun find(titleId: String): FeedItem? = synchronized(memory) { memory.values.toList() }.asSequence().flatten().firstOrNull { it.title.id == titleId }
 
@@ -208,6 +239,8 @@ class FeedRepository(
         private const val TTL_MS = 6 * 60 * 60 * 1000L
         private const val MAX_BYTES = 2L * 1024 * 1024
         private const val MEMORY_FEEDS = 4
+        /** Limite de títulos por catálogo paginado (memória do Mi Stick). */
+        const val MAX_TOTAL = 1500
     }
 }
 

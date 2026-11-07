@@ -1,0 +1,4 @@
+{"data": {"has_more": false, "results": [
+ {"uid": "r1", "name": "Big Buck Bunny", "released": 2008, "ids": {"tmdb": "movie:10378"}, "type": "movie", "lang": "en", "files": {"mp4": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.01/BruDre.Teste.S01E01.mp4"}},
+ {"uid": "r2", "name": "Episódio dois", "show": "BruDre Teste Série", "released": 2026, "type": "episode", "season": 1, "episode": 2, "files": {"mp4": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.01/BruDre.Teste.S01E02.mp4"}},
+ {"uid": "r3", "name": "Sem vídeo", "released": 2026, "type": "movie"}]}}

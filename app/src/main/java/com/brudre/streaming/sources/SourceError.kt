@@ -61,6 +61,8 @@ object ErrorClassifier {
         }
         val text = chain.mapNotNull { it.message }.joinToString(" ").lowercase()
         return when {
+            // Redirecionamento para http:// (sem criptografia): o Android recusa a conexão.
+            "cleartext" in text -> f(ErrorKind.BLOCKED, "O servidor redirecionou para um endereço sem criptografia (http://): bloqueado.")
             "enospc" in text || "no space left" in text || "armazenamento insuficiente" in text -> f(ErrorKind.STORAGE, e.message ?: ErrorKind.STORAGE.hint)
             e is InterruptedIOException && "timeout" in text -> f(ErrorKind.TIMEOUT)
             "timeout" in text || "timed out" in text -> f(ErrorKind.TIMEOUT)

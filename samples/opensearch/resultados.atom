@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <title>Resultados de teste</title>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <entry>
+    <id>urn:brudre:bbb-atom</id>
+    <title>Big Buck Bunny (2008)</title>
+    <summary>Resultado OpenSearch/Atom de teste</summary>
+    <link rel="enclosure" type="video/mp4" href="https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.01/BruDre.Teste.S01E02.mp4"/>
+  </entry>
+</feed>

@@ -1,0 +1,3 @@
+{"name": "Catálogo paginado de teste (página 2)", "items": [
+ {"id": "p2", "title": "Teste Paginado Dois", "year": "2026", "sources": [{"type": "http", "url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.01/BruDre.Teste.S01E02.mp4"}]},
+ {"id": "p3", "title": "Teste Paginado Três", "year": "2026", "sources": [{"type": "http", "url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/test-torrent/BruDre.Teste.Serie/Season.02/BruDre.Teste.S02E01.mp4"}]}]}

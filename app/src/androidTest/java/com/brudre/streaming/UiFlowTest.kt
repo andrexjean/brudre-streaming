@@ -379,8 +379,18 @@ class UiFlowTest {
         rule.waitUntil(10_000) { runCatching { rule.onNodeWithTag("src_tab_torrent").requestFocus(); rule.onNodeWithTag("src_tab_torrent").assertIsFocused(); true }.getOrDefault(false) }
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_native"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("order_native_first"); waitPrefix("native_"); Thread.sleep(800); TestUtil.shot("fontes_nativas")
+        // v9.1: preferências da escolha automática pelo controle — desce até "Resolução preferida" e escolhe outra.
+        fun focusedPrefix(p: String) = rule.onAllNodes(isFocused()).fetchSemanticsNodes().any { it.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(p) == true }
+        var g = 0
+        while (!focusedPrefix("pref_res_") && g++ < 12) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+        org.junit.Assert.assertTrue("D-pad chegou às preferências", focusedPrefix("pref_res_"))
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+        TestUtil.waitFor(3_000, "resolução preferida escolhida") { TestUtil.services.settings.current.preferredResolution != 0 }
+        Thread.sleep(600); TestUtil.shot("fontes_preferencias")
+        TestUtil.services.settings.update { it.copy(preferredResolution = 0) }
+        rule.waitUntil(10_000) { runCatching { rule.onNodeWithTag("src_tab_native").requestFocus(); rule.onNodeWithTag("src_tab_native").assertIsFocused(); true }.getOrDefault(false) }
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_diag"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
-        waitTag("diag"); waitTag("diag_summary"); Thread.sleep(800); TestUtil.shot("fontes_diagnostico")
+        waitTag("diag"); waitTag("diag_summary"); waitTag("diag_tls"); Thread.sleep(800); TestUtil.shot("fontes_diagnostico")
         rule.onNodeWithTag("src_close").performClick()
     }
 

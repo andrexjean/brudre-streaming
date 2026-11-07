@@ -44,6 +44,10 @@ enum class Section(val label: String) {
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
+    companion object {
+        /** Teto de resultados mantidos na Pesquisa (memória do Mi Stick). */
+        const val MAX_SEARCH_RESULTS = 300
+    }
 
     val services = BruDreApp.services(app)
     private val catalog = services.catalog
@@ -126,6 +130,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _detailsTitle.value = title
         loadDetails(title)
     }
+
+    /** Pede para abrir a escolha manual de fonte assim que os detalhes carregarem. */
+    private val _requestChooser = MutableStateFlow(false)
+    val requestChooser: StateFlow<Boolean> = _requestChooser.asStateFlow()
+    fun openChooser(t: Title) { _requestChooser.value = true; openDetails(t) }
+    fun chooserShown() { _requestChooser.value = false }
 
     fun reloadDetails() {
         _detailsTitle.value?.let { loadDetails(it) }
@@ -391,7 +401,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** Toca a partir da fonte escolhida; as seguintes continuam como alternativas automáticas. */
     fun playWithOption(details: TitleDetails, option: com.brudre.streaming.data.SourceOption, playable: Playable?, onLaunch: (Intent) -> Unit, onError: (String) -> Unit) {
         val ordered = listOf(option) + details.options.filter { it !== option }
-        val merged = com.brudre.streaming.sources.SourceRanker.merge(ordered)
+        val merged = com.brudre.streaming.sources.SourceRanker.merge(ordered, manual = true)
         val target = playable?.let { p -> merged.firstOrNull { it.season == p.season && it.number == p.number } } ?: merged.firstOrNull()
             ?: return onError("Essa fonte não tem vídeo para este título.")
         play(details.title, target, details = details.copy(playables = merged, confirmed = true), onLaunch = onLaunch, onError = onError)
@@ -423,6 +433,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             runCatching { live.health.check(live.channels("iptv_br"), force = true) }
             runCatching { live.health.check(live.channels("iptv_por").filter { it.country != "br" }, force = true) }
+        }
+    }
+
+    init {
+        // Revalidação automática configurável (sem serviço em segundo plano): só com o app aberto, uma fonte por vez.
+        viewModelScope.launch {
+            delay(30_000)
+            val hours = services.settings.current.revalidateHours
+            if (hours <= 0 || !services.isOnline()) return@launch
+            val due = services.sourceStore.current.filter { s -> s.enabled && !s.pending && (s.lastTest?.at ?: 0L) < System.currentTimeMillis() - hours * 3_600_000L }
+            for (s in due) runCatching { runTest(s) }
+            if (due.isNotEmpty()) android.util.Log.i("BruDre", "Revalidação automática: ${due.size} fonte(s)")
         }
     }
 
@@ -516,11 +538,35 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun retryFeed(id: String) { feedRows[id]?.let { loadFeed(id, it, true) } }
 
+    /** Catálogos com mais páginas para carregar. */
+    private val _feedHasMore = MutableStateFlow<Set<String>>(emptySet())
+    val feedHasMore: StateFlow<Set<String>> = _feedHasMore.asStateFlow()
+    private val loadingMore = java.util.Collections.synchronizedSet(HashSet<String>())
+
+    fun loadMoreFeed(id: String) {
+        if (!loadingMore.add(id)) return // evita consultas duplicadas
+        viewModelScope.launch {
+            try {
+                val items = services.feeds.loadMore(id)
+                feedRows[id]?.value = Load.Ok(items.map { it.title })
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                toastFlow.tryEmit(com.brudre.streaming.sources.ErrorClassifier.classify(e).summary)
+            } finally {
+                loadingMore.remove(id)
+                _feedHasMore.value = if (services.feeds.hasMore(id)) _feedHasMore.value + id else _feedHasMore.value - id
+            }
+        }
+    }
+
     private fun loadFeed(id: String, state: MutableStateFlow<Load<List<Title>>>, force: Boolean) {
         state.value = Load.Loading
         viewModelScope.launch {
             state.value = try {
-                Load.Ok(services.feeds.items(id, force).map { it.title })
+                Load.Ok(services.feeds.items(id, force).map { it.title }).also {
+                    _feedHasMore.value = if (services.feeds.hasMore(id)) _feedHasMore.value + id else _feedHasMore.value - id
+                }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -566,10 +612,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 return@launch
             }
             val clean = url.trim()
+            services.sourceStore.duplicateOf(clean, oldId)?.let { d ->
+                onResult(false, "Fonte duplicada: este endereço já está cadastrado como \"${d.name}\" (${d.type.label}).", null)
+                return@launch
+            }
             val src = com.brudre.streaming.sources.UserSource(
                 id = com.brudre.streaming.sources.UserSource.idFor(type, clean),
                 name = name.trim().ifBlank { r.suggestedName ?: type.label }.take(60),
-                url = clean, type = type, priority = services.sourceStore.current.size, lastTest = r.test,
+                url = clean, type = type, priority = services.sourceStore.current.size, lastTest = r.test, config = r.config,
             )
             try {
                 if (oldId != null) services.sourceStore.replace(oldId, src.copy(stats = services.sourceStore.get(oldId)?.stats ?: src.stats)) else services.sourceStore.put(src)
@@ -589,6 +639,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val clean = url.trim()
         val type = com.brudre.streaming.sources.SourceDetector.guessByAddress(clean)
             ?: return onResult(false, "Não dá para saber o formato só pelo endereço. Use um endereço terminado em .json, .rss, .m3u, .m3u8, .torrent, .mp4 ou um modelo com {query}.", null)
+        services.sourceStore.duplicateOf(clean, oldId)?.let { d ->
+            return onResult(false, "Fonte duplicada: este endereço já está cadastrado como \"${d.name}\".", null)
+        }
         if (!com.brudre.streaming.sources.UserSourcesJson.isSafe(type, clean)) {
             return onResult(false, "${com.brudre.streaming.sources.ErrorKind.BLOCKED.title}: ${com.brudre.streaming.sources.ErrorKind.BLOCKED.hint}", com.brudre.streaming.sources.UrlGuard.check(clean))
         }
@@ -596,12 +649,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             id = com.brudre.streaming.sources.UserSource.idFor(type, clean),
             name = name.trim().ifBlank { com.brudre.streaming.sources.UrlGuard.hostOf(clean) ?: type.label }.take(60),
             url = clean, type = type, enabled = false, pending = true, priority = services.sourceStore.current.size,
-            lastTest = com.brudre.streaming.sources.SourceTest(false, System.currentTimeMillis(), "Salva sem validar: fica desativada até um teste dar certo", 0),
+            lastTest = com.brudre.streaming.sources.SourceTest(false, System.currentTimeMillis(), "Salva sem validar: desativada até ser validada e ativada por você", 0),
         )
         try {
             if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
             afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
-            onResult(true, "${type.label} salva sem validar (desativada até o próximo teste com sucesso)", null)
+            onResult(true, "${type.label} salva sem validar (desativada: teste e depois ative)", null)
         } catch (e: Exception) {
             onResult(false, e.message ?: "Não foi possível salvar", e.toString())
         }
@@ -611,21 +664,62 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val src = services.sourceStore.get(id) ?: return
         _testingSources.value = _testingSources.value + id
         viewModelScope.launch {
+            try { onResult(runTest(src)) } finally { _testingSources.value = _testingSources.value - id }
+        }
+    }
+
+    /**
+     * Testa uma fonte. Fonte salva sem validação passa pela identificação COMPLETA do formato (sem presumir o tipo):
+     * só é considerada validada se o formato detectado for o mesmo, o endereço for seguro e a estrutura passar —
+     * e mesmo assim continua desativada até o usuário ativar.
+     */
+    private suspend fun runTest(src: com.brudre.streaming.sources.UserSource): String {
+        val store = services.sourceStore
+        if (src.pending) {
+            val r = services.inspector.inspect(src.url)
+            return when {
+                r.type == null || !r.test.ok -> { store.saveTest(src.id, r.test); "${src.name}: ainda não validada — ${r.test.message}" }
+                r.type != src.type -> {
+                    store.saveTest(src.id, r.test.copy(ok = false, message = "Formato encontrado (${r.type.label}) é diferente do salvo (${src.type.label}): edite a fonte", kind = com.brudre.streaming.sources.ErrorKind.FORMAT.name))
+                    "${src.name}: formato diferente do salvo — não validada"
+                }
+                !com.brudre.streaming.sources.UserSourcesJson.isSafe(r.type, src.url) -> "${src.name}: bloqueada pelas regras de segurança"
+                else -> { store.markValidated(src.id, r.test, r.config); afterSourcesChanged(src.id); "${src.name}: validada (${r.type.label}, ${r.test.message}). Ative quando quiser." }
+            }
+        }
+        val r = services.inspector.inspect(src.url, forcedType = src.type)
+        store.saveTest(src.id, r.test, r.config)
+        return "${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}"
+    }
+
+    /**
+     * Atualizar: descarta o cache, IDENTIFICA O FORMATO DE NOVO e testa. Se o endereço passou a servir outro formato
+     * (ex.: JSON → RSS), a fonte é convertida, mantendo nome, prioridade, histórico e estado.
+     */
+    fun refreshSource(id: String, onResult: (String) -> Unit = {}) {
+        val src = services.sourceStore.get(id) ?: return
+        afterSourcesChanged(id)
+        _testingSources.value = _testingSources.value + id
+        viewModelScope.launch {
             try {
-                val r = services.inspector.inspect(src.url, forcedType = src.type)
-                services.sourceStore.saveTest(id, r.test)
-                if (r.test.ok && src.pending) afterSourcesChanged(id)
-                onResult("${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}" + if (r.test.ok && src.pending) " • fonte ativada" else "")
+                val r = services.inspector.inspect(src.url)
+                val t = r.type
+                if (t != null && r.test.ok && t != src.type && com.brudre.streaming.sources.UserSourcesJson.isSafe(t, src.url)) {
+                    val converted = src.copy(id = com.brudre.streaming.sources.UserSource.idFor(t, src.url), type = t, lastTest = r.test, config = r.config)
+                    services.sourceStore.replace(src.id, converted)
+                    afterSourcesChanged(src.id, converted.id)
+                    onResult("${src.name}: formato redetectado — agora ${t.label} (antes ${src.type.label}). ${r.test.message}")
+                } else if (src.pending) {
+                    onResult(runTest(src))
+                } else {
+                    val test = if (t == null) r.test else if (t == src.type) r.test else services.inspector.inspect(src.url, forcedType = src.type).test
+                    services.sourceStore.saveTest(src.id, test, if (t == src.type) r.config else null)
+                    onResult("${src.name}: ${if (test.ok) "OK" else "falhou"} — ${test.message}")
+                }
             } finally {
                 _testingSources.value = _testingSources.value - id
             }
         }
-    }
-
-    /** Atualiza as informações: descarta o cache, baixa de novo e testa. */
-    fun refreshSource(id: String, onResult: (String) -> Unit = {}) {
-        afterSourcesChanged(id)
-        testSource(id, onResult)
     }
 
     fun testAllSources(onResult: (String) -> Unit) {
@@ -634,8 +728,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             var ok = 0
             list.forEach { s ->
                 _testingSources.value = _testingSources.value + s.id
-                val r = runCatching { services.inspector.inspect(s.url, forcedType = s.type) }.getOrNull()
-                if (r != null) { services.sourceStore.saveTest(s.id, r.test); if (r.test.ok) ok++; if (r.test.ok && s.pending) afterSourcesChanged(s.id) }
+                val msg = runCatching { runTest(s) }.getOrNull()
+                if (services.sourceStore.get(s.id)?.lastTest?.ok == true && msg != null) ok++
                 _testingSources.value = _testingSources.value - s.id
             }
             onResult("$ok de ${list.size} fontes funcionando")
@@ -644,8 +738,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun moveSource(id: String, delta: Int) { services.sourceStore.move(id, delta); afterSourcesChanged() }
 
-    fun toggleSource(id: String) {
+    fun toggleSource(id: String, onResult: (String) -> Unit = {}) {
         val s = services.sourceStore.get(id) ?: return
+        // Salva sem validação: só pode ser ativada depois de validada (formato, segurança e compatibilidade).
+        if (!s.enabled && s.pending) { onResult("${s.name}: teste a fonte primeiro — ela só pode ser ativada depois de validada."); return }
         services.sourceStore.setEnabled(id, !s.enabled)
         afterSourcesChanged(id)
     }
@@ -773,6 +869,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val q = query.trim()
         lastQuery = q
         searchJob?.cancel()
+        searchPage = 1
+        searchMoreFrom = emptySet()
+        _searchHasMore.value = false
         if (q.length < 2) {
             _searchResults.value = Load.Error("Digite pelo menos 2 letras")
             return
@@ -788,6 +887,40 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 throw e
             } catch (e: Exception) {
                 Load.Error(e.message ?: "Falha na pesquisa")
+            }
+            // Quais fontes de pesquisa têm mais páginas (a 1ª página já está no cache: sem nova consulta).
+            searchMoreFrom = runCatching { services.searchRepo.page(com.brudre.streaming.sources.SearchTemplate.Query(catalog.cleanQuery(q)), 1).moreFrom }.getOrDefault(emptySet())
+            _searchHasMore.value = searchMoreFrom.isNotEmpty()
+        }
+    }
+
+    private var searchPage = 1
+    private var searchMoreFrom: Set<String> = emptySet()
+    private val _searchHasMore = MutableStateFlow(false)
+    val searchHasMore: StateFlow<Boolean> = _searchHasMore.asStateFlow()
+    private val _searchLoadingMore = MutableStateFlow(false)
+    val searchLoadingMore: StateFlow<Boolean> = _searchLoadingMore.asStateFlow()
+
+    /** Próxima página só das fontes que ainda têm resultados; sem repetir títulos; até [MAX_SEARCH_RESULTS]. */
+    fun searchMore() {
+        val current = (_searchResults.value as? Load.Ok)?.value ?: return
+        if (_searchLoadingMore.value || searchMoreFrom.isEmpty()) return
+        _searchLoadingMore.value = true
+        val q = lastQuery
+        searchJob = viewModelScope.launch {
+            try {
+                val page = services.searchRepo.page(com.brudre.streaming.sources.SearchTemplate.Query(catalog.cleanQuery(q)), searchPage + 1, only = searchMoreFrom)
+                searchPage++
+                val merged = (current + page.hits.map { it.item.title }).distinctBy { it.id }.take(MAX_SEARCH_RESULTS)
+                _searchResults.value = Load.Ok(merged)
+                searchMoreFrom = if (merged.size >= MAX_SEARCH_RESULTS || merged.size == current.size) emptySet() else page.moreFrom
+                _searchHasMore.value = searchMoreFrom.isNotEmpty()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                toastFlow.tryEmit(com.brudre.streaming.sources.ErrorClassifier.classify(e).summary)
+            } finally {
+                _searchLoadingMore.value = false
             }
         }
     }

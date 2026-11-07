@@ -99,6 +99,26 @@ object TitleMatcher {
         }
     }
 
+    /** O item é série (tem episódios ou foi marcado como série)? */
+    fun isSeries(item: FeedItem) = item.episodes.isNotEmpty() || item.title.kind == com.brudre.streaming.data.Kind.SERIES
+
+    /**
+     * Associação de um item de fonte com a obra: TMDB igual decide (diferente rejeita); senão nome + ano (±1)
+     * e o mesmo tipo (filme × série). Evita "Alien" × "Aliens", "Duna" 1984 × 2021 e filme × série homônima.
+     */
+    fun matchesItem(item: FeedItem, names: List<String>, year: String?, tmdbId: String?, series: Boolean?): Boolean {
+        if (tmdbId != null && item.tmdbId != null) return item.tmdbId == tmdbId
+        if (series != null && isSeries(item) != series) return false
+        return matches(item.title.copy(name = FeedParser.cleanName(item.title.name)), names, year)
+    }
+
+    /**
+     * Confiança da associação: TMDB igual, ou nome + ano conferidos dos dois lados. Sem ano em algum lado,
+     * a fonte aparece só na escolha manual (não entra na troca automática).
+     */
+    fun confident(item: FeedItem, year: String?, tmdbId: String?): Boolean =
+        (tmdbId != null && item.tmdbId == tmdbId) || (year != null && item.title.year != null)
+
     /** Primeiro candidato compatível (a lista já vem ordenada por popularidade no acervo). */
     fun best(candidates: List<Title>, names: List<String>, year: String?): Title? =
         candidates.firstOrNull { matches(it, names, year) }

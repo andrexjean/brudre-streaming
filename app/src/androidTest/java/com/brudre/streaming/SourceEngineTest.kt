@@ -273,10 +273,24 @@ class SourceEngineTest {
             val saved = services.sourceStore.current.single()
             assertTrue(saved.pending); assertFalse(saved.enabled)
             assertTrue(services.feeds.enabledFeeds().none { it.id == saved.id })
+            // Teste bem-sucedido VALIDA (formato redetectado igual), mas não ativa sozinho (v9.1)
             sc.onActivity { vm!!.testSource(saved.id) }
-            TestUtil.waitFor(30_000, "ativada após teste") { services.sourceStore.get(saved.id)?.enabled == true }
-            assertFalse(services.sourceStore.get(saved.id)!!.pending)
+            TestUtil.waitFor(30_000, "validada após teste") { services.sourceStore.get(saved.id)?.pending == false }
+            val validated = services.sourceStore.get(saved.id)!!
+            assertTrue(validated.validatedAt > 0)
+            assertFalse("não ativa sozinha", validated.enabled)
+            assertTrue(services.feeds.enabledFeeds().none { it.id == saved.id })
+            // Ativar é ação do usuário
+            sc.onActivity { vm!!.toggleSource(saved.id) }
+            TestUtil.waitFor(5_000, "ativada pelo usuário") { services.sourceStore.get(saved.id)?.enabled == true }
             assertTrue(services.feeds.enabledFeeds().any { it.id == saved.id })
+            // Fonte pendente (nunca validada) não pode ser ativada
+            var refused: String? = null
+            sc.onActivity { vm!!.saveSourceUnvalidated(null, "Outra", "https://brudre-nao-existe.invalid/c.json") { _, _, _ -> } }
+            val pend = services.sourceStore.current.first { it.pending }
+            sc.onActivity { vm!!.toggleSource(pend.id) { m -> refused = m } }
+            TestUtil.waitFor(3_000, "recusa") { refused != null }
+            assertFalse(services.sourceStore.get(pend.id)!!.enabled)
         }
     }
 

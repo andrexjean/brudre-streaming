@@ -29,6 +29,8 @@ object LanguageChoices {
     val subtitles = listOf(Choice("off", "Desligadas"), Choice("pt", "Português"), Choice("en", "Inglês"), Choice("es", "Espanhol"))
     val cacheMb = listOf(500, 1024, 2048)
     val connections = listOf(20, 40, 80)
+    val resolutions = listOf(Choice("0", "Qualquer"), Choice("1080", "1080p"), Choice("720", "720p"), Choice("480", "480p"))
+    val revalidate = listOf(Choice("0", "Desligada"), Choice("12", "A cada 12 h"), Choice("24", "A cada 24 h"))
 }
 
 data class SettingsValues(
@@ -53,6 +55,12 @@ data class SettingsValues(
     /** Ordem entre fontes: true = fontes cadastradas antes das nativas (Internet Archive, obras abertas). */
     val userSourcesFirst: Boolean = false,
     val torrentCleanup: TorrentCleanup = TorrentCleanup.ON_CLOSE,
+    /** Resolução preferida na escolha automática (0 = qualquer). Informação ausente conta como "desconhecida". */
+    val preferredResolution: Int = 0,
+    /** Fonte cadastrada preferida (vai primeiro quando tem o título), ou vazio. */
+    val preferredSourceId: String = "",
+    /** Revalidação automática das fontes ao abrir o app (horas; 0 = desligada). */
+    val revalidateHours: Int = 24,
 )
 
 class AppSettings(context: Context) {
@@ -81,6 +89,9 @@ class AppSettings(context: Context) {
             intro = prefs.getBoolean("intro", d.intro),
             userSourcesFirst = prefs.getBoolean("userSourcesFirst", d.userSourcesFirst),
             torrentCleanup = runCatching { TorrentCleanup.valueOf(prefs.getString("torrentCleanup", d.torrentCleanup.name)!!) }.getOrDefault(d.torrentCleanup),
+            preferredResolution = prefs.getInt("prefResolution", d.preferredResolution),
+            preferredSourceId = prefs.getString("prefSource", d.preferredSourceId) ?: "",
+            revalidateHours = prefs.getInt("revalidateHours", d.revalidateHours),
         )
     }
 
@@ -103,6 +114,9 @@ class AppSettings(context: Context) {
             .putBoolean("intro", v.intro)
             .putBoolean("userSourcesFirst", v.userSourcesFirst)
             .putString("torrentCleanup", v.torrentCleanup.name)
+            .putInt("prefResolution", v.preferredResolution)
+            .putString("prefSource", v.preferredSourceId)
+            .putInt("revalidateHours", v.revalidateHours)
             .apply()
         state.value = v
     }

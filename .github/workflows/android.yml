@@ -136,8 +136,8 @@ jobs:
       - name: Publicar release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v9.0.${{ github.run_number }}
-          name: BruDre Streaming 9.0 (build ${{ github.run_number }})
+          tag_name: v9.1.${{ github.run_number }}
+          name: BruDre Streaming 9.1 (build ${{ github.run_number }})
           make_latest: "true"
           body: |
             APK para Android TV (Xiaomi Mi TV Stick e compatíveis).

@@ -304,11 +304,12 @@ fun TitleCard(
                         .background(badge.second).padding(horizontal = 5.dp, vertical = 1.dp),
                 )
             }
-            title.languageBadge?.let { lb ->
+            val langTitle = remember(title) { com.brudre.streaming.data.VerifiedLanguages.apply(title) }
+            langTitle.languageBadge?.let { lb ->
                 Text(
                     lb, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.TopEnd).padding(6.dp).clip(RoundedCornerShape(5.dp))
-                        .background(if (title.ptAudio) Color(0xCC1F8A4C) else if (title.ptSubtitles) Color(0xCC2F4C9C) else Color(0xCC5A5F73))
+                        .background(if (langTitle.ptAudio) Color(0xCC1F8A4C) else if (langTitle.ptSubtitles) Color(0xCC2F4C9C) else Color(0xCC5A5F73))
                         .padding(horizontal = 5.dp, vertical = 1.dp),
                 )
             }
@@ -373,6 +374,8 @@ fun TitleRow(
     icon: ImageVector? = null,
     tag: String = label,
     onRetry: () -> Unit,
+    /** Catálogo paginado: botão "Carregar mais" no fim da linha (carrega a próxima página sob demanda). */
+    onMore: (() -> Unit)? = null,
     onOpen: (Title) -> Unit,
 ) {
     Column(modifier.fillMaxWidth().padding(top = 18.dp).testTag("row_$tag")) {
@@ -397,6 +400,11 @@ fun TitleRow(
                             caption = listOfNotNull(t.year, t.genres.firstOrNull()).joinToString(" • ").ifBlank { null },
                             modifier = Modifier.testTag("card_${tag}_${t.id}"),
                         ) { onOpen(t) }
+                    }
+                    if (onMore != null) item(key = "more_$tag") {
+                        Box(Modifier.width(210.dp).aspectRatio(16f / 9f), contentAlignment = Alignment.Center) {
+                            BruButton("Carregar mais", icon = Icons.Filled.Refresh, modifier = Modifier.testTag("more_$tag"), onClick = onMore)
+                        }
                     }
                 }
             }

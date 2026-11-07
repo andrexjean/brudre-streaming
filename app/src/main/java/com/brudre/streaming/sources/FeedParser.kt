@@ -34,7 +34,8 @@ data class FeedItem(
     }
 }
 
-data class Feed(val name: String, val items: List<FeedItem>, val rejected: Int)
+/** [next] = próxima página (catálogos paginados: "next" no JSON, rel="next" no RSS/Atom); [more] = há mais resultados. */
+data class Feed(val name: String, val items: List<FeedItem>, val rejected: Int, val next: String? = null, val more: Boolean? = null)
 
 /**
  * Catálogos externos cadastrados pelo usuário: feed JSON do BruDre ou RSS com magnet/.torrent/vídeo.
@@ -116,7 +117,9 @@ object FeedParser {
                 tmdbId = tmdbIdOf(o),
             )
         }
-        return Feed(root.optString("name", "Fonte externa"), out.distinctBy { it.title.id }, rejected)
+        val next = root.optStringOrNull("next")?.takeIf { it.startsWith("https://") && UrlGuard.isAllowed(it) }
+        val more = if (root.has("more")) root.optBoolean("more") else null
+        return Feed(root.optString("name", "Fonte externa"), out.distinctBy { it.title.id }, rejected, next, more)
     }
 
     /** "tmdb": "movie:603", 603 com "kind", ou "tmdb_id". Normaliza para "movie:603"/"tv:1399". */
@@ -192,8 +195,56 @@ object FeedParser {
     private fun unescape(s: String) = s.replace(Regex("<!\\[CDATA\\[(.*?)]]>", RegexOption.DOT_MATCHES_ALL), "$1")
         .replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&#39;", "'").replace("&amp;", "&")
 
+    /** Paginação RFC 5005: <link rel="next" href="..."/> (Atom e RSS com atom:link). */
+    private fun nextLink(xml: String): String? {
+        val m = Regex("<(?:atom:)?link\\b([^>]*\\brel=\"next\"[^>]*)/?>", RegexOption.IGNORE_CASE).find(xml) ?: return null
+        return Regex("href=\"([^\"]+)\"").find(m.groupValues[1])?.groupValues?.get(1)?.let(::unescape)
+            ?.takeIf { it.startsWith("https://") && UrlGuard.isAllowed(it) }
+    }
+
+    private val ENTRY = Regex("<entry\\b[^>]*>(.*?)</entry>", setOf(RegexOption.DOT_MATCHES_ALL, RegexOption.IGNORE_CASE))
+
+    /** Atom (RFC 4287): <entry> com <link rel="enclosure" href type> e/ou link de magnet. */
+    private fun parseAtom(xml: String, feedId: String): Feed {
+        val head = xml.substringBefore("<entry")
+        val feedTitle = tag(head, "title") ?: "Feed Atom"
+        val out = ArrayList<FeedItem>()
+        var rejected = 0
+        for (m in ENTRY.findAll(xml).take(MAX_ITEMS)) {
+            val body = m.groupValues[1]
+            val name = tag(body, "title")
+            if (name == null) { rejected++; continue }
+            val desc = (tag(body, "summary") ?: tag(body, "content"))?.replace(Regex("<[^>]+>"), " ")?.replace(Regex("\\s+"), " ")?.trim()
+            if (Parental.isExplicit(name, desc)) { rejected++; continue }
+            val candidates = ArrayList<Pair<String?, String>>()
+            Regex("<link\\b([^>]*)/?>", RegexOption.IGNORE_CASE).findAll(body).forEach { l ->
+                val attrs = l.groupValues[1]
+                val href = Regex("href=\"([^\"]+)\"").find(attrs)?.groupValues?.get(1)?.let(::unescape) ?: return@forEach
+                val rel = Regex("rel=\"([^\"]+)\"").find(attrs)?.groupValues?.get(1)?.lowercase() ?: "alternate"
+                val type = Regex("type=\"([^\"]+)\"").find(attrs)?.groupValues?.get(1)?.lowercase()
+                if (rel == "enclosure" || href.startsWith("magnet:", true)) {
+                    candidates += (if (type?.contains("bittorrent") == true) "torrent" else if (type?.contains("mpegurl") == true) "hls" else if (href.startsWith("magnet:", true)) "magnet" else "http") to href
+                }
+            }
+            val sources = candidates.mapNotNull { (t, u) -> source(t, u) }.distinctBy { it.url }
+            if (sources.isEmpty()) { rejected++; continue }
+            val guid = tag(body, "id") ?: name
+            out += FeedItem(
+                Title(
+                    id = "$PREFIX$feedId:${com.brudre.streaming.live.M3uParser.stableId(feedId, guid)}",
+                    kind = Kind.MOVIE, name = name.take(120), synopsis = desc?.take(900),
+                    year = Regex("\\b(19|20)\\d{2}\\b").find(name)?.value,
+                    license = "Fonte externa (Atom)",
+                ),
+                sources,
+            )
+        }
+        return Feed(feedTitle, out.distinctBy { it.title.id }, rejected, nextLink(xml))
+    }
+
     private fun parseRss(xml: String, feedId: String): Feed {
-        if (!xml.contains("<rss", true) && !xml.contains("<channel", true)) throw IllegalArgumentException("XML não é um feed RSS")
+        if (Regex("<feed\\b", RegexOption.IGNORE_CASE).containsMatchIn(xml.take(4096)) && !xml.contains("<rss", true)) return parseAtom(xml, feedId)
+        if (!xml.contains("<rss", true) && !xml.contains("<channel", true)) throw IllegalArgumentException("XML não é um feed RSS ou Atom")
         val channelTitle = tag(xml.substringBefore("<item"), "title") ?: "Feed RSS"
         val out = ArrayList<FeedItem>()
         var rejected = 0
@@ -225,7 +276,7 @@ object FeedParser {
                 sources,
             )
         }
-        return Feed(channelTitle, out.distinctBy { it.title.id }, rejected)
+        return Feed(channelTitle, out.distinctBy { it.title.id }, rejected, nextLink(xml))
     }
 
     /**
@@ -233,15 +284,16 @@ object FeedParser {
      * A associação de títulos lê só os índices; o catálogo inteiro é carregado apenas quando há correspondência.
      */
     fun indexOf(items: List<FeedItem>): String = items.mapIndexed { i, it ->
-        listOf(TitleMatcher.normalize(cleanName(it.title.name)), it.title.year ?: "", it.tmdbId ?: "", i.toString()).joinToString("\t")
+        listOf(TitleMatcher.normalize(cleanName(it.title.name)), it.title.year ?: "", it.tmdbId ?: "", i.toString(), if (it.episodes.isNotEmpty()) "S" else it.title.kind.name.take(1)).joinToString("\t")
     }.joinToString("\n")
 
-    data class IndexEntry(val name: String, val year: String?, val tmdbId: String?, val position: Int)
+    /** [series] = item com episódios (ou marcado como série). */
+    data class IndexEntry(val name: String, val year: String?, val tmdbId: String?, val position: Int, val series: Boolean = false)
 
     fun parseIndexLine(line: String): IndexEntry? {
         val p = line.split('\t')
         if (p.size < 4) return null
-        return IndexEntry(p[0], p[1].ifBlank { null }, p[2].ifBlank { null }, p[3].toIntOrNull() ?: return null)
+        return IndexEntry(p[0], p[1].ifBlank { null }, p[2].ifBlank { null }, p[3].toIntOrNull() ?: return null, p.getOrNull(4) == "S")
     }
 
     /** Remove marcas de formato do nome ("Filme (magnet)", "Filme [1080p]") antes de comparar. */

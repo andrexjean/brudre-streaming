@@ -99,7 +99,7 @@ fun DetailsDialog(
         var showPin by remember { mutableStateOf(false) }
         val primaryFocus = remember { FocusRequester() }
         val details = (state as? Load.Ok)?.value
-        val shown = details?.title ?: title
+        val shown = com.brudre.streaming.data.VerifiedLanguages.apply(details?.title ?: title)
 
         Box(
             Modifier
@@ -160,6 +160,9 @@ fun DetailsDialog(
                         Text(line, color = BruColors.TextDim, fontSize = 14.sp, modifier = Modifier.testTag("details_language"))
                     }
                 }
+                com.brudre.streaming.data.VerifiedLanguages.line(shown.id)?.let { v ->
+                    Text(v, color = BruColors.Cyan, fontSize = 13.sp, modifier = Modifier.testTag("details_language_verified"))
+                }
                 Spacer(Modifier.height(12.dp))
                 Text(
                     shown.synopsis ?: "Sinopse não informada pela fonte.",
@@ -219,6 +222,8 @@ fun DetailsDialog(
         }
 
         val ok = (state as? Load.Ok)?.value
+        val wantChooser by vm.requestChooser.collectAsStateWithLifecycle()
+        LaunchedEffect(wantChooser, ok) { if (wantChooser && ok != null) { vm.chooserShown(); if (ok.options.isNotEmpty()) choosing = true } }
         if (choosing && ok != null) {
             SourceOptionsDialog(ok, onDismiss = { choosing = false }) { option -> choosing = false; onPlayOption(ok, option, null) }
         }
@@ -344,7 +349,12 @@ private fun AvailableSection(
                     )
                 }
                 Spacer(Modifier.width(16.dp))
-                FavoriteButton(isFavorite, Modifier.focusRequester(primaryFocus), onToggleFavorite)
+                if (details.options.isNotEmpty()) {
+                    // Só há fontes sem associação confirmada (sem ano): o usuário decide.
+                    BruButton("Escolher fonte (${details.options.size})", primary = true, modifier = Modifier.focusRequester(primaryFocus).testTag("btn_sources"), onClick = onChoose)
+                    Spacer(Modifier.width(12.dp))
+                    FavoriteButton(isFavorite, onClick = onToggleFavorite)
+                } else FavoriteButton(isFavorite, Modifier.focusRequester(primaryFocus), onToggleFavorite)
             }
         } else if (!details.confirmed) {
             // Fonte identificada, mas não respondeu à verificação: o Assistir só aparece depois de confirmar.
@@ -479,7 +489,7 @@ private fun SourceOptionsDialog(details: TitleDetails, onDismiss: () -> Unit, on
                 ) {
                     Text("${i + 1}. ${o.name}${if (o.native) " (nativa)" else ""}", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(
-                        listOfNotNull(o.formats, o.quality, "${o.playables.size} vídeo(s)", o.health).joinToString(" • "),
+                        listOfNotNull(o.formats, o.qualityInfo, o.languageInfo, "${o.playables.size} vídeo(s)", o.health).joinToString(" • "),
                         color = BruColors.TextFaint, fontSize = 13.sp,
                     )
                 }

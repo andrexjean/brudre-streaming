@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>BruDre OpenSearch de teste</ShortName>
+  <Description>Fonte de teste (vídeos sintéticos do BruDre)</Description>
+  <Url type="text/html" template="https://example.org/?q={searchTerms}"/>
+  <Url type="application/atom+xml" template="https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/opensearch/resultados.atom?q={searchTerms}&amp;p={startPage?}"/>
+</OpenSearchDescription>

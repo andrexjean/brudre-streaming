@@ -223,11 +223,12 @@ private fun sourceList(
     empty: String?,
 ) {
     if (shown.isEmpty() && empty != null) scope.item(key = "empty") { Text(empty, color = BruColors.TextDim, fontSize = 16.sp, modifier = Modifier.testTag("src_empty")) }
+    val dups = vm.services.sourceStore.duplicates()
     scope.items(shown, key = { it.id }) { s ->
         val index = all.indexOf(s)
         SourceCard(
-            s, index = index, total = all.size, testing = s.id in testing,
-            onToggle = { vm.toggleSource(s.id) },
+            s, index = index, total = all.size, testing = s.id in testing, duplicate = s.id in dups,
+            onToggle = { vm.toggleSource(s.id, toast) },
             onTest = { vm.testSource(s.id, toast) },
             onRefresh = { vm.refreshSource(s.id, toast) },
             onUp = { vm.moveSource(s.id, -1) },
@@ -244,6 +245,7 @@ private fun SourceCard(
     index: Int,
     total: Int,
     testing: Boolean,
+    duplicate: Boolean = false,
     onToggle: () -> Unit,
     onTest: () -> Unit,
     onRefresh: () -> Unit,
@@ -272,6 +274,13 @@ private fun SourceCard(
             if (s.pending) {
                 Text("SEM VALIDAÇÃO", color = Color.Black, fontSize = 11.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(end = 8.dp).clip(RoundedCornerShape(6.dp)).background(BruColors.Badge).padding(horizontal = 8.dp, vertical = 3.dp).testTag("src_pending_${s.id}"))
+            } else if (s.validatedAt > 0 && !s.enabled) {
+                Text("VALIDADA — ATIVE", color = Color.Black, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(end = 8.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFF6BE3A1)).padding(horizontal = 8.dp, vertical = 3.dp).testTag("src_validated_${s.id}"))
+            }
+            if (duplicate) {
+                Text("DUPLICADA", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(end = 8.dp).clip(RoundedCornerShape(6.dp)).background(BruColors.Danger).padding(horizontal = 8.dp, vertical = 3.dp).testTag("src_dup_${s.id}"))
             }
             Text(
                 s.type.label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
@@ -298,12 +307,14 @@ private fun SourceCard(
             ).joinToString(" • "),
             color = BruColors.TextDim, fontSize = 12.sp, modifier = Modifier.testTag("src_meta_${s.id}"),
         )
+        Text("Capacidades: ${s.capabilities.summary}", color = BruColors.TextDim, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.testTag("src_caps_${s.id}"))
+        s.stats.lastError?.let { Text("Última falha de uso: $it", color = BruColors.TextFaint, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis) }
         if (showDetail && t?.detail != null) Text(t.detail, color = BruColors.TextDim, fontSize = 11.sp, modifier = Modifier.testTag("src_detail_${s.id}"))
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             item { BruButton(if (s.enabled) "Ativada" else "Desativada", primary = s.enabled, modifier = Modifier.testTag("src_toggle_${s.id}"), onClick = onToggle) }
             item { BruButton("Testar", icon = Icons.Filled.Refresh, modifier = Modifier.testTag("src_test_${s.id}"), onClick = onTest) }
-            item { BruButton("Atualizar", modifier = Modifier.testTag("src_refresh_${s.id}"), onClick = onRefresh) }
+            item { BruButton("Atualizar (redetecta)", modifier = Modifier.testTag("src_refresh_${s.id}"), onClick = onRefresh) }
             if (index > 0) item { BruButton("Subir", icon = Icons.Filled.KeyboardArrowUp, modifier = Modifier.testTag("src_up_${s.id}"), onClick = onUp) }
             if (index < total - 1) item { BruButton("Descer", icon = Icons.Filled.KeyboardArrowDown, modifier = Modifier.testTag("src_down_${s.id}"), onClick = onDown) }
             item { BruButton("Editar", icon = Icons.Filled.Edit, modifier = Modifier.testTag("src_edit_${s.id}"), onClick = onEdit) }
@@ -399,6 +410,32 @@ private fun NativeSection(vm: MainViewModel) {
             BruChip("Nativas primeiro", selected = !settings.userSourcesFirst, modifier = Modifier.testTag("order_native_first")) { vm.updateSettings { it.copy(userSourcesFirst = false) } }
             BruChip("Minhas fontes primeiro", selected = settings.userSourcesFirst, modifier = Modifier.testTag("order_user_first")) { vm.updateSettings { it.copy(userSourcesFirst = true) } }
         }
+        Text("Preferências da escolha automática", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
+        Text(
+            "Idioma de áudio e de legenda seguem Configurações (atual: áudio ${settings.audioLanguage.ifBlank { "original" }}, legenda ${settings.subtitleLanguage}). " +
+                "Quando a fonte não informa idioma ou resolução, isso conta como desconhecido — nunca é presumido.",
+            color = BruColors.TextFaint, fontSize = 13.sp,
+        )
+        Text("Resolução preferida", color = Color.White, fontSize = 15.sp, modifier = Modifier.padding(top = 8.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 6.dp)) {
+            items(LanguageChoices.resolutions, key = { it.code }) { c ->
+                BruChip(c.label, selected = settings.preferredResolution.toString() == c.code, modifier = Modifier.testTag("pref_res_${c.code}")) { vm.updateSettings { it.copy(preferredResolution = c.code.toInt()) } }
+            }
+        }
+        val mine by vm.userSources.collectAsStateWithLifecycle()
+        Text("Fonte preferida", color = Color.White, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 6.dp)) {
+            item(key = "none") { BruChip("Nenhuma", selected = settings.preferredSourceId.isEmpty(), modifier = Modifier.testTag("pref_src_none")) { vm.updateSettings { it.copy(preferredSourceId = "") } } }
+            items(mine.filter { it.enabled }, key = { it.id }) { u ->
+                BruChip(u.name, selected = settings.preferredSourceId == u.id, modifier = Modifier.testTag("pref_src_${u.id}")) { vm.updateSettings { it.copy(preferredSourceId = u.id) } }
+            }
+        }
+        Text("Revalidação automática das fontes (ao abrir o app)", color = Color.White, fontSize = 15.sp, modifier = Modifier.padding(top = 4.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 6.dp)) {
+            items(LanguageChoices.revalidate, key = { it.code }) { c ->
+                BruChip(c.label, selected = settings.revalidateHours.toString() == c.code, modifier = Modifier.testTag("pref_reval_${c.code}")) { vm.updateSettings { it.copy(revalidateHours = c.code.toInt()) } }
+            }
+        }
         Spacer(Modifier.height(8.dp))
         natives.forEach { p -> NativeCard(p) { vm.setSourceEnabled(p.id, !p.enabled) } }
     }
@@ -434,11 +471,12 @@ private fun DiagnosticsSection(vm: MainViewModel, sources: List<UserSource>, toa
         Text("Conectividade", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(if (online) "Internet: conectada" else "Internet: SEM CONEXÃO", color = if (online) Color(0xFF6BE3A1) else BruColors.Danger, fontSize = 14.sp)
         Text("Dados temporários (vídeo, imagens, listas): ${CacheManager.formatBytes(cache)}", color = BruColors.TextDim, fontSize = 13.sp)
+        Text("Certificados HTTPS do BitTorrent: ${com.brudre.streaming.torrent.TlsTrust.status}", color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_tls"))
         Spacer(Modifier.height(10.dp))
         Text("Validação e estatísticas", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(
             "${sources.size} fontes • ${sources.count { it.enabled }} ativas • ${sources.count { it.pending }} aguardando validação • " +
-                "${tested.count { it.lastTest!!.ok }} OK e ${tested.count { !it.lastTest!!.ok }} com falha no último teste",
+                "${tested.count { it.lastTest!!.ok }} OK e ${tested.count { !it.lastTest!!.ok }} com falha no último teste • ${vm.services.sourceStore.duplicates().size} duplicada(s)",
             color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_summary"),
         )
         Spacer(Modifier.height(8.dp))

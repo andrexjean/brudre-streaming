@@ -142,6 +142,8 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
     var query by rememberSaveable { mutableStateOf(vm.lastQuery) }
     val results by vm.searchResults.collectAsStateWithLifecycle()
     val channels by vm.channelResults.collectAsStateWithLifecycle()
+    val hasMore by vm.searchHasMore.collectAsStateWithLifecycle()
+    val loadingMore by vm.searchLoadingMore.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val keyboard = LocalSoftwareKeyboardController.current
     val submit = { q: String -> keyboard?.hide(); vm.search(q) }
@@ -212,6 +214,13 @@ fun SearchScreen(vm: MainViewModel, onOpen: (Title) -> Unit) {
                 ) {
                     items(r.value, key = { it.id }) { t ->
                         TitleCard(t, caption = listOfNotNull(t.kind.label, t.year, if (t.isTmdb) "catálogo" else "grátis").joinToString(" • "), modifier = Modifier.testTag("result_${t.id}")) { onOpen(t) }
+                    }
+                    if (hasMore || loadingMore) item(key = "search_more", span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
+                        Box(Modifier.fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                            BruButton(if (loadingMore) "Carregando mais…" else "Carregar mais resultados", icon = Icons.Filled.Search, modifier = Modifier.testTag("search_more")) {
+                                if (!loadingMore) vm.searchMore()
+                            }
+                        }
                     }
                 }
             }

@@ -76,6 +76,15 @@ class PlayerActivity : ComponentActivity() {
     private var reconnects = 0
     private var reconnectJob: Job? = null
     private val recorded = HashSet<String>()
+    /** Trocas e novas tentativas desta sessão do player (limite evita ciclos). */
+    private var switches = 0
+    private var sameSourceRetries = 0
+    private val maxSwitches: Int get() = attempts.size + SAME_SOURCE_RETRIES * 2
+    private var keepAudio: String? = null
+    private var keepText: String? = null
+    /** true enquanto o próprio app ajusta as faixas (não é escolha do usuário). */
+    private var applyingTracks = false
+    private var announcedTracks = false
     private val isLive: Boolean get() = ::playable.isInitialized && playable.live
 
     /** Último estado observado, para testes instrumentados. */
@@ -219,6 +228,37 @@ class PlayerActivity : ComponentActivity() {
                 }
             }
 
+            override fun onTracksChanged(tracks: androidx.media3.common.Tracks) {
+                if (isLive) return
+                val audio = tracks.groups.filter { it.type == C.TRACK_TYPE_AUDIO }.flatMap { g -> (0 until g.length).map { g.getTrackFormat(it).language } }
+                val text = tracks.groups.filter { it.type == C.TRACK_TYPE_TEXT }.flatMap { g -> (0 until g.length).map { g.getTrackFormat(it).language } }
+                if (audio.isEmpty()) return
+                lastTrackLanguages = audio to text
+                com.brudre.streaming.data.VerifiedLanguages.record(title.id, audio, text)
+                if (!announcedTracks && (audio.size > 1 || text.isNotEmpty())) {
+                    announcedTracks = true
+                    fun names(l: List<String?>) = l.map { com.brudre.streaming.data.VerifiedLanguages.normalize(it)?.let { c -> com.brudre.streaming.data.Languages.name(c) } ?: "idioma desconhecido" }.distinct().joinToString(", ")
+                    val msg = "Áudio: ${names(audio)}" + if (text.isNotEmpty()) " • Legendas: ${names(text)}" else ""
+                    Toast.makeText(this@PlayerActivity, "$msg (troque em ⚙ / CC)", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onTrackSelectionParametersChanged(parameters: androidx.media3.common.TrackSelectionParameters) {
+                if (applyingTracks || isLive) return
+                // Escolha manual no menu do player → vira a preferência salva (vale para os próximos vídeos).
+                val audioOverride = parameters.overrides.values.firstOrNull { it.type == C.TRACK_TYPE_AUDIO }
+                val textOverride = parameters.overrides.values.firstOrNull { it.type == C.TRACK_TYPE_TEXT }
+                val audioLang = audioOverride?.trackIndices?.firstOrNull()?.let { audioOverride.mediaTrackGroup.getFormat(it).language }
+                val textLang = textOverride?.trackIndices?.firstOrNull()?.let { textOverride.mediaTrackGroup.getFormat(it).language }
+                val textOff = parameters.disabledTrackTypes.contains(C.TRACK_TYPE_TEXT)
+                val a = com.brudre.streaming.data.VerifiedLanguages.normalize(audioLang)
+                val t = if (textOff) "off" else com.brudre.streaming.data.VerifiedLanguages.normalize(textLang)
+                if (a != null || t != null) {
+                    services.settings.update { s -> s.copy(audioLanguage = a ?: s.audioLanguage, subtitleLanguage = t ?: s.subtitleLanguage) }
+                    Log.i(TAG, "Preferência salva: áudio=${a ?: "-"} legenda=${t ?: "-"}")
+                }
+            }
+
             override fun onPlayerError(error: PlaybackException) {
                 if (isLive && error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
                     // Ficou para trás da janela ao vivo: volta para o ponto atual sem trocar de fonte.
@@ -235,9 +275,19 @@ class PlayerActivity : ComponentActivity() {
         player = p
     }
 
-    private fun startAttempt(index: Int) {
+    private fun startAttempt(index: Int, keepRetries: Boolean = false) {
         val p = player ?: return
+        if (!keepRetries) sameSourceRetries = 0
         attemptIndex = index
+        // Mantém o idioma de áudio/legenda que estava em uso ao trocar de fonte.
+        if (keepAudio != null || keepText != null) {
+            applyingTracks = true
+            val b = p.trackSelectionParameters.buildUpon()
+            keepAudio?.let { b.setPreferredAudioLanguage(it) }
+            when (keepText) { null -> Unit; "off" -> b.setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true); else -> b.setTrackTypeDisabled(C.TRACK_TYPE_TEXT, false).setPreferredTextLanguage(keepText) }
+            p.trackSelectionParameters = b.build()
+            applyingTracks = false
+        }
         val attempt = attempts.getOrNull(index) ?: return
         currentAttempt = attempt
         openJob?.cancel()
@@ -363,8 +413,21 @@ class PlayerActivity : ComponentActivity() {
             reconnects = 0
             val keep = player?.currentPosition ?: 0L
             if (hasBeenReady && !isLive) resumeMs = keep
+            rememberTracks()
+            // Falha DURANTE a reprodução: 1ª vez tenta de novo a mesma fonte (do mesmo ponto); depois troca.
+            if (retryOtherSource && hasBeenReady && !isLive && sameSourceRetries < SAME_SOURCE_RETRIES && switches < maxSwitches) {
+                sameSourceRetries++
+                switches++
+                showStatus("Reconectando à mesma fonte…")
+                player?.stop()
+                reconnectJob?.cancel()
+                reconnectJob = lifecycleScope.launch { delay(2_000); startAttempt(attemptIndex, keepRetries = true) }
+                return@runOnUiThread
+            }
             val next = attemptIndex + 1
-            if (retryOtherSource && next < attempts.size) {
+            // Limite de trocas: nunca volta em ciclo para fontes que já falharam.
+            if (retryOtherSource && next < attempts.size && switches < maxSwitches) {
+                switches++
                 Toast.makeText(this, "$message Tentando ${attempts[next].label}…", Toast.LENGTH_LONG).show()
                 player?.stop()
                 startAttempt(next)
@@ -373,9 +436,21 @@ class PlayerActivity : ComponentActivity() {
                 if (isLive) {
                     services.live.markOffline(title.id.removePrefix(com.brudre.streaming.data.Title.LIVE_PREFIX))
                     showFatal("Canal fora do ar no momento. $message")
-                } else showFatal(message)
+                } else showFatal(message + if (attempts.size > 1) " Todas as ${attempts.size} fontes deste vídeo foram tentadas." else "")
             }
         }
+    }
+
+    /** Idiomas de áudio/legenda em uso: aplicados na próxima fonte (mesmo filme/episódio). */
+    private fun rememberTracks() {
+        val p = player ?: return
+        val groups = p.currentTracks.groups
+        groups.firstOrNull { it.type == C.TRACK_TYPE_AUDIO && it.isSelected }?.let { g ->
+            (0 until g.length).firstOrNull { g.isTrackSelected(it) }?.let { keepAudio = g.getTrackFormat(it).language }
+        }
+        val text = groups.firstOrNull { it.type == C.TRACK_TYPE_TEXT && it.isSelected }
+        keepText = text?.let { g -> (0 until g.length).firstOrNull { g.isTrackSelected(it) }?.let { g.getTrackFormat(it).language } }
+            ?: if (p.trackSelectionParameters.disabledTrackTypes.contains(C.TRACK_TYPE_TEXT)) "off" else keepText
     }
 
     private fun showFatal(message: String) {
@@ -388,6 +463,10 @@ class PlayerActivity : ComponentActivity() {
             .setCancelable(true)
             .setOnCancelListener { finish() }
             .setNegativeButton("Voltar") { _, _ -> finish() }
+            .apply {
+                // Sem fonte que funcione: o usuário escolhe outra manualmente (nunca troca sozinho para outra versão).
+                if (!isLive) setNeutralButton("Escolher outra fonte") { _, _ -> services.chooseSourceFor = title; finish() }
+            }
             .apply {
                 if (attempts.isNotEmpty()) setPositiveButton("Tentar novamente") { _, _ ->
                     hasBeenReady = false
@@ -408,11 +487,21 @@ class PlayerActivity : ComponentActivity() {
                     val stats = s.stats()
                     val buffering = player?.playbackState == Player.STATE_BUFFERING
                     if (stats != null) {
-                        showStatus(
-                            "BitTorrent • ${stats.peers} conexões • " +
-                                "${com.brudre.streaming.torrent.CacheManager.formatBytes(stats.downloadRate.toLong())}/s" +
-                                (if (buffering) " • carregando" else "")
-                        )
+                        val p = player
+                        val bufferS = if (p != null && hasBeenReady) ((p.bufferedPosition - p.currentPosition).coerceAtLeast(0) / 1000) else null
+                        // Tempo até começar: só com taxa medida e estável (senão não mostra nada).
+                        val eta = if (!hasBeenReady && resumeMs <= 0) s.etaSeconds(s.math.firstPiece) else null
+                        lastTorrentStatus = buildString {
+                            append("BitTorrent • ")
+                            append(if (stats.peers == 0 && stats.webSeeds == 0) "procurando participantes" else "${stats.peers} conectados")
+                            if (stats.availablePeers > stats.peers) append(" de ${stats.availablePeers} conhecidos")
+                            if (stats.webSeeds > 0) append(" • ${stats.webSeeds} servidor(es) web")
+                            append(" • ${com.brudre.streaming.torrent.CacheManager.formatBytes(stats.downloadRate.toLong())}/s")
+                            if (bufferS != null) append(" • buffer ${bufferS}s")
+                            if (eta != null && eta > 0) append(" • início em ~${eta}s")
+                            if (buffering && hasBeenReady) append(" • carregando")
+                        }
+                        showStatus(lastTorrentStatus)
                     }
                     if (!buffering && playerView.isControllerFullyVisible.not() && hasBeenReady) {
                         // Mantém o indicador discreto durante a reprodução.
@@ -541,6 +630,12 @@ class PlayerActivity : ComponentActivity() {
     fun torrentStreamForTest(): TorrentStream? = torrentStream
     @Volatile var lastSubtitleCount = 0
         private set
+    @Volatile var lastTorrentStatus: String? = null
+        private set
+    /** Idiomas das faixas reais (áudio, legenda) — testes. */
+    @Volatile var lastTrackLanguages: Pair<List<String?>, List<String?>>? = null
+        private set
+    fun switchesForTest() = switches
 
     companion object {
         private const val TAG = "BruDrePlayer"
@@ -551,6 +646,8 @@ class PlayerActivity : ComponentActivity() {
         private const val LIVE_STALL_MS = 20_000L
         private const val LIVE_START_TIMEOUT_MS = 25_000L
         private const val LIVE_RECONNECTS = 2
+        /** Novas tentativas na mesma fonte quando ela falha no meio do vídeo. */
+        private const val SAME_SOURCE_RETRIES = 1
         const val EXTRA_TITLE = "title"
         const val EXTRA_PLAYABLE = "playable"
         const val EXTRA_START_MS = "start"

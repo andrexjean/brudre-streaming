@@ -242,6 +242,25 @@ data class SourceOption(
     val native: Boolean = false,
     /** Último resultado conhecido da fonte ("✓ funcionou 3x", "✗ falhou 2x"). */
     val health: String? = null,
+    /** Associação confirmada (TMDB ou nome + ano). Sem confirmação: só na escolha manual. */
+    val confident: Boolean = true,
+    /** Idiomas de áudio/legenda INFORMADOS pela fonte (vazio = desconhecido). */
+    val audio: List<String> = emptyList(),
+    val subtitles: List<String> = emptyList(),
+) {
+    val languageInfo: String get() = listOf(
+        "áudio: " + (audio.takeIf { it.isNotEmpty() }?.joinToString(", ") { Languages.name(it) } ?: "desconhecido"),
+        "legenda: " + (subtitles.takeIf { it.isNotEmpty() }?.joinToString(", ") { Languages.name(it) } ?: "desconhecida"),
+    ).joinToString(" • ")
+    val qualityInfo: String get() = quality ?: "resolução desconhecida"
+}
+
+/** Preferências para a escolha automática da fonte (Configurações). */
+data class SourcePreferences(
+    val audio: String = "pt",
+    val subtitle: String = "pt",
+    val resolution: Int = 0,
+    val preferredSourceId: String = "",
 )
 
 fun JSONObject.optStringOrNull(key: String): String? =

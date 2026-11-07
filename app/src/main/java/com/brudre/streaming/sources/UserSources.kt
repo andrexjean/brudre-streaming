@@ -8,23 +8,27 @@ import org.json.JSONObject
 /** Formatos aceitos em Configurações → Gerenciar fontes. */
 enum class SourceType(val label: String) {
     CATALOG_JSON("Catálogo BruDre (JSON)"),
-    RSS("Feed RSS de vídeos"),
+    RSS("Feed RSS/Atom de vídeos"),
     M3U("Playlist IPTV (M3U)"),
     HLS("Transmissão HLS (M3U8)"),
     VIDEO("Vídeo HTTP/HTTPS"),
     MAGNET("Magnet link"),
     TORRENT("Arquivo .torrent"),
-    SEARCH("API de pesquisa (BruDre)");
+    SEARCH("API de pesquisa (BruDre)"),
+    OPENSEARCH("OpenSearch (descrição XML)"),
+    REST("API REST (descritor BruDre)");
 
     val isCatalog get() = this == CATALOG_JSON || this == RSS
     val isSingle get() = this == HLS || this == VIDEO || this == MAGNET || this == TORRENT
     val isTorrent get() = this == MAGNET || this == TORRENT
+    /** Fontes consultadas sob demanda (pesquisa dinâmica). */
+    val isSearchable get() = this == SEARCH || this == OPENSEARCH || this == REST
 
     /** Prefixo do id: mantém o roteamento dos módulos (catálogos, TV ao vivo, links, pesquisa). */
     val idPrefix get() = when {
         isCatalog -> CATALOG_PREFIX
         this == M3U -> M3U_PREFIX
-        this == SEARCH -> SEARCH_PREFIX
+        isSearchable -> SEARCH_PREFIX
         else -> LINK_PREFIX
     }
 
@@ -81,17 +85,43 @@ data class UserSource(
     val addedAt: Long = System.currentTimeMillis(),
     val lastTest: SourceTest? = null,
     val stats: SourceStats = SourceStats(),
-    /** Salva sem validar: fica desativada até um teste bem-sucedido. */
+    /** Salva sem validar: fica desativada até um teste confirmar formato, segurança e compatibilidade. */
     val pending: Boolean = false,
+    /** Configuração resolvida no teste (modelo OpenSearch, descritor REST). */
+    val config: String? = null,
+    /** Validada depois de ter sido salva sem validação: aguardando o usuário ativar. */
+    val validatedAt: Long = 0,
 ) {
+    val capabilities: SourceCapabilities get() = SourceCapabilities.of(this)
+
     fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("url", url).put("type", type.name)
         .put("enabled", enabled).put("priority", priority).put("addedAt", addedAt)
         .put("test", lastTest?.toJson() ?: JSONObject.NULL)
         .put("stats", stats.toJson())
         .put("pending", pending)
+        .put("config", config ?: JSONObject.NULL)
+        .put("validatedAt", validatedAt)
 
     companion object {
         fun idFor(type: SourceType, url: String) = type.idPrefix + M3uParser.stableId("feed", url.trim())
+        const val MAX_CONFIG = 64 * 1024
+
+        /**
+         * Endereço normalizado para achar duplicadas: esquema/servidor em minúsculas, sem porta padrão,
+         * sem barra final, sem fragmento e com parâmetros em ordem. Magnets: pelo hash.
+         */
+        fun normalizedUrl(url: String): String {
+            val u = url.trim()
+            if (u.startsWith("magnet:", true)) return "magnet:" + (com.brudre.streaming.torrent.TorrentContent.magnetHash(u) ?: u.lowercase())
+            return runCatching {
+                val uri = java.net.URI(u.replace("{", "%7B").replace("}", "%7D"))
+                val host = uri.host?.lowercase()?.trimEnd('.') ?: return u.lowercase()
+                val port = if (uri.port == -1 || uri.port == 443 || uri.port == 80) "" else ":${uri.port}"
+                val path = (uri.rawPath ?: "").trimEnd('/')
+                val query = uri.rawQuery?.split('&')?.filter { it.isNotEmpty() }?.sorted()?.joinToString("&")?.let { "?$it" } ?: ""
+                "${uri.scheme?.lowercase()}://$host$port$path$query"
+            }.getOrDefault(u.lowercase())
+        }
 
         fun fromJson(o: JSONObject): UserSource? {
             val type = runCatching { SourceType.valueOf(o.getString("type")) }.getOrNull() ?: return null
@@ -108,6 +138,8 @@ data class UserSource(
                 lastTest = o.optJSONObject("test")?.let { SourceTest.fromJson(it) },
                 stats = SourceStats.fromJson(o.optJSONObject("stats")),
                 pending = o.optBoolean("pending", false),
+                config = o.optStringOrNull("config")?.take(MAX_CONFIG),
+                validatedAt = o.optLong("validatedAt", 0),
             )
         }
     }
@@ -130,6 +162,7 @@ object UserSourcesJson {
         return (0 until arr.length()).mapNotNull { i -> arr.optJSONObject(i)?.let { UserSource.fromJson(it) } }
             .filter { s -> isSafe(s.type, s.url) }
             .distinctBy { it.id }
+            .distinctBy { UserSource.normalizedUrl(it.url) }
             .take(MAX_SOURCES)
     }
 
@@ -139,6 +172,7 @@ object UserSourcesJson {
     fun isSafe(type: SourceType, url: String): Boolean = when (type) {
         SourceType.MAGNET -> FeedParser.isValidMagnet(url)
         SourceType.SEARCH -> SearchTemplate.isTemplate(url) && SearchTemplate.check(url) == null
+        SourceType.OPENSEARCH, SourceType.REST -> UrlGuard.isAllowed(url) && url.startsWith("https://", true)
         else -> UrlGuard.isAllowed(url) && url.startsWith("https://", true)
     }
 
@@ -174,10 +208,13 @@ object SourceDetector {
             }
             text.startsWith("#EXTINF") -> Detection(SourceType.M3U, "Playlist IPTV M3U")
             isTorrent(head) || mime == "application/x-bittorrent" -> Detection(SourceType.TORRENT, "Arquivo .torrent")
+            text.startsWith("{") && Regex("\"format\"\\s*:\\s*\"brudre-adapter\"").containsMatchIn(lower) -> Detection(SourceType.REST, "Descritor de API REST do BruDre")
             text.startsWith("{") -> if (lower.contains("\"items\"")) Detection(SourceType.CATALOG_JSON, "Catálogo JSON do BruDre")
             else Detection(null, "JSON sem a lista \"items\" do formato de catálogo do BruDre")
             text.startsWith("<") -> when {
+                lower.contains("<opensearchdescription") -> Detection(SourceType.OPENSEARCH, "Descrição OpenSearch")
                 lower.contains("<rss") || lower.contains("<channel") -> Detection(SourceType.RSS, "Feed RSS")
+                Regex("<feed\\b").containsMatchIn(lower) && lower.contains("<entry") -> Detection(SourceType.RSS, "Feed Atom")
                 lower.contains("<html") || lower.contains("<!doctype html") -> Detection(null, "É uma página web, não uma fonte de vídeo")
                 else -> Detection(null, "XML não reconhecido")
             }
@@ -226,5 +263,47 @@ object SourceDetector {
         val ebml = b[0] == 0x1A.toByte() && b[1] == 0x45.toByte() && b[2] == 0xDF.toByte() && b[3] == 0xA3.toByte()
         val ts = b[0] == 0x47.toByte() && (b.size < 189 || b[188] == 0x47.toByte())
         return ftyp || ebml || ts
+    }
+}
+
+/**
+ * O que cada fonte sabe fazer (exibido em Gerenciar fontes e usado pela pesquisa).
+ * Para APIs REST, vem do descritor; para os demais formatos, do próprio formato.
+ */
+data class SourceCapabilities(
+    val textSearch: Boolean,
+    val idLookup: Boolean,
+    val episodes: Boolean,
+    val pagination: Boolean,
+    val mediaFormats: List<String>,
+    val auth: Boolean = false,
+    val ratePerMinute: Int? = null,
+) {
+    val summary: String get() = listOfNotNull(
+        "pesquisa por texto ${mark(textSearch)}", "por identificador ${mark(idLookup)}", "episódios ${mark(episodes)}",
+        "paginação ${mark(pagination)}", "formatos: ${mediaFormats.joinToString(", ")}",
+        if (auth) "autenticação: sim" else null, ratePerMinute?.let { "limite: $it/min" },
+    ).joinToString(" • ")
+
+    companion object {
+        private fun mark(b: Boolean) = if (b) "✓" else "✗"
+
+        fun of(s: UserSource): SourceCapabilities = when (s.type) {
+            SourceType.CATALOG_JSON -> SourceCapabilities(true, true, true, true, listOf("HTTP", "HLS", "magnet", ".torrent"))
+            SourceType.RSS -> SourceCapabilities(true, false, false, true, listOf("HTTP", "HLS", "magnet", ".torrent"))
+            SourceType.M3U -> SourceCapabilities(true, false, false, false, listOf("HLS ao vivo"))
+            SourceType.HLS -> SourceCapabilities(false, false, false, false, listOf("HLS"))
+            SourceType.VIDEO -> SourceCapabilities(false, false, false, false, listOf("HTTP"))
+            SourceType.MAGNET -> SourceCapabilities(false, false, true, false, listOf("magnet"))
+            SourceType.TORRENT -> SourceCapabilities(false, false, true, false, listOf(".torrent"))
+            SourceType.SEARCH -> SourceCapabilities(true, s.url.contains("{tmdb}"), true,
+                s.url.contains("{page}") || s.url.contains("{offset}"), listOf("HTTP", "HLS", "magnet", ".torrent"))
+            SourceType.OPENSEARCH -> {
+                val t = s.config?.let { runCatching { JSONObject(it).optString("template") }.getOrNull() }.orEmpty()
+                SourceCapabilities(true, false, false, t.contains("{page}") || t.contains("{offset}"), listOf("HTTP", "HLS", "magnet", ".torrent"))
+            }
+            SourceType.REST -> s.config?.let { runCatching { RestDescriptor.parse(it).capabilities }.getOrNull() }
+                ?: SourceCapabilities(true, false, false, false, listOf("?"))
+        }
     }
 }

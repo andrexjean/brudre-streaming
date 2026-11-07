@@ -69,6 +69,8 @@ class Services(private val app: Context) {
         .build()
 
     val settings = AppSettings(app)
+
+    init { com.brudre.streaming.data.VerifiedLanguages.init(app) }
     val database: BruDreDatabase by lazy { BruDreDatabase.create(app) }
     val curated: CuratedCatalog by lazy { CuratedCatalog(app.assets.open("authorized_sources.json").bufferedReader().use { it.readText() }) }
     val catalog: CatalogRepository by lazy { CatalogRepository(http, database, curated, settings, ::isOnline, BuildConfig.TMDB_API_KEY) }
@@ -96,6 +98,8 @@ class Services(private val app: Context) {
     /** Torrents adicionados pelo usuário (magnet, .torrent importado ou compartilhado). */
     val torrentLibrary: com.brudre.streaming.torrent.TorrentLibrary by lazy { com.brudre.streaming.torrent.TorrentLibrary(app, torrent) }
     /** APIs de pesquisa autorizadas cadastradas pelo usuário. */
+    /** Pedido do player para reabrir a escolha de fonte de um título (todas as fontes falharam). */
+    @Volatile var chooseSourceFor: com.brudre.streaming.data.Title? = null
     val searchRepo: com.brudre.streaming.sources.SearchRepository by lazy { com.brudre.streaming.sources.SearchRepository(guardedHttp, sourceStore) }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 

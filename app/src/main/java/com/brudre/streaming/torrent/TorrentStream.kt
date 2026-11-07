@@ -70,8 +70,11 @@ class TorrentStream(
             if (Thread.currentThread().isInterrupted) throw InterruptedIOException("Leitura cancelada")
             val now = System.currentTimeMillis()
             if (now - start > timeoutMs) {
-                val st = statusLine()
-                throw IOException("Torrent sem dados para continuar (${st}). Nenhum peer ou servidor enviou o trecho necessário.")
+                val st = stats()
+                val msg = "Nenhum participante ou servidor enviou o trecho necessário em ${timeoutMs / 1000} s (${statusLine()})."
+                // Sem ninguém conectado = sem peers; com conexões mas sem dados = lento demais.
+                throw com.brudre.streaming.sources.ClassifiedException(
+                    if (st == null || st.peers == 0) com.brudre.streaming.sources.ErrorKind.NO_PEERS else com.brudre.streaming.sources.ErrorKind.TIMEOUT, msg)
             }
             if (now - lastNudge > 2000) {
                 requestWindow(piece, force = true)
@@ -86,11 +89,31 @@ class TorrentStream(
         }
     }
 
-    data class Stats(val peers: Int, val seeds: Int, val downloadRate: Int, val progress: Float)
+    data class Stats(val peers: Int, val seeds: Int, val downloadRate: Int, val progress: Float, val webSeeds: Int = 0, val availablePeers: Int = 0)
 
     fun stats(): Stats? = safe {
         val st = handle.status()
-        Stats(st.numPeers(), st.numSeeds(), st.downloadPayloadRate(), st.progress())
+        Stats(st.numPeers(), st.numSeeds(), st.downloadPayloadRate(), st.progress(),
+            runCatching { handle.urlSeeds().size }.getOrDefault(0), runCatching { st.listPeers() }.getOrDefault(0))
+    }
+
+    /** Bytes que ainda faltam na janela inicial (para estimar o tempo até começar). */
+    fun missingBytesFrom(fromPiece: Int, count: Int = readAhead): Long {
+        var missing = 0
+        for (p in math.window(fromPiece, count)) if (!havePiece(p)) missing++
+        return missing.toLong() * info.pieceLength()
+    }
+
+    /** Segundos até ter a janela inicial, só com taxa estável (>0 por ao menos 3 medições); senão null. */
+    private val rates = ArrayDeque<Int>()
+    fun etaSeconds(fromPiece: Int): Int? {
+        val r = stats()?.downloadRate ?: return null
+        rates.addLast(r); while (rates.size > 5) rates.removeFirst()
+        if (rates.size < 3 || rates.any { it <= 0 }) return null
+        val avg = rates.average()
+        val missing = missingBytesFrom(fromPiece)
+        if (missing == 0L) return 0
+        return (missing / avg).toInt().coerceAtMost(3600)
     }
 
     fun statusLine(): String {

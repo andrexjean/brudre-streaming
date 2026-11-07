@@ -95,6 +95,8 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         // Voltando da tela "instalar apps desconhecidos": retoma a atualização.
         androidx.lifecycle.ViewModelProvider(this)[MainViewModel::class.java].resumeUpdateIfPending()
+        // O player pediu "Escolher outra fonte": reabre o título com a lista de fontes.
+        com.brudre.streaming.BruDreApp.services(this).let { sv -> sv.chooseSourceFor?.let { t -> sv.chooseSourceFor = null; vm.openChooser(t) } }
     }
 
     private val vm: MainViewModel by lazy { androidx.lifecycle.ViewModelProvider(this)[MainViewModel::class.java] }

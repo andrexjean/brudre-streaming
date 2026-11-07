@@ -124,7 +124,9 @@ fun HomeScreen(
         // Catálogos externos cadastrados pelo usuário
         items(feeds, key = { it.id }) { f ->
             val state by vm.feedRow(f.id).collectAsStateWithLifecycle()
-            TitleRow(label = f.name, state = state, icon = Icons.Filled.PlayArrow, tag = f.id, onRetry = { vm.retryFeed(f.id) }, onOpen = onOpen)
+            val more by vm.feedHasMore.collectAsStateWithLifecycle()
+            TitleRow(label = f.name, state = state, icon = Icons.Filled.PlayArrow, tag = f.id, onRetry = { vm.retryFeed(f.id) },
+                onMore = if (f.id in more) ({ vm.loadMoreFeed(f.id) }) else null, onOpen = onOpen)
         }
         if (vm.liveEnabled) {
             item(key = "live_home") {

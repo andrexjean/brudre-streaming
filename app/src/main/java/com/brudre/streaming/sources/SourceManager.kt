@@ -166,13 +166,23 @@ class SourceManager(
     private suspend fun attachUserSources(d: TitleDetails, original: Title): TitleDetails {
         val names = (TitleMatcher.names(d.title.name, original.name) + (tmdb.hintFor(d.title)?.names ?: emptyList())).distinct()
         val tmdbId = TmdbParser.parseId(d.title.id)?.let { "${it.first}:${it.second}" }
-        val user = runCatching { userCandidates(names, d.title, tmdbId) }.getOrElse { if (it is CancellationException) throw it; emptyList() }
+        val series = when {
+            tmdbId != null -> tmdbId.startsWith("tv:")
+            d.title.kind == com.brudre.streaming.data.Kind.SERIES -> true
+            d.title.kind == com.brudre.streaming.data.Kind.MOVIE -> false
+            else -> null
+        }
+        val user = runCatching { userCandidates(names, d.title, tmdbId, series) }.getOrElse { if (it is CancellationException) throw it; emptyList() }
         if (user.isEmpty()) return d
-        val native = if (d.available) SourceOption(d.providerId ?: "native", nativeName(d), d.playables, SourceRanker.formats(d.playables), native = true) else null
-        val options = SourceRanker.order(native, user, settings.current.userSourcesFirst)
+        val native = if (d.available) SourceOption(d.providerId ?: "native", nativeName(d), d.playables, SourceRanker.formats(d.playables), native = true,
+            subtitles = d.playables.flatMap { p -> p.subtitles.map { it.language } }.filter { it != "und" }.distinct()) else null
+        val s = settings.current
+        val prefs = com.brudre.streaming.data.SourcePreferences(s.audioLanguage, s.subtitleLanguage, s.preferredResolution, s.preferredSourceId)
+        val options = SourceRanker.order(native, user, s.userSourcesFirst, prefs)
         val merged = SourceRanker.merge(options)
         val first = options.first()
         val label = when {
+            merged.isEmpty() -> "Fontes encontradas só pelo nome (sem ano para confirmar): escolha manualmente em \"Escolher fonte\""
             options.size == 1 -> if (first.native) d.sourceLabel else "Fonte cadastrada: ${first.name}"
             first.native -> "${d.sourceLabel} • mais ${options.size - 1} fonte(s) cadastrada(s)"
             else -> "Fonte: ${first.name} • ${options.size} fontes encontradas"
@@ -187,22 +197,22 @@ class SourceManager(
     }
 
     /** Fontes cadastradas com a obra, consultadas em paralelo e com tempo-limite (uma lenta não segura as outras). */
-    private suspend fun userCandidates(names: List<String>, t: Title, tmdbId: String?): List<SourceRanker.Candidate> = coroutineScope {
+    private suspend fun userCandidates(names: List<String>, t: Title, tmdbId: String?, series: Boolean?): List<SourceRanker.Candidate> = coroutineScope {
         val st = store?.current.orEmpty()
         fun rank(id: String) = st.indexOfFirst { it.id == id }.let { if (it < 0) 500 else it }
         fun unreliable(id: String) = st.firstOrNull { it.id == id }?.stats?.unreliable == true
         fun health(id: String) = st.firstOrNull { it.id == id }?.stats?.summary
         val catalogJob = async {
             if (feeds.enabledFeeds().isEmpty()) emptyList()
-            else runCatching { withTimeout(15_000) { feeds.matches(names, t.year, tmdbId) } }.getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
+            else runCatching { withTimeout(15_000) { feeds.matches(names, t.year, tmdbId, series) } }.getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
         }
         val searchJob = async {
             val repo = searchRepo ?: return@async emptyList()
             if (repo.sources().isEmpty() || names.isEmpty()) return@async emptyList()
-            val q = SearchTemplate.Query(t.name, tmdbId, t.year, tmdbId?.substringBefore(':'))
+            val q = SearchTemplate.Query(t.name, tmdbId, t.year, tmdbId?.substringBefore(':') ?: series?.let { if (it) "tv" else "movie" })
             runCatching { withTimeout(SearchRepository.PER_SOURCE_MS + 4_000) { repo.search(q) } }
                 .getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
-                .filter { h -> if (tmdbId != null && h.item.tmdbId != null) h.item.tmdbId == tmdbId else TitleMatcher.matches(h.item.title.copy(name = FeedParser.cleanName(h.item.title.name)), names, t.year) }
+                .filter { h -> TitleMatcher.matchesItem(h.item, names, t.year, tmdbId, series) }
         }
         val out = ArrayList<SourceRanker.Candidate>()
         catalogJob.await().forEach { (f, item) ->
@@ -210,19 +220,20 @@ class SourceManager(
             val name = if (f.id == FeedRepository.LINKS_ID) item.title.name else f.name
             val ps = item.playables()
             if (ps.isNotEmpty()) out += SourceRanker.Candidate(
-                SourceOption(id, name, SourceRanker.tag(ps, id), SourceRanker.formats(ps), FeedParser.qualityOf(item.title.name, ps.firstOrNull()?.directUrl), health = health(id)),
+                SourceRanker.option(id, name, item, ps, health(id), TitleMatcher.confident(item, t.year, tmdbId)),
                 rank(id), unreliable(id),
             )
         }
         searchJob.await().forEach { h ->
             val ps = h.item.playables()
             if (ps.isNotEmpty()) out += SourceRanker.Candidate(
-                SourceOption(h.source.id, "${h.source.name} (pesquisa)", SourceRanker.tag(ps, h.source.id), SourceRanker.formats(ps), FeedParser.qualityOf(h.item.title.name), health = health(h.source.id)),
+                SourceRanker.option(h.source.id, "${h.source.name} (pesquisa)", h.item, ps, health(h.source.id), TitleMatcher.confident(h.item, t.year, tmdbId)),
                 rank(h.source.id), unreliable(h.source.id),
             )
         }
         torrents?.invoke()?.matches(names, t.year, tmdbId)?.forEach { e ->
             val p = Playable("${e.hash}:auto", e.displayName, 1, 1, null, e.ref, emptyList(), null, preferTorrent = true)
+            // Associação feita pelo próprio usuário: confiável por definição.
             out += SourceRanker.Candidate(SourceOption("torrent:${e.hash}", "Meu torrent: ${e.name}", listOf(p), "BitTorrent", FeedParser.qualityOf(e.name)), 900, false)
         }
         // Mesma fonte com o mesmo vídeo duas vezes (catálogo e pesquisa) entra uma vez só.
@@ -295,13 +306,43 @@ object SourceRanker {
      * Ordem final: fontes cadastradas pela prioridade do usuário (as que falharam 3x seguidas vão para o fim),
      * antes ou depois da fonte nativa conforme a configuração.
      */
-    fun order(native: SourceOption?, user: List<Candidate>, userFirst: Boolean): List<SourceOption> {
-        val users = user.sortedWith(compareBy<Candidate>({ it.unreliable }, { it.priority })).map { it.option }
+    fun order(native: SourceOption?, user: List<Candidate>, userFirst: Boolean, prefs: com.brudre.streaming.data.SourcePreferences = com.brudre.streaming.data.SourcePreferences(audio = "", subtitle = "off")): List<SourceOption> {
+        // Ordem: confiáveis antes; sem 3 falhas seguidas; fonte preferida; idioma e resolução preferidos
+        // (informação ausente = neutra, nunca "inventada"); por fim a prioridade da lista.
+        val users = user.sortedWith(compareBy<Candidate>(
+            { !it.option.confident }, { it.unreliable },
+            { prefs.preferredSourceId.isNotEmpty() && it.option.sourceId != prefs.preferredSourceId },
+            { languageScore(it.option.audio, prefs.audio) }, { languageScore(it.option.subtitles, prefs.subtitle) },
+            { resolutionScore(it.option.quality, prefs.resolution) }, { it.priority },
+        )).map { it.option }
         return when {
             native == null -> users
             userFirst -> users + native
             else -> listOf(native) + users
         }
+    }
+
+    /** 0 = idioma preferido informado, 1 = desconhecido, 2 = informado e diferente. */
+    fun languageScore(known: List<String>, pref: String): Int = when {
+        pref.isBlank() || pref == "off" -> 0
+        known.isEmpty() -> 1
+        known.any { it.equals(pref, true) || it.startsWith("$pref-", true) } -> 0
+        else -> 2
+    }
+
+    /** 0 = resolução preferida, 1 = desconhecida, 2 = outra resolução informada. */
+    fun resolutionScore(quality: String?, pref: Int): Int {
+        if (pref <= 0) return 0
+        val q = when { quality == null -> return 1; quality.equals("4K", true) -> 2160; else -> quality.removeSuffix("p").toIntOrNull() ?: return 1 }
+        return if (q == pref) 0 else 2
+    }
+
+    /** Opção de um item de fonte: formato, qualidade e idiomas só quando INFORMADOS pela fonte. */
+    fun option(id: String, name: String, item: FeedItem, ps: List<Playable>, health: String?, confident: Boolean): SourceOption {
+        val audio = (listOfNotNull(item.title.language) + if (item.title.ptAudio) listOf("pt") else emptyList()).map { it.lowercase().substringBefore('-') }.distinct()
+        val subs = (item.subtitles.map { it.language } + if (item.title.ptSubtitles) listOf("pt") else emptyList()).filter { it != "und" }.map { it.lowercase().substringBefore('-') }.distinct()
+        return SourceOption(id, name + if (!confident) " (sem ano: confirme)" else "", tag(ps, id), formats(ps),
+            FeedParser.qualityOf(item.title.name, ps.firstOrNull()?.directUrl), health = health, confident = confident, audio = audio, subtitles = subs)
     }
 
     /** Marca a origem de cada endereço/torrent (histórico de sucesso e falha no player). */
@@ -316,12 +357,14 @@ object SourceRanker {
      * Junta as opções: os vídeos da primeira fonte, com os endereços e torrents equivalentes das outras
      * (mesmo episódio) como alternativas, na ordem. O player tenta a próxima diante de erro recuperável.
      */
-    fun merge(options: List<SourceOption>): List<Playable> {
+    fun merge(options: List<SourceOption>, manual: Boolean = false): List<Playable> {
         if (options.isEmpty()) return emptyList()
+        // Sem associação confirmada, a fonte não entra sozinha: só se o usuário a escolher (manual).
+        if (!manual && !options.first().confident) return emptyList()
         val primary = options.first().playables
         return primary.map { p ->
             var out = p
-            for (o in options.drop(1)) {
+            for (o in options.drop(1).filter { it.confident }) {
                 val q = o.playables.firstOrNull { it.season == p.season && it.number == p.number }
                     ?: o.playables.singleOrNull()?.takeIf { primary.size == 1 } ?: continue
                 val newDirect = out.directUrl ?: q.directUrl ?: q.mirrors.firstOrNull()

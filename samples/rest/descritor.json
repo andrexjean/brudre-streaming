@@ -1,0 +1,7 @@
+{"format": "brudre-adapter", "version": 1, "name": "API REST de teste",
+ "search": {"url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/busca.json?q={query}&page={page}", "items": "data.results", "hasMore": "data.has_more"},
+ "lookup": {"url": "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/lookup.json?tmdb={tmdb}"},
+ "fields": {"id": "uid", "title": "name", "year": "released", "tmdb": "ids.tmdb", "kind": "type", "season": "season", "episode": "episode", "series": "show", "language": "lang"},
+ "kinds": {"movie": "MOVIE", "episode": "SERIES"},
+ "media": [{"type": "http", "url": "{files.mp4}"}],
+ "rateLimitPerMinute": 30}
