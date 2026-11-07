@@ -1,0 +1,17 @@
+11-07 02:05:13.559  6148  6168 I TestRunner: started: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-07 02:05:13.571  9170  9228 I MicroDetectionState: Should stop hotword detection immediately - false
+11-07 02:05:13.574  9170  9207 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 02:05:13.596  9170  9228 I MicroDetectionState: Should stop hotword detection immediately - false
+11-07 02:05:13.610  9170  9228 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:05:13.617  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:05:13.955  6148  6168 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/opensearch/descricao.xml → OPENSEARCH ok=true OpenSearch (atom+xml) respondeu: 1 resultado(s) para "big buck bunny"
+11-07 02:05:14.348  6148  6168 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/descritor.json → REST ok=true API REST respondeu: 2 resultado(s) para "big buck bunny"
+11-07 02:05:14.498  6148  6168 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/search/paged/{slug}-p{page}.json → SEARCH ok=true API respondeu: 1 resultado(s) para "big buck bunny"
+11-07 02:05:14.501  6148  6168 I BruDreTest: Capacidades BruDre OpenSearch de teste: pesquisa por texto ✓ • por identificador ✗ • episódios ✗ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-07 02:05:14.502  6148  6168 I BruDreTest: Capacidades API REST de teste: pesquisa por texto ✓ • por identificador ✓ • episódios ✓ • paginação ✓ • formatos: HTTP • limite: 30/min
+11-07 02:05:14.502  6148  6168 I BruDreTest: Capacidades raw.githubusercontent.com: pesquisa por texto ✓ • por identificador ✗ • episódios ✓ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-07 02:05:14.542  6148  6168 I BruDreTest: Página 1: [OPENSEARCH:Big Buck Bunny (2008), REST:Big Buck Bunny, REST:BruDre Teste Série, SEARCH:Big Buck Bunny] mais em=[search_52e1129eebd70788]
+11-07 02:05:14.675  6148  6168 I BruDreTest: Página 2: [Big Buck Bunny (versão 2)] mais em=[]
+11-07 02:05:14.812  6148  8795 I BruDreSources: Catálogo Paginado: 2 títulos (0 descartados)
+11-07 02:05:14.960  6148  8795 I BruDreSources: Catálogo feed_477140bd0b7c1577: +1 títulos (página seguinte)
+11-07 02:05:14.967  6148  6168 I TestRunner: finished: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)

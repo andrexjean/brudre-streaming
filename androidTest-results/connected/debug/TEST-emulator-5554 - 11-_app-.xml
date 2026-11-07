@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.brudre.streaming.LibraryDbTest" tests="50" failures="0" errors="0" skipped="0" time="758.536" timestamp="2026-11-07T02:05:17" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 11" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="myListAddRemovePersists" classname="com.brudre.streaming.LibraryDbTest" time="0.03" />
+  <testcase name="historyAndContinueWatching" classname="com.brudre.streaming.LibraryDbTest" time="0.019" />
+  <testcase name="resumePositionRules" classname="com.brudre.streaming.LibraryDbTest" time="0.026" />
+  <testcase name="t18_liveChannelPlays" classname="com.brudre.streaming.PlaybackTest" time="10.543" />
+  <testcase name="t19_hlsPlayback" classname="com.brudre.streaming.PlaybackTest" time="11.121" />
+  <testcase name="t13_incompatibleFormatShowsError" classname="com.brudre.streaming.PlaybackTest" time="2.323" />
+  <testcase name="t15_catalogTitlesFindFreeSource" classname="com.brudre.streaming.PlaybackTest" time="26.763" />
+  <testcase name="t07b_internetArchiveItemResolvesAndPlays" classname="com.brudre.streaming.PlaybackTest" time="6.889" />
+  <testcase name="t12_cacheCleanup" classname="com.brudre.streaming.PlaybackTest" time="0.094" />
+  <testcase name="t17_iptvOrgListsLoad" classname="com.brudre.streaming.PlaybackTest" time="1.509" />
+  <testcase name="t24_sourceManagerLifecycle" classname="com.brudre.streaming.PlaybackTest" time="28.745" />
+  <testcase name="t08_torrentPlaybackWithSeek" classname="com.brudre.streaming.PlaybackTest" time="8.777" />
+  <testcase name="t07_directPlaybackStartsAndSavesProgress" classname="com.brudre.streaming.PlaybackTest" time="55.331" />
+  <testcase name="t08b_magnetOnlyTorrent" classname="com.brudre.streaming.PlaybackTest" time="9.974" />
+  <testcase name="t13b_noSourceShowsMessage" classname="com.brudre.streaming.PlaybackTest" time="1.559" />
+  <testcase name="t16_inAppUpdatePipeline" classname="com.brudre.streaming.PlaybackTest" time="2.645" />
+  <testcase name="t20_urlGuardAndValidation" classname="com.brudre.streaming.PlaybackTest" time="3.515" />
+  <testcase name="t22_externalCatalogPlaysEverySourceType" classname="com.brudre.streaming.PlaybackTest" time="26.209" />
+  <testcase name="t11_resumesFromSavedPosition" classname="com.brudre.streaming.PlaybackTest" time="9.553" />
+  <testcase name="t14_lowMemoryReleasesCachesDuringPlayback" classname="com.brudre.streaming.PlaybackTest" time="8.205" />
+  <testcase name="t23_manualMagnetLinkPlaysProgressively" classname="com.brudre.streaming.PlaybackTest" time="4.818" />
+  <testcase name="t21_allLiveChannelsChecked" classname="com.brudre.streaming.PlaybackTest" time="124.108" />
+  <testcase name="t10_networkInterruptionIsHandled" classname="com.brudre.streaming.PlaybackTest" time="6.115" />
+  <testcase name="t28_dynamicSearchAndMultipleSources" classname="com.brudre.streaming.SourceEngineTest" time="1.393" />
+  <testcase name="t27_sharedMagnetAndTorrentFromOtherApps" classname="com.brudre.streaming.SourceEngineTest" time="7.832" />
+  <testcase name="t31_searchCancellation" classname="com.brudre.streaming.SourceEngineTest" time="8.854" />
+  <testcase name="t30_networkErrorsAndSaveWithoutValidation" classname="com.brudre.streaming.SourceEngineTest" time="12.192" />
+  <testcase name="t26_torrentCacheCleanupPolicy" classname="com.brudre.streaming.SourceEngineTest" time="8.244" />
+  <testcase name="t25_importedTorrentEpisodeSelectionSubtitlesAndResume" classname="com.brudre.streaming.SourceEngineTest" time="60.323" />
+  <testcase name="t29_fallbackToNextSourceAndHistory" classname="com.brudre.streaming.SourceEngineTest" time="9.84" />
+  <testcase name="t10_sourceManagerSectionsWithDpad" classname="com.brudre.streaming.UiFlowTest" time="12.85" />
+  <testcase name="t04_searchFindsTitles" classname="com.brudre.streaming.UiFlowTest" time="6.7" />
+  <testcase name="t03_catalogLoadsAutomatically" classname="com.brudre.streaming.UiFlowTest" time="9.473" />
+  <testcase name="t08_cinematicIntro" classname="com.brudre.streaming.UiFlowTest" time="13.394" />
+  <testcase name="t09_screensForVisualCheck" classname="com.brudre.streaming.UiFlowTest" time="73.973" />
+  <testcase name="t06_titleWithoutSourceHasNoPlayButton" classname="com.brudre.streaming.UiFlowTest" time="4.58" />
+  <testcase name="t01_launchShowsBrandHeroAndFocus" classname="com.brudre.streaming.UiFlowTest" time="2.403" />
+  <testcase name="t07_parentalControlAsksPin" classname="com.brudre.streaming.UiFlowTest" time="8.229" />
+  <testcase name="t11_worldContentSeparatedByLanguage" classname="com.brudre.streaming.UiFlowTest" time="15.735" />
+  <testcase name="t05_myListFromDetails" classname="com.brudre.streaming.UiFlowTest" time="4.389" />
+  <testcase name="t02_remoteControlNavigation" classname="com.brudre.streaming.UiFlowTest" time="4.01" />
+  <testcase name="v05_audioAndSubtitleTracks" classname="com.brudre.streaming.V91DeviceTest" time="4.411" />
+  <testcase name="v01_tlsCertificatesAreValidated" classname="com.brudre.streaming.V91DeviceTest" time="43.524" />
+  <testcase name="v09_memoryWithPlayerAndRelease" classname="com.brudre.streaming.V91DeviceTest" time="8.186" />
+  <testcase name="v03_redetectFormatAndDuplicates" classname="com.brudre.streaming.V91DeviceTest" time="3.029" />
+  <testcase name="v02_httpsRedirects" classname="com.brudre.streaming.V91DeviceTest" time="2.531" />
+  <testcase name="v08_settingsPersistence" classname="com.brudre.streaming.V91DeviceTest" time="0.503" />
+  <testcase name="v07_noPeers" classname="com.brudre.streaming.V91DeviceTest" time="30.784" />
+  <testcase name="v06_fallbackDuringPlayback" classname="com.brudre.streaming.V91DeviceTest" time="49.196" />
+  <testcase name="v04_multiSourceSearchAndPagination" classname="com.brudre.streaming.V91DeviceTest" time="1.408" />
+</testsuite>

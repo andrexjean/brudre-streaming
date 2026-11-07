@@ -1,0 +1,18 @@
+11-07 02:03:50.524  6148  6168 I TestRunner: started: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:50.534   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868df50, tid 6281
+11-07 02:03:50.571   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:03:50.613   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38744e60: maj 3 min 0 rcv 3
+11-07 02:03:50.626   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38744e60: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:03:50.814   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 02:03:50.814   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 02:03:51.414  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac9871e398 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/245 (fetch/transfer)
+11-07 02:03:51.414  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:03:51.632  6148  6168 I BruDreTest: Redireciona github.com → raw: CATALOG_JSON ok=true 5 títulos
+11-07 02:03:52.275   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c362e8 : 0(0 size) total buffers - 0(0 size) used buffers - 236/241 (recycle/alloc) - 5/241 (fetch/transfer)
+11-07 02:03:52.275   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:03:52.499  6148  6168 I BruDreTest: Redireciona para http://: BLOCKED Bloqueada pela segurança: O servidor redirecionou para um endereço sem criptografia (http://): bloqueado.
+11-07 02:03:52.514   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=72)
+11-07 02:03:52.514   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:03:52.514   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 72 ended, total sessions:1
+11-07 02:03:53.076  6148  6168 I BruDreTest: Redireciona para .apk: BLOCKED Bloqueada pela segurança: Arquivo executável bloqueado: example.com
+11-07 02:03:53.077  6148  6168 I TestRunner: finished: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)

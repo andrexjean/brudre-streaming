@@ -1,0 +1,255 @@
+11-07 02:02:16.520  6148  6168 I TestRunner: started: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-07 02:02:16.523  6148  6168 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@9232e53]
+11-07 02:02:16.525  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 02:02:16.527   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 02:02:16.619   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:02:16.619   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 66, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 02:02:16.619   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=66)
+11-07 02:02:16.627  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: PRE_ON_CREATE
+11-07 02:02:16.627  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 02:02:16.641  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: CREATED
+11-07 02:02:16.641  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@63eef66
+11-07 02:02:16.650  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: STARTED
+11-07 02:02:16.650  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@63eef66
+11-07 02:02:16.651  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: RESUMED
+11-07 02:02:16.651  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@63eef66
+11-07 02:02:16.778  9170  9224 I SharedPreferencesProto: load shared preferences: file not found
+11-07 02:02:16.805   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:02:16.805   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:02:16.845   745   866 D EglHelper: createEglContext start
+11-07 02:02:16.856   745   866 D EGL_emulation: eglCreateContext: 0x75ac386ae350: maj 3 min 0 rcv 3
+11-07 02:02:16.856   745   866 D EglHelper: createEglContext done
+11-07 02:02:16.856   745   866 D EglHelper: createEglSurface start
+11-07 02:02:16.866   745   866 D EglHelper: createEglSurface done
+11-07 02:02:17.062   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:02:17.064   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:02:17.085  9170  9228 I EventBusThread: Event Bus thread starting with TID 9228
+11-07 02:02:17.126   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +534ms
+11-07 02:02:17.202  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: PAUSED
+11-07 02:02:17.203  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@63eef66
+11-07 02:02:17.227  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: STOPPED
+11-07 02:02:17.227  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@63eef66
+11-07 02:02:17.232  9170  9170 W MonetClient: Could not collect restore state: The DisplayCoordinator's controller has not taken over yet.
+11-07 02:02:17.242  9170  9198 I AppFlowTracker: AppFlow[Type: 236 - Status: 1 - Events[1673 at 0ms, 1675 at -278ms, 1665 at -444ms, 1671 at -444ms, 1674 at -770ms, 1670 at -793ms, 1678 at -798ms, ]]
+11-07 02:02:17.255  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@63eef66 in: DESTROYED
+11-07 02:02:17.255  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:02:17.268  9170  9186 I earchbox:searc: Method exceeds compiler instruction limit: 31924 in com.google.common.b.ev com.google.android.apps.gsa.shared.logger.b.u.a()
+11-07 02:02:17.275   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.276  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: PRE_ON_CREATE
+11-07 02:02:17.276  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-07 02:02:17.283  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: CREATED
+11-07 02:02:17.283  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@52a6cc0
+11-07 02:02:17.284  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: STARTED
+11-07 02:02:17.284  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@52a6cc0
+11-07 02:02:17.285  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: RESUMED
+11-07 02:02:17.285  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@52a6cc0
+11-07 02:02:17.290   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.307   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.316  9170  9209 D StrictMode: StrictMode policy violation: android.os.strictmode.DiskReadViolation
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at android.os.StrictMode$AndroidBlockGuardPolicy.onReadFromDisk(StrictMode.java:1596)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:249)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:166)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:7542)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at libcore.io.IoBridge.open(IoBridge.java:478)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at java.io.FileInputStream.<init>(FileInputStream.java:115)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.speech.e.b.a.b(SourceFile:3)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.languagepack.v.<init>(SourceFile:1)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.aoz.hJ(SourceFile:4070)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.a(SourceFile:33)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.d(SourceFile:19)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.c(SourceFile:423)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.a(SourceFile:38)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.search.core.service.g.a.c.a(Unknown Source:2)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.android.libraries.gsa.l.a.n.a(Unknown Source:2)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.common.v.a.dm.b(SourceFile:7)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.common.v.a.cg.run(SourceFile:11)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.common.v.a.do.run(SourceFile:8)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.aq.run(SourceFile:1)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.f.run(Unknown Source:3)
+11-07 02:02:17.316  9170  9209 D StrictMode: 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:02:17.317  9170  9209 D StrictMode: StrictMode policy violation: android.os.strictmode.DiskReadViolation
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at android.os.StrictMode$AndroidBlockGuardPolicy.onReadFromDisk(StrictMode.java:1596)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.BlockGuardOs.fstat(BlockGuardOs.java:174)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.ForwardingOs.fstat(ForwardingOs.java:106)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.IoBridge.open(IoBridge.java:481)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.FileInputStream.<init>(FileInputStream.java:115)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.speech.e.b.a.b(SourceFile:3)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.languagepack.v.<init>(SourceFile:1)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.aoz.hJ(SourceFile:4070)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.a(SourceFile:33)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.d(SourceFile:19)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.c(SourceFile:423)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.a(SourceFile:38)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.search.core.service.g.a.c.a(Unknown Source:2)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.libraries.gsa.l.a.n.a(Unknown Source:2)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.dm.b(SourceFile:7)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.cg.run(SourceFile:11)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.do.run(SourceFile:8)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.aq.run(SourceFile:1)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.f.run(Unknown Source:3)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:02:17.317  9170  9209 D StrictMode: StrictMode policy violation: android.os.strictmode.DiskReadViolation
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at android.os.StrictMode$AndroidBlockGuardPolicy.onReadFromDisk(StrictMode.java:1596)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.BlockGuardOs.read(BlockGuardOs.java:304)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.ForwardingOs.read(ForwardingOs.java:176)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at libcore.io.IoBridge.read(IoBridge.java:509)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.FileInputStream.read(FileInputStream.java:320)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:291)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:355)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:181)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.BufferedReader.fill(BufferedReader.java:172)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.BufferedReader.readLine(BufferedReader.java:335)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.io.BufferedReader.readLine(BufferedReader.java:400)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.speech.e.b.a.b(SourceFile:4)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.languagepack.v.<init>(SourceFile:1)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.aoz.hJ(SourceFile:4070)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.a(SourceFile:33)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.pb.d(SourceFile:19)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.c(SourceFile:423)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.a(SourceFile:38)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.apps.gsa.search.core.service.g.a.c.a(Unknown Source:2)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.android.libraries.gsa.l.a.n.a(Unknown Source:2)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.dm.b(SourceFile:7)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.cg.run(SourceFile:11)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.common.v.a.do.run(SourceFile:8)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.aq.run(SourceFile:1)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at com.google.apps.tiktok.concurrent.f.run(Unknown Source:3)
+11-07 02:02:17.317  9170  9209 D StrictMode: 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:02:17.324  9170  9209 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.a(SourceFile:25)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.<init>(SourceFile:4)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.staticplugins.searchboxroot.features.m.a.c.<init>(SourceFile:4)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.staticplugins.searchboxroot.b.a(SourceFile:16)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.staticplugins.searchboxroot.y.<init>(SourceFile:10)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.binaries.velvet.app.xp.d(SourceFile:10)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.d(SourceFile:652)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.binaries.velvet.app.yd.a(SourceFile:38)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.service.g.a.c.a(Unknown Source:2)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.l.a.n.a(Unknown Source:2)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.common.v.a.dm.b(SourceFile:7)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.common.v.a.cg.run(SourceFile:11)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.common.v.a.do.run(SourceFile:8)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.apps.tiktok.concurrent.aq.run(SourceFile:1)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at com.google.apps.tiktok.concurrent.f.run(Unknown Source:3)
+11-07 02:02:17.354  9170  9198 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:02:17.357   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.371   495  1014 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:02:17.372   495  1014 I chatty  : uid=1000(system) Binder:495_8 identical 2 lines
+11-07 02:02:17.373   495  1014 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:02:17.383  9170  9207 I ModelDownloadListener: Schdedule model download
+11-07 02:02:17.518   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.522  9170  9212 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-07 02:02:17.522  9170  9212 I FedAssExpListener: Successfully processed experiments changed.
+11-07 02:02:17.540   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.547  9170  9228 W SearchServiceCore: Abort, client detached.
+11-07 02:02:17.550  9170  9228 I MicroDataManager: isInitializing-false locale not changed-false model not changed-false
+11-07 02:02:17.552  9170  9207 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-07 02:02:17.554  9170  9170 I BgTaskExecutorImpl: Starting EXCLUSIVE background task UPDATE_HOTWORD_MODELS.
+11-07 02:02:17.557  1482  3454 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=null serviceId=36 [CONTEXT service_id=21 ]
+11-07 02:02:17.587   495   674 D WifiNetworkFactory: got request NetworkRequest [ TRACK_DEFAULT id=39, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10123 AdministratorUids: [] RequestorUid: 10123 RequestorPackageName: com.google.android.googlequicksearchbox] ] with score 60 and providerId 3
+11-07 02:02:17.588   495   674 D UntrustedWifiNetworkFactory: got request NetworkRequest [ TRACK_DEFAULT id=39, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10123 AdministratorUids: [] RequestorUid: 10123 RequestorPackageName: com.google.android.googlequicksearchbox] ] with score 60 and providerId 3
+11-07 02:02:17.588  1098  1098 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=39, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10123 AdministratorUids: [] RequestorUid: 10123 RequestorPackageName: com.google.android.googlequicksearchbox] ] with score 60 and providerId 3
+11-07 02:02:17.592   745   745 V KeyguardUpdateMonitor: onSubscriptionInfoChanged()
+11-07 02:02:17.592  1098  1098 D Telephony: isEmergencyPreferredAccount: subId=1, activeData=1
+11-07 02:02:17.592  1098  1098 D Telephony: isEmergencyPreferredAccount: Device does not require preference.
+11-07 02:02:17.592   745   745 V KeyguardUpdateMonitor: SubInfo:{id=1 iccId=89014103211118510720 simSlotIndex=0 carrierId=1 displayName=T-Mobile carrierName=T-Mobile nameSource=3 iconTint=-16746133 number=+15555215554 dataRoaming=0 iconBitmap=android.graphics.Bitmap@b8a31a3 mcc=310 mnc=260 countryIso=us isEmbedded=false nativeAccessRules=null cardString=89014103211118510720 cardId=-1 isOpportunistic=false groupUUID=null isGroupDisabled=false profileClass=-1 ehplmns=null hplmns=null subscriptionType=0 groupOwner=null carrierConfigAccessRules=null areUiccApplicationsEnabled=true}
+11-07 02:02:17.599  9170  9234 I PBSessionCacheImpl: Deleted sessionId[40331880523760309] from persistence.
+11-07 02:02:17.621  9170  9228 E AttachedClient: Dropping clientEvent = 100 coming from client[40331880523760307]
+11-07 02:02:17.621  9170  9228 E AttachedClient: Dropping clientEvent = 100 coming from client[40331880523760307]
+11-07 02:02:17.621  9170  9228 E AttachedClient: Dropping clientEvent = 114 coming from client[40331880523760307]
+11-07 02:02:17.623   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:17.625  9170  9228 E AttachedClient: Dropping clientEvent = 114 coming from client[40331880523760307]
+11-07 02:02:17.654  9170  9236 I ModelDownloadController: requestHotwordModelUpdate modelType-2 modelLocale-en-US
+11-07 02:02:17.655  9170  9236 I ModelDownloadController: shouldDownloadModel: modelLocale is en-US
+11-07 02:02:17.656  9170  9236 I ModelDownloadController: We already downloaded model from given location.
+11-07 02:02:17.656  9170  9236 I ModelDownloadController: Model download not requested.
+11-07 02:02:17.751  9170  9210 W LocationOracle: No location history returned by ContextManager
+11-07 02:02:17.770  9170  9198 I BistoSettingsListener: listener created
+11-07 02:02:17.772  9170  9228 I MicroDetectionWorker: Initializing MicroDataManager InitializeType-1, isForced-false, isActivePhoneEnrollment-false isActiveGoogleHomeEnrollment-false
+11-07 02:02:17.779  9170  9228 I MicroDetectionState: Should stop hotword detection immediately - false
+11-07 02:02:17.781  9170  9228 I chatty  : uid=10123(com.google.android.googlequicksearchbox) EventBus0 identical 1 line
+11-07 02:02:17.782  9170  9228 I MicroDetectionState: Should stop hotword detection immediately - false
+11-07 02:02:17.786  1482  6076 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 02:02:17.825  9170  9228 W SearchServiceCore: Abort, client detached.
+11-07 02:02:17.830   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 02:02:17.837   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:02:17.838  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: PAUSED
+11-07 02:02:17.838  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@52a6cc0
+11-07 02:02:17.887  9170  9211 I cr_CronetLibraryLoader: Cronet version: 84.0.4147.12, arch: i686
+11-07 02:02:17.921  9170  9194 I earchbox:searc: Waiting for a blocking GC ProfileSaver
+11-07 02:02:17.956  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:02:17.961  9170  9194 I earchbox:searc: WaitForGcToComplete blocked ProfileSaver on RunEmptyCheckpoint for 39.573ms
+11-07 02:02:17.982   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 02:02:18.026  9170  9228 I MicroDataManager: isInitializing-false locale not changed-true model not changed-true
+11-07 02:02:18.027  9170  9228 I MicroDetectionState: Should stop hotword detection immediately - false
+11-07 02:02:18.065  9170  9192 I MicroDataManager: isInitializing-false locale not changed-true model not changed-true
+11-07 02:02:18.067  9170  9192 I HotwordHelper: hasHotwordEverywhere-true
+11-07 02:02:18.071  9170  9225 D libEGL  : loaded /vendor/lib/egl/libEGL_emulation.so
+11-07 02:02:18.081  1593  1593 E HwDetectorWithState: a: 3
+11-07 02:02:18.081  1593  1593 I GsaVoiceInteractionSrv: #checkDspStatus
+11-07 02:02:18.084  1593  1593 I BistoHotwordHelper: setting speaker id present: false
+11-07 02:02:18.084  1593  1593 I BistoHotwordHelper: setting hotword model of size: 623108 bytes
+11-07 02:02:18.084  1593  1593 I BistoHotwordHelper: setting modeltype: X Google
+11-07 02:02:18.084  1593  1593 I BistoHotwordHelper: setting hotword voice locale: en-US
+11-07 02:02:18.095  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:02:18.099  9170  9225 D libEGL  : loaded /vendor/lib/egl/libGLESv1_CM_emulation.so
+11-07 02:02:18.106  9170  9225 D libEGL  : loaded /vendor/lib/egl/libGLESv2_emulation.so
+11-07 02:02:18.194  9170  9225 D HostConnection: HostConnection::get() New Host Connection established 0xe9325460, tid 9225
+11-07 02:02:18.199  9170  9225 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:02:18.232   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.configstore@1.0::ISurfaceFlingerConfigs/default in either framework or device manifest.
+11-07 02:02:18.235  9170  9225 D EGL_emulation: eglCreateContext: 0xe9324f90: maj 3 min 0 rcv 3
+11-07 02:02:18.238  9170  9225 D EGL_emulation: eglMakeCurrent: 0xe9324f90: ver 3 0 (tinfo 0xe97bdc50) (first time)
+11-07 02:02:18.284   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:02:18.284  9170  9225 I Gralloc4: mapper 4.x is not supported
+11-07 02:02:18.285  9170  9225 D HostConnection: createUnique: call
+11-07 02:02:18.285  9170  9225 D HostConnection: HostConnection::get() New Host Connection established 0xe9325a10, tid 9225
+11-07 02:02:18.296  9170  9225 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:02:18.336  1482  6076 I Icing   : Usage reports ok 1, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 02:02:18.351  1482  2013 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30 [CONTEXT service_id=21 ]
+11-07 02:02:18.363  6148  6160 I rudre.streamin: Background concurrent copying GC freed 338323(12MB) AllocSpace objects, 21(424KB) LOS objects, 49% free, 15MB/30MB, paused 147us total 536.638ms
+11-07 02:02:18.380  6148  6162 W System  : A resource failed to call release.
+11-07 02:02:18.380  6148  6162 W System  : A resource failed to call release.
+11-07 02:02:18.381  6148  6162 W System  : A resource failed to call dispose.
+11-07 02:02:18.381  6148  6162 W System  : A resource failed to call release.
+11-07 02:02:18.381  6148  6162 I chatty  : uid=10167(com.brudre.streaming) FinalizerDaemon identical 2 lines
+11-07 02:02:18.381  6148  6162 W System  : A resource failed to call release.
+11-07 02:02:18.381  6148  6162 W System  : A resource failed to call dispose.
+11-07 02:02:18.385  1482  6076 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 02:02:18.391  9170  9187 I earchbox:searc: Background concurrent copying GC freed 72158(4061KB) AllocSpace objects, 19(648KB) LOS objects, 49% free, 6440KB/12MB, paused 92us total 402.051ms
+11-07 02:02:18.414  1482  6076 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 02:02:18.534   362   362 E Layer   : [Surface(name=Task=99)/@0xe25bfa8 - animation-leash#0] No local sync point found
+11-07 02:02:18.534   362   362 E Layer   : [Surface(name=Task=99)/@0xe25bfa8 - animation-leash#0] No local sync point found
+11-07 02:02:18.534   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:02:18.534   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:02:18.605  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: STOPPED
+11-07 02:02:18.605  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@52a6cc0
+11-07 02:02:18.646   949   969 W System  : A resource failed to call release.
+11-07 02:02:18.647   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 7 lines
+11-07 02:02:18.647   949   969 W System  : A resource failed to call release.
+11-07 02:02:18.660   745   780 I ndroid.systemu: NativeAlloc concurrent copying GC freed 8097(500KB) AllocSpace objects, 4(80KB) LOS objects, 49% free, 6896KB/13MB, paused 26us total 102.547ms
+11-07 02:02:18.670   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868efd0, tid 6281
+11-07 02:02:18.696   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:02:18.749  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@52a6cc0 in: DESTROYED
+11-07 02:02:18.749  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:02:18.771  6148  6168 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@9232e53]
+11-07 02:02:18.838   495  6281 D EGL_emulation: eglCreateContext: 0x75ac387770b0: maj 3 min 0 rcv 3
+11-07 02:02:18.842   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac387770b0: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:02:18.875  6148  6168 I TestRunner: finished: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)

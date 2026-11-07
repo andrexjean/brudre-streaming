@@ -1,0 +1,128 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResValues FROM-CACHE
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources FROM-CACHE
+> Task :app:mergeDebugResources FROM-CACHE
+> Task :app:packageDebugResources FROM-CACHE
+> Task :app:parseDebugLocalResources FROM-CACHE
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug FROM-CACHE
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug FROM-CACHE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:generateDebugAndroidTestResValues FROM-CACHE
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources FROM-CACHE
+> Task :app:mergeDebugAndroidTestResources FROM-CACHE
+> Task :app:processDebugAndroidTestResources FROM-CACHE
+> Task :app:javaPreCompileDebugAndroidTest FROM-CACHE
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets FROM-CACHE
+> Task :app:processDebugManifestForPackage
+> Task :app:desugarDebugFileDependencies FROM-CACHE
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs
+> Task :app:mergeExtDexDebug FROM-CACHE
+> Task :app:processDebugResources
+> Task :app:mergeLibDexDebug FROM-CACHE
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugAndroidTestShaders
+> Task :app:compileDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libtorrent4j.so.
+
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:compressDebugAndroidTestAssets FROM-CACHE
+> Task :app:desugarDebugAndroidTestFileDependencies FROM-CACHE
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:mergeExtDexDebugAndroidTest FROM-CACHE
+> Task :app:mergeLibDexDebugAndroidTest FROM-CACHE
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:kspDebugKotlin
+> Task :app:compileDebugKotlin
+w: file:///home/runner/work/brudre-streaming/brudre-streaming/app/src/main/java/com/brudre/streaming/BruDreApp.kt:42:42 'static field TRIM_MEMORY_RUNNING_LOW: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/brudre-streaming/brudre-streaming/app/src/main/java/com/brudre/streaming/player/PlayerActivity.kt:592:22 'static field TRIM_MEMORY_RUNNING_CRITICAL: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/brudre-streaming/brudre-streaming/app/src/main/java/com/brudre/streaming/ui/components/VideoIntro.kt:58:66 'static fun buildRawResourceUri(p0: Int): Uri' is deprecated. Deprecated in Java.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics FROM-CACHE
+> Task :app:processDebugJavaRes
+> Task :app:kspDebugAndroidTestKotlin
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+
+> Task :app:compileDebugAndroidTestKotlin
+w: file:///home/runner/work/brudre-streaming/brudre-streaming/app/src/androidTest/java/com/brudre/streaming/PlaybackTest.kt:171:63 'static field TRIM_MEMORY_RUNNING_CRITICAL: Int' is deprecated. Deprecated in Java.
+
+> Task :app:compileDebugAndroidTestJavaWithJavac
+> Task :app:dexBuilderDebugAndroidTest
+> Task :app:mergeDebugAndroidTestGlobalSynthetics FROM-CACHE
+> Task :app:processDebugAndroidTestJavaRes
+> Task :app:mergeDebugAndroidTestJavaResource
+> Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:packageDebugAndroidTest
+> Task :app:createDebugAndroidTestApkListingFileRedirect
+[EmulatorConsole]: Failed to start Emulator console for 5554
+
+> Task :app:connectedDebugAndroidTest
+Starting 50 tests on emulator-5554 - 11
+
+emulator-5554 - 11 Tests 3/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 4/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 6/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 10/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 11/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 12/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 13/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 17/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 18/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 19/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 21/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 23/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 25/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 26/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 27/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 28/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 29/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 30/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 32/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 33/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 34/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 36/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 38/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 40/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 42/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 44/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 47/50 completed. (0 skipped) (0 failed)
+emulator-5554 - 11 Tests 48/50 completed. (0 skipped) (0 failed)
+Finished 50 tests on emulator-5554 - 11
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1794016241721.json
+
+BUILD SUCCESSFUL in 14m 45s
+69 actionable tasks: 47 executed, 22 from cache

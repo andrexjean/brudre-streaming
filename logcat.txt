@@ -1,0 +1,1019 @@
+--------- beginning of kernel
+--------- beginning of main
+--------- beginning of system
+11-07 01:52:37.739 I/TestRunner( 6148): run started: 50 tests
+11-07 01:52:37.741 I/TestRunner( 6148): started: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.800 I/TestRunner( 6148): finished: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.802 I/TestRunner( 6148): started: historyAndContinueWatching(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.848 I/TestRunner( 6148): finished: historyAndContinueWatching(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.850 I/TestRunner( 6148): started: resumePositionRules(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.865 I/TestRunner( 6148): finished: resumePositionRules(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.868 I/TestRunner( 6148): started: t18_liveChannelPlays(com.brudre.streaming.PlaybackTest)
+11-07 01:52:38.985 I/BruDreLive( 6148): Lista iptv_br: 294 canais de 398 (removidos: {inseguro=64, formato=4, adulto=1, pago=35})
+11-07 01:52:47.174 I/BruDreTest( 6148): screenshot: ao_vivo
+11-07 01:52:47.955 I/BruDreTest( 6148): Canal Aratu On (https://cdn.live.br1.jmvstream.com/w/LVW-9359/LVW9359_XSyReL): TOCOU
+11-07 01:52:48.392 I/TestRunner( 6148): finished: t18_liveChannelPlays(com.brudre.streaming.PlaybackTest)
+11-07 01:52:48.416 I/TestRunner( 6148): started: t19_hlsPlayback(com.brudre.streaming.PlaybackTest)
+11-07 01:52:57.894 I/BruDreTest( 6148): HLS: video/avc 1920x1080
+11-07 01:52:59.521 I/TestRunner( 6148): finished: t19_hlsPlayback(com.brudre.streaming.PlaybackTest)
+11-07 01:52:59.525 I/TestRunner( 6148): started: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):   Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 01:53:00.289 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED
+11-07 01:53:00.291 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 01:53:00.291 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 01:53:00.584 I/BruDreTest( 6148): Mensagem exibida: Formato de vídeo incompatível com este aparelho.
+11-07 01:53:01.852 I/TestRunner( 6148): finished: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)
+11-07 01:53:01.854 I/TestRunner( 6148): started: t15_catalogTitlesFindFreeSource(com.brudre.streaming.PlaybackTest)
+11-07 01:53:05.396 I/BruDreTest( 6148): TMDB→fonte: Nosferatu: Uma Sinfonia de Horror (1922) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "Nosferatu_DVD_quality"
+11-07 01:53:07.710 I/BruDreTest( 6148): TMDB→fonte: Metrópolis (1927) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "Metropolis (1927)"
+11-07 01:53:09.047 I/BruDreTest( 6148): TMDB→fonte: Sem Novidade no Front (1930) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "All Quiet on the Western Front (1930)"
+11-07 01:53:10.517 I/BruDreTest( 6148): TMDB→fonte: Viagem à Lua (1902) → disponível=true confirmado=true • Grátis no Internet Archive (Creative Commons — Internet Archive) • "Le voyage dans la lune"
+11-07 01:53:11.228 I/BruDreTest( 6148): TMDB→fonte: O Garoto (1921) → disponível=false confirmado=false • Grátis no app oficial: Pluto TV, NetMovies, JustWatch TV Beta (com anúncios, sem assinatura) • Disponibilidade: JustWatch
+11-07 01:53:13.140 I/BruDreTest( 6148): TMDB→fonte: A General (1926) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "The General (complete & clearer) (1926)"
+11-07 01:53:15.416 I/BruDreTest( 6148): TMDB→fonte: Aurora (1927) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "Sunrise: A Song of Two Humans (1927)"
+11-07 01:53:17.347 I/BruDreTest( 6148): TMDB→fonte: Asas (1927) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "Wings (1927)"
+11-07 01:53:18.799 I/BruDreTest( 6148): TMDB→fonte: O Fantasma da Ópera (1925) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "The Phantom of the Opera"
+11-07 01:53:20.430 I/BruDreTest( 6148): TMDB→fonte: O Nascimento de Uma Nação (1915) → disponível=true confirmado=true • Grátis no Internet Archive (Domínio público — Internet Archive) • "The Birth of a Nation"
+11-07 01:53:20.430 I/BruDreTest( 6148): Clássicos com fonte gratuita confirmada: 9 de 10
+11-07 01:53:26.536 I/BruDreTest( 6148): tmdb_free_movies: 20 títulos, ex.: Homem-Aranha: Sem Volta Para Casa (2021), Jogos Vorazes: A Esperança - Parte 1 (2014), Jogos Vorazes: Em Chamas (2013), John Wick 4: Baba Yaga (2023)
+11-07 01:53:26.661 I/BruDreTest( 6148): tmdb_free_new: 20 títulos, ex.: O Demônio que Habita em Mim (2025), Hey Joe (2024), A Arte de Amar (2024), O Inferno Pode Esperar (2023)
+11-07 01:53:26.911 I/BruDreTest( 6148): tmdb_free_series: 20 títulos, ex.: Sherlock (2010), Felicity (1998), Luther (2010), One Piece (1999)
+11-07 01:53:27.039 I/BruDreTest( 6148): tmdb_trending_movies: 20 títulos, ex.: Devoradores de Estrelas (2026), O Bosque Selvagem (2026), Apocalipse Z: Novo Mundo (2026), Hope: O Primeiro Impacto (2026)
+11-07 01:53:27.162 I/BruDreTest( 6148): tmdb_new_movies: 20 títulos, ex.: O Bosque Selvagem (2026), Apocalipse Z: Novo Mundo (2026), Hope: O Primeiro Impacto (2026), Homem-Aranha: Um Novo Dia (2026)
+11-07 01:53:27.267 I/BruDreTest( 6148): tmdb_trending_series: 20 títulos, ex.: Noturno (2026), Lupin (2021), Um Trabalho do Inferno (2026), VisionQuest (2026)
+11-07 01:53:27.391 I/BruDreTest( 6148): tmdb_new_series: 20 títulos, ex.: VisionQuest (2026), A Imperatriz Se Casou Novamente (2026), Um Trabalho do Inferno (2026), Avatar: Os Sete Refúgios (2026)
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: Homem-Aranha: Sem Volta Para Casa (2021) → Mercado Play/anúncios
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: Jogos Vorazes: A Esperança - Parte 1 (2014) → Mercado Play/anúncios
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: Jogos Vorazes: Em Chamas (2013) → Mercado Play/anúncios
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: John Wick 4: Baba Yaga (2023) → Mercado Play/anúncios
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: Maze Runner: Correr ou Morrer (2014) → Mercado Play/anúncios
+11-07 01:53:28.149 I/BruDreTest( 6148): Grátis: Ilha do Medo (2010) → Mercado Play/anúncios
+11-07 01:53:28.153 I/BruDreTest( 6148): Abrir app grátis: Instale o app grátis Mercado Play pela Play Store da TV e procure por "Homem-Aranha: Sem Volta Para Casa"
+11-07 01:53:28.592 I/BruDreTest( 6148): Lançamento: Duna: Parte Dois → Título catalogado, mas nenhuma fonte gratuita e autorizada foi encontrada para reproduzir no BruDre.
+11-07 01:53:28.592 I/BruDreTest( 6148): Lançamento grátis em: nenhum app gratuito
+11-07 01:53:28.615 I/TestRunner( 6148): finished: t15_catalogTitlesFindFreeSource(com.brudre.streaming.PlaybackTest)
+11-07 01:53:28.616 I/TestRunner( 6148): started: t07b_internetArchiveItemResolvesAndPlays(com.brudre.streaming.PlaybackTest)
+11-07 01:53:35.490 I/TestRunner( 6148): finished: t07b_internetArchiveItemResolvesAndPlays(com.brudre.streaming.PlaybackTest)
+11-07 01:53:35.495 I/TestRunner( 6148): started: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)
+11-07 01:53:35.616 I/TestRunner( 6148): finished: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)
+11-07 01:53:35.617 I/TestRunner( 6148): started: t17_iptvOrgListsLoad(com.brudre.streaming.PlaybackTest)
+11-07 01:53:36.449 I/BruDreLive( 6148): Lista iptv_br: 294 canais de 398 (removidos: {inseguro=64, formato=4, adulto=1, pago=35})
+11-07 01:53:36.456 I/BruDreTest( 6148): iptv-org Brasil: 294 canais
+11-07 01:53:36.487 I/BruDreTest( 6148):   Notícias: 21
+11-07 01:53:36.487 I/BruDreTest( 6148):   Infantil: 22
+11-07 01:53:36.487 I/BruDreTest( 6148):   Documentários e Educação: 28
+11-07 01:53:36.487 I/BruDreTest( 6148):   Filmes, Séries e Entretenimento: 90
+11-07 01:53:36.487 I/BruDreTest( 6148):   Esportes: 4
+11-07 01:53:36.487 I/BruDreTest( 6148):   Música: 8
+11-07 01:53:36.487 I/BruDreTest( 6148):   Religiosos: 13
+11-07 01:53:36.487 I/BruDreTest( 6148):   Canais Abertos e Gerais: 108
+11-07 01:53:36.946 I/BruDreLive( 6148): Lista iptv_por: 348 canais de 483 (removidos: {inseguro=80, formato=4, adulto=1, pago=50})
+11-07 01:53:36.956 I/BruDreTest( 6148): Em português: 348 canais; países: [br, pt, us, in, mo, be, fr, uk, ao, mz, ca, at, cv]
+11-07 01:53:37.119 I/TestRunner( 6148): finished: t17_iptvOrgListsLoad(com.brudre.streaming.PlaybackTest)
+11-07 01:53:37.120 I/TestRunner( 6148): started: t24_sourceManagerLifecycle(com.brudre.streaming.PlaybackTest)
+11-07 01:53:38.286 I/BruDreTest( 6148): Fonte 'Blender JSON': formato=Catálogo BruDre (JSON) ok=true • 5 títulos
+11-07 01:53:38.862 I/BruDreTest( 6148): Fonte 'Blender RSS': formato=Feed RSS/Atom de vídeos ok=true • 2 títulos
+11-07 01:53:39.599 I/BruDreTest( 6148): Fonte 'HLS de teste': formato=Transmissão HLS (M3U8) ok=true • Transmissão no ar
+11-07 01:53:39.602 I/BruDreTest( 6148): Fonte 'Sintel magnet': formato=Magnet link ok=true • Magnet válido (arquivos listados ao abrir, via DHT/trackers)
+11-07 01:53:40.216 I/BruDreTest( 6148): Fonte 'Sintel .torrent': formato=Arquivo .torrent ok=true • .torrent válido: 1 vídeo(s), 123 MB
+11-07 01:53:40.295 I/BruDreTest( 6148): Fonte 'Sintel HTTP': formato=Vídeo HTTP/HTTPS ok=true • Vídeo responde
+11-07 01:53:54.131 I/BruDreTest( 6148): Fonte 'IPTV Brasil': formato=Playlist IPTV (M3U) ok=true • 294 canais • 4 de 5 testados no ar
+11-07 01:53:54.890 I/BruDreTest( 6148): Recusado 'https://github.com/': Formato incompatível: É uma página web, não uma fonte de vídeo
+11-07 01:53:55.373 I/BruDreTest( 6148): Recusado 'https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/gradlew': Formato incompatível: Formato não reconhecido
+11-07 01:53:55.374 I/BruDreTest( 6148): Recusado 'http://example.com/a.mp4': Bloqueada pela segurança: Use um endereço https:// (conexões sem criptografia são bloqueadas)
+11-07 01:53:55.375 I/BruDreTest( 6148): Recusado 'file:///system/build.prop': Bloqueada pela segurança: Protocolo não permitido (file)
+11-07 01:53:55.394 I/BruDreSources( 6148): Catálogo Blender JSON: 5 títulos (0 descartados)
+11-07 01:53:59.452 I/BruDreTest( 6148): Minhas fontes (links): [HLS de teste, Sintel magnet, Sintel .torrent, Sintel HTTP]
+11-07 01:54:04.848 I/BruDreSources( 6148): Catálogo Blender RSS: 2 títulos (0 descartados)
+11-07 01:54:04.873 I/BruDreTest( 6148): Associação: Fonte oficial do titular • streaming direto + torrent oficial • mais 3 fonte(s) cadastrada(s)
+11-07 01:54:05.721 I/BruDreSources( 6148): Catálogo Blender JSON: 5 títulos (0 descartados)
+11-07 01:54:05.819 I/BruDreTest( 6148): Exportado para /storage/emulated/0/Android/data/com.brudre.streaming/files/brudre-fontes.json (2676 bytes)
+11-07 01:54:05.873 I/TestRunner( 6148): finished: t24_sourceManagerLifecycle(com.brudre.streaming.PlaybackTest)
+11-07 01:54:05.875 I/TestRunner( 6148): started: t08_torrentPlaybackWithSeek(com.brudre.streaming.PlaybackTest)
+11-07 01:54:06.907 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:54:06.931 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:54:07.054 I/BruDreTorrent( 6148): Fontes adicionadas: 6 trackers; web seeds pelo OkHttp: 1
+11-07 01:54:07.079 I/BruDreTorrent( 6148): Torrent pronto: Sintel.mp4 (123 MB), peças=987, legendas=8
+11-07 01:54:14.586 W/BruDreWebSeed( 6148): Web seed falhou na peça 512: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:54:14.595 W/BruDreWebSeed( 6148): Web seed falhou na peça 511: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:54:14.644 I/TestRunner( 6148): finished: t08_torrentPlaybackWithSeek(com.brudre.streaming.PlaybackTest)
+11-07 01:54:14.646 I/TestRunner( 6148): started: t07_directPlaybackStartsAndSavesProgress(com.brudre.streaming.PlaybackTest)
+11-07 01:54:20.277 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:55:09.986 I/TestRunner( 6148): finished: t07_directPlaybackStartsAndSavesProgress(com.brudre.streaming.PlaybackTest)
+11-07 01:55:09.987 I/TestRunner( 6148): started: t08b_magnetOnlyTorrent(com.brudre.streaming.PlaybackTest)
+11-07 01:55:10.166 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:55:10.167 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:55:10.236 I/BruDreTorrent( 6148): Fontes adicionadas: 6 trackers; web seeds pelo OkHttp: 1
+11-07 01:55:10.282 I/BruDreTorrent( 6148): Torrent pronto: Sintel.mp4 (123 MB), peças=987, legendas=8
+11-07 01:55:19.716 W/BruDreWebSeed( 6148): Web seed falhou na peça 25: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:55:19.950 I/TestRunner( 6148): finished: t08b_magnetOnlyTorrent(com.brudre.streaming.PlaybackTest)
+11-07 01:55:19.952 I/TestRunner( 6148): started: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)
+11-07 01:55:21.507 I/TestRunner( 6148): finished: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)
+11-07 01:55:21.515 I/TestRunner( 6148): started: t16_inAppUpdatePipeline(com.brudre.streaming.PlaybackTest)
+11-07 01:55:21.984 I/BruDreTest( 6148): Atualização: UpToDate (build atual 39)
+11-07 01:55:24.183 I/BruDreTest( 6148): Validação da release v9.0.37: Você já tem esta versão
+11-07 01:55:24.205 I/TestRunner( 6148): finished: t16_inAppUpdatePipeline(com.brudre.streaming.PlaybackTest)
+11-07 01:55:24.206 I/TestRunner( 6148): started: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)
+11-07 01:55:24.228 I/BruDreTest( 6148): UrlGuard https://127.0.0.1:9/x.m3u8 → BlockedUrlException: Destino local bloqueado: 127.0.0.1
+11-07 01:55:24.228 I/BruDreTest( 6148): UrlGuard https://localhost/x.m3u8 → BlockedUrlException: Destino local bloqueado: localhost
+11-07 01:55:24.229 I/BruDreTest( 6148): UrlGuard https://[::1]/x.m3u8 → BlockedUrlException: Destino local bloqueado: ::1
+11-07 01:55:24.229 I/BruDreTest( 6148): UrlGuard https://169.254.169.254/latest → BlockedUrlException: Destino local bloqueado: 169.254.169.254
+11-07 01:55:24.230 I/BruDreTest( 6148): UrlGuard https://archive.org/download/x/setup.apk → BlockedUrlException: Arquivo executável bloqueado: archive.org
+11-07 01:55:27.713 I/BruDreTest( 6148): Validador, item inexistente no acervo: UNKNOWN
+11-07 01:55:27.715 I/BruDreTest( 6148): Aparelho: Google sdk_gphone_x86_64 • Android 11 (API 30) • x86_64 • RAM 1981 MB • H.264 HW até 2160p  H.265 software  VP9 HW até 2160p  AV1 não  AAC software
+11-07 01:55:27.737 I/TestRunner( 6148): finished: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)
+11-07 01:55:27.738 I/TestRunner( 6148): started: t22_externalCatalogPlaysEverySourceType(com.brudre.streaming.PlaybackTest)
+11-07 01:55:27.784 I/BruDreTest( 6148): Catálogo externo cadastrado: 5 títulos
+11-07 01:55:27.802 I/BruDreSources( 6148): Catálogo Blender (teste): 5 títulos (0 descartados)
+11-07 01:55:30.290 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:55:32.446 I/BruDreTest( 6148): Fonte externa: Sintel (HTTP → TOCOU via streaming direto (sem erro)
+11-07 01:55:37.087 I/BruDreTest( 6148): Fonte externa: Big Buck Bunny (HLS) → TOCOU via streaming HLS (sem erro)
+11-07 01:55:37.387 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:55:37.388 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:55:37.398 I/BruDreTorrent( 6148): Fontes adicionadas: 6 trackers; web seeds pelo OkHttp: 1
+11-07 01:55:37.418 I/BruDreTorrent( 6148): Torrent pronto: Sintel.mp4 (123 MB), peças=987, legendas=8
+11-07 01:55:42.576 I/BruDreTest( 6148): Fonte externa: Sintel (magnet) → TOCOU via BitTorrent (sem erro)
+11-07 01:55:43.005 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 01:55:43.120 I/BruDreTorrent( 6148): Torrent pronto: Big Buck Bunny.mp4 (263 MB), peças=1055, legendas=1
+11-07 01:55:47.663 I/BruDreTest( 6148): Fonte externa: Big Buck Bunny (.torrent) → TOCOU via BitTorrent (sem erro)
+11-07 01:55:48.102 W/BruDreWebSeed( 6148): Web seed falhou na peça 9: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:55:48.474 I/BruDreTorrent( 6148): Fontes adicionadas: 6 trackers; web seeds pelo OkHttp: 1
+11-07 01:55:48.488 W/BruDreWebSeed( 6148): Web seed falhou na peça 10: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:55:48.514 I/BruDreTorrent( 6148): Torrent pronto: Tears of Steel.webm (545 MB), peças=1090, legendas=8
+11-07 01:55:53.524 I/BruDreTest( 6148): Fonte externa: Tears of Steel → TOCOU via BitTorrent (sem erro)
+11-07 01:55:53.923 I/TestRunner( 6148): finished: t22_externalCatalogPlaysEverySourceType(com.brudre.streaming.PlaybackTest)
+11-07 01:55:53.924 I/TestRunner( 6148): started: t11_resumesFromSavedPosition(com.brudre.streaming.PlaybackTest)
+11-07 01:55:53.962 W/BruDreWebSeed( 6148): Web seed falhou na peça 6: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:55:54.587 W/BruDreWebSeed( 6148): Web seed falhou na peça 7: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-07 01:55:57.827 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:56:03.488 I/TestRunner( 6148): finished: t11_resumesFromSavedPosition(com.brudre.streaming.PlaybackTest)
+11-07 01:56:03.490 I/TestRunner( 6148): started: t14_lowMemoryReleasesCachesDuringPlayback(com.brudre.streaming.PlaybackTest)
+11-07 01:56:07.694 I/BruDre  ( 6148): Memória baixa (nível 15): caches liberados
+11-07 01:56:10.704 I/BruDreTest( 6148): Heap usado: 27 MB de 512 MB
+11-07 01:56:11.700 I/TestRunner( 6148): finished: t14_lowMemoryReleasesCachesDuringPlayback(com.brudre.streaming.PlaybackTest)
+11-07 01:56:11.702 I/TestRunner( 6148): started: t23_manualMagnetLinkPlaysProgressively(com.brudre.streaming.PlaybackTest)
+11-07 01:56:11.901 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:56:11.902 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:56:11.938 I/BruDreTorrent( 6148): Fontes adicionadas: 6 trackers; web seeds pelo OkHttp: 1
+11-07 01:56:12.035 I/BruDreTorrent( 6148): Torrent pronto: Sintel.mp4 (123 MB), peças=987, legendas=8
+11-07 01:56:15.537 I/BruDreTest( 6148): Magnet manual: começou a tocar com 123 MB em disco
+11-07 01:56:16.521 I/TestRunner( 6148): finished: t23_manualMagnetLinkPlaysProgressively(com.brudre.streaming.PlaybackTest)
+11-07 01:56:16.523 I/TestRunner( 6148): started: t21_allLiveChannelsChecked(com.brudre.streaming.PlaybackTest)
+11-07 01:56:24.004 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:57:37.332 I/BruDreLive( 6148): Verificação: 359 de 457 canais no ar
+11-07 01:57:37.333 I/BruDreTest( 6148): Canais testados: 457 em 80s • no ar: 359 • fora do ar: 98
+11-07 01:57:37.333 I/BruDreTest( 6148): Brasil: 213 de 294 no ar
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: HTTP NNN → 49
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: failed to connect to 5cf4a2cNNN2a2.strea → 5
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: não é HLS → 4
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: failed to connect to 5dNNNNNN94cc0.strea → 3
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: Unable to resolve host "cdn-tiva-video01 → 2
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: failed to connect to 59fNNN4cNNN61.strea → 2
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: Unable to resolve host "cdn-tiva-isaocor → 2
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: Unable to resolve host "cdn-tiva-video10 → 2
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: Failed to connect to 5b7f3c45ab7c2.strea → 2
+11-07 01:57:37.338 I/BruDreTest( 6148):   motivo: failed to connect to video01.kshost.com. → 2
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;1001 Noites;no ar;;https://cpbr.appflux.com.br:2000/hls/1001noites/1001noites.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;+MaisUm;no ar;;https://stream.ichibansys.com:3230/hybrid/play.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Adesso TV;no ar;;https://cdn.jmvstream.com/w/LVW-9715/LVW9715_12B26T62tm/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Adrenalina Pura TV Brazil;no ar;;https://jmp2.uk/plu-61b790b985706b00072cb797.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Alpha Channel;fora;failed to connect to 5b01a3d32b65c.streamlock.net/62.138.6.1;https://5b01a3d32b65c.streamlock.net:1936/tvalpha/tvalpha/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Amazon Sat;no ar;;https://amazonsat.brasilstream.com.br/hls/amazonsat/index.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Angel TV Portuguese;no ar;;https://janya-digimix.akamaized.net/vglive-sk-382409/portuese/ngrp:angelportuguese_all/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Araruna TV;no ar;;https://video05.logicahost.com.br/ararunatv/ararunatv/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Aratu On;no ar;;https://cdn.live.br1.jmvstream.com/w/LVW-9359/LVW9359_XSyReL0QVf/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Auge TV;fora;Unable to resolve host "cdn-tiva-video01-logicahost-com-br.s;https://cdn-tiva-video01-logicahost-com-br.smartbit.co/canalaugetv/canalaugetv/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Avatar: A lenda de Aang;no ar;;https://jmp2.uk/plu-6759eeb1bd523200083b4f29.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;AWTV;no ar;;https://awtv.nuvemplay.live/hls/stream.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;BabyFirst Brazil;fora;HTTP 404;https://jmp2.uk/plu-5f4fb4cf605ddf000748e16f.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Bem Mais TV;no ar;;https://video09.logicahost.com.br/bemmaistv01/bemmaistv01/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Bem Melhor;fora;Unable to resolve host "cdn-tiva-video01-logicahost-com-br.s;https://cdn-tiva-video01-logicahost-com-br.smartbit.co/bemmelhor/bemmelhor/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;BET Pluto TV BR;no ar;;https://jmp2.uk/plu-5ff768b6a4c8b80008498610.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Blitstv;fora;unexpected end of stream on https://stmv1.transmissaodigital;https://stmv1.transmissaodigital.com/blitstv/blitstv/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;BM&C News;no ar;;https://jmp2.uk/plu-666c9c60a7efd40008f552f0.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Boas Novas;no ar;;https://cdn.jmvstream.com/w/LVW-9375/LVW9375_6i0wPBCHYc/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Bob Esponja Calca Quadrada;no ar;;https://jmp2.uk/plu-62545c0b002f4b0007688b61.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;BR8 TV;fora;HTTP 404;https://cdn.live.br1.jmvstream.com/w/LVW-11668/ngrp:LVW11668_wiJpjbMrks_all/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Cabo Frio TV;fora;failed to connect to 59f2354c05961.streamlock.net/69.46.21.2;https://59f2354c05961.streamlock.net:1443/ararutv/_definst_/ararutv/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal 25 Jundiai;fora;Unable to resolve host "cdn-tiva-stream01-msolutionbrasil-co;https://cdn-tiva-stream01-msolutionbrasil-com-br.smartbit.co/hls/canal25/live.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal 38;no ar;;https://cdn.jmvstream.com/w/LVW-8503/LVW8503_d0V5oduFlK/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal do Criador;fora;Read error: ssl=0x75ac486b7598: Failure in SSL library, usua;https://607d2a1a47b1f.streamlock.net/crur/smil:canaldocriador.smil/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal do Inter;fora;Unable to resolve host "video01.soultv.com.br": No address a;https://video01.soultv.com.br/internacional/internacional/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal FDR;no ar;;https://v-us-01.wisestream.io/memfs/e4ade538-7924-4359-81ef-b9d4dd229e91.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal Libras;fora;HTTP 400;https://canallibras-stream.ebc.com.br/mux_video_ts/index-1.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal Metropolitano de Noticias;no ar;;https://stmv5.samcast.com.br/claudio8701/claudio8701/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal Ricos;fora;failed to connect to 5d82644094cc0.streamlock.net/67.231.241;https://5d82644094cc0.streamlock.net/ricostv/ricostv/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal Saude;fora;HTTP 403;https://eitv7.cdn.broadpeak.io/account351-i1495/event/canalsaude/format720p.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal START;fora;Unable to resolve host "cdn-tiva-srv5-zcast-com-br.smartbit.;https://cdn-tiva-srv5-zcast-com-br.smartbit.co/canalstart/canalstart/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Canal UOL;no ar;;https://video24.mais.uol.com.br/live/6146.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Catve2;no ar;;https://5b33b873179a2.streamlock.net:1443/catve2/catve2/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Catve FM;no ar;;https://5b33b873179a2.streamlock.net:1443/radiocamera/livestream/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Catve Master TV;no ar;;https://5b33b873179a2.streamlock.net:1443/mastertv/livestream/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Chroma TV;no ar;;https://5c483b9d1019c.streamlock.net/8054/8054/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Cine Terror BR;no ar;;https://jmp2.uk/plu-5f12111c9e6c2c00078ef3bb.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Cinturao Verde;fora;não é HLS;https://play.redecinturaoverde.com.br/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Classique TV;no ar;;https://stmv1.srvif.com/classique/classique/playlist.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;CNN Brasil;no ar;;https://d25usgadhphvwi.cloudfront.net/hls/main.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;COM Brasil;no ar;;https://dfr80qz435crc.cloudfront.net/EFGH/Amagi/NewCo/New_Brasil_BR/New_Brasil.m3u8
+11-07 01:57:37.338 I/BruDreTest( 6148): CANAL;iptv_br;Comedy Central Pluto TV BR;no ar;;https://jmp2.uk/plu-5f357e91b18f0b00073583d2.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Comedy Central South Park;no ar;;https://jmp2.uk/plu-609ae66b359b270007869ff1.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Conecta Mais TV;no ar;;https://adylnet.streampool.net/10324/live/hls/Conecta/index.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;ConecTV Brasil;fora;HTTP 404;https://stream01.msolutionbrasil.com.br/hls/conectv/live.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Conexao TV;no ar;;https://5a57bda70564a.streamlock.net/conexaotv/conexaotv.sdp/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;CSI: Miami BR;no ar;;https://jmp2.uk/plu-63eb9c5351f5d000085e8d7e.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Cultura Fast;no ar;;https://fpa-gateway.tvcultura.com.br:8181/memfs/606caef0-a290-413d-9f1f-8fcdb3a73831.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Demais TV;fora;Unable to resolve host "cdn-tiva-stmv1-samcast-com-br.smartb;https://cdn-tiva-stmv1-samcast-com-br.smartbit.co/demaistv6503/demaistv6503/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Despertar TV;no ar;;https://br.conectmy.com.br/DespertarTV/index.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Detetives Medicos;no ar;;https://jmp2.uk/plu-638df93ae2f2a3000737c168.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Diff'rent Strokes Arnold;no ar;;https://jmp2.uk/plu-61f1d27a189ed10007b7393e.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Elemental Channel;fora;failed to connect to 5d82644094cc0.streamlock.net/67.231.241;https://5d82644094cc0.streamlock.net/8116/8116/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;ElyTV;no ar;;https://stmv1.srvsite.com/ely/ely/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;EUTV;no ar;;https://cdn.jmvstream.com/w/LVW-8719/LVW8719_AcLVAxWy5J/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;FailArmy Brazil;no ar;;https://jmp2.uk/plu-5f5141c1605ddf000748eb1b.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Fala Litoral;no ar;;https://5c483b9d1019c.streamlock.net/falalitoraltv/falalitoraltv/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;FIFA+ Portuguese;no ar;;https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlis
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Filmes Suspense;no ar;;https://jmp2.uk/plu-5f171d3442a0500007362f22.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Fonte TV;no ar;;https://59fb88a1b1108.streamlock.net/fonte/_definst_/fontetv/chunklist_w1224511652.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Fora Tedio TV;fora;HTTP 404;https://stmv2.srvif.com/foratedio/foratedio/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Geekdot;fora;Hostname stream.ichibantv.com not verified:
+11-07 01:57:37.339 I/BruDreTest( 6148):     certificate:;https://stream.ichibantv.com:3764/hybrid/play.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Ghost TV;fora;Hostname stmv.video.expressolider.com.br not verified:
+11-07 01:57:37.339 I/BruDreTest( 6148):     c;https://stmv.video.expressolider.com.br/ghostv/ghostv/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Gospel Cartoon;no ar;;https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Gospel Movie TV;no ar;;https://stmv1.srvif.com/gospelf/gospelf/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;iCarly (United States);no ar;;https://jmp2.uk/plu-620ff46e0a576e0007dc2f89.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;ISTV (Brazil);no ar;;https://stmv1.srvstm.com/sistema7933/sistema7933/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;J3NEWS TV;no ar;;https://video01.brascast.com/d92ebb4f/d92ebb4f/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Jornada nas Estrelas: A Nova Geracao;no ar;;https://jmp2.uk/plu-69162ad79505d0f3b1ebf07d.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Jornada nas Estrelas: Deep Space Nine;no ar;;https://jmp2.uk/plu-69162af591700f4c4c135c95.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Jornada nas Estrelas: Voyager;no ar;;https://jmp2.uk/plu-69162b1ef189e235142b17ab.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Kenan & Kel BR;no ar;;https://jmp2.uk/plu-5ffcc5130fd98c0007f2e216.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;KpopTV Play;no ar;;https://giatv.bozztv.com/giatv/giatv-kpoptvplay/kpoptvplay/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Kuriakos Kids;no ar;;https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;L!ke;no ar;;https://cnl-cl.otteravision.com/cnl/cl_h265/cl_h265.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Laboral TV;fora;Unable to resolve host "tv.laboralsst.com.br": No address as;https://tv.laboralsst.com.br/hls/stream.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Lamore Rock Show WebTV;no ar;;https://a.cdni.live/rodrigo2364/rodrigo2364/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Lider TV (Brazil);fora;Unable to resolve host "cdn-tiva-video08-logicahost-com-br.s;https://cdn-tiva-video08-logicahost-com-br.smartbit.co/lidertvssp/lidertvssp/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Loading;no ar;;https://stmv1.srvif.com/loadingtv/loadingtv/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MacGyver (United States);no ar;;https://jmp2.uk/plu-63eb9dc84e83e70008abea92.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MasterChef;no ar;;https://jmp2.uk/plu-6077045b6031bd00078de127.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MBC Brasil TV;fora;não é HLS;https://play.mbcbrasil.tv.br/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MKK Web TV;fora;HTTP 404;https://video01.logicahost.com.br/mkkwebtv/mkkwebtv/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Are you the One?;no ar;;https://jmp2.uk/plu-5f6108d8cc331900075e98e4.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Biggest Pop BR;no ar;;https://jmp2.uk/plu-6047fbdbbb776a0007e7f2ff.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Catfish (United States) BR;no ar;;https://jmp2.uk/plu-626c2a3502d84a0007cec817.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Classic BR;no ar;;https://jmp2.uk/plu-66a01dcb8561260008b0a41d.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Com o Ex;no ar;;https://jmp2.uk/plu-61a528267e1b8b0007357920.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Dating (United States);no ar;;https://jmp2.uk/plu-6851bb3426beced4f2f67ee6.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Drag;no ar;;https://jmp2.uk/plu-645111f1d8436e00081bb2bd.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Jovens e Maes;no ar;;https://jmp2.uk/plu-620fdc7d8a36fc000710e3ba.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Pluto TV BR;no ar;;https://jmp2.uk/plu-5f1212fb81e85c00077ae9ef.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Reality (United States);no ar;;https://jmp2.uk/plu-6851bdfc9ac48fde5e07f5ae.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Rocks;no ar;;https://jmp2.uk/plu-66a01e07d2d50d0008100d6a.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MTV Shore;no ar;;https://jmp2.uk/plu-625463563b8ddc0007134aeb.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;MyTime Movie Network (Brazil);no ar;;https://appletree-mytime-samsungbrazil.amagi.tv/playlist.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;N Sports;fora;Unable to resolve host "ogc-nsprt-tcl-roku-syndication.otter;https://ogc-nsprt-tcl-roku-syndication.otteravision.com/ogc/nsprt/nsprt.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Naruto Brazil;no ar;;https://jmp2.uk/plu-5f6df5a173d7340007c559f7.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;NCIS (United States);no ar;;https://jmp2.uk/plu-63eb9fdda995710008991c54.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Nick Jr. Club (United States) BR;no ar;;https://jmp2.uk/plu-6824ce95f09106f4b18f4114.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Nickelodeon Classico;no ar;;https://jmp2.uk/plu-6824ce10c5d53e1351ceb8d1.m3u8
+11-07 01:57:37.339 I/BruDreTest( 6148): CANAL;iptv_br;Nickelodeon Teen;no ar;;https://jmp2.uk/plu-60f5fabf0721880007cd50e3.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Nickelodeon Toons;no ar;;https://jmp2.uk/plu-645951c0e94c38000802d2cb.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;NickOnline HD;fora;não é HLS;https://x1colegal.com/hls/stream.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;NTV (Brazil);no ar;;https://cdn.livespanel.com/nossatv/nossatv/playlist.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Numbers (United States);no ar;;https://jmp2.uk/plu-67f960c5441853fe50e7afc1.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;O Dia TV;no ar;;https://6836041ea1117.streamlock.net/tvodia/tvodia/playlist.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;O Encantador de Caes;no ar;;https://jmp2.uk/plu-61099df8cee03b00074b2ecf.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;O Reino Infantil;no ar;;https://jmp2.uk/plu-5f5c216df68f920007888315.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Oggy e as Baratas Tontas;no ar;;https://jmp2.uk/plu-63221bafdc6e110007b50270.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;One Piece BR;no ar;;https://jmp2.uk/plu-624b1c8d4321e200073ee421.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Petlovers TV;no ar;;https://video04.logicahost.com.br/petloverstv/petloverstv/playlist.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Plena TV;no ar;;https://cdn.jmvstream.com/w/LVW-9591/LVW9591_PmXtgATnaS/playlist.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Plenitude TV;fora;HTTP 404;https://strv.painelvox.top/plenitude/plenitude/playlist.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Aliens;no ar;;https://jmp2.uk/plu-6806d65e84f24b70109485fa.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Animais;no ar;;https://jmp2.uk/plu-6474aa984cfc2c0008883a92.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Anime BR;no ar;;https://jmp2.uk/plu-5f12136385bccc00070142ed.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Anime Acao;no ar;;https://jmp2.uk/plu-604b79c558393100078faeef.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Bang Bang;no ar;;https://jmp2.uk/plu-663b9dc7cb3ea10008f1a0ce.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Canal UOL;no ar;;https://jmp2.uk/plu-64b9370b409629000802d32b.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Classicos;no ar;;https://jmp2.uk/plu-5fa1612a669ba0000702017b.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Comedia (United States) BR;no ar;;https://jmp2.uk/plu-5f12101f0b12f00007844c7c.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Comedia Romantica;no ar;;https://jmp2.uk/plu-62545ed3dab4380007582f7c.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Crime;no ar;;https://jmp2.uk/plu-6479ff764f5ba5000878dfe2.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Drama;no ar;;https://jmp2.uk/plu-5f1210d14ae1f80007bafb1d.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Familia;no ar;;https://jmp2.uk/plu-5f171f032cd22e0007f17f3d.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Inspiracao;no ar;;https://jmp2.uk/plu-5fa991b1f09e020007e78626.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Romance;no ar;;https://jmp2.uk/plu-5f171f988ab9780007fa95ea.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cine Sucessos;no ar;;https://jmp2.uk/plu-5f120e94a5714d00074576a1.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Cozinha;no ar;;https://jmp2.uk/plu-5f1ef23020a5ac0007e5e8ea.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Desenhos Classicos;no ar;;https://jmp2.uk/plu-655e5c4d2c46f3000877a54b.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Esportes;no ar;;https://jmp2.uk/plu-5f32d2db0af67400077f29c4.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Ficcao Cientifica;no ar;;https://jmp2.uk/plu-5fa15ad6367e170007cdd098.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Filmes Acao;no ar;;https://jmp2.uk/plu-5f120f41b7d403000783a6d6.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Filmes Aventura;no ar;;https://jmp2.uk/plu-66c79a4262e5510008ff68a5.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Filmes de Luta;no ar;;https://jmp2.uk/plu-6806d62369aec5b19cd628c0.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Filmes Nacionais;no ar;;https://jmp2.uk/plu-5f5a545d0dbf7f0007c09408.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Historia (United States);no ar;;https://jmp2.uk/plu-5f1ef1a8cec6be00072a7ac9.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Investigacao;no ar;;https://jmp2.uk/plu-5f32cf37c9ff2b00082adbc8.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Junior;no ar;;https://jmp2.uk/plu-5f12141b146d760007934ea7.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Karaoke por Stingray;fora;HTTP 404;https://jmp2.uk/plu-604b99d633a72b00078e05ad.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV KFOOD;no ar;;https://jmp2.uk/plu-633ee9ba83c08f00076b60a6.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Kids;no ar;;https://jmp2.uk/plu-5f1214a637c6fd00079c652f.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Kids Club;no ar;;https://jmp2.uk/plu-66c8cae7fed35b0008580ec0.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Minha Obsessao Favorita;fora;HTTP 404;https://jmp2.uk/plu-61843f5e491af10007f7eefa.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Misterios;no ar;;https://jmp2.uk/plu-5fac52f142044f00078e2a51.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Natureza;no ar;;https://jmp2.uk/plu-5f1213ba0ecebc00070e170f.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Negocio Fechado;no ar;;https://jmp2.uk/plu-64ad7394798def00087b2bfe.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Netmovies;no ar;;https://jmp2.uk/plu-663b9de4f999220008230fa8.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Novelas BR;no ar;;https://jmp2.uk/plu-5f512365abe1f50007d3ff56.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Paisagens por Stingray;no ar;;https://jmp2.uk/plu-604a8dedbca75b0007b1c753.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Policial;no ar;;https://jmp2.uk/plu-678fdf9e3de7c8cf948e8824.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Record News;no ar;;https://jmp2.uk/plu-6102e04e9ab1db0007a980a1.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Retro;no ar;;https://jmp2.uk/plu-5f1212ad1728050007a523b8.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Acao;no ar;;https://jmp2.uk/plu-6474ab1da51cb80008bfb5f4.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Comedia;no ar;;https://jmp2.uk/plu-655e5bc94261ca000810cb17.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Criminais;no ar;;https://jmp2.uk/plu-6474ab5cdc7a760008745008.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Drama;no ar;;https://jmp2.uk/plu-65f060d84e01740008d7421f.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Novelescas;no ar;;https://jmp2.uk/plu-691627e4a29a6123e400b3e0.m3u8
+11-07 01:57:37.340 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Series Sci-Fi;no ar;;https://jmp2.uk/plu-63d2ba2f60bc8f0008981a0e.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Shows por Stingray;no ar;;https://jmp2.uk/plu-604b91e0692f770007d9f33f.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Terror Trash;no ar;;https://jmp2.uk/plu-66aa67493a4ad2000806d91b.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Turbo;no ar;;https://jmp2.uk/plu-6014761dfb91870008ea6463.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Viagens;no ar;;https://jmp2.uk/plu-5f32d432d612e50007e56133.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pluto TV Vida Real;no ar;;https://jmp2.uk/plu-5f32d4d9ec194100070c7449.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Pronto-socorro: Historias De Emergencia;no ar;;https://jmp2.uk/plu-61bb72a7bf8c520007a8fd27.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RBATV;no ar;;https://cdn.live.br1.jmvstream.com/w/LVW-15748/LVW15748_Yed7yzLuRC/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RCTV Brasil;fora;HTTP 403;https://stmv.webtvninjas.com.br/rctv/rctv/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Record RS;fora;HTTP 403;https://playpluspoa-lh.akamaihd.net/i/pp_poa@377864/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Belem;fora;HTTP 403;https://playpluspa-lh.akamaihd.net/i/pp_pa@377468/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Brasilia;fora;HTTP 403;https://playplusbsa-lh.akamaihd.net/i/pp_bsa@377860/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Goias;fora;HTTP 403;https://playplusgoya-lh.akamaihd.net/i/pp_gna@377833/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Itapoan;fora;HTTP 403;https://playplussdr-lh.akamaihd.net/i/pp_sdr@377858/index_720_av-b.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Rio;fora;HTTP 403;https://playplusrjo-lh.akamaihd.net/i/pp_rj@377859/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RecordTV Sao Paulo;fora;HTTP 403;https://playplusspo-lh.akamaihd.net/i/pp_sp@350176/index_720_av-p.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Red Bull TV BR;no ar;;https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d79288
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Brasil;no ar;;https://redebrasil.nuvemplay.live/hls/stream.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Globo;fora;HTTP 403;https://cdn-sp2.satlabscloud.com.br/RBS_HD/index.m3u8?token=Mw3YKkujzIi9hYQJ6kAQjQvly2VdBNuGPjHOq
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Gospel;no ar;;https://cdn.live.br1.jmvstream.com/w/LVW-8719/LVW8719_AcLVAxWy5J/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Meio Norte;no ar;;https://maystreaming.cloudecast.com/redemeio/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Metropole;fora;Unable to resolve host "cdn-tiva-isaocorp-cloudecast-com.sma;https://cdn-tiva-isaocorp-cloudecast-com.smartbit.co/metropole/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Minas;no ar;;https://8hzcavccys.zoeweb.tv/redeminas/ngrp:redeminas_all/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede NGT;no ar;;https://isaocorp.cloudecast.com/ngt/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede Premium TV;fora;Unable to resolve host "cdn-tiva-stmv2-samcast-com-br.smartb;https://cdn-tiva-stmv2-samcast-com-br.smartbit.co/leonardo9878/leonardo9878/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede SPTV;no ar;;https://video01.logicahost.com.br/websptv/websptv/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Rede TV! Mais;no ar;;https://cdn.live.br1.jmvstream.com/webtv/AVJ-15235/playlist/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RedeTV! Parana;no ar;;https://tv01.zas.media:1936/redetvparana/redetvparana/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Retro Cartoon;no ar;;https://stmv1.video.brstream.com.br/retrotv/retrotv/chunklist_w1069200121.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;RIT TV;no ar;;https://acesso.ecast.site:3648/live/ritlive.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Santa Cecilia TV;fora;failed to connect to 5fb29de4928ea.streamlock.net/63.143.34.;https://5fb29de4928ea.streamlock.net/2063/2063/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Cuiaba;no ar;;https://video09.logicahost.com.br/sbtcuiaba/sbtcuiaba/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Interior;no ar;;https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Kids;fora;HTTP 504;https://8994803e454548319ffc0775bc04e0c1.mediatailor.us-east-1.amazonaws.com/v1/master/215c0da80606fed29372070168106400a
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Nacional;no ar;;https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/chunklist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT News;no ar;;https://dai.google.com/linear/hls/event/1XSOdtQ0SH2G8OEmEfGgjQ/master.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Nova Mutum;no ar;;https://video09.logicahost.com.br/sbtmutum/sbtmutum/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SBT Rondonopolis;no ar;;https://video09.logicahost.com.br/sbtroo/sbtroo/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Series Classic;fora;Unable to resolve host "cdn-tiva-video10-logicahost-com-br.s;https://cdn-tiva-video10-logicahost-com-br.smartbit.co/serieclassic/serieclassic/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SESC TV;fora;HTTP 400;https://slbps-ml-sambatech.akamaized.net/samba-live/2472/7424/8a00fe7cc36ac263b2c3e9324497d5ff/video/93a9920d-1b24-4c5e-
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Show do Milhao;fora;HTTP 504;https://d38s7rrdbnh4oy.cloudfront.net/v1/master/215c0da80606fed29372070168106400a6ca7e1a/SSAI-Saudades/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SIC TV;no ar;;https://parecisfmlive.brasilstream.com.br/hls/parecisfmlive/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Smithsonian Channel Pluto TV;no ar;;https://jmp2.uk/plu-6298bd10d88ef000073f16b7.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;SOU TV;no ar;;https://video10.logicahost.com.br/soutv/soutv/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;South Park: Colecao Cartman;no ar;;https://jmp2.uk/plu-65df71008b24c80008f04281.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;South Park: Colecao Kenny;no ar;;https://jmp2.uk/plu-65df704366eec8000898e32f.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;South Park: Colecao Kyle;no ar;;https://jmp2.uk/plu-65df713dec9fda0008b7a81d.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;South Park: Colecao Stan;no ar;;https://jmp2.uk/plu-65df70b0f7f0af0008c3b316.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Star Trek;no ar;;https://jmp2.uk/plu-5f99ac4fded33000078f29ab.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;STZ TV;no ar;;https://cdn.live.br1.jmvstream.com/webtv/AVJ-12952/playlist/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Tastemade Brasil;no ar;;https://jmp2.uk/plu-5fd1419a3b4f4b000773ba85.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TELE 6;fora;HTTP 404;https://lbgo.bozztv.com/ssh101/ssh101/tele6/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;The Pet Collective Brazil;no ar;;https://jmp2.uk/plu-5f515ebac01c0f00080e8439.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TikTok Radio Brasil;no ar;;https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99992529
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Times Brasil;no ar;;https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/21fdb6dd7491406bba86497a24390a25/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Tokusato;no ar;;https://jmp2.uk/plu-5ff609de50ab210008025c1b.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Trace Brazuca HD;no ar;;https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracebrazuca-samsungbr/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;Turma da Monica;no ar;;https://jmp2.uk/plu-5f997e44949bc70007a6941e.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV 3 Curitiba;fora;HTTP 403;https://stmv.webtvninjas.com.br/tv3/tv3/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV A Critica;no ar;;https://cdn.live.br1.jmvstream.com/w/LVW-20715/LVW20715_50E3x2MCm2/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV A Folha;no ar;;https://video01.logicahost.com.br/tvafolha/tvafolha/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Adorar;fora;Unable to resolve host "cdn-tiva-isaocorp-cloudecast-com.sma;https://cdn-tiva-isaocorp-cloudecast-com.smartbit.co/tvadorar/index.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Aldeia;no ar;;https://stmv1.samcast.com.br/giovane7843/giovane7843/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Alianca Catarinense;no ar;;https://video01.logicahost.com.br/tvalianca/tvalianca/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Alternativa;no ar;;https://stmv5.samcast.com.br/wagner7919/wagner7919/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Arapuan;fora;Failed to connect to 5b7f3c45ab7c2.streamlock.net/104.156.61;https://5b7f3c45ab7c2.streamlock.net/arapuan/ngrp:arapuan_all/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Assembleia Ceara;fora;HTTP 503;https://jjn5dkk9bd.zoeweb.tv/z404-live/stream/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Assembleia Piaui;fora;HTTP 403;https://stmv1.srvstm.com/piaui8071/piaui8071/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Birigui;fora;failed to connect to 59f2354c05961.streamlock.net/69.46.21.2;https://59f2354c05961.streamlock.net:1443/tvdigitalbirigui/_definst_/tvdigitalbirigui/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Brasil Oeste;no ar;;https://5ad482a77183d.streamlock.net/operacaotbomt.com/operacaotbomt.com/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV BRICS Portuguese;no ar;;https://porbrics.mediacdn.ru/cdn/brics/portuguese/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Brusque;no ar;;https://5ad482a77183d.streamlock.net/rodrigotvbrusque.com.br/5d880199c902eb4a1e8df00d/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Camara 2;fora;HTTP 404;https://stream3.camara.gov.br/tv2/manifest.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Camara (Brazil);no ar;;https://stream3.camara.gov.br/tv1/manifest.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Camara Salvador;fora;failed to connect to 596639ebdd89b.streamlock.net/142.54.190;https://596639ebdd89b.streamlock.net/8114/8114/playlist.m3u8
+11-07 01:57:37.341 I/BruDreTest( 6148): CANAL;iptv_br;TV Carioca;fora;Unable to resolve host "cdn-tiva-video03-logicahost-com-br.s;https://cdn-tiva-video03-logicahost-com-br.smartbit.co/cariocainternacional1/cariocainternacional1/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Cidade de Petropolis;fora;failed to connect to video01.kshost.com.br/161.97.116.122 (p;https://video01.kshost.com.br:4443/inside2133/inside2133/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Cidade Verde Cuiaba;no ar;;https://televisaocidadeverde.brasilstream.com.br/hls/televisaocidadeverde/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Clube;no ar;;https://5c483b9d1019c.streamlock.net/8186/8186/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Comunitaria;fora;Failed to connect to 5b7f3c45ab7c2.streamlock.net/104.156.61;https://5b7f3c45ab7c2.streamlock.net/8008/smil:8008.smil/playlist.m3u8?DVR=
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Curuca;no ar;;https://stmv1.srvif.com/tvcurucasp/tvcurucasp/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Diario Macapa;fora;HTTP 403;https://5ad482a77183d.streamlock.net/marliomelohotmail.com/marliomelohotmail.com/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Difusao;no ar;;https://tvdsoultv.acessaradios.com.br/tvdsoultv/tvdsoultv.stream/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Difusora Leste;fora;HTTP 404;https://stream.amsolution.net.br:8443/live/60d0a8ea6b884/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Empire;fora;failed to connect to 5d82644094cc0.streamlock.net/67.231.241;https://5d82644094cc0.streamlock.net/empiremagazinetv/empiremagazinetv/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Encontro das Aguas;fora;HTTP 403;https://stmv7.samcast.com.br/sistemaencontrodasaguas/sistemaencontrodasaguas/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Fronteira (480i);no ar;;https://tvfronteira.brasilstream.com.br/hls/tvfronteira/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Futuro;fora;HTTP 404;https://tv02.zas.media:1936/tvfuturo/tvfuturo/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Gazin;fora;Unable to resolve host "cdn-tiva-video09-logicahost-com-br.s;https://cdn-tiva-video09-logicahost-com-br.smartbit.co/tvgazin/tvgazin/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Gideoes;fora;Failed to connect to streaming01.zas.media/177.70.7.246:443;https://streaming01.zas.media/gideoes/programacao/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Grao Para;fora;failed to connect to video01.kshost.com.br/161.97.116.122 (p;https://video01.kshost.com.br:4443/moises3834/moises3834/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Guara;no ar;;https://video02.logicahost.com.br/tvguara23/tvguara23/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Guarapari;no ar;;https://video.welltecnologia.com.br/tvguarapari/tvguarapari/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Interlagos;fora;failed to connect to v8.ciclano.io/144.217.245.142 (port 144;https://v8.ciclano.io:1443/tvinterlagos/_definst_/tvinterlagos/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Liberdade;fora;Unable to resolve host "srv1.paineldevideo.com": No address ;https://srv1.paineldevideo.com/liberdaderadioetv/liberdaderadioetv/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Life America;no ar;;https://streaming.cloudecast.com/hls/tvlifeamerica/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Litoral RN;no ar;;https://5ad482a77183d.streamlock.net/tvnordesteegmail.com/tvnordesteegmail.com/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Mackenzie;fora;failed to connect to player.internetaovivo.com/54.232.210.67;https://player.internetaovivo.com:8443/live_tvmackenzieabr/tvmackenzieabr/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Mais Marica;fora;failed to connect to 5cf4a2c2512a2.streamlock.net/104.156.58;https://5cf4a2c2512a2.streamlock.net/tvmaismarica/tvmaismarica/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Mana Brasil;no ar;;https://w1.manasat.com/tvmana-brasil/smil:tvmana-brasil.smil/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Marajoara;no ar;;https://tv02.zas.media:1936/tvmarajoara/tvmarajoara/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Meio;fora;Unable to resolve host "cdn-tiva-maystreaming-cloudecast-com;https://cdn-tiva-maystreaming-cloudecast-com.smartbit.co/redemeio/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Metropole;no ar;;https://cdn-fundacao-2110.ciclano.io:1443/fundacao-2110/fundacao-2110/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Mon;fora;Unable to resolve host "cdn-tiva-video10-logicahost-com-br.s;https://cdn-tiva-video10-logicahost-com-br.smartbit.co/tvmon/tvmon/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Padre Cicero;no ar;;https://video01.logicahost.com.br/tvpadrecicero/tvpadrecicero/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Pantanal MS;no ar;;https://5a2b083e9f360.streamlock.net/tvpantanal/tvpantanal.sdp/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Paraense;fora;HTTP 404;https://video09.logicahost.com.br/tvparaense/tvparaense/playlist.m3u
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Passo Fundo;no ar;;https://5a57bda70564a.streamlock.net/tvpasso/tvpasso.sdp/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Petropolis;no ar;;https://video02.logicahost.com.br/tvpetropolis/tvpetropolis/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Profissao;fora;HTTP 403;https://stmv.webtvninjas.com.br/tvprofissao/tvprofissao/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Sao Raimundo;no ar;;https://stmv1.voxtvhd.com.br/9030/9030/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Series;no ar;;https://stmv1.srvif.com/tvserie/tvserie/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Sim Cachoeiro;fora;failed to connect to 5cf4a2c2512a2.streamlock.net/104.156.58;https://5cf4a2c2512a2.streamlock.net/8104/8104/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Sim Sao Mateus;fora;failed to connect to 5cf4a2c2512a2.streamlock.net/104.156.58;https://5cf4a2c2512a2.streamlock.net/8236/8236/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Sul Bahia;fora;HTTP 404;https://live.cdn.upx.com/00046/myStream.sdp/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Sul de Minas;fora;failed to connect to 5cf4a2c2512a2.streamlock.net/104.156.58;https://5cf4a2c2512a2.streamlock.net/tvsuldeminas/tvsuldeminas/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Terceiro Anjo;no ar;;https://streamer1.streamhost.org/salive/GMI3anjoh/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Thathi;fora;Unable to resolve host "cdn-grupo-10049.ciclano.io": No addr;https://cdn-grupo-10049.ciclano.io:1443/grupo-10049/grupo-10049/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV UFOP;no ar;;https://app.tvufop.com.br/hls/tvufop.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Universal;no ar;;https://644398c.ha.azioncdn.net/primary/tvuniversal_480p.sdp/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Vila Real;no ar;;https://cdn.jmvstream.com/w/LVW-10841/LVW10841_mT77z9o2cP/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV Zoom;no ar;;https://cdn.jmvstream.com/w/LVW-9730/LVW9730_LmUwslM8jt/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TV+Pet;no ar;;https://stmv5.samcast.com.br/tvmaispet6354/tvmaispet6354/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVC-Rio;fora;HTTP 502;https://video05.logicahost.com.br/comunitariario/comunitariario/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVCOM Maceio;no ar;;https://srv5.zcast.com.br/tvcommaceio/tvcommaceio/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVE RS;no ar;;https://streaming.procergs.com.br:8443/tve/stve/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVideoNews;no ar;;https://video01.logicahost.com.br/tvideonews/tvideonews/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVitape;no ar;;https://stream01.msolutionbrasil.com.br/hls/tvitape/live.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVLatinaSat;no ar;;https://www.latinasat.com.br/hls/live/stream/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;TVNBN;no ar;;https://cdn.jmvstream.com/w/LVW-8410/LVW8410_uiZOVm6vz1/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;UMA TV;no ar;;https://umatv.nuvemplay.live/hls/stream.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;Unisul TV;no ar;;https://sitetv.brasilstream.com.br/hls/sitetv/index.m3u8?token=
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;VEJA+ TV;no ar;;https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_br;VRT Channel;fora;failed to connect to sistemavrt.vrtchannel.tv.br/147.79.87.1;https://sistemavrt.vrtchannel.tv.br:3473/stream/play.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;ADB TV;no ar;;https://live-tv.waytv.pt/adbtv/adbtv/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Adrenalina Pura TV Brazil;no ar;;https://jmp2.uk/plu-61b790b985706b00072cb797.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Angel TV Portuguese;no ar;;https://janya-digimix.akamaized.net/vglive-sk-382409/portuese/ngrp:angelportuguese_all/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;ARTV;no ar;;https://playout172.livextend.cloud/liveiframe/_definst_/liveartvabr/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Avatar: A lenda de Aang;no ar;;https://jmp2.uk/plu-6759eeb1bd523200083b4f29.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;BabyFirst Brazil;fora;HTTP 404;https://jmp2.uk/plu-5f4fb4cf605ddf000748e16f.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;BET Pluto TV BR;no ar;;https://jmp2.uk/plu-5ff768b6a4c8b80008498610.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Bob Esponja Calca Quadrada;no ar;;https://jmp2.uk/plu-62545c0b002f4b0007688b61.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Canal Macau;fora;timeout;https://live3.tdm.com.mo/ch2/ch2.live/playlist.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Cine Terror BR;no ar;;https://jmp2.uk/plu-5f12111c9e6c2c00078ef3bb.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;CNN Portugal;no ar;;https://github.com/thomraider12/canaistvpt/raw/main/m3u8s/cnnpt.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Comedy Central Pluto TV BR;no ar;;https://jmp2.uk/plu-5f357e91b18f0b00073583d2.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Comedy Central South Park;no ar;;https://jmp2.uk/plu-609ae66b359b270007869ff1.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;CSI: Miami BR;no ar;;https://jmp2.uk/plu-63eb9c5351f5d000085e8d7e.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Detetives Medicos;no ar;;https://jmp2.uk/plu-638df93ae2f2a3000737c168.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Diff'rent Strokes Arnold;no ar;;https://jmp2.uk/plu-61f1d27a189ed10007b7393e.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;EbS;no ar;;https://streams.prd.commavservices.eu/live/ebs/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;EbS+;no ar;;https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Euronews Portuguese;no ar;;https://jmp2.uk/plu-619e6614c9d9650007a2b171.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;FailArmy Brazil;no ar;;https://jmp2.uk/plu-5f5141c1605ddf000748eb1b.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Famatv;fora;HTTP 500;https://tv2.fastcast4u.com:3310/live/famatvlive.m3u8
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;FIFA+ Portuguese;no ar;;https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlis
+11-07 01:57:37.342 I/BruDreTest( 6148): CANAL;iptv_por;Filmes Suspense;no ar;;https://jmp2.uk/plu-5f171d3442a0500007362f22.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;iCarly (United States);no ar;;https://jmp2.uk/plu-620ff46e0a576e0007dc2f89.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Jornada nas Estrelas: A Nova Geracao;no ar;;https://jmp2.uk/plu-69162ad79505d0f3b1ebf07d.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Jornada nas Estrelas: Deep Space Nine;no ar;;https://jmp2.uk/plu-69162af591700f4c4c135c95.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Jornada nas Estrelas: Voyager;no ar;;https://jmp2.uk/plu-69162b1ef189e235142b17ab.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Kenan & Kel BR;no ar;;https://jmp2.uk/plu-5ffcc5130fd98c0007f2e216.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;KK TV;no ar;;https://w1.manasat.com/ktv-angola/smil:ktv-angola.smil/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Kuriakos Cine;no ar;;https://w2.manasat.com/kcine/smil:kcine.smil/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Kuriakos Kids;no ar;;https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Kuriakos TV;no ar;;https://w1.manasat.com/ktv/smil:ktv.smil/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MacGyver (United States);no ar;;https://jmp2.uk/plu-63eb9dc84e83e70008abea92.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Mana Igreja Online;no ar;;https://w1.manasat.com/igrejaonline/smil:igrejaonline.smil/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MasterChef;no ar;;https://jmp2.uk/plu-6077045b6031bd00078de127.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MNTV;no ar;;https://www.khuwemultimedia.com/hls/mntv/mntv.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Are you the One?;no ar;;https://jmp2.uk/plu-5f6108d8cc331900075e98e4.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Biggest Pop BR;no ar;;https://jmp2.uk/plu-6047fbdbbb776a0007e7f2ff.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Catfish (United States) BR;no ar;;https://jmp2.uk/plu-626c2a3502d84a0007cec817.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Classic BR;no ar;;https://jmp2.uk/plu-66a01dcb8561260008b0a41d.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Com o Ex;no ar;;https://jmp2.uk/plu-61a528267e1b8b0007357920.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Dating (United States);no ar;;https://jmp2.uk/plu-6851bb3426beced4f2f67ee6.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Drag;no ar;;https://jmp2.uk/plu-645111f1d8436e00081bb2bd.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Jovens e Maes;no ar;;https://jmp2.uk/plu-620fdc7d8a36fc000710e3ba.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Pluto TV BR;no ar;;https://jmp2.uk/plu-5f1212fb81e85c00077ae9ef.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Reality (United States);no ar;;https://jmp2.uk/plu-6851bdfc9ac48fde5e07f5ae.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Rocks;no ar;;https://jmp2.uk/plu-66a01e07d2d50d0008100d6a.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;MTV Shore;no ar;;https://jmp2.uk/plu-625463563b8ddc0007134aeb.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Muzangala TV;fora;failed to connect to 5cf4a2c2512a2.streamlock.net/104.156.58;https://5cf4a2c2512a2.streamlock.net/tvmuzangala/tvmuzangala/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Naruto Brazil;no ar;;https://jmp2.uk/plu-5f6df5a173d7340007c559f7.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;NCIS (United States);no ar;;https://jmp2.uk/plu-63eb9fdda995710008991c54.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;New Channel Pop!;fora;HTTP 404;https://vodcdn.bamboo-cloud.com/livehls/6ab37c6c7e057f9063071c85/master.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Nick Jr. Club (United States) BR;no ar;;https://jmp2.uk/plu-6824ce95f09106f4b18f4114.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Nickelodeon Classico;no ar;;https://jmp2.uk/plu-6824ce10c5d53e1351ceb8d1.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Nickelodeon Teen;no ar;;https://jmp2.uk/plu-60f5fabf0721880007cd50e3.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Nickelodeon Toons;no ar;;https://jmp2.uk/plu-645951c0e94c38000802d2cb.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;NPC Radio e TV;fora;HTTP 403;https://stmv5.samcast.com.br/nasciparacantartv/nasciparacantartv/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Numbers (United States);no ar;;https://jmp2.uk/plu-67f960c5441853fe50e7afc1.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;O Encantador de Caes;no ar;;https://jmp2.uk/plu-61099df8cee03b00074b2ecf.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;O Reino Infantil;no ar;;https://jmp2.uk/plu-5f5c216df68f920007888315.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Oggy e as Baratas Tontas;no ar;;https://jmp2.uk/plu-63221bafdc6e110007b50270.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;ON FM;no ar;;https://5ce9406b73c33.streamlock.net/ONFM/livestream/playlist.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Aliens;no ar;;https://jmp2.uk/plu-6806d65e84f24b70109485fa.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Animais;no ar;;https://jmp2.uk/plu-6474aa984cfc2c0008883a92.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Anime BR;no ar;;https://jmp2.uk/plu-5f12136385bccc00070142ed.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Anime Acao;no ar;;https://jmp2.uk/plu-604b79c558393100078faeef.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Bang Bang;no ar;;https://jmp2.uk/plu-663b9dc7cb3ea10008f1a0ce.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Canal UOL;no ar;;https://jmp2.uk/plu-64b9370b409629000802d32b.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Classicos;no ar;;https://jmp2.uk/plu-5fa1612a669ba0000702017b.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Comedia (United States) BR;no ar;;https://jmp2.uk/plu-5f12101f0b12f00007844c7c.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Comedia Romantica;no ar;;https://jmp2.uk/plu-62545ed3dab4380007582f7c.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Crime;no ar;;https://jmp2.uk/plu-6479ff764f5ba5000878dfe2.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Drama;no ar;;https://jmp2.uk/plu-5f1210d14ae1f80007bafb1d.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Familia;no ar;;https://jmp2.uk/plu-5f171f032cd22e0007f17f3d.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Inspiracao;no ar;;https://jmp2.uk/plu-5fa991b1f09e020007e78626.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Romance;no ar;;https://jmp2.uk/plu-5f171f988ab9780007fa95ea.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cine Sucessos;no ar;;https://jmp2.uk/plu-5f120e94a5714d00074576a1.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Cozinha;no ar;;https://jmp2.uk/plu-5f1ef23020a5ac0007e5e8ea.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Desenhos Classicos;no ar;;https://jmp2.uk/plu-655e5c4d2c46f3000877a54b.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Esportes;no ar;;https://jmp2.uk/plu-5f32d2db0af67400077f29c4.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Ficcao Cientifica;no ar;;https://jmp2.uk/plu-5fa15ad6367e170007cdd098.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Filmes Acao;no ar;;https://jmp2.uk/plu-5f120f41b7d403000783a6d6.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Filmes Aventura;no ar;;https://jmp2.uk/plu-66c79a4262e5510008ff68a5.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Filmes de Luta;no ar;;https://jmp2.uk/plu-6806d62369aec5b19cd628c0.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Filmes Nacionais;no ar;;https://jmp2.uk/plu-5f5a545d0dbf7f0007c09408.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Historia (United States);no ar;;https://jmp2.uk/plu-5f1ef1a8cec6be00072a7ac9.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Investigacao;no ar;;https://jmp2.uk/plu-5f32cf37c9ff2b00082adbc8.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Junior;no ar;;https://jmp2.uk/plu-5f12141b146d760007934ea7.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Karaoke por Stingray;fora;HTTP 404;https://jmp2.uk/plu-604b99d633a72b00078e05ad.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV KFOOD;no ar;;https://jmp2.uk/plu-633ee9ba83c08f00076b60a6.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Kids;no ar;;https://jmp2.uk/plu-5f1214a637c6fd00079c652f.m3u8
+11-07 01:57:37.343 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Kids Club;no ar;;https://jmp2.uk/plu-66c8cae7fed35b0008580ec0.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Minha Obsessao Favorita;fora;HTTP 404;https://jmp2.uk/plu-61843f5e491af10007f7eefa.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Misterios;no ar;;https://jmp2.uk/plu-5fac52f142044f00078e2a51.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Natureza;no ar;;https://jmp2.uk/plu-5f1213ba0ecebc00070e170f.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Negocio Fechado;no ar;;https://jmp2.uk/plu-64ad7394798def00087b2bfe.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Netmovies;no ar;;https://jmp2.uk/plu-663b9de4f999220008230fa8.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Novelas BR;no ar;;https://jmp2.uk/plu-5f512365abe1f50007d3ff56.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Paisagens por Stingray;no ar;;https://jmp2.uk/plu-604a8dedbca75b0007b1c753.m3u8
+11-07 01:57:37.344 I/BruDreTest( 6148): CANAL;iptv_por;Pluto TV Policial;no ar;;https://jmp2.uk/plu-678fdf9e3de7c8cf948e8824.m3u8
+11-07 01:57:40.861 I/BruDreTest( 6148): Player: Pluto TV Esportes → tocou
+11-07 01:57:44.234 I/BruDreTest( 6148): Player: TV Difusao → tocou
+11-07 01:57:47.763 I/BruDreTest( 6148): Player: Canal Metropolitano de Noticias → tocou
+11-07 01:57:51.494 I/BruDreTest( 6148): Player: MNTV → tocou
+11-07 01:57:54.525 I/BruDreTest( 6148): Player: J3NEWS TV → tocou
+11-07 01:58:00.761 I/BruDreTest( 6148): Player: TV Zimbo → tocou
+11-07 01:58:10.279 I/BruDreTest( 6148): Player: Nick Jr. Club (United States) BR → tocou
+11-07 01:58:12.956 I/BruDreTest( 6148): Player: VEJA+ TV → tocou
+11-07 01:58:17.025 I/BruDreTest( 6148): Player: ADB TV → tocou
+11-07 01:58:20.512 I/BruDreTest( 6148): Player: Pluto TV Cozinha → tocou
+11-07 01:58:20.512 I/BruDreTest( 6148): Aprovados na verificação que tocaram no player: 10 de 10
+11-07 01:58:20.656 I/TestRunner( 6148): finished: t21_allLiveChannelsChecked(com.brudre.streaming.PlaybackTest)
+11-07 01:58:20.659 I/TestRunner( 6148): started: t10_networkInterruptionIsHandled(com.brudre.streaming.PlaybackTest)
+11-07 01:58:21.036 W/BruDreSources( 6148): Falha na fonte tmdb
+11-07 01:58:21.036 W/BruDreSources( 6148): com.brudre.streaming.data.CatalogException: Sem conexão com a internet
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.get$app_debug(CatalogRepository.kt:188)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.tmdb$lambda$1(CatalogRepository.kt:29)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.$r8$lambda$n7HG_vK9mJJcA2xokhEfXheeuCc(Unknown Source:0)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.data.TmdbSource.search(TmdbSource.kt:78)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at com.brudre.streaming.sources.TmdbProvider$search$2.invokeSuspend(Providers.kt:60)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-07 01:58:21.036 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-07 01:58:21.037 W/BruDreSources( 6148): Falha na fonte archive
+11-07 01:58:21.037 W/BruDreSources( 6148): com.brudre.streaming.data.CatalogException: Sem conexão com a internet
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.get$app_debug(CatalogRepository.kt:188)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository$searchArchive$2.invokeSuspend(CatalogRepository.kt:102)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-07 01:58:21.037 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-07 01:58:24.200 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 01:58:24.200 E/ExoPlayerImplInternal( 6148):   UnknownHostException (no network)
+11-07 01:58:24.201 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+11-07 01:58:26.774 I/TestRunner( 6148): finished: t10_networkInterruptionIsHandled(com.brudre.streaming.PlaybackTest)
+11-07 01:58:26.776 I/TestRunner( 6148): started: t28_dynamicSearchAndMultipleSources(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:26.966 I/BruDreTest( 6148): API de pesquisa: SEARCH ok=true API respondeu: 1 resultado(s) para "big buck bunny"
+11-07 01:58:27.316 I/BruDreSources( 6148): Catálogo Blender: 5 títulos (0 descartados)
+11-07 01:58:27.645 I/BruDreTest( 6148): Fontes do título: [Obras abertas (BruDre) [HTTP • BitTorrent], Blender [BitTorrent], Blender [HLS], Pesquisa de teste (pesquisa) [HTTP]] • Fonte oficial do titular • streaming direto + torrent oficial • mais 3 fonte(s) cadastrada(s)
+11-07 01:58:28.145 I/TestRunner( 6148): finished: t28_dynamicSearchAndMultipleSources(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:28.147 I/TestRunner( 6148): started: t27_sharedMagnetAndTorrentFromOtherApps(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:28.243 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:58:28.245 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:58:31.029 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:58:31.920 I/BruDreTest( 6148): Compartilhado: 3 vídeos, erro=null
+11-07 01:58:33.751 I/BruDreTest( 6148): screenshot: torrent_arquivos
+11-07 01:58:36.000 I/TestRunner( 6148): finished: t27_sharedMagnetAndTorrentFromOtherApps(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:36.003 I/TestRunner( 6148): started: t31_searchCancellation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:36.855 I/BruDreTest( 6148): Cancelamento da pesquisa levou 2 ms
+11-07 01:58:44.862 W/BruDreSearch( 6148): Pesquisa em Lenta falhou: SocketTimeoutException: failed to connect to /10.255.255.1 (port 443) from /10.0.2.16 (port 57762) after 8000ms
+11-07 01:58:44.868 I/TestRunner( 6148): finished: t31_searchCancellation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:44.871 I/TestRunner( 6148): started: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:44.881 I/BruDreTest( 6148): DNS: Endereço não encontrado (DNS): Não foi possível localizar brudre-nao-existe.invalid. O nome do servidor não existe ou não é resolvido pela sua rede/provedor. Confira o endereço. | UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException: android_getaddrinfo failed: EAI_NODATA (No address associated with hostname)
+11-07 01:58:44.995 I/BruDreTest( 6148): HTTP: Erro do servidor (HTTP): Arquivo não encontrado no servidor (HTTP 404). O endereço pode ter mudado ou sido removido.
+11-07 01:58:55.745 I/BruDreTest( 6148): Inalcançável em 10013 ms: Tempo esgotado: O servidor demorou demais para responder. Verifique a internet ou tente mais tarde. | SocketTimeoutException: failed to connect to /10.255.255.1 (port 443) from /10.0.2.16 (port 52298) after 10000ms
+11-07 01:58:57.050 I/TestRunner( 6148): finished: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:57.052 I/TestRunner( 6148): started: t26_torrentCacheCleanupPolicy(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:57.365 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:58:57.370 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:58:57.406 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 01:58:57.409 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S02E01.mp4 (445 KB), peças=21, legendas=0
+11-07 01:59:01.496 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:59:01.498 I/BruDreTest( 6148): Política KEEP_LIMIT: 517468 bytes no cache após fechar
+11-07 01:59:01.652 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:59:01.653 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:59:01.747 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 01:59:01.749 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S02E01.mp4 (445 KB), peças=21, legendas=0
+11-07 01:59:05.293 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 01:59:05.294 I/BruDreTest( 6148): Política ON_CLOSE: 0 bytes no cache após fechar
+11-07 01:59:05.294 I/TestRunner( 6148): finished: t26_torrentCacheCleanupPolicy(com.brudre.streaming.SourceEngineTest)
+11-07 01:59:05.297 I/TestRunner( 6148): started: t25_importedTorrentEpisodeSelectionSubtitlesAndResume(com.brudre.streaming.SourceEngineTest)
+11-07 01:59:05.433 I/BruDreTest( 6148): Torrent: [T1:E1 — BruDre.Teste.S01E01.mp4, T1:E2 — BruDre.Teste.S01E02.mp4, T2:E1 — BruDre.Teste.S02E01.mp4]
+11-07 01:59:05.571 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:59:05.572 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 01:59:05.778 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 01:59:05.785 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-07 01:59:10.420 I/BruDreTest( 6148): screenshot: torrent_episodio_legenda
+11-07 01:59:11.520 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 01:59:11.545 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-07 01:59:16.382 I/BruDreTest( 6148): Outro episódio em disco: existe=false tamanho=0
+11-07 02:00:03.557 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:00:03.637 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-07 02:00:04.933 I/BruDreTest( 6148): Retomou em 15615 ms (salvo: 15596)
+11-07 02:00:05.597 I/TestRunner( 6148): finished: t25_importedTorrentEpisodeSelectionSubtitlesAndResume(com.brudre.streaming.SourceEngineTest)
+11-07 02:00:05.598 I/TestRunner( 6148): started: t29_fallbackToNextSourceAndHistory(com.brudre.streaming.SourceEngineTest)
+11-07 02:00:07.675 I/BruDreSources( 6148): Catálogo Fonte quebrada: 1 títulos (0 descartados)
+11-07 02:00:07.804 I/BruDreSources( 6148): Catálogo Fonte boa: 1 títulos (0 descartados)
+11-07 02:00:08.027 I/BruDreTest( 6148): Elephants Dream: [Fonte quebrada, Fonte boa, Obras abertas (BruDre)]
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:00:11.418 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-07 02:00:11.420 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:00:11.420 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:00:14.633 I/BruDreTest( 6148): Tentativas: [streaming direto:feed_19f31c0cc62887f0, streaming direto:feed_e9b5fc0ccd17e0bf, streaming direto:null, BitTorrent:null] atual=feed_e9b5fc0ccd17e0bf
+11-07 02:00:15.414 I/BruDreTest( 6148): Histórico: A=✓ 0 • ✗ 1 (falhou 1 seguida) B=✓ 1 • ✗ 0
+11-07 02:00:15.424 I/TestRunner( 6148): finished: t29_fallbackToNextSourceAndHistory(com.brudre.streaming.SourceEngineTest)
+11-07 02:00:15.429 I/TestRunner( 6148): started: t10_sourceManagerSectionsWithDpad(com.brudre.streaming.UiFlowTest)
+11-07 02:00:17.913 I/BruDreTest( 6148): screenshot: fontes_minhas
+11-07 02:00:19.268 I/BruDreTest( 6148): screenshot: fontes_bittorrent
+11-07 02:00:21.386 I/BruDreTest( 6148): screenshot: fontes_colar_magnet
+11-07 02:00:24.004 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 02:00:24.946 I/BruDreTest( 6148): screenshot: fontes_nativas
+11-07 02:00:26.241 I/BruDreTest( 6148): screenshot: fontes_preferencias
+11-07 02:00:27.615 I/BruDreTest( 6148): screenshot: fontes_diagnostico
+11-07 02:00:28.364 I/TestRunner( 6148): finished: t10_sourceManagerSectionsWithDpad(com.brudre.streaming.UiFlowTest)
+11-07 02:00:28.367 I/TestRunner( 6148): started: t04_searchFindsTitles(com.brudre.streaming.UiFlowTest)
+11-07 02:00:35.075 I/TestRunner( 6148): finished: t04_searchFindsTitles(com.brudre.streaming.UiFlowTest)
+11-07 02:00:35.076 I/TestRunner( 6148): started: t03_catalogLoadsAutomatically(com.brudre.streaming.UiFlowTest)
+11-07 02:00:44.554 I/TestRunner( 6148): finished: t03_catalogLoadsAutomatically(com.brudre.streaming.UiFlowTest)
+11-07 02:00:44.555 I/TestRunner( 6148): started: t08_cinematicIntro(com.brudre.streaming.UiFlowTest)
+11-07 02:00:48.512 I/BruDreTest( 6148): screenshot: intro_1000ms
+11-07 02:00:50.137 I/BruDreTest( 6148): screenshot: intro_2300ms
+11-07 02:00:51.921 I/BruDreTest( 6148): screenshot: intro_3700ms
+11-07 02:00:53.119 I/BruDreTest( 6148): screenshot: intro_5400ms
+11-07 02:00:53.346 I/BruDreTest( 6148): screenshot: intro_6300ms
+11-07 02:00:53.400 I/BruDreTest( 6148): Vinheta: terminou em 7553 ms; vídeo iniciou=true; animação reserva=false
+11-07 02:00:53.979 I/BruDreTest( 6148): screenshot: intro_transicao_inicio
+11-07 02:00:57.967 I/TestRunner( 6148): finished: t08_cinematicIntro(com.brudre.streaming.UiFlowTest)
+11-07 02:00:57.968 I/TestRunner( 6148): started: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)
+11-07 02:01:03.751 I/BruDreTest( 6148): screenshot: home
+11-07 02:01:09.589 I/BruDreTest( 6148): screenshot: releases
+11-07 02:01:15.228 I/BruDreTest( 6148): screenshot: trending
+11-07 02:01:20.997 I/BruDreTest( 6148): screenshot: movies
+11-07 02:01:26.743 I/BruDreTest( 6148): screenshot: series
+11-07 02:01:32.498 I/BruDreTest( 6148): screenshot: classics
+11-07 02:01:38.188 I/BruDreTest( 6148): screenshot: docs
+11-07 02:01:47.645 I/BruDreTest( 6148): screenshot: live
+11-07 02:01:53.473 I/BruDreTest( 6148): screenshot: kids
+11-07 02:01:55.388 I/BruDreTest( 6148): screenshot: configuracoes
+11-07 02:01:56.493 I/BruDreTest( 6148): screenshot: configuracoes_fontes
+11-07 02:01:58.600 I/BruDreTest( 6148): screenshot: gerenciar_fontes
+11-07 02:01:59.884 I/BruDreTest( 6148): screenshot: gerenciar_fontes_adicionar
+11-07 02:02:04.344 I/BruDreTest( 6148): screenshot: detalhes_classico
+11-07 02:02:07.373 I/BruDreTest( 6148): screenshot: detalhes_gratis_app
+11-07 02:02:11.438 I/BruDreTest( 6148): screenshot: pesquisa
+11-07 02:02:11.887 I/TestRunner( 6148): finished: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)
+11-07 02:02:11.893 I/TestRunner( 6148): started: t06_titleWithoutSourceHasNoPlayButton(com.brudre.streaming.UiFlowTest)
+11-07 02:02:15.440 W/BruDreSources( 6148): Falha na fonte archive
+11-07 02:02:15.440 W/BruDreSources( 6148): com.brudre.streaming.data.CatalogException: Item não encontrado no Internet Archive
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.metadataJson(CatalogRepository.kt:162)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository.access$metadataJson(CatalogRepository.kt:19)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at com.brudre.streaming.data.CatalogRepository$archiveDetails$2.invokeSuspend(CatalogRepository.kt:146)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-07 02:02:15.440 W/BruDreSources( 6148): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-07 02:02:16.519 I/TestRunner( 6148): finished: t06_titleWithoutSourceHasNoPlayButton(com.brudre.streaming.UiFlowTest)
+11-07 02:02:16.520 I/TestRunner( 6148): started: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-07 02:02:18.875 I/TestRunner( 6148): finished: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-07 02:02:18.879 I/TestRunner( 6148): started: t07_parentalControlAsksPin(com.brudre.streaming.UiFlowTest)
+11-07 02:02:27.111 I/TestRunner( 6148): finished: t07_parentalControlAsksPin(com.brudre.streaming.UiFlowTest)
+11-07 02:02:27.112 I/TestRunner( 6148): started: t11_worldContentSeparatedByLanguage(com.brudre.streaming.UiFlowTest)
+11-07 02:02:28.737 I/BruDreLive( 6148): Lista iptv_kids: 255 canais de 438 (removidos: {inseguro=68, formato=15, pago=99, url=1})
+11-07 02:02:29.400 I/BruDreLive( 6148): Lista iptv_series: 452 canais de 523 (removidos: {inseguro=39, formato=9, pago=23})
+11-07 02:02:29.516 I/BruDreLive( 6148): Lista iptv_movies: 500 canais de 781 (removidos: {inseguro=167, formato=36, pago=78})
+11-07 02:02:34.393 I/BruDreTest( 6148): screenshot: ao_vivo_mundo_filmes
+11-07 02:02:34.859 I/BruDreTest( 6148): Cinema Brasileiro: 20 filmes ([Cidade de Deus, Elize: Sombras de uma Mulher, O Agente Secreto, Corrida dos Bichos, Ainda Estou Aqui]) • séries BR: 20 • grátis BR: 20
+11-07 02:02:41.931 I/BruDreTest( 6148): screenshot: filmes_cinema_brasileiro
+11-07 02:02:42.875 I/TestRunner( 6148): finished: t11_worldContentSeparatedByLanguage(com.brudre.streaming.UiFlowTest)
+11-07 02:02:42.877 I/TestRunner( 6148): started: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)
+11-07 02:02:47.297 I/TestRunner( 6148): finished: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)
+11-07 02:02:47.301 I/TestRunner( 6148): started: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)
+11-07 02:02:51.321 I/TestRunner( 6148): finished: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)
+11-07 02:02:51.322 I/TestRunner( 6148): started: v05_audioAndSubtitleTracks(com.brudre.streaming.V91DeviceTest)
+11-07 02:02:53.133 I/BruDreTest( 6148): Faixas: áudio=[pt, en] legendas=[pt]
+11-07 02:02:53.135 I/BruDrePlayer( 6148): Preferência salva: áudio=en legenda=-
+11-07 02:02:55.091 I/BruDreTest( 6148): screenshot: player_faixas
+11-07 02:02:55.727 I/TestRunner( 6148): finished: v05_audioAndSubtitleTracks(com.brudre.streaming.V91DeviceTest)
+11-07 02:02:55.743 I/TestRunner( 6148): started: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
+11-07 02:02:55.746 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:02:55.757 I/BruDreTest( 6148): TLS: validação ativa • 124 CAs do sistema Android (trackers HTTPS); servidores web pela conexão segura do Android
+11-07 02:02:56.478 I/BruDreTest( 6148): OkHttp https://expired.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:57.154 I/BruDreTest( 6148): OkHttp https://wrong.host.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:57.829 I/BruDreTest( 6148): OkHttp https://self-signed.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:58.486 I/BruDreTest( 6148): OkHttp https://untrusted-root.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:58.503 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:02:58.504 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 02:02:58.517 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:02:58.520 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-07 02:02:58.647 W/BruDreWebSeed( 6148): Web seed falhou na peça 0: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sat Nov 07 02:02:58 UTC 2026)
+11-07 02:02:58.651 W/BruDreWebSeed( 6148): Web seed falhou na peça 1: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sat Nov 07 02:02:58 UTC 2026)
+11-07 02:03:18.525 I/BruDreTest( 6148): libtorrent https://expired.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:03:18.531 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:03:18.533 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-07 02:03:18.651 W/BruDreWebSeed( 6148): Web seed falhou na peça 0: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-07 02:03:18.651 W/BruDreWebSeed( 6148):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-07 02:03:18.651 W/BruDreWebSeed( 6148):     DN: CN=*.badssl.com
+11-07 02:03:18.651 W/BruDreWebSeed( 6148):     subjectAltNames: [*.badssl.com, badssl.com]
+11-07 02:03:18.660 W/BruDreWebSeed( 6148): Web seed falhou na peça 1: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-07 02:03:18.660 W/BruDreWebSeed( 6148):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-07 02:03:18.660 W/BruDreWebSeed( 6148):     DN: CN=*.badssl.com
+11-07 02:03:18.660 W/BruDreWebSeed( 6148):     subjectAltNames: [*.badssl.com, badssl.com]
+11-07 02:03:38.534 I/BruDreTest( 6148): libtorrent https://wrong.host.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:03:39.288 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 02:03:39.290 I/TestRunner( 6148): finished: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:39.291 I/TestRunner( 6148): started: v09_memoryWithPlayerAndRelease(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:39.818 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:03:39.823 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 02:03:39.853 I/BruDreTorrent( 6148): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:03:39.867 I/BruDreTorrent( 6148): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-07 02:03:45.372 I/BruDreTest( 6148): Status BitTorrent: BitTorrent • 0 conectados de 1 conhecidos • 1 servidor(es) web • 0 B/s • buffer 26s
+11-07 02:03:47.164 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 02:03:47.501 I/BruDreTest( 6148): Memória (PSS, emulador x86_64): início=224 MB • player+torrent=213 MB • depois de sair=210 MB
+11-07 02:03:47.501 I/TestRunner( 6148): finished: v09_memoryWithPlayerAndRelease(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:47.503 I/TestRunner( 6148): started: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:49.771 I/BruDreTest( 6148): Redetecção: Salva com formato errado: formato redetectado — agora Feed RSS/Atom de vídeos (antes Catálogo BruDre (JSON)). 2 títulos
+11-07 02:03:50.023 I/BruDreTest( 6148): Duplicada: Fonte duplicada: este endereço já está cadastrado como "Salva com formato errado" (Feed RSS/Atom de vídeos).
+11-07 02:03:50.519 I/TestRunner( 6148): finished: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:50.524 I/TestRunner( 6148): started: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:51.632 I/BruDreTest( 6148): Redireciona github.com → raw: CATALOG_JSON ok=true 5 títulos
+11-07 02:03:52.499 I/BruDreTest( 6148): Redireciona para http://: BLOCKED Bloqueada pela segurança: O servidor redirecionou para um endereço sem criptografia (http://): bloqueado.
+11-07 02:03:53.076 I/BruDreTest( 6148): Redireciona para .apk: BLOCKED Bloqueada pela segurança: Arquivo executável bloqueado: example.com
+11-07 02:03:53.077 I/TestRunner( 6148): finished: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:53.078 I/TestRunner( 6148): started: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:53.581 I/TestRunner( 6148): finished: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:53.583 I/TestRunner( 6148): started: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:53.586 I/BruDreTLS( 6148): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:03:53.587 I/BruDreTorrent( 6148): Sessão BitTorrent iniciada (conexões=40)
+11-07 02:04:23.594 I/BruDreTest( 6148): Sem peers em 30009 ms: Sem participantes (peers): Nenhum participante enviou os metadados em 30s (torrent sem peers no momento).
+11-07 02:04:24.347 I/BruDreTorrent( 6148): Sessão BitTorrent encerrada
+11-07 02:04:24.348 I/TestRunner( 6148): finished: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-07 02:04:24.350 I/TestRunner( 6148): started: v06_fallbackDuringPlayback(com.brudre.streaming.V91DeviceTest)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):   Caused by: java.io.EOFException
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:04:41.949 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-07 02:04:41.990 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): Caused by: java.io.EOFException
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:04:41.990 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):   Caused by: java.io.EOFException
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:04:47.430 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-07 02:04:47.442 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): Caused by: java.io.EOFException
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:04:47.442 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:04:51.743 I/BruDreTest( 6148): Falha no meio: trocas=2 posição=17156 (sem voltar do início)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:05:00.981 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-07 02:05:00.983 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:05:00.983 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148): Playback error
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at android.os.Looper.loop(Looper.java:223)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:05:04.194 E/ExoPlayerImplInternal( 6148):       at java.lang.Thread.run(Thread.java:923)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-07 02:05:04.195 W/BruDrePlayer( 6148): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at android.os.Looper.loop(Looper.java:223)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:05:04.195 W/BruDrePlayer( 6148): 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:05:13.558 I/TestRunner( 6148): finished: v06_fallbackDuringPlayback(com.brudre.streaming.V91DeviceTest)
+11-07 02:05:13.559 I/TestRunner( 6148): started: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-07 02:05:13.955 I/BruDreTest( 6148): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/opensearch/descricao.xml → OPENSEARCH ok=true OpenSearch (atom+xml) respondeu: 1 resultado(s) para "big buck bunny"
+11-07 02:05:14.348 I/BruDreTest( 6148): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/descritor.json → REST ok=true API REST respondeu: 2 resultado(s) para "big buck bunny"
+11-07 02:05:14.498 I/BruDreTest( 6148): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/search/paged/{slug}-p{page}.json → SEARCH ok=true API respondeu: 1 resultado(s) para "big buck bunny"
+11-07 02:05:14.501 I/BruDreTest( 6148): Capacidades BruDre OpenSearch de teste: pesquisa por texto ✓ • por identificador ✗ • episódios ✗ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-07 02:05:14.502 I/BruDreTest( 6148): Capacidades API REST de teste: pesquisa por texto ✓ • por identificador ✓ • episódios ✓ • paginação ✓ • formatos: HTTP • limite: 30/min
+11-07 02:05:14.502 I/BruDreTest( 6148): Capacidades raw.githubusercontent.com: pesquisa por texto ✓ • por identificador ✗ • episódios ✓ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-07 02:05:14.542 I/BruDreTest( 6148): Página 1: [OPENSEARCH:Big Buck Bunny (2008), REST:Big Buck Bunny, REST:BruDre Teste Série, SEARCH:Big Buck Bunny] mais em=[search_52e1129eebd70788]
+11-07 02:05:14.675 I/BruDreTest( 6148): Página 2: [Big Buck Bunny (versão 2)] mais em=[]
+11-07 02:05:14.812 I/BruDreSources( 6148): Catálogo Paginado: 2 títulos (0 descartados)
+11-07 02:05:14.960 I/BruDreSources( 6148): Catálogo feed_477140bd0b7c1577: +1 títulos (página seguinte)
+11-07 02:05:14.967 I/TestRunner( 6148): finished: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-07 02:05:14.968 I/TestRunner( 6148): run finished: 50 tests, 0 failed, 0 ignored

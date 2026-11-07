@@ -1,0 +1,207 @@
+11-07 01:58:28.147  6148  6168 I TestRunner: started: t27_sharedMagnetAndTorrentFromOtherApps(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:28.149  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:58:28.151   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 01:58:28.155   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 45, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:58:28.156   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=45)
+11-07 01:58:28.169   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:28.197  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: PRE_ON_CREATE
+11-07 01:58:28.197  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:58:28.243  6148  6194 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 01:58:28.245  6148  6194 I BruDreTorrent: Sessão BitTorrent iniciada (conexões=40)
+11-07 01:58:28.275  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: CREATED
+11-07 01:58:28.275  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@7ab5ab
+11-07 01:58:28.295  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: STARTED
+11-07 01:58:28.295  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@7ab5ab
+11-07 01:58:28.297  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: RESUMED
+11-07 01:58:28.297  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@7ab5ab
+11-07 01:58:28.330   495  6430 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868e250, tid 6430
+11-07 01:58:28.352   495  6430 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:28.366   495  6430 D EGL_emulation: eglCreateContext: 0x75ac38700260: maj 3 min 0 rcv 3
+11-07 01:58:28.371   495  6430 D EGL_emulation: eglMakeCurrent: 0x75ac38700260: ver 3 0 (tinfo 0x75abd8737db0) (first time)
+11-07 01:58:28.405   495  1025 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868fa50, tid 1025
+11-07 01:58:28.409   495  1025 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:28.532  6148  6148 W rudre.streamin: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+11-07 01:58:28.532  6148  6148 W rudre.streamin: Common causes for lock verification issues are non-optimized dex code
+11-07 01:58:28.532  6148  6148 W rudre.streamin: and incorrect proguard optimizations.
+11-07 01:58:28.853   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.allocator@4.0::IAllocator/default in either framework or device manifest.
+11-07 01:58:28.854  6148  6194 W Gralloc4: allocator 3.x is not supported
+11-07 01:58:28.976  6148  8328 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48687890, tid 8328
+11-07 01:58:28.983  6148  8328 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:28.986  6148  8328 D EGL_emulation: eglCreateContext: 0x75ac3872c3c0: maj 3 min 0 rcv 3
+11-07 01:58:28.993  6148  8328 D EGL_emulation: eglMakeCurrent: 0x75ac3872c3c0: ver 3 0 (tinfo 0x75abd8722f60) (first time)
+11-07 01:58:28.997  6148  6194 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868f810, tid 6194
+11-07 01:58:29.209  6148  6194 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:29.373   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=44)
+11-07 01:58:29.374   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:58:29.375   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 44 ended, total sessions:1
+11-07 01:58:29.511   495  2403 D WifiNl80211Manager: Scan result ready event
+11-07 01:58:29.511   495  2403 D WifiNative: Scan result ready event
+11-07 01:58:29.518   495   674 D WifiClientModeImpl: CMD_START_CONNECT  my state DisconnectedState nid=0 roam=false
+11-07 01:58:29.519   495   674 W LastMileLogger: Failed to open free_buffer pseudo-file: /sys/kernel/debug/tracing/instances/wifi/free_buffer: open failed: ENOENT (No such file or directory)
+11-07 01:58:29.519   495   674 W LastMileLogger: Failed to arm fail-safe.
+11-07 01:58:29.520   495   674 I WifiClientModeImpl: Connecting with 02:15:b2:00:00:00 as the mac address
+11-07 01:58:29.521   495   674 D SupplicantStaIfaceHal: connectToNetwork "AndroidWifi"NONE
+11-07 01:58:29.522   495   674 I SupplicantStaIfaceHal: addSupplicantStaNetwork via HIDL
+11-07 01:58:29.527  8274  8274 I wpa_supplicant: wlan0: SME: Trying to authenticate with 02:15:b2:00:00:01 (SSID='AndroidWifi' freq=2437 MHz)
+11-07 01:58:29.549  8274  8274 I wpa_supplicant: wlan0: Trying to associate with 02:15:b2:00:00:01 (SSID='AndroidWifi' freq=2437 MHz)
+11-07 01:58:29.567  8274  8274 I wpa_supplicant: wlan0: Associated with 02:15:b2:00:00:01
+11-07 01:58:29.567  8274  8274 I wpa_supplicant: wlan0: CTRL-EVENT-CONNECTED - Connection to 02:15:b2:00:00:01 completed [id=0 id_str=%7B%22configKey%22%3A%22%5C%22AndroidWifi%5C%22NONE%22%2C%22creatorUid%22%3A%221000%22%7D]
+11-07 01:58:29.571  8274  8274 I wpa_supplicant: wlan0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: stopIpClient IpClientWithPreConnection: false
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: java.lang.Throwable
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopIpClient(ClientModeImpl.java:1070)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopDhcpSetup(ClientModeImpl.java:1085)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.startIpClient(ClientModeImpl.java:6533)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.access$6800(ClientModeImpl.java:163)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl$ObtainingIpState.enter(ClientModeImpl.java:5131)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.invokeEnterMethods(StateMachine.java:1037)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.performTransitions(StateMachine.java:879)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.handleMessage(StateMachine.java:819)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:58:29.578   495   674 V WifiClientModeImpl: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:58:29.601   283   930 E Netd    : no such netId 103
+11-07 01:58:29.606   989  8297 D DhcpClient: l2key: W6fc6b43d4a08b9cb lease address: /10.0.2.16 lease expiry: 1794102630524 current time: 1794016709606
+11-07 01:58:29.607   989  8297 D DhcpClient: Broadcasting DHCPREQUEST ciaddr=0.0.0.0 request=10.0.2.16 serverid=null
+11-07 01:58:29.609   989  8297 D DhcpClient: Received packet: 02:15:b2:00:00:00 ACK: your new IP /10.0.2.16, netmask /255.255.255.0, gateways [/10.0.2.2] DNS servers: /10.0.2.3 , lease time 86400
+11-07 01:58:29.610   989  8297 D DhcpClient: Confirmed lease: android.net.networkstack.DhcpResults@e43c5ff DHCP server /10.0.2.2 Vendor info null lease 86400 seconds Servername
+11-07 01:58:29.623   495  2070 D WifiMemoryStoreImpl: Set cluster G70bb1beff676ecaf for W6fc6b43d4a08b9cb: SUCCESS
+11-07 01:58:29.638   283   930 E Netd    : no such netId 103
+11-07 01:58:29.639   283   930 E Netd    : no such netId 103
+11-07 01:58:29.641   989  8297 D DhcpClient: Scheduling renewal in 43199s
+11-07 01:58:29.642   989  8297 D DhcpClient: Scheduling rebind in 75599s
+11-07 01:58:29.642   989  8297 D DhcpClient: Scheduling expiry in 86399s
+11-07 01:58:29.646   495  2070 D WifiMemoryStoreImpl: Set cluster G70bb1beff676ecaf for W70bb1beff676ecaf: SUCCESS
+11-07 01:58:29.651  1195  1195 I GeofencerStateMachine: sendWifiConnectivityChanged: connectivity=true
+11-07 01:58:29.656   495   674 W WifiScoreReport: Cannot start external scoring netId=103 currentNetId=103 sessionId=1035
+11-07 01:58:29.702   283  8330 W resolv  : Validating DnsTlsServer on netId 103
+11-07 01:58:29.734   495   674 D WifiClientModeImpl: Received signal strength thresholds: []
+11-07 01:58:29.734   495   674 E WifiVendorHal: stopRssiMonitoring(l.2078) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-07 01:58:29.752   989  8333 D NetworkMonitor/103: PROBE_DNS connectivitycheck.gstatic.com 6ms OK 142.251.150.120
+11-07 01:58:29.762   989  8332 D NetworkMonitor/103: PROBE_DNS www.google.com 15ms OK 142.251.151.119,142.251.153.119,142.251.157.119,142.251.154.119,142.251.155.119,142.251.152.119,142.251.150.119,142.251.156.119
+11-07 01:58:29.779   989  8333 D NetworkMonitor/103: PROBE_HTTP http://connectivitycheck.gstatic.com/generate_204 time=22ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 07 Nov 2026 01:58:30 GMT], X-Android-Received-Millis=[1794016709779], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1794016709774]}
+11-07 01:58:29.783   989  8332 D NetworkMonitor/103: PROBE_HTTPS https://www.google.com/generate_204 time=20ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Alt-Svc=[h3=":443"; ma=2592000,h3-29=":443"; ma=2592000], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 07 Nov 2026 01:58:30 GMT], X-Android-Received-Millis=[1794016709783], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1794016709778]}
+11-07 01:58:29.787   989  8331 D NetworkMonitor/103: isCaptivePortal: isSuccessful()=true isPortal()=false RedirectUrl=null isPartialConnectivity()=false Time=40ms
+11-07 01:58:29.818   495   976 D NetworkTimeUpdateService: New default network 103; checking time.
+11-07 01:58:29.824   745   745 W View    : requestLayout() improperly called by com.android.keyguard.AlphaOptimizedLinearLayout{305c496 V.E...... ......ID 5,0-35,44 #7f0a050b app:id/wifi_group} during layout: running second layout pass
+11-07 01:58:29.832  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status true
+11-07 01:58:29.832  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:29.838  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [WIFI]
+11-07 01:58:29.840  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status true
+11-07 01:58:29.840  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:29.842  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [WIFI]
+11-07 01:58:29.844   495   534 I GnssNetworkConnectivityHandler: updateNetworkState, state=CLOSED, connected=true, network=103, capabilities=[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=37000Kbps LinkDnBandwidth>=37000Kbps SignalStrength: -50 OwnerUid: 1000 AdministratorUids: [] SSID: "AndroidWifi" RequestorUid: -1 RequestorPackageName: null], apn: , availableNetworkCount: 2
+11-07 01:58:29.854   745   745 W View    : requestLayout() improperly called by com.android.keyguard.AlphaOptimizedLinearLayout{d5e9817 V.E...... ......ID 5,0-35,44 #7f0a050b app:id/wifi_group} during layout: running second layout pass
+11-07 01:58:29.854   745   745 W View    : requestLayout() improperly called by com.android.keyguard.AlphaOptimizedLinearLayout{c67f404 V.E...... ......ID 5,0-35,44 #7f0a050b app:id/wifi_group} during layout: running second layout pass
+11-07 01:58:29.856  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor$1.onReceive():51 onReceive() : Action = android.net.conn.CONNECTIVITY_CHANGE
+11-07 01:58:29.859  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor.notifyIfNetworkChanged():148 notifyIfNetworkChanged: newState = NON_METERED, airplaneModeOn = false, notifyAnyway = false
+11-07 01:58:29.859  1405  1405 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():84 onNetworkAvailable: networkState = NON_METERED, isAirplaneModeOn = false
+11-07 01:58:29.859  1405  8215 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():84 onNetworkAvailable: networkState = NON_METERED, isAirplaneModeOn = false
+11-07 01:58:29.864  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor$1.onReceive():51 onReceive() : Action = android.net.conn.CONNECTIVITY_CHANGE
+11-07 01:58:29.865  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor.notifyIfNetworkChanged():148 notifyIfNetworkChanged: newState = NON_METERED, airplaneModeOn = false, notifyAnyway = false
+11-07 01:58:29.872  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status true
+11-07 01:58:29.873  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:29.874  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [WIFI]
+11-07 01:58:29.901   495   674 W LastMileLogger: Failed to stop event tracing: /sys/kernel/debug/tracing/instances/wifi/tracing_on: open failed: ENOENT (No such file or directory)
+11-07 01:58:29.909   495   667 D WifiMemoryStoreImpl: Set cluster G70bb1beff676ecaf for W6fc6b43d4a08b9cb: SUCCESS
+11-07 01:58:29.933  1195  8339 I NetworkManagementSocketTagger: tagSocketFd(-1, 805307399, -1) failed with errno-9
+11-07 01:58:30.074  6148  6160 I rudre.streamin: Background young concurrent copying GC freed 57983(4537KB) AllocSpace objects, 33(1988KB) LOS objects, 19% free, 13MB/17MB, paused 420us total 373.261ms
+11-07 01:58:30.075  6148  6208 I OpenGLRenderer: Davey! duration=1766ms; Flags=1, IntendedVsync=551509122754, Vsync=551509122754, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=551509442225, AnimationStart=551509443271, PerformTraversalsStart=551509443876, DrawStart=552006389877, SyncQueued=552032103879, SyncStart=552032803076, IssueDrawCommandsStart=552032880015, SwapBuffers=553211021856, FrameCompleted=553276570862, DequeueBufferDuration=5290687, QueueBufferDuration=3740774, GpuCompleted=0,
+11-07 01:58:30.086  6148  6148 I Choreographer: Skipped 103 frames!  The application may be doing too much work on its main thread.
+11-07 01:58:30.135  1195  8339 E WakeLock: GCM_HB_ALARM release without a matched acquire!
+11-07 01:58:30.135  1195  8339 W WakeLock: GCM_HB_ALARM counter does not exist
+11-07 01:58:30.218  1195  8341 W WakeLock: GCM_CONN_ALARM counter does not exist
+11-07 01:58:30.347  6148  6208 I OpenGLRenderer: Davey! duration=1987ms; Flags=1, IntendedVsync=551559116586, Vsync=553275783184, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=553289198634, AnimationStart=553289199600, PerformTraversalsStart=553289200273, DrawStart=553436158186, SyncQueued=553440952846, SyncStart=553444796886, IssueDrawCommandsStart=553444911993, SwapBuffers=553540843834, FrameCompleted=553550037095, DequeueBufferDuration=3310862, QueueBufferDuration=1084433, GpuCompleted=0,
+11-07 01:58:30.353   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:58:30.353   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +2s200ms
+11-07 01:58:30.356   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:58:30.392   283   283 E Netd    : Error adding route ::/0 -> fe80::2 wlan0 to table 1012: File exists
+11-07 01:58:30.959   495   674 D WifiConfigStore: Writing to stores completed in 10 ms.
+11-07 01:58:31.029  6148  6192 I BruDreTorrent: Sessão BitTorrent encerrada
+11-07 01:58:31.128  6148  6208 I OpenGLRenderer: Davey! duration=1037ms; Flags=1, IntendedVsync=553292558466, Vsync=553542558456, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=553558066013, AnimationStart=553558066982, PerformTraversalsStart=553666760233, DrawStart=553918882427, SyncQueued=553947375577, SyncStart=553948298041, IssueDrawCommandsStart=553948444820, SwapBuffers=554304901839, FrameCompleted=554330703364, DequeueBufferDuration=47893, QueueBufferDuration=342231, GpuCompleted=0,
+11-07 01:58:31.139  6148  6665 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4869db50, tid 6665
+11-07 01:58:31.158  6148  6632 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486a2290, tid 6632
+11-07 01:58:31.239  6148  6665 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:31.276  6148  6632 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:31.304  6148  6192 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48685190, tid 6192
+11-07 01:58:31.368  6148  6192 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:31.557  6148  6160 I rudre.streamin: Background concurrent copying GC freed 140331(6630KB) AllocSpace objects, 20(1100KB) LOS objects, 49% free, 11MB/22MB, paused 7.491ms total 852.451ms
+11-07 01:58:31.920  6148  6168 I BruDreTest: Compartilhado: 3 vídeos, erro=null
+11-07 01:58:31.921  1897  3410 I PBSessionCacheImpl: Deleted sessionId[8344888247796358] from persistence.
+11-07 01:58:31.926  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:58:33.158   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=45)
+11-07 01:58:33.159   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:58:33.159   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 45 ended, total sessions:0
+11-07 01:58:33.161   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 01:58:33.508   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 01:58:33.509  8350  8350 I Gralloc4: mapper 4.x is not supported
+11-07 01:58:33.514  8350  8350 D HostConnection: createUnique: call
+11-07 01:58:33.515  8350  8350 D HostConnection: HostConnection::get() New Host Connection established 0x7f4e8fa111d0, tid 8350
+11-07 01:58:33.539  8350  8350 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:33.721  8355  8357 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:58:33.722  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/torrent_arquivos.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 01:58:33.751  6148  6168 I BruDreTest: screenshot: torrent_arquivos
+11-07 01:58:33.751  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/torrent_arquivos.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/torrent_arquivos.png
+11-07 01:58:33.720  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:96): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 01:58:33.752  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 10ms, 0 inserts 0 updates 0 deletes
+11-07 01:58:33.753  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/torrent_arquivos.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 01:58:33.779   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:58:33.785   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 46, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-07 01:58:33.785   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=46)
+11-07 01:58:33.740  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:97): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 01:58:33.789   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:33.740  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:98): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 01:58:33.882   418   418 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-07 01:58:33.907  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: PAUSED
+11-07 01:58:33.907  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@7ab5ab
+11-07 01:58:33.989   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868e250, tid 6281
+11-07 01:58:34.013   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:34.054  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: STOPPED
+11-07 01:58:34.054  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@7ab5ab
+11-07 01:58:34.103   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38738440: maj 3 min 0 rcv 3
+11-07 01:58:34.105   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38738440: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:58:34.129   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 01:58:34.171  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@7ab5ab in: DESTROYED
+11-07 01:58:34.172  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:58:34.304  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:58:34.321  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: PRE_ON_CREATE
+11-07 01:58:34.321  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:58:34.357  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: CREATED
+11-07 01:58:34.357  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@20b898f
+11-07 01:58:34.365  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: STARTED
+11-07 01:58:34.365  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@20b898f
+11-07 01:58:34.366  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: RESUMED
+11-07 01:58:34.366  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@20b898f
+11-07 01:58:34.375   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 01:58:34.377   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:34.435  1897  2353 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 01:58:34.571  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 01:58:34.615  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 01:58:34.649   745   780 I ndroid.systemu: NativeAlloc concurrent copying GC freed 11753(611KB) AllocSpace objects, 7(140KB) LOS objects, 49% free, 7064KB/13MB, paused 12us total 524.033ms
+11-07 01:58:34.915   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:58:34.952   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:58:34.953   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +599ms
+11-07 01:58:35.185   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868ff90, tid 6281
+11-07 01:58:35.198   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:35.210   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38737b50: maj 3 min 0 rcv 3
+11-07 01:58:35.212   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38737b50: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:58:35.390   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:58:35.407   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 47, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:58:35.407   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=47)
+11-07 01:58:35.445   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:35.566  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: PAUSED
+11-07 01:58:35.566  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@20b898f
+11-07 01:58:35.569  1897  2497 I PBSessionCacheImpl: Deleted sessionId[8344888247796361] from persistence.
+11-07 01:58:35.661  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:58:35.731   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming.test/0/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:58:35.731   495   542 I ActivityTaskManager: Displayed com.brudre.streaming.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity: +344ms
+11-07 01:58:35.738   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:58:35.814   949   969 W System  : A resource failed to call release.
+11-07 01:58:35.814   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-07 01:58:35.814   949   969 W System  : A resource failed to call release.
+11-07 01:58:35.817  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: STOPPED
+11-07 01:58:35.817  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@20b898f
+11-07 01:58:35.992  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@20b898f in: DESTROYED
+11-07 01:58:35.992  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:58:35.998   745   780 I ndroid.systemu: NativeAlloc concurrent copying GC freed 2940(263KB) AllocSpace objects, 2(40KB) LOS objects, 49% free, 6909KB/13MB, paused 21us total 222.011ms
+11-07 01:58:36.000  6148  6168 I TestRunner: finished: t27_sharedMagnetAndTorrentFromOtherApps(com.brudre.streaming.SourceEngineTest)

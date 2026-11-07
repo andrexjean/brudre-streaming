@@ -1,0 +1,12 @@
+11-07 02:03:53.583  6148  6168 I TestRunner: started: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:53.586  6148  8795 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:03:53.587  6148  8795 I BruDreTorrent: Sessão BitTorrent iniciada (conexões=40)
+11-07 02:03:55.031   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=73)
+11-07 02:03:55.032   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:03:55.032   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 73 ended, total sessions:0
+11-07 02:03:55.035   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 02:04:00.003   745   745 D KeyguardClockSwitch: Updating clock: 204
+11-07 02:04:15.961  9170  9238 W GmsLocationProvider: Error removing location updates: 16
+11-07 02:04:23.594  6148  6168 I BruDreTest: Sem peers em 30009 ms: Sem participantes (peers): Nenhum participante enviou os metadados em 30s (torrent sem peers no momento).
+11-07 02:04:24.347  6148  6168 I BruDreTorrent: Sessão BitTorrent encerrada
+11-07 02:04:24.348  6148  6168 I TestRunner: finished: v07_noPeers(com.brudre.streaming.V91DeviceTest)

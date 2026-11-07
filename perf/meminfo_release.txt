@@ -1,0 +1,56 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 1214342 Realtime: 1214342
+
+** MEMINFO in pid 10096 [com.brudre.streaming] **
+                   Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap    70584    70536       12       33    71740    90104    71148    15054
+  Dalvik Heap    13911    13880        4      109    14628    19933     9967     9966
+ Dalvik Other     2249     1996        8        5     3032                           
+        Stack     3388     3388        0        0     3396                           
+       Ashmem       42        0        0        0      120                           
+    Other dev       36        0       36        0      260                           
+     .so mmap    10135      292     3932       17    48288                           
+    .jar mmap     1818        0      268        0    22448                           
+    .apk mmap      856        0       92        0    22384                           
+    .ttf mmap      726        0      432        0     1188                           
+    .dex mmap     5103        4     5096        0     5120                           
+    .oat mmap     1076        0       72        0    14996                           
+    .art mmap     1777     1176       92      149    15576                           
+   Other mmap      137       36       40        0     1448                           
+      Unknown      416      396        8        4      672                           
+        TOTAL   112571    91704    10092      317   112571   110037    81115    25020
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    15148                          30204
+         Native Heap:    70536                          71740
+                Code:    10196                         114968
+               Stack:     3388                           3396
+            Graphics:        0                              0
+       Private Other:     2528
+              System:    10775
+             Unknown:                                    4988
+ 
+           TOTAL PSS:   112571            TOTAL RSS:   225296       TOTAL SWAP PSS:      317
+ 
+ Objects
+               Views:        7         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       12        AssetManagers:        0
+       Local Binders:       17        Proxy Binders:       35
+       Parcel memory:       12         Parcel count:       50
+    Death Recipients:        1      OpenSSL Sockets:       36
+            WebViews:        0
+ 
+ SQL
+         MEMORY_USED:      449
+  PAGECACHE_OVERFLOW:      181          MALLOC_SIZE:      117
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      136             18        13/94/1  /data/user/0/com.brudre.streaming/databases/brudre.db
+         4        8                         0/0/0    (attached) temp
+         4      136             20        12/19/1  /data/user/0/com.brudre.streaming/databases/brudre.db (3)

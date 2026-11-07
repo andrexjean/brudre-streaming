@@ -1,0 +1,211 @@
+11-07 02:00:28.367  6148  6168 I TestRunner: started: t04_searchFindsTitles(com.brudre.streaming.UiFlowTest)
+11-07 02:00:28.409  6148  6168 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@2ef0f12]
+11-07 02:00:28.419  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 02:00:28.425   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 02:00:28.442   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:00:28.542  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: PRE_ON_CREATE
+11-07 02:00:28.542  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 02:00:28.553  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: CREATED
+11-07 02:00:28.554  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@65710d1
+11-07 02:00:28.555  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: STARTED
+11-07 02:00:28.555  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@65710d1
+11-07 02:00:28.555  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: RESUMED
+11-07 02:00:28.555  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@65710d1
+11-07 02:00:28.878   495   505 I system_server: NativeAlloc concurrent copying GC freed 215053(9076KB) AllocSpace objects, 35(1224KB) LOS objects, 49% free, 14MB/29MB, paused 38us total 360.505ms
+11-07 02:00:28.880   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 02:00:28.880   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 02:00:28.882   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 02:00:28.882   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 02:00:28.921   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:00:28.928   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +496ms
+11-07 02:00:28.945   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:00:29.094  1897  2496 I PBSessionCacheImpl: Deleted sessionId[8344888247796388] from persistence.
+11-07 02:00:29.095  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: PAUSED
+11-07 02:00:29.095  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@65710d1
+11-07 02:00:29.103  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 02:00:29.147  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: STOPPED
+11-07 02:00:29.147  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@65710d1
+11-07 02:00:29.171  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@65710d1 in: DESTROYED
+11-07 02:00:29.171  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:00:29.188  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: PRE_ON_CREATE
+11-07 02:00:29.188  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-07 02:00:29.191   321   381 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:29.193  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: CREATED
+11-07 02:00:29.193  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@5874610
+11-07 02:00:29.194  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: STARTED
+11-07 02:00:29.194  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@5874610
+11-07 02:00:29.195  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: RESUMED
+11-07 02:00:29.195  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@5874610
+11-07 02:00:29.207   321   381 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:29.290   321   381 I chatty  : uid=1000(system) HwBinder:321_2 identical 3 lines
+11-07 02:00:29.357   321   381 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:29.656  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:29.656  6148  6162 I chatty  : uid=10167(com.brudre.streaming) FinalizerDaemon identical 1 line
+11-07 02:00:29.656  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:29.657  6148  6162 W System  : A resource failed to call dispose.
+11-07 02:00:29.657  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:29.658  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:29.768  1405  1405 W SessionManager: SessionManager.beginSession():53 Try to begin an already begun session [INPUT_SESSION], end it first
+11-07 02:00:29.799  1405  1405 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-07 02:00:29.799  1405  1405 I AndroidIME: AbstractIme.onActivate():84 LatinIme.onActivate() : EditorInfo = Package = com.brudre.streaming : Type = Text : Learning = Enable : Suggestion = Show : AutoCorrection = Enable : Microphone = Show : NoPersonalizedLearning = Disable : AutoStartVoiceInput = Disable, IncognitoMode = false
+11-07 02:00:29.799  1405  1405 I Delight5Facilitator: Delight5Facilitator.initializeForIme():561 initializeForIme() : Locale = [en_US], layout = qwerty
+11-07 02:00:29.799  1405  1405 I Delight5Facilitator: Delight5Facilitator.resetDecoder():670 resetDecoder() : Locale = [en_US]
+11-07 02:00:29.802  1405  1405 I Delight5Decoder: Delight5DecoderWrapper.createOrResetDecoder():293 Decoder reset
+11-07 02:00:29.835  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.run():142 Running LM loader for [en_US]
+11-07 02:00:29.835  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+11-07 02:00:29.835  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+11-07 02:00:29.835  1405  4908 I SuperDelight: SuperDelightLanguageModelProvider.fetchLanguageModel():57 SuperDelightLanguageModelProvider#fetchLanguageModel(): 1 locales
+11-07 02:00:29.835  1405  8215 I SuperDelight: SuperDelightManager.initializeBundledDelightSuperpacks():362 initializeBundledDelightSuperpacks()
+11-07 02:00:29.837  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-07 02:00:29.837  1405  8659 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():160 maybeScheduleAutoPackDownloadForFallback()
+11-07 02:00:29.837  1405  8659 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():197 maybeScheduleAutoPackDownload() for language tag en-US
+11-07 02:00:29.838  1405  1884 I SP      : Registering bundled_delight.2020043000, url: null, constraints: *:*, flags: *, requested: 2020043000, current: 2020043000
+11-07 02:00:29.847  6148  6159 I rudre.streamin: Compiler allocated 6084KB to compile void com.brudre.streaming.ui.screens.OtherScreensKt.SearchScreen(com.brudre.streaming.ui.MainViewModel, kotlin.jvm.functions.Function1, androidx.compose.runtime.Composer, int)
+11-07 02:00:29.865  1405  8215 I SuperDelight: SuperDelightManager.lambda$syncBundledLanguageModels$14():780 SuperDelightManager#syncBundledLanguageModels(): Syncing for version 2020043000
+11-07 02:00:29.871  1405  1884 I SuperDelight: SuperDelightBundledSlicingStrategy.getSlices():39 BundledSlicing#getSlices() : Locale = [en_US]
+11-07 02:00:29.871  1405  1884 I SuperDelight: SuperDelightBundledSlicingStrategy.getSlices():63 BundledSlicing#getSlices(): result {slices=[bundled_delight:main_en_us_2019120400_2], last batch=true, sync metadata=false}
+11-07 02:00:29.871  1405  1884 I SP      : Syncing bundled_delight (2020043000) with slices: [main_en_us_2019120400_2], metadata: false
+11-07 02:00:29.880  1405  1405 W KeyboardModeManager: KeyboardModeManager.setInputView():302 setInputView() : inputView = com.google.android.apps.inputmethod.libs.framework.core.InputView{f9f7e47 V.E...... ......ID 0,0-1920,1032}
+11-07 02:00:29.880  1405  1405 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabledForHostApp():252 Conv2Query not enabled due to current app [com.brudre.streaming] not in whitelist
+11-07 02:00:29.880  1405  1405 I ConversationToQueryExtension: ConversationToQueryExtension.onActivate():162 onActivate() : Disabled by unsupported host app
+11-07 02:00:29.883  1405  1405 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomatically():336 No private IME option set to start voice input.
+11-07 02:00:29.994  1405  1884 I SP      : Sync for bundled_delight succeeded in 124 ms: no changes
+11-07 02:00:29.994  1405  1884 I SP      : GC for 'bundled_delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:30.002  1405  4908 I SuperDelight: SuperDelightManager.initializeDelightSuperpacks():321 initializeDelightSuperpacks()
+11-07 02:00:30.002  1405  4908 I SuperDelight: SuperDelightManager.getDelightMetadataUriAndVersion():1036 getDelightMetadataUriAndVersion(): Phenotype : 2020070800 : https://www.gstatic.com/android/keyboard/dictionarypack/Klaw-normal/metadata.json
+11-07 02:00:30.002  1405  4908 I SuperDelight: SuperDelightAppsSuperpacksManager.initializeDelightAppsSuperpacks():85 initializeDelightAppsSuperpacks()
+11-07 02:00:30.002  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.updateLmAvailableState():365 updateLmAvailableState(): locale? en_US prevState? AVAILABLE
+11-07 02:00:30.002  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.updateLmAvailableState():401 updateLmAvailableState(): locale? en_US newState? AVAILABLE
+11-07 02:00:30.002  1405  4908 I Delight5Facilitator: BlacklistLoader.run():35 Running blacklist loader
+11-07 02:00:30.003  1405  4908 I Delight5Facilitator: ContactsLanguageModelLoader.run():33 Running contacts language model loader
+11-07 02:00:30.003  1405  4908 I Delight5Facilitator: PersonalLanguageModelLoader.run():40 Running personal language model loader
+11-07 02:00:30.003  1405  4908 I Delight5Facilitator: UserHistoryLanguageModelLoader.run():71 Running user history language model loader
+11-07 02:00:30.004  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():98 Reading en_US emoji shortcuts
+11-07 02:00:30.009  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 1, version [2020052800]
+11-07 02:00:30.016  1405  8291 I SuperDelight: SuperDelightManager.lambda$registerAndUpgradeSuperpacks$4():473 SuperDelightManager#registerAndUpgradeSuperpacks(delight): current 2020070800, required 2020070800
+11-07 02:00:30.031  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():114 Read en_US emoji shortcuts successfully.
+11-07 02:00:30.031  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.run():59 1 emoji shortcut maps loaded.
+11-07 02:00:30.032  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.run():67 Finished loading emoji shortcuts
+11-07 02:00:30.032  1405  4908 I Delight5Facilitator: EmailLanguageModelLoader.run():29 Running email language model loader
+11-07 02:00:30.034  1405  8291 I SuperDelight: SuperDelightManager.lambda$syncDownloadableLanguageModels$6():569 SuperDelightManager#syncDownloadableLanguageModels(delight): [OnDevice] Syncing for version 2020070800
+11-07 02:00:30.034  1405  1884 I SuperDelight: SuperDelightDownloadSlicingStrategy.getSlices():82 DownloadSlicing#getSlices() : Locale = [en_US]
+11-07 02:00:30.040  1405  4908 I CrankEngineLocales: CrankEngineLocales.getLocaleToUseForCrankEngine():67 Using locale en_US for emoji prediction
+11-07 02:00:30.043  1405  1884 I SuperDelight: SuperDelightDownloadSlicingStrategy.getSlices():231 DownloadSlicing#getSlices(): result {slices=[delight:main_en_us_2020052800_1], last batch=true, sync metadata=false}
+11-07 02:00:30.046  1405  1884 I SP      : Syncing delight (2020070800) with slices: [main_en_us_2020052800_1], metadata: false
+11-07 02:00:30.091   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:30.091   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:30.093   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:30.095   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:30.106  1405  2384 I native  : proto-store.cc:45 File not found: '/data/user/0/com.google.android.inputmethod.latin/files/personal/adapt_state.en.dat'.
+11-07 02:00:30.106  1405  2384 I native  : (This might be OK for example when a language is being loaded for the first time.)
+11-07 02:00:30.107  1405  1884 I SuperDelight: SuperDelightMergingStrategy.merge():57 SuperDelightMergingStrategy#merge(): selected[[main_en_us_2020052800_1]] synced[[main_en_us_2020052800_1]]
+11-07 02:00:30.107  1405  1884 I SP      : Sync for delight succeeded in 73 ms: no changes
+11-07 02:00:30.107  1405  1884 I SP      : GC for 'delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:30.108  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():598 Loaded main LM 1.en
+11-07 02:00:30.108  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 7, version [n/a]
+11-07 02:00:30.109  1405  2384 I native  : blacklist-assembly.cc:116 LoadBlacklist en
+11-07 02:00:30.109  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():616 Loaded dynamic LM 7.en
+11-07 02:00:30.109  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 4, version [n/a]
+11-07 02:00:30.110  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():616 Loaded dynamic LM 4.en
+11-07 02:00:30.110  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 3, version [n/a]
+11-07 02:00:30.110  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():616 Loaded dynamic LM 3.en
+11-07 02:00:30.121  1405  2384 I tflite  : Initialized TensorFlow Lite runtime.
+11-07 02:00:30.239   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:30.239   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:30.274  1405  1405 W InputConnectionWrapper: InputConnectionWrapper.recordDuration():1447 IPC IC_GET_TEXT_AFTER_CURSOR took 130 ms
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: @
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: !
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: #
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: %
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: &
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: *
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: +
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: /
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: =
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ?
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ^
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: _
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: `
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: {
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: |
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: }
+11-07 02:00:30.478  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ~
+11-07 02:00:30.486   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:30.486   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:30.547  1405  1405 E InputContextLock: InputContextLock.maybeTrackAcquireLockTime():29 Acquire InputContextLock takes 43 ms, mainThreadForSure=true.
+11-07 02:00:31.291   495  2402 D WifiNl80211Manager: Scan result ready event
+11-07 02:00:31.291   495  2402 D WifiNative: Scan result ready event
+11-07 02:00:32.351  1405  1405 W SessionManager: SessionManager.beginSession():53 Try to begin an already begun session [INPUT_SESSION], end it first
+11-07 02:00:32.351  1405  1405 W SessionManager: SessionManager.endSession():96 Child session [INPUT_VIEW_SESSION] is not ended while ending session [{INPUT_VIEW_SESSION=1794016829770, IME_SESSION=1794016829799, INPUT_SESSION=1794016829768, TRAINING_CACHE_SESSION=1794016829799}], ending it now.
+11-07 02:00:32.351  1405  1405 W SessionManager: SessionManager.endSession():96 Child session [IME_SESSION] is not ended while ending session [{INPUT_VIEW_SESSION=1794016829770, IME_SESSION=1794016829799, INPUT_SESSION=1794016829768, TRAINING_CACHE_SESSION=1794016829799}], ending it now.
+11-07 02:00:32.351  1405  1405 W SessionManager: SessionManager.endSession():96 Child session [TRAINING_CACHE_SESSION] is not ended while ending session [{INPUT_VIEW_SESSION=1794016829770, IME_SESSION=1794016829799, INPUT_SESSION=1794016829768, TRAINING_CACHE_SESSION=1794016829799}], ending it now.
+11-07 02:00:32.424  1405  1405 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-07 02:00:32.424  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:32.428  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:32.428  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-07 02:00:32.429  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.shutdown():77 shutdown()
+11-07 02:00:32.429  1405  1405 W SessionManager: SessionManager.endSession():88 Try to end a not begun session [TRAINING_CACHE_SESSION].
+11-07 02:00:32.429  1405  1405 I AndroidIME: AbstractIme.onDeactivate():161 LatinIme.onDeactivate()
+11-07 02:00:32.450  1405  1405 W SessionManager: SessionManager.endSession():88 Try to end a not begun session [IME_SESSION].
+11-07 02:00:32.451  1405  1405 I AndroidIME: AbstractIme.onActivate():84 LatinIme.onActivate() : EditorInfo = Package = com.brudre.streaming : Type = Text : Learning = Enable : Suggestion = Show : AutoCorrection = Enable : Microphone = Show : NoPersonalizedLearning = Disable : AutoStartVoiceInput = Disable, IncognitoMode = false
+11-07 02:00:32.451  1405  1405 I Delight5Facilitator: Delight5Facilitator.initializeForIme():561 initializeForIme() : Locale = [en_US], layout = qwerty
+11-07 02:00:32.451  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+11-07 02:00:32.451  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+11-07 02:00:32.454  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-07 02:00:32.456  1405  8659 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():160 maybeScheduleAutoPackDownloadForFallback()
+11-07 02:00:32.456  1405  8659 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():197 maybeScheduleAutoPackDownload() for language tag en-US
+11-07 02:00:32.508  6148  8328 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486a7510, tid 8328
+11-07 02:00:32.510  1405  1405 W KeyboardModeManager: KeyboardModeManager.setInputView():302 setInputView() : inputView = com.google.android.apps.inputmethod.libs.framework.core.InputView{f9f7e47 V.E...... ......ID 0,0-1920,1032}
+11-07 02:00:32.511  1405  1405 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabledForHostApp():252 Conv2Query not enabled due to current app [com.brudre.streaming] not in whitelist
+11-07 02:00:32.511  1405  1405 I ConversationToQueryExtension: ConversationToQueryExtension.onActivate():162 onActivate() : Disabled by unsupported host app
+11-07 02:00:32.511  1405  1405 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomatically():336 No private IME option set to start voice input.
+11-07 02:00:32.541  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:32.542  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:32.543  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-07 02:00:32.543  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.shutdown():77 shutdown()
+11-07 02:00:32.544  1405  1405 I AndroidIME: AbstractIme.onDeactivate():161 LatinIme.onDeactivate()
+11-07 02:00:32.559  6148  8328 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:32.569  6148  8328 D EGL_emulation: eglCreateContext: 0x75ac387e9e60: maj 3 min 0 rcv 3
+11-07 02:00:32.669   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=59)
+11-07 02:00:32.671   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 02:00:32.672   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:00:32.675   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:32.675   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:32.676   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 59 ended, total sessions:0
+11-07 02:00:32.708  6148  8328 D EGL_emulation: eglMakeCurrent: 0x75ac387e9e60: ver 3 0 (tinfo 0x75abd8722f60) (first time)
+11-07 02:00:32.754  6148  7528 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48692150, tid 7528
+11-07 02:00:32.804  6148  7528 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:32.826   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:32.827   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:32.848  1405  2384 I native  : input-context-store.cc:173 Ignoring stale client request for FetchSuggestions
+11-07 02:00:32.849  1405  1405 W InputContextProxy: InputContextProxy.applyClientDiffInternal():832 Ignore [FetchSuggestions] diff due to stale request: 12<13, inputStateId=7, lastInputStateId=7
+11-07 02:00:32.889  6148  6160 I rudre.streamin: NativeAlloc concurrent copying GC freed 314141(11MB) AllocSpace objects, 14(516KB) LOS objects, 49% free, 11MB/23MB, paused 24us total 128.338ms
+11-07 02:00:34.389   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 02:00:34.421   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 60, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-07 02:00:34.421   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=60)
+11-07 02:00:34.423   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:00:34.455  6148  6911 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48685790, tid 6911
+11-07 02:00:34.455  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: PAUSED
+11-07 02:00:34.455  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@5874610
+11-07 02:00:34.487   418   418 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-07 02:00:34.637  6148  6911 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:34.671   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48690350, tid 6281
+11-07 02:00:34.681   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:34.715   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 02:00:34.719   495  6281 D EGL_emulation: eglCreateContext: 0x75ac3874ac90: maj 3 min 0 rcv 3
+11-07 02:00:34.722  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: STOPPED
+11-07 02:00:34.722  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@5874610
+11-07 02:00:34.783   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac3874ac90: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:00:34.964  1897  2303 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 02:00:34.971  1897  2353 W LocationOracle: No location history returned by ContextManager
+11-07 02:00:34.976   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:34.976   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:34.976   362   362 E Layer   : [Surface(name=Task=90)/@0x3ff6b12 - animation-leash#0] No local sync point found
+11-07 02:00:34.976   362   362 E Layer   : [Surface(name=Task=90)/@0x3ff6b12 - animation-leash#0] No local sync point found
+11-07 02:00:35.032  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 02:00:35.042  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:00:35.047  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:00:35.052  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@5874610 in: DESTROYED
+11-07 02:00:35.052  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:00:35.055  6148  6168 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@2ef0f12]
+11-07 02:00:35.075  6148  6168 I TestRunner: finished: t04_searchFindsTitles(com.brudre.streaming.UiFlowTest)

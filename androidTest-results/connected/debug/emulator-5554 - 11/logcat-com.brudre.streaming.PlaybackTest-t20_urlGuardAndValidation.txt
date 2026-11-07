@@ -1,0 +1,35 @@
+11-07 01:55:24.206  6148  6168 I TestRunner: started: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)
+11-07 01:55:24.215   495  2360 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:24.215   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:24.216  7055  7059 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:24.225  7060  7064 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:24.228  6148  6168 I BruDreTest: UrlGuard https://127.0.0.1:9/x.m3u8 → BlockedUrlException: Destino local bloqueado: 127.0.0.1
+11-07 01:55:24.228  6148  6168 I BruDreTest: UrlGuard https://localhost/x.m3u8 → BlockedUrlException: Destino local bloqueado: localhost
+11-07 01:55:24.229  6148  6168 I BruDreTest: UrlGuard https://[::1]/x.m3u8 → BlockedUrlException: Destino local bloqueado: ::1
+11-07 01:55:24.229  6148  6168 I BruDreTest: UrlGuard https://169.254.169.254/latest → BlockedUrlException: Destino local bloqueado: 169.254.169.254
+11-07 01:55:24.230  6148  6168 I BruDreTest: UrlGuard https://archive.org/download/x/setup.apk → BlockedUrlException: Arquivo executável bloqueado: archive.org
+11-07 01:55:24.910  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-07 01:55:24.911  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-07 01:55:25.012   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=22)
+11-07 01:55:25.012   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:55:25.013   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 22 ended, total sessions:1
+11-07 01:55:25.263  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac986bcf48 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/95 (fetch/transfer)
+11-07 01:55:25.263  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:55:25.266   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c3b188 : 0(0 size) total buffers - 0(0 size) used buffers - 86/91 (recycle/alloc) - 5/91 (fetch/transfer)
+11-07 01:55:25.266   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:55:25.751   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=23)
+11-07 01:55:25.752   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:55:25.753   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 23 ended, total sessions:0
+11-07 01:55:25.754   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 01:55:26.141  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-07 01:55:26.141  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-07 01:55:26.406  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-07 01:55:26.406  1405  1466 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-07 01:55:27.324  6985  7011 I .android.gms.u: Waiting for a blocking GC ProfileSaver
+11-07 01:55:27.713  6148  6168 I BruDreTest: Validador, item inexistente no acervo: UNKNOWN
+11-07 01:55:27.715  6148  6168 I BruDreTest: Aparelho: Google sdk_gphone_x86_64 • Android 11 (API 30) • x86_64 • RAM 1981 MB • H.264 HW até 2160p  H.265 software  VP9 HW até 2160p  AV1 não  AAC software
+11-07 01:55:27.724   495  2360 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:27.725   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:27.725  7069  7073 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:27.735  7074  7078 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:27.737  6148  6168 I TestRunner: finished: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)

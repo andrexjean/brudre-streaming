@@ -1,0 +1,2 @@
+11-07 01:52:37.741  6148  6168 I TestRunner: started: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)
+11-07 01:52:37.800  6148  6168 I TestRunner: finished: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)

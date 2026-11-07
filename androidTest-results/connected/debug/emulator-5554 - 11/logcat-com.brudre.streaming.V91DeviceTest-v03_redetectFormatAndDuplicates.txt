@@ -1,0 +1,52 @@
+11-07 02:03:47.503  6148  6168 I TestRunner: started: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-07 02:03:47.509  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 02:03:47.512   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 02:03:47.513   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 72, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 02:03:47.513   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=72)
+11-07 02:03:47.517   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:03:47.539  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: PRE_ON_CREATE
+11-07 02:03:47.539  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 02:03:47.568  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: CREATED
+11-07 02:03:47.569  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@c250aab
+11-07 02:03:47.575  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: STARTED
+11-07 02:03:47.575  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@c250aab
+11-07 02:03:47.575  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: RESUMED
+11-07 02:03:47.575  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@c250aab
+11-07 02:03:47.885   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:03:47.887   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:03:47.969   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +371ms
+11-07 02:03:48.020  9170  9242 I PBSessionCacheImpl: Deleted sessionId[40331880523760336] from persistence.
+11-07 02:03:48.122  9170  9228 W SearchServiceCore: Abort, client detached.
+11-07 02:03:49.400   495  1659 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:03:49.461   495  1659 D WifiNl80211Manager: Scan result ready event
+11-07 02:03:49.461   495  1659 D WifiNative: Scan result ready event
+11-07 02:03:49.529   495  1659 D WifiNl80211Manager: Scan result ready event
+11-07 02:03:49.529   495  1659 D WifiNative: Scan result ready event
+11-07 02:03:49.771  6148  6168 I BruDreTest: Redetecção: Salva com formato errado: formato redetectado — agora Feed RSS/Atom de vídeos (antes Catálogo BruDre (JSON)). 2 títulos
+11-07 02:03:50.023  6148  6168 I BruDreTest: Duplicada: Fonte duplicada: este endereço já está cadastrado como "Salva com formato errado" (Feed RSS/Atom de vídeos).
+11-07 02:03:50.025   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 02:03:50.028   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 73, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:3, uid:1071 session name: ""
+11-07 02:03:50.028   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=73)
+11-07 02:03:50.031   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:03:50.033  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: PAUSED
+11-07 02:03:50.033  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@c250aab
+11-07 02:03:50.084   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 02:03:50.356  9170  9210 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 02:03:50.374  9170  9170 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 02:03:50.393   362   362 E Layer   : [Surface(name=Task=113)/@0xbbcef9f - animation-leash#0] No local sync point found
+11-07 02:03:50.393   362   362 E Layer   : [Surface(name=Task=113)/@0xbbcef9f - animation-leash#0] No local sync point found
+11-07 02:03:50.393   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:03:50.393   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:03:50.415   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=71)
+11-07 02:03:50.415   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:03:50.416   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 71 ended, total sessions:2
+11-07 02:03:50.454  9170  9228 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:03:50.477  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: STOPPED
+11-07 02:03:50.477  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@c250aab
+11-07 02:03:50.504  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@c250aab in: DESTROYED
+11-07 02:03:50.504  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:03:50.506   949   967 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 9851(536KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 3985KB/7970KB, paused 170us total 128.196ms
+11-07 02:03:50.506   949   969 W System  : A resource failed to call release.
+11-07 02:03:50.507   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 7 lines
+11-07 02:03:50.507   949   969 W System  : A resource failed to call release.
+11-07 02:03:50.519  6148  6168 I TestRunner: finished: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)

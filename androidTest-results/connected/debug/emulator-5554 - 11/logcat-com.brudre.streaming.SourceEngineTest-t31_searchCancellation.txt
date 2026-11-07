@@ -1,0 +1,24 @@
+11-07 01:58:36.003  6148  6168 I TestRunner: started: t31_searchCancellation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:36.074   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:58:36.074   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:58:36.074   362   362 E Layer   : [Surface(name=Task=72)/@0x67c388c - animation-leash#0] No local sync point found
+11-07 01:58:36.074   362   362 E Layer   : [Surface(name=Task=72)/@0x67c388c - animation-leash#0] No local sync point found
+11-07 01:58:36.131  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 01:58:36.134  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 01:58:36.317   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868ff90, tid 6281
+11-07 01:58:36.321   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:36.323   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38773640: maj 3 min 0 rcv 3
+11-07 01:58:36.324   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38773640: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:58:36.855  6148  6168 I BruDreTest: Cancelamento da pesquisa levou 2 ms
+11-07 01:58:38.787   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=46)
+11-07 01:58:38.787   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:58:38.788   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 46 ended, total sessions:1
+11-07 01:58:39.702  1897  7574 W GmsLocationProvider: Error removing location updates: 16
+11-07 01:58:40.408   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=47)
+11-07 01:58:40.409   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:58:40.410   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 47 ended, total sessions:0
+11-07 01:58:40.411   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 01:58:40.853  6258  6272 W System  : A resource failed to call dispose.
+11-07 01:58:40.853  6258  6272 W System  : A resource failed to call dispose.
+11-07 01:58:44.862  6148  6168 W BruDreSearch: Pesquisa em Lenta falhou: SocketTimeoutException: failed to connect to /10.255.255.1 (port 443) from /10.0.2.16 (port 57762) after 8000ms
+11-07 01:58:44.868  6148  6168 I TestRunner: finished: t31_searchCancellation(com.brudre.streaming.SourceEngineTest)

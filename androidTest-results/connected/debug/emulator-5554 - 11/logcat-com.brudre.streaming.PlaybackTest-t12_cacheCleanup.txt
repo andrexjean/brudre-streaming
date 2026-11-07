@@ -1,0 +1,11 @@
+11-07 01:53:35.495  6148  6168 I TestRunner: started: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)
+11-07 01:53:35.505  1897  1915 I earchbox:searc: Background young concurrent copying GC freed 74358(3019KB) AllocSpace objects, 0(0B) LOS objects, 46% free, 10MB/19MB, paused 33us total 373.473ms
+11-07 01:53:35.530   495  1748 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:53:35.531   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:53:35.531  6518  6521 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:53:35.545  6148  6160 I rudre.streamin: Background concurrent copying GC freed 8151(1739KB) AllocSpace objects, 17(16MB) LOS objects, 37% free, 39MB/63MB, paused 20us total 878.584ms
+11-07 01:53:35.552  6523  6527 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:53:35.603   495  1748 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:53:35.604   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:53:35.614  6533  6537 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:53:35.616  6148  6168 I TestRunner: finished: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)

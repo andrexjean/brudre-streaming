@@ -1,0 +1,345 @@
+11-07 01:58:20.659  6148  6168 I TestRunner: started: t10_networkInterruptionIsHandled(com.brudre.streaming.PlaybackTest)
+11-07 01:58:20.687   495  2360 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:58:20.687   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:58:20.739   495  2360 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=false
+11-07 01:58:20.740   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:58:20.741   495   495 D WifiP2pService: Wifi enabled=false, P2P Interface availability=true
+11-07 01:58:20.742  8175  8178 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:58:20.742   495   495 D WifiP2pService: Wifi enabled=false, P2P Interface availability=true
+11-07 01:58:20.743   495   674 D WifiClientModeManager: IMS not registered over IWLAN for subId: 1
+11-07 01:58:20.743   495   674 D WifiClientModeManager: The target role 5
+11-07 01:58:20.751   495   674 I android_os_HwBinder: HwBinder: Starting thread pool for getting: android.hardware.wifi.supplicant@1.0::ISupplicant/default
+11-07 01:58:20.768   724   724 I wpa_supplicant: nl80211: deinit ifname=p2p-dev-wlan0 disabled_11b_rates=0
+11-07 01:58:20.780   284   284 D Zygote  : Forked child process 8189
+11-07 01:58:20.787  1666  8188 I PresencePolling: [PresencePublication] onMobileDataChanged, mDataEnabled=true value=false
+11-07 01:58:20.792  1666  8188 I PresencePolling: [PresencePublication] PRES_PUBLISH_TRIGGER_DATA_CHANGED
+11-07 01:58:20.792  1666  8188 I PresencePolling: [PresencePublication] Didn't get trigger from stack yet, discard framework trigger.
+11-07 01:58:20.804  8189  8189 W rrierdefaultap: Unexpected CPU variant for X86 using defaults: x86_64
+11-07 01:58:20.808  1098  1324 D DcNetworkAgent: NetworkAgent: NetworkAgent channel lost
+11-07 01:58:20.822  1098  1098 D MultiSimSettingController: onUserDataEnabled
+11-07 01:58:20.822  1098  1098 D MultiSimSettingController: setUserDataEnabledForGroup subId 1 enable false
+11-07 01:58:20.839   495   534 I GnssNetworkConnectivityHandler: Network connection lost. Available networks count: 1
+11-07 01:58:20.840   495   534 I GnssNetworkConnectivityHandler: updateNetworkState, state=CLOSED, connected=false, network=101, capabilities=[ Transports: CELLULAR Capabilities: MMS&SUPL&DUN&FOTA&IMS&CBS&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=15000Kbps LinkDnBandwidth>=30000Kbps Specifier: <TelephonyNetworkSpecifier [mSubId = 1]> AdministratorUids: [] RequestorUid: -1 RequestorPackageName: null], apn: epc.tmobile.com, availableNetworkCount: 1
+11-07 01:58:20.847   398   408 I adbd    : jdwp connection from 8189
+11-07 01:58:20.860   724   724 I wpa_supplicant: wlan0: CTRL-EVENT-DISCONNECTED bssid=02:15:b2:00:00:01 reason=3 locally_generated=1
+11-07 01:58:20.869  8189  8189 I rrierdefaultap: The ClassLoaderContext is a special shared library.
+11-07 01:58:20.875  8189  8189 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-07 01:58:20.875  8189  8189 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-07 01:58:20.876  8189  8189 D CarrierDefaultBroadcastReceiver: onReceive intent: com.android.internal.telephony.CARRIER_SIGNAL_RESET
+11-07 01:58:20.880  8189  8189 D CarrierDefaultBroadcastReceiver: apply carrier action idx: 6
+11-07 01:58:20.880  8189  8189 D CarrierActionUtils: onCancelAllNotifications
+11-07 01:58:20.880  8189  8189 D CarrierDefaultBroadcastReceiver: apply carrier action idx: 8
+11-07 01:58:20.880  8189  8189 D CarrierActionUtils: onDisableDefaultURLHandler
+11-07 01:58:20.881   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=42)
+11-07 01:58:20.884   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 01:58:20.884   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 42 ended, total sessions:0
+11-07 01:58:20.885   724   724 I wpa_supplicant: nl80211: deinit ifname=wlan0 disabled_11b_rates=0
+11-07 01:58:20.902   495   674 I SupplicantStaIfaceHal: Terminating supplicant using HIDL
+11-07 01:58:20.903   495   674 I android_os_HwBinder: HwBinder: Starting thread pool for getting: android.hardware.wifi.supplicant@1.0::ISupplicant/default
+11-07 01:58:20.903   724   724 I wpa_supplicant: Terminating...
+11-07 01:58:20.918   495  1022 D SupplicantStaIfaceHal: ISupplicant died: cookie=-4202241745245767220
+11-07 01:58:20.918   495   674 E SupplicantStaIfaceHal: Can't call getKeyMgmtCapabilities_1_3, ISupplicantStaIface is null
+11-07 01:58:20.930   495   674 E SupplicantStaIfaceHal: Can't call getWpaDriverFeatureSet, ISupplicantStaIface is null
+11-07 01:58:20.930   495   674 I WifiNative: Successfully switched to scan mode on iface=Iface:{Name=wlan0,Id=0,Type=STA_SCAN}
+11-07 01:58:20.931   495   495 E SupplicantStaIfaceHal: Can't call setMboCellularDataStatus, ISupplicantStaIface is null
+11-07 01:58:20.931   495   674 W SupplicantStaIfaceHal: ISupplicant died: cookie=1
+11-07 01:58:20.931   495   674 W LastMileLogger: Failed to stop event tracing: /sys/kernel/debug/tracing/instances/wifi/tracing_on: open failed: ENOENT (No such file or directory)
+11-07 01:58:20.932   495   674 W LastMileLogger: Failed to read event trace: /sys/kernel/debug/tracing/instances/wifi/trace
+11-07 01:58:20.936   495   674 E WifiVendorHal: stopRssiMonitoring(l.2078) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-07 01:58:20.938   495   674 E SupplicantStaIfaceHal: Can't call setPowerSave, ISupplicantStaIface is null
+11-07 01:58:20.938   495   674 E SupplicantStaIfaceHal: Can't call setBtCoexistenceMode, ISupplicantStaIface is null
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: stopIpClient IpClientWithPreConnection: false
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: java.lang.Throwable
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopIpClient(ClientModeImpl.java:1070)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopDhcpSetup(ClientModeImpl.java:1085)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.handleNetworkDisconnect(ClientModeImpl.java:2760)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.access$5400(ClientModeImpl.java:163)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl$ConnectModeState.processMessage(ClientModeImpl.java:3974)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.processMsg(StateMachine.java:992)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.handleMessage(StateMachine.java:809)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:58:20.938   495   674 V WifiClientModeImpl: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:58:20.939   989  1206 D DhcpClient: doQuit
+11-07 01:58:20.940  1195  1195 I GeofencerStateMachine: sendWifiConnectivityChanged: connectivity=false
+11-07 01:58:20.942   495   674 D WifiClientModeImpl: ClientModeImpl: Leaving Connected state
+11-07 01:58:20.943   495   674 D WifiCountryCode: updateCountryCode to US
+11-07 01:58:20.943   495   674 E SupplicantStaIfaceHal: Can't call setCountryCode, ISupplicantStaIface is null
+11-07 01:58:20.943   495   674 D WifiCountryCode: Failed to set country code to: US
+11-07 01:58:20.943   495   674 I WifiClientModeImpl: disconnectedstate enter
+11-07 01:58:20.944   495   674 E WifiScoringParams: Invalid frequency(-1), using 5G as default rssi array
+11-07 01:58:20.945  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status true
+11-07 01:58:20.946  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:20.947   495   674 D WifiClientModeManager: entering ScanOnlyModeState
+11-07 01:58:20.947   495   677 I WifiScanningService: Received a request to enable scanning, UID = 1000
+11-07 01:58:20.947   495   677 I WifiScanningService: scanner impls already exists
+11-07 01:58:20.947   495   677 E WifiScanningService: wifi driver loaded received while already loaded
+11-07 01:58:20.947   495   495 D WifiP2pService: Wifi enabled=false, P2P Interface availability=true
+11-07 01:58:20.947   495   674 D WifiScanRequestProxy: Sending scan available broadcast: true
+11-07 01:58:20.948  1195  2493 W Settings: Setting airplane_mode_on has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:58:20.948  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [WIFI]
+11-07 01:58:20.948   495   674 I WifiScanRequestProxy: Scanning is enabled
+11-07 01:58:20.948   495   674 I WifiScanRequestProxy: Scanning for hidden networks is disabled
+11-07 01:58:20.948   495   674 D WakeupController: start()
+11-07 01:58:20.949   495   674 D WakeupController: Setting active to true
+11-07 01:58:20.950   495   674 D WakeupOnboarding: Showing onboarding notification.
+11-07 01:58:20.960   495   534 I GnssNetworkConnectivityHandler: Network connection lost. Available networks count: 0
+11-07 01:58:20.960   495   534 I GnssNetworkConnectivityHandler: updateNetworkState, state=CLOSED, connected=false, network=100, capabilities=[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=37000Kbps LinkDnBandwidth>=37000Kbps SignalStrength: -50 OwnerUid: 1000 AdministratorUids: [] SSID: "AndroidWifi" RequestorUid: -1 RequestorPackageName: null], apn: , availableNetworkCount: 0
+11-07 01:58:20.969   495   674 D WakeupLock: Lock set. Number of networks: 1
+11-07 01:58:20.969  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status false
+11-07 01:58:20.970  2464  2748 I CarrierServices: [49] djm.d: Connected state: [2], networkType: [null]
+11-07 01:58:20.972  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor$1.onReceive():51 onReceive() : Action = android.net.conn.CONNECTIVITY_CHANGE
+11-07 01:58:20.973  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor.getCurrentNetworkState():163 getCurrentNetworkState(): no networks
+11-07 01:58:20.974  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor.notifyIfNetworkChanged():148 notifyIfNetworkChanged: newState = NO_CONNECTION, airplaneModeOn = false, notifyAnyway = false
+11-07 01:58:20.974  1405  1405 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():89 onNetworkLost: networkState = NO_CONNECTION, isAirplaneModeOn = false
+11-07 01:58:20.975  2847  2920 I BugleAction: ActionSchedulerImpl: class com.google.android.apps.messaging.shared.datamodel.action.CountryCodeDetectorAction-CountryCodeDetectorAction:83910048 deferred since it was started from unsafe context
+11-07 01:58:20.981   989  1206 D DhcpClient: DHCP Packet Handler stopped
+11-07 01:58:20.981   989  1206 D DhcpClient: onQuitting
+11-07 01:58:20.982   495   674 E SupplicantStaIfaceHal: Can't call listNetworks, ISupplicantStaIface is null
+11-07 01:58:20.982   495   674 E SupplicantStaIfaceHal: removeAllNetworks failed, got null networks
+11-07 01:58:20.982   495   674 E WifiClientModeImpl: Failed to remove networks on exiting connect mode
+11-07 01:58:20.986  1195  5363 V NativeCrypto: Read error: ssl=0x75ac48682c18: I/O error during system call, Software caused connection abort
+11-07 01:58:20.987  1195  5363 V NativeCrypto: SSL shutdown failed: ssl=0x75ac48682c18: I/O error during system call, Broken pipe
+11-07 01:58:20.987  1195  5363 E WakeLock: GCM_HB_ALARM release without a matched acquire!
+11-07 01:58:20.987  1195  5363 W WakeLock: GCM_HB_ALARM counter does not exist
+11-07 01:58:20.988  1195  5363 W WakeLock: GCM_CONN_ALARM counter does not exist
+11-07 01:58:20.989   495   674 E WifiVendorHal: stopRssiMonitoring(l.2078) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-07 01:58:20.989   495   674 E SupplicantStaIfaceHal: Can't call setPowerSave, ISupplicantStaIface is null
+11-07 01:58:20.989   495   674 E SupplicantStaIfaceHal: Can't call setBtCoexistenceMode, ISupplicantStaIface is null
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: stopIpClient IpClientWithPreConnection: false
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: java.lang.Throwable
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopIpClient(ClientModeImpl.java:1070)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopDhcpSetup(ClientModeImpl.java:1085)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.handleNetworkDisconnect(ClientModeImpl.java:2760)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.stopClientMode(ClientModeImpl.java:3670)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl.access$4100(ClientModeImpl.java:163)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.server.wifi.ClientModeImpl$ConnectModeState.exit(ClientModeImpl.java:3828)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.invokeExitMethods(StateMachine.java:1021)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.performTransitions(StateMachine.java:877)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at com.android.wifi.x.com.android.internal.util.StateMachine$SmHandler.handleMessage(StateMachine.java:819)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:58:20.989   495   674 V WifiClientModeImpl: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:58:20.989   495   674 D WifiDiags: stopLogging() iface list is {} after removing wlan0
+11-07 01:58:20.991   495   674 E WifiVendorHal: resetLogHandler(l.1530) failed {.code = ERROR_NOT_SUPPORTED, .description = }
+11-07 01:58:20.991   495   674 W WifiDiags: Fail to reset log handler
+11-07 01:58:20.993   495  2403 D WifiMemoryStoreImpl: Set cluster G70bb1beff676ecaf for W6fc6b43d4a08b9cb: SUCCESS
+11-07 01:58:20.997  1405  8215 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():89 onNetworkLost: networkState = NO_CONNECTION, isAirplaneModeOn = false
+11-07 01:58:20.997   495   674 D WifiNetworkAgent: NetworkAgent: NetworkAgent channel lost
+11-07 01:58:20.997   495   674 E WifiNative: Could not get Iface object for interface null
+11-07 01:58:21.005   495  1664 D WifiMemoryStoreImpl: Set cluster G70bb1beff676ecaf for W70bb1beff676ecaf: SUCCESS
+11-07 01:58:21.024   495   674 E WifiNative: Could not get Iface object for interface null
+11-07 01:58:21.036  6148  6168 W BruDreSources: Falha na fonte tmdb
+11-07 01:58:21.036  6148  6168 W BruDreSources: com.brudre.streaming.data.CatalogException: Sem conexão com a internet
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository.get$app_debug(CatalogRepository.kt:188)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository.tmdb$lambda$1(CatalogRepository.kt:29)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository.$r8$lambda$n7HG_vK9mJJcA2xokhEfXheeuCc(Unknown Source:0)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.TmdbSource.search(TmdbSource.kt:78)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at com.brudre.streaming.sources.TmdbProvider$search$2.invokeSuspend(Providers.kt:60)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-07 01:58:21.036  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-07 01:58:21.037  6148  6168 W BruDreSources: Falha na fonte archive
+11-07 01:58:21.037  6148  6168 W BruDreSources: com.brudre.streaming.data.CatalogException: Sem conexão com a internet
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository.get$app_debug(CatalogRepository.kt:188)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at com.brudre.streaming.data.CatalogRepository$searchArchive$2.invokeSuspend(CatalogRepository.kt:102)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-07 01:58:21.037  6148  6168 W BruDreSources: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-07 01:58:21.039  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:58:21.047   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 01:58:21.053   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 43, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-07 01:58:21.053   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=43)
+11-07 01:58:21.059   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:21.088   418   418 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-07 01:58:21.088  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: PRE_ON_CREATE
+11-07 01:58:21.088  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:58:21.098  2847  8224 I Bugle   : CountryCodeDetector: updateMainDeviceCountry from default subscription network country. detected country: us
+11-07 01:58:21.142  6148  6148 I ExoPlayerImpl: Init 9f22e62 [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30]
+11-07 01:58:21.169  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: CREATED
+11-07 01:58:21.169  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@ab0f6ab
+11-07 01:58:21.186  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: STARTED
+11-07 01:58:21.186  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@ab0f6ab
+11-07 01:58:21.186   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: 0|android|43|null|1000
+11-07 01:58:21.186   745   745 D InterruptionStateProvider: No heads up: unimportant notification: 0|android|43|null|1000
+11-07 01:58:21.187  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: RESUMED
+11-07 01:58:21.187  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@ab0f6ab
+11-07 01:58:21.228   745   866 D EglHelper: createEglContext start
+11-07 01:58:21.234   745   866 D EGL_emulation: eglCreateContext: 0x75ac386af530: maj 3 min 0 rcv 3
+11-07 01:58:21.234   745   866 D EglHelper: createEglContext done
+11-07 01:58:21.234   745   866 D EglHelper: createEglSurface start
+11-07 01:58:21.324   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:58:21.329   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:58:21.428   745   866 D EglHelper: createEglSurface done
+11-07 01:58:21.456  1897  3410 I PBSessionCacheImpl: Deleted sessionId[8344888247796355] from persistence.
+11-07 01:58:21.471  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:58:21.543   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +276ms
+11-07 01:58:21.701   495  2402 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:58:21.928   495   618 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS |
+11-07 01:58:21.928   728   728 V AvrcpMediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+11-07 01:58:21.929   728   728 D AvrcpMediaPlayerList: Name of package changed: com.android.carrierdefaultapp
+11-07 01:58:21.937  1098  1098 D CarrierSvcBindHelper: No carrier app for: 0
+11-07 01:58:21.954   756   778 I PermissionControllerServiceImpl: Updating user sensitive for uid 10095
+11-07 01:58:21.962  1195  8238 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package:com.android.carrierdefaultapp flg=0x45000010 cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-07 01:58:21.972  1195  8241 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-07 01:58:22.023  1482  2013 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=AppsCorpus serviceId=36 [CONTEXT service_id=21 ]
+11-07 01:58:22.033  1482  3024 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 01:58:22.045  1482  2013 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30 [CONTEXT service_id=21 ]
+11-07 01:58:22.054  1482  3024 I Icing   : Usage reports ok 2, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 01:58:22.056  1482  3024 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 01:58:22.059  1482  3024 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 01:58:22.832   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c39378 : 0(0 size) total buffers - 0(0 size) used buffers - 37/42 (recycle/alloc) - 5/42 (fetch/transfer)
+11-07 01:58:22.832   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:58:22.864  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac986c2288 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/46 (fetch/transfer)
+11-07 01:58:22.864  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:58:23.056  1482  3024 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms [CONTEXT service_id=21 ]
+11-07 01:58:23.059  1482  3024 I Icing   : Indexing done com.google.android.gms-apps [CONTEXT service_id=21 ]
+11-07 01:58:23.462   495  2405 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:58:23.832   462   886 D BufferPoolAccessor2.0: evictor expired: 2, evicted: 0
+11-07 01:58:23.864  6148  6231 D BufferPoolAccessor2.0: evictor expired: 2, evicted: 0
+11-07 01:58:24.200  6148  8225 E ExoPlayerImplInternal: Playback error
+11-07 01:58:24.200  6148  8225 E ExoPlayerImplInternal:   UnknownHostException (no network)
+11-07 01:58:24.201  6148  6148 W BruDrePlayer: Erro de reprodução (streaming direto): ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+11-07 01:58:24.350   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:58:24.370   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:24.371  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: PAUSED
+11-07 01:58:24.371  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@ab0f6ab
+11-07 01:58:24.372   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 44, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:58:24.372   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=44)
+11-07 01:58:24.802   495   617 W system_server: Long monitor contention with owner android.anim (538) at void com.android.server.wm.WindowSurfacePlacer$Traverser.run()(WindowSurfacePlacer.java:59) waiters=2 in boolean com.android.server.wm.InputManagerCallback.notifyFocusChanged(android.os.IBinder, android.os.IBinder) for 171ms
+11-07 01:58:24.804   495  2405 D WifiNl80211Manager: Scan result ready event
+11-07 01:58:24.804   495  2405 D WifiNative: Scan result ready event
+11-07 01:58:24.914   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868eb50, tid 6281
+11-07 01:58:24.929   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:24.950   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 01:58:25.005   495  6281 D EGL_emulation: eglCreateContext: 0x75ac386e2070: maj 3 min 0 rcv 3
+11-07 01:58:25.009   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac386e2070: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:58:25.012  6148  6148 I ExoPlayerImpl: Release 9f22e62 [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30] [media3.common, media3.ui, media3.exoplayer, media3.decoder, media3.exoplayer.hls, media3.datasource, media3.datasource.okhttp, media3.extractor]
+11-07 01:58:25.013  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: STOPPED
+11-07 01:58:25.013  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@ab0f6ab
+11-07 01:58:25.016  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@ab0f6ab in: DESTROYED
+11-07 01:58:25.020  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:58:25.129   495  1558 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:58:25.129   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:58:25.131   495   495 D WifiP2pService: Wifi enabled=false, P2P Interface availability=true
+11-07 01:58:25.165   495   674 I SupplicantStaIfaceHal: Starting supplicant using HIDL
+11-07 01:58:25.172   166   166 I hwservicemanager: Since android.hardware.wifi.supplicant@1.0::ISupplicant/default is not registered, trying to start it as a lazy HAL.
+11-07 01:58:25.173   495   674 D SupplicantStaIfaceHal: Successfully triggered start of supplicant using HIDL
+11-07 01:58:25.265   949   967 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 8266(425KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 4058KB/8117KB, paused 21us total 284.606ms
+11-07 01:58:25.266   949   969 W System  : A resource failed to call release.
+11-07 01:58:25.266   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-07 01:58:25.266   949   969 W System  : A resource failed to call release.
+11-07 01:58:25.310   362   362 E Layer   : [Surface(name=Task=68)/@0xef8f8f4 - animation-leash#0] No local sync point found
+11-07 01:58:25.310   362   362 E Layer   : [Surface(name=Task=68)/@0xef8f8f4 - animation-leash#0] No local sync point found
+11-07 01:58:25.310   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:58:25.311   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:58:25.350  1897  2303 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 01:58:25.386  1666  8278 I PresencePolling: [PresencePublication] onMobileDataChanged, mDataEnabled=false value=true
+11-07 01:58:25.386  1666  8278 I PresencePolling: [PresencePublication] PRES_PUBLISH_TRIGGER_DATA_CHANGED
+11-07 01:58:25.386  1666  8278 I PresencePolling: [PresencePublication] Didn't get trigger from stack yet, discard framework trigger.
+11-07 01:58:25.390  1098  1098 D TelephonyProvider: subIdString = 1 subId = 1
+11-07 01:58:25.437  1098  1098 D TelephonyProvider: subIdString = 1 subId = 1
+11-07 01:58:25.459  1098  1098 D MultiSimSettingController: onUserDataEnabled
+11-07 01:58:25.459  1098  1098 D MultiSimSettingController: setUserDataEnabledForGroup subId 1 enable true
+11-07 01:58:25.473  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 01:58:25.513  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 01:58:25.560   283  8280 W resolv  : Validating DnsTlsServer on netId 102
+11-07 01:58:25.561   283  8280 W resolv  : Validation failed
+11-07 01:58:25.569   283  8281 W resolv  : Validating DnsTlsServer on netId 102
+11-07 01:58:25.575   495   505 I system_server: NativeAlloc concurrent copying GC freed 203768(10MB) AllocSpace objects, 51(2920KB) LOS objects, 49% free, 14MB/29MB, paused 40us total 111.710ms
+11-07 01:58:25.575   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:25.575   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:25.575   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:25.575   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:25.575   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:25.575   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:25.580   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:25.580   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:25.580   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:25.580   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:25.613   283  8281 W resolv  : SSL_connect ssl error =5, mark 0xf0066: Connection refused
+11-07 01:58:25.613   283  8281 W resolv  : Validation failed
+11-07 01:58:25.633   989  8284 D NetworkMonitor/102: PROBE_DNS connectivitycheck.gstatic.com 35ms OK 142.251.150.120,2607:f8b0:4007:803::2003
+11-07 01:58:25.661   495   976 D NetworkTimeUpdateService: New default network 102; checking time.
+11-07 01:58:25.667  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status false
+11-07 01:58:25.668  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:25.671  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor$1.onReceive():51 onReceive() : Action = android.net.conn.CONNECTIVITY_CHANGE
+11-07 01:58:25.674  1405  1405 I DeviceStatusMonitor: DeviceStatusMonitor.notifyIfNetworkChanged():148 notifyIfNetworkChanged: newState = METERED, airplaneModeOn = false, notifyAnyway = false
+11-07 01:58:25.675  1405  1405 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():84 onNetworkAvailable: networkState = METERED, isAirplaneModeOn = false
+11-07 01:58:25.676  8274  8274 I wpa_supplicant: Processing hidl events on FD 3
+11-07 01:58:25.678  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [MOBILE]
+11-07 01:58:25.679  8274  8274 I HidlServiceManagement: Registered android.hardware.wifi.supplicant@1.3::ISupplicant/default (start delay of 400ms)
+11-07 01:58:25.679  8274  8274 I wpa_supplicant: Successfully initialized wpa_supplicant
+11-07 01:58:25.681  8274  8274 I wpa_supplicant: rfkill: Cannot open RFKILL control device
+11-07 01:58:25.683   989  8283 D NetworkMonitor/102: PROBE_DNS www.google.com 83ms OK 142.251.151.119,142.251.154.119,142.251.152.119,142.251.157.119,142.251.155.119,142.251.156.119,142.251.153.119,142.251.150.119,2001:4860:4827:7700::,2001:4860:482d:7700::,2001:4860:4826:7700::,2001:4860:4829:7700::,2001:4860:482a:7700::,2001:4860:482b:7700::,2001:4860:482c:7700::,2001:4860:4828:7700::
+11-07 01:58:25.684  1405  8291 I NetworkInfoNotification: NetworkInfoNotification$Listener.onReceive():84 onNetworkAvailable: networkState = METERED, isAirplaneModeOn = false
+11-07 01:58:25.685   745   780 I ndroid.systemu: NativeAlloc concurrent copying GC freed 8630(597KB) AllocSpace objects, 4(80KB) LOS objects, 49% free, 7058KB/13MB, paused 54.659ms total 706.959ms
+11-07 01:58:25.688  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status false
+11-07 01:58:25.688  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:25.699  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [MOBILE]
+11-07 01:58:25.702  8274  8274 I wpa_supplicant: rfkill: Cannot get wiphy information
+11-07 01:58:25.703   495   627 I android_os_HwBinder: HwBinder: Starting thread pool for getting: android.hardware.wifi.supplicant@1.0::ISupplicant/default
+11-07 01:58:25.704   495   627 I SupplicantStaIfaceHal: Completed initialization of ISupplicant.
+11-07 01:58:25.704   495   674 E SupplicantStaIfaceHal: Can't call setupIface, ISupplicantStaIface is null
+11-07 01:58:25.704   495   674 I android_os_HwBinder: HwBinder: Starting thread pool for getting: android.hardware.wifi.supplicant@1.0::ISupplicant/default
+11-07 01:58:25.705   495   674 D SupplicantStaIfaceHal: Newer HAL is found, skip V1_2 remaining init flow.
+11-07 01:58:25.705   495   674 D SupplicantStaIfaceHal: Newer HAL is found, skip V1_1 remaining init flow.
+11-07 01:58:25.705   495   674 D SupplicantStaIfaceHal: Newer HAL is found, skip V1_0 remaining init flow.
+11-07 01:58:25.716   495   674 I WifiNative: Successfully switched to connectivity mode on iface=Iface:{Name=wlan0,Id=0,Type=STA_CONNECTIVITY}
+11-07 01:58:25.716   495   674 D WakeupController: stop()
+11-07 01:58:25.716   495   674 D WifiClientModeManager: entering ConnectModeState
+11-07 01:58:25.717   495   674 D WifiScanRequestProxy: Sending scan available broadcast: true
+11-07 01:58:25.718   495   677 I WifiScanningService: Received a request to enable scanning, UID = 1000
+11-07 01:58:25.718   495   677 I WifiScanningService: scanner impls already exists
+11-07 01:58:25.718   495   677 E WifiScanningService: wifi driver loaded received while already loaded
+11-07 01:58:25.722   495   674 I WifiScanRequestProxy: Scanning is enabled
+11-07 01:58:25.722   495   674 I WifiScanRequestProxy: Scanning for hidden networks is enabled
+11-07 01:58:25.725   495   495 D WifiP2pService: Wifi enabled=true, P2P Interface availability=true, Number of clients=0
+11-07 01:58:25.725   495   495 D WifiP2pService: Wifi enabled=true, P2P Interface availability=true
+11-07 01:58:25.725   495   674 D WifiClientModeImpl: entering ConnectModeState: ifaceName = wlan0
+11-07 01:58:25.725   495   674 D WifiClientModeImpl: setupClientMode() ifacename = wlan0
+11-07 01:58:25.730   989  8284 D NetworkMonitor/102: PROBE_HTTP http://connectivitycheck.gstatic.com/generate_204 time=49ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 07 Nov 2026 01:58:26 GMT], X-Android-Received-Millis=[1794016705730], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1794016705727]}
+11-07 01:58:25.731   495   674 D WifiCountryCode: updateCountryCode to US
+11-07 01:58:25.731   495   674 D WifiCountryCode: Succeeded to set country code to: US
+11-07 01:58:25.735   495   674 D WifiDiags: startLogging() iface list is {wlan0} after adding wlan0
+11-07 01:58:25.740   495   674 D WakeupController: reset()
+11-07 01:58:25.740   495   674 D WakeupController: Setting active to false
+11-07 01:58:25.742   495   674 D WifiConnectivityHelper: Firmware supported feature set: c8b8000019
+11-07 01:58:25.742   495   674 D WifiConnectivityHelper: Firmware roaming is not supported
+11-07 01:58:25.743   989  8283 D NetworkMonitor/102: PROBE_HTTPS https://www.google.com/generate_204 time=60ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Alt-Svc=[h3=":443"; ma=2592000,h3-29=":443"; ma=2592000], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 07 Nov 2026 01:58:26 GMT], X-Android-Received-Millis=[1794016705743], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1794016705739]}
+11-07 01:58:25.744  1195  8292 I NetworkManagementSocketTagger: tagSocketFd(-1, 805307399, -1) failed with errno-9
+11-07 01:58:25.745   495   674 I WifiClientModeImpl: disconnectedstate enter
+11-07 01:58:25.746   495   674 E WifiScoringParams: Invalid frequency(-1), using 5G as default rssi array
+11-07 01:58:25.750   989  8282 D NetworkMonitor/102: isCaptivePortal: isSuccessful()=true isPortal()=false RedirectUrl=null isPartialConnectivity()=false Time=151ms
+11-07 01:58:25.753   495   534 I GnssNetworkConnectivityHandler: updateNetworkState, state=CLOSED, connected=true, network=102, capabilities=[ Transports: CELLULAR Capabilities: MMS&SUPL&DUN&FOTA&IMS&CBS&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=15000Kbps LinkDnBandwidth>=30000Kbps Specifier: <TelephonyNetworkSpecifier [mSubId = 1]> AdministratorUids: [] RequestorUid: -1 RequestorPackageName: null], apn: epc.tmobile.com, availableNetworkCount: 1
+11-07 01:58:25.754  2464  2748 I CarrierServices: [49] dji.a: FiST: Wifi connectivity status false
+11-07 01:58:25.755  2464  3217 I CarrierServices: [80] drv.a: (PEv2-SM): DisabledState: event Connectivity event
+11-07 01:58:25.756   283  8298 W resolv  : Validating DnsTlsServer on netId 102
+11-07 01:58:25.757   283  8298 W resolv  : SSL_connect ssl error =5, mark 0xf0066: Connection refused
+11-07 01:58:25.757   283  8298 W resolv  : Validation failed
+11-07 01:58:25.761  2464  2748 I CarrierServices: [49] djm.d: Connected state: [1], networkType: [MOBILE]
+11-07 01:58:25.833   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c362e8 : 0(0 size) total buffers - 0(0 size) used buffers - 32/37 (recycle/alloc) - 5/37 (fetch/transfer)
+11-07 01:58:25.833   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:58:25.866  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac986edce8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/41 (fetch/transfer)
+11-07 01:58:25.866  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 01:58:25.918   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48689e10, tid 6281
+11-07 01:58:25.923   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:25.925   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38737730: maj 3 min 0 rcv 3
+11-07 01:58:25.927   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38737730: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:58:26.054   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=43)
+11-07 01:58:26.055   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:58:26.055   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 43 ended, total sessions:1
+11-07 01:58:26.757   495  1025 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:58:26.758   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:58:26.774  6148  6168 I TestRunner: finished: t10_networkInterruptionIsHandled(com.brudre.streaming.PlaybackTest)

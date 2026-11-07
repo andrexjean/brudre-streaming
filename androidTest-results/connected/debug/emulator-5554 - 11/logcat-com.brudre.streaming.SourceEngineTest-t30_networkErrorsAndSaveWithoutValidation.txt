@@ -1,0 +1,57 @@
+11-07 01:58:44.871  6148  6168 I TestRunner: started: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)
+11-07 01:58:44.881  6148  6168 I BruDreTest: DNS: Endereço não encontrado (DNS): Não foi possível localizar brudre-nao-existe.invalid. O nome do servidor não existe ou não é resolvido pela sua rede/provedor. Confira o endereço. | UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException: android_getaddrinfo failed: EAI_NODATA (No address associated with hostname)
+11-07 01:58:44.995  6148  6168 I BruDreTest: HTTP: Erro do servidor (HTTP): Arquivo não encontrado no servidor (HTTP 404). O endereço pode ter mudado ou sido removido.
+11-07 01:58:45.818   495  2405 D WifiNl80211Manager: Scan result ready event
+11-07 01:58:45.818   495  2405 D WifiNative: Scan result ready event
+11-07 01:58:55.745  6148  6168 I BruDreTest: Inalcançável em 10013 ms: Tempo esgotado: O servidor demorou demais para responder. Verifique a internet ou tente mais tarde. | SocketTimeoutException: failed to connect to /10.255.255.1 (port 443) from /10.0.2.16 (port 52298) after 10000ms
+11-07 01:58:55.747  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:58:55.749   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:58:55.751   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 48, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-07 01:58:55.751   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=48)
+11-07 01:58:55.779   418   418 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-07 01:58:55.796   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:55.800  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: PRE_ON_CREATE
+11-07 01:58:55.800  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:58:55.808  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: CREATED
+11-07 01:58:55.808  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@a0d073d
+11-07 01:58:55.809  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: STARTED
+11-07 01:58:55.809  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@a0d073d
+11-07 01:58:55.810  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: RESUMED
+11-07 01:58:55.810  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@a0d073d
+11-07 01:58:56.015   495  6430 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48688c10, tid 6430
+11-07 01:58:56.019   495  6430 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:56.023   495  6430 D EGL_emulation: eglCreateContext: 0x75ac3871c090: maj 3 min 0 rcv 3
+11-07 01:58:56.024   495  6430 D EGL_emulation: eglMakeCurrent: 0x75ac3871c090: ver 3 0 (tinfo 0x75abd8737db0) (first time)
+11-07 01:58:56.037   495  2402 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486898d0, tid 2402
+11-07 01:58:56.047   495  2402 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:58:56.230   495   505 I system_server: NativeAlloc concurrent copying GC freed 185134(7894KB) AllocSpace objects, 41(1796KB) LOS objects, 49% free, 14MB/29MB, paused 27us total 164.252ms
+11-07 01:58:56.230   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:56.230   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:56.254   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:56.254   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:56.254   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:56.254   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:56.254   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:56.254   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:56.254   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:58:56.254   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:58:56.267   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:58:56.268   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:58:56.268   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +517ms
+11-07 01:58:56.301  1897  2496 I PBSessionCacheImpl: Deleted sessionId[8344888247796364] from persistence.
+11-07 01:58:56.339  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:58:56.583   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:58:56.584   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 49, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:58:56.584   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=49)
+11-07 01:58:56.587  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: PAUSED
+11-07 01:58:56.587   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:58:56.587  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@a0d073d
+11-07 01:58:56.840   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 01:58:56.865  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: STOPPED
+11-07 01:58:56.866  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@a0d073d
+11-07 01:58:56.930   949   969 W System  : A resource failed to call release.
+11-07 01:58:56.930   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-07 01:58:56.930   949   969 W System  : A resource failed to call release.
+11-07 01:58:56.945  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a0d073d in: DESTROYED
+11-07 01:58:56.948  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:58:57.050  6148  6168 I TestRunner: finished: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)

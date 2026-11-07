@@ -1,0 +1,55 @@
+11-07 02:02:47.301  6148  6168 I TestRunner: started: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)
+11-07 02:02:47.309  6148  6168 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@9f2979d]
+11-07 02:02:47.313  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 02:02:47.319   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 02:02:47.325   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:02:47.411  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: PRE_ON_CREATE
+11-07 02:02:47.411  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 02:02:47.449  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: CREATED
+11-07 02:02:47.449  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@6ba50f8
+11-07 02:02:47.450  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: STARTED
+11-07 02:02:47.450  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@6ba50f8
+11-07 02:02:47.451  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: RESUMED
+11-07 02:02:47.451  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@6ba50f8
+11-07 02:02:47.461  9170  9228 W earchbox:searc: Long monitor contention with owner Blocking Thread #6 (9238) at com.google.android.apps.gsa.search.core.af.c com.google.android.apps.gsa.y.a.a.a()(SourceFile:18) waiters=0 in boolean j$.util.DesugarCollections$SynchronizedMap.containsKey(java.lang.Object) for 170ms
+11-07 02:02:47.466  9170  9212 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 02:02:47.471  9170  9228 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:02:47.813   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:02:47.814   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:02:47.814   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +490ms
+11-07 02:02:47.866  9170  9242 I PBSessionCacheImpl: Deleted sessionId[40331880523760327] from persistence.
+11-07 02:02:47.892  9170  9228 W SearchServiceCore: Abort, client detached.
+11-07 02:02:47.900  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: PAUSED
+11-07 02:02:47.900  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@6ba50f8
+11-07 02:02:47.910  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: STOPPED
+11-07 02:02:47.910  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@6ba50f8
+11-07 02:02:47.921  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@6ba50f8 in: DESTROYED
+11-07 02:02:47.921  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:02:47.930   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=68)
+11-07 02:02:47.930   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:02:47.930   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 68 ended, total sessions:1
+11-07 02:02:47.937  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: PRE_ON_CREATE
+11-07 02:02:47.938  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-07 02:02:47.941   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:47.943  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: CREATED
+11-07 02:02:47.943  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@8c20916
+11-07 02:02:47.945  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: STARTED
+11-07 02:02:47.945  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@8c20916
+11-07 02:02:47.946  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: RESUMED
+11-07 02:02:47.946  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@8c20916
+11-07 02:02:47.957   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:47.990   321   321 I chatty  : uid=1000(system) composer@2.3-se identical 2 lines
+11-07 02:02:48.007   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:02:50.740  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: PAUSED
+11-07 02:02:50.740  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@8c20916
+11-07 02:02:50.819   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 02:02:50.835   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:02:50.976   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming.test/0/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:02:50.977   495   542 I ActivityTaskManager: Displayed com.brudre.streaming.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity: +243ms
+11-07 02:02:51.057   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:02:51.104  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: STOPPED
+11-07 02:02:51.105  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@8c20916
+11-07 02:02:51.236  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@8c20916 in: DESTROYED
+11-07 02:02:51.236  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:02:51.259  6148  6168 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@9f2979d]
+11-07 02:02:51.321  6148  6168 I TestRunner: finished: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)

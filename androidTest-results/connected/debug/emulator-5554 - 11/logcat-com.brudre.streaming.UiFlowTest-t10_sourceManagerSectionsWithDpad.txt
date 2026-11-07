@@ -1,0 +1,410 @@
+11-07 02:00:15.429  6148  6168 I TestRunner: started: t10_sourceManagerSectionsWithDpad(com.brudre.streaming.UiFlowTest)
+11-07 02:00:15.458   362   362 E Layer   : [Surface(name=Task=86)/@0xf68232c - animation-leash#0] No local sync point found
+11-07 02:00:15.458   362   362 E Layer   : [Surface(name=Task=86)/@0xf68232c - animation-leash#0] No local sync point found
+11-07 02:00:15.458   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:15.458   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:15.479  6148  6168 W FileTestStorage: Output properties is not supported.
+11-07 02:00:15.481  6148  6168 W rudre.streamin: Accessing hidden method Landroid/os/Trace;->setAppTracingAllowed(Z)V (greylist, reflection, allowed)
+11-07 02:00:15.481  6148  6168 I Tracing : Tracer added: class androidx.test.platform.tracing.AndroidXTracer
+11-07 02:00:15.491  1897  2303 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 02:00:15.495  1897  2323 W LocationOracle: No location history returned by ContextManager
+11-07 02:00:15.507  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:00:15.509  6148  6148 D EventInjectionStrategy: Creating injection strategy with input manager.
+11-07 02:00:15.511  6148  6148 W rudre.streamin: Accessing hidden method Landroid/hardware/input/InputManager;->getInstance()Landroid/hardware/input/InputManager; (greylist, reflection, allowed)
+11-07 02:00:15.517  6148  6148 W rudre.streamin: Accessing hidden method Landroid/hardware/input/InputManager;->injectInputEvent(Landroid/view/InputEvent;I)Z (greylist, reflection, allowed)
+11-07 02:00:15.517  6148  6148 W rudre.streamin: Accessing hidden field Landroid/hardware/input/InputManager;->INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH:I (greylist, reflection, allowed)
+11-07 02:00:15.584  6148  6148 W rudre.streamin: Accessing hidden method Landroid/os/MessageQueue;->next()Landroid/os/Message; (greylist, reflection, allowed)
+11-07 02:00:15.584  6148  6148 W rudre.streamin: Accessing hidden field Landroid/os/MessageQueue;->mMessages:Landroid/os/Message; (greylist, reflection, allowed)
+11-07 02:00:15.584  6148  6148 W rudre.streamin: Accessing hidden method Landroid/os/Message;->recycleUnchecked()V (greylist, reflection, allowed)
+11-07 02:00:15.602  6148  6168 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@958daa]
+11-07 02:00:15.605  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 02:00:15.613  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 02:00:15.617   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 02:00:15.625   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:00:15.657  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:00:15.698  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: PRE_ON_CREATE
+11-07 02:00:15.698  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 02:00:15.705  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: CREATED
+11-07 02:00:15.705  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@1e1e949
+11-07 02:00:15.706  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: STARTED
+11-07 02:00:15.706  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@1e1e949
+11-07 02:00:15.707  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: RESUMED
+11-07 02:00:15.707  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@1e1e949
+11-07 02:00:15.781   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486892d0, tid 6281
+11-07 02:00:15.787   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:15.790   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38738700: maj 3 min 0 rcv 3
+11-07 02:00:15.817   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38738700: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:00:16.017   376   454 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-07 02:00:16.017   376   454 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-07 02:00:16.017   495  2405 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:16.152   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 02:00:16.152   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +534ms
+11-07 02:00:16.164   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 02:00:16.177  1897  2496 I PBSessionCacheImpl: Deleted sessionId[8344888247796385] from persistence.
+11-07 02:00:16.195  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 02:00:16.226  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: PAUSED
+11-07 02:00:16.226  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@1e1e949
+11-07 02:00:16.235  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: STOPPED
+11-07 02:00:16.236  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@1e1e949
+11-07 02:00:16.250  6148  6160 I rudre.streamin: Background young concurrent copying GC freed 124520(7072KB) AllocSpace objects, 116(6824KB) LOS objects, 52% free, 12MB/26MB, paused 3.997ms total 189.757ms
+11-07 02:00:16.256  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:16.256  6148  6162 W System  : A resource failed to call dispose.
+11-07 02:00:16.268  6148  6162 W System  : A resource failed to call release.
+11-07 02:00:16.269  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@1e1e949 in: DESTROYED
+11-07 02:00:16.269  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:00:16.270  6148  6162 W System  : A resource failed to call dispose.
+11-07 02:00:16.286  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: PRE_ON_CREATE
+11-07 02:00:16.286  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-07 02:00:16.290   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:16.293  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: CREATED
+11-07 02:00:16.293  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@ec31201
+11-07 02:00:16.294  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: STARTED
+11-07 02:00:16.294  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@ec31201
+11-07 02:00:16.295  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: RESUMED
+11-07 02:00:16.295  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@ec31201
+11-07 02:00:16.307   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:16.374   321   321 I chatty  : uid=1000(system) composer@2.3-se identical 2 lines
+11-07 02:00:16.390   321   321 W EmuHWC2 : No layers, exit, buffer 0x0
+11-07 02:00:16.800   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 02:00:17.255   462   886 D BufferPoolAccessor2.0: evictor expired: 2, evicted: 0
+11-07 02:00:17.287  6148  6231 D BufferPoolAccessor2.0: evictor expired: 2, evicted: 0
+11-07 02:00:17.726   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:17.732  8637  8637 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:17.739  8637  8637 D HostConnection: createUnique: call
+11-07 02:00:17.740  8637  8637 D HostConnection: HostConnection::get() New Host Connection established 0x76e5ee824ed0, tid 8637
+11-07 02:00:17.755  8637  8637 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:17.887  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_minhas.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:17.889  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_minhas.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_minhas.png
+11-07 02:00:17.889  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 1ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:17.890  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_minhas.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:17.884  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:117): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:17.913  6148  6168 I BruDreTest: screenshot: fontes_minhas
+11-07 02:00:17.884  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:118): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:18.223   495  2360 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:19.050   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:19.050  8648  8648 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:19.059  8648  8648 D HostConnection: createUnique: call
+11-07 02:00:19.062  8648  8648 D HostConnection: HostConnection::get() New Host Connection established 0x77951d9c2210, tid 8648
+11-07 02:00:19.077  8648  8648 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:19.214  8653  8655 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:19.215  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_bittorrent.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:19.212  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:125): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:19.248  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_bittorrent.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_bittorrent.png
+11-07 02:00:19.248  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 33ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:19.249  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_bittorrent.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:19.212  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:127): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:19.268  6148  6168 I BruDreTest: screenshot: fontes_bittorrent
+11-07 02:00:19.212  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:128): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:19.641   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=58)
+11-07 02:00:19.646   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 58 ended, total sessions:0
+11-07 02:00:19.646   418   418 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-07 02:00:19.929  1405  1405 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-07 02:00:19.933  1405  1405 I LatinIme: LatinIme.initialize():396 initialize() : Language = en-US
+11-07 02:00:19.943  1405  1405 I Delight5Facilitator: Delight5Facilitator.initializeForIme():561 initializeForIme() : Locale = [en_US], layout = qwerty
+11-07 02:00:19.943  1405  1405 I Delight5Facilitator: Delight5Facilitator.resetDecoder():670 resetDecoder() : Locale = [en_US]
+11-07 02:00:19.957  1405  1405 I Delight5Decoder: Delight5DecoderWrapper.createOrResetDecoder():293 Decoder reset
+11-07 02:00:19.994  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.run():142 Running LM loader for [en_US]
+11-07 02:00:19.994  1405  4908 I SuperDelight: SuperDelightLanguageModelProvider.fetchLanguageModel():57 SuperDelightLanguageModelProvider#fetchLanguageModel(): 1 locales
+11-07 02:00:19.995  1405  8215 I SuperDelight: SuperDelightManager.initializeBundledDelightSuperpacks():362 initializeBundledDelightSuperpacks()
+11-07 02:00:19.997  1405  1405 I AndroidIME: AbstractIme.onActivate():84 LatinIme.onActivate() : EditorInfo = Package = com.brudre.streaming : Type = Text : Learning = Enable : Suggestion = Show : AutoCorrection = Enable : Microphone = Show : NoPersonalizedLearning = Disable : AutoStartVoiceInput = Disable, IncognitoMode = false
+11-07 02:00:19.998  1405  8658 I JobSchedulerImpl: JobSchedulerImpl.cancel():120 Cancel task: DlamTrainingTask. Not pending.
+11-07 02:00:19.998  1405  1884 I SP      : Registering bundled_delight.2020043000, url: null, constraints: *:*, flags: *, requested: 2020043000, current: 2020043000
+11-07 02:00:20.000  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+11-07 02:00:20.000  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+11-07 02:00:20.000  1405  8215 I SuperDelight: SuperDelightManager.lambda$syncBundledLanguageModels$14():780 SuperDelightManager#syncBundledLanguageModels(): Syncing for version 2020043000
+11-07 02:00:20.001  1405  1884 I SuperDelight: SuperDelightBundledSlicingStrategy.getSlices():39 BundledSlicing#getSlices() : Locale = [en_US]
+11-07 02:00:20.002  1405  1884 I SuperDelight: SuperDelightBundledSlicingStrategy.getSlices():63 BundledSlicing#getSlices(): result {slices=[bundled_delight:main_en_us_2019120400_2], last batch=true, sync metadata=false}
+11-07 02:00:20.002  1405  1884 I SP      : Syncing bundled_delight (2020043000) with slices: [main_en_us_2019120400_2], metadata: false
+11-07 02:00:20.005  1405  8659 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():160 maybeScheduleAutoPackDownloadForFallback()
+11-07 02:00:20.005  1405  8659 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():197 maybeScheduleAutoPackDownload() for language tag en-US
+11-07 02:00:20.015  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=false)
+11-07 02:00:20.020  1405  1884 I SP      : Sync for bundled_delight succeeded in 19 ms: no changes
+11-07 02:00:20.020  1405  1884 I SP      : GC for 'bundled_delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:20.023  1405  1405 W KeyboardModeManager: KeyboardModeManager.setInputView():302 setInputView() : inputView = com.google.android.apps.inputmethod.libs.framework.core.InputView{f9f7e47 V.E...... ......I. 0,0-0,0}
+11-07 02:00:20.024  1405  1405 I FeaturePermissionsManager: FeaturePermissionsManager.disableFeaturesWithDeniedPermissions():644 disableFeaturesWithDeniedPermissions() : Disable import_user_contacts
+11-07 02:00:20.024  1405  1405 I FeaturePermissionsManager: FeaturePermissionsManager.onSharedPreferenceChanged():498 onSharedPreferenceChanged() : Disable FeatureInfo : Description = 2131954416 : Permissions=[android.permission.READ_CONTACTS] : Listeners=[dum@381900, cmp@a480cf3]
+11-07 02:00:20.025  1405  1405 W FDL     : FDL logging failed. Add a dependency for Firebase Analytics to your app to enable logging of Dynamic Link events.
+11-07 02:00:20.025  1405  1405 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomatically():336 No private IME option set to start voice input.
+11-07 02:00:20.031  1405  4908 I SuperDelight: SuperDelightManager.initializeDelightSuperpacks():321 initializeDelightSuperpacks()
+11-07 02:00:20.032  1405  4908 I SuperDelight: SuperDelightManager.getDelightMetadataUriAndVersion():1036 getDelightMetadataUriAndVersion(): Phenotype : 2020070800 : https://www.gstatic.com/android/keyboard/dictionarypack/Klaw-normal/metadata.json
+11-07 02:00:20.032  1405  4908 I SuperDelight: SuperDelightAppsSuperpacksManager.initializeDelightAppsSuperpacks():85 initializeDelightAppsSuperpacks()
+11-07 02:00:20.032  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.updateLmAvailableState():365 updateLmAvailableState(): locale? en_US prevState? UNKNOWN
+11-07 02:00:20.032  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 1, version [2020052800]
+11-07 02:00:20.032  1405  4908 I MainLanguageModelLoader: MainLanguageModelLoader.updateLmAvailableState():401 updateLmAvailableState(): locale? en_US newState? AVAILABLE
+11-07 02:00:20.032  1405  4908 I Delight5Facilitator: BlacklistLoader.run():35 Running blacklist loader
+11-07 02:00:20.032  1405  4908 I Delight5Facilitator: ContactsLanguageModelLoader.run():33 Running contacts language model loader
+11-07 02:00:20.032  1405  4908 I Delight5Facilitator: PersonalLanguageModelLoader.run():40 Running personal language model loader
+11-07 02:00:20.032  1405  4908 I Delight5Facilitator: UserHistoryLanguageModelLoader.run():71 Running user history language model loader
+11-07 02:00:20.034  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():98 Reading en_US emoji shortcuts
+11-07 02:00:20.035  1405  8215 I SuperDelight: SuperDelightManager.lambda$registerAndUpgradeSuperpacks$4():473 SuperDelightManager#registerAndUpgradeSuperpacks(delight): current 2020070800, required 2020070800
+11-07 02:00:20.035  1405  8215 I SuperDelight: SuperDelightManager.lambda$syncDownloadableLanguageModels$6():569 SuperDelightManager#syncDownloadableLanguageModels(delight): [OnDevice] Syncing for version 2020070800
+11-07 02:00:20.036  1405  1884 I SuperDelight: SuperDelightDownloadSlicingStrategy.getSlices():82 DownloadSlicing#getSlices() : Locale = [en_US]
+11-07 02:00:20.038  1405  8658 W JobInfoUtil: JobInfoUtil.setJobInfo():55 The max execution delay will be ignored for periodic task: daily_ping_task
+11-07 02:00:20.038  1405  8658 I JobSchedulerImpl: JobSchedulerImpl.schedule():86 Schedule task: daily_ping_task. Success.
+11-07 02:00:20.055  1405  8661 W JobInfoUtil: JobInfoUtil.setJobInfo():55 The max execution delay will be ignored for periodic task: PeriodicTasks
+11-07 02:00:20.056  1405  8661 I JobSchedulerImpl: JobSchedulerImpl.schedule():86 Schedule task: PeriodicTasks. Success.
+11-07 02:00:20.057  1405  1405 D ActivityThread: ViewRootImpl.ConfigChangedCallback for IME, config={1.0 310mcc260mnc [en_US] ldltr sw540dp w960dp h516dp 320dpi lrg long land finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1920, 1080) mAppBounds=Rect(0, 0 - 1920, 1080) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.9}
+11-07 02:00:20.073  1405  1578 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-07 02:00:20.079  1405  1578 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-07 02:00:20.084  1405  1578 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-07 02:00:20.102  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():114 Read en_US emoji shortcuts successfully.
+11-07 02:00:20.102  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.run():59 1 emoji shortcut maps loaded.
+11-07 02:00:20.103  1405  4908 I EmojiShortcutsLoader: EmojiShortcutsLoader.run():67 Finished loading emoji shortcuts
+11-07 02:00:20.109  1405  1578 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486b0150, tid 1578
+11-07 02:00:20.114  1405  1578 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:20.118   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.configstore@1.0::ISurfaceFlingerConfigs/default in either framework or device manifest.
+11-07 02:00:20.120  1405  1578 D EGL_emulation: eglCreateContext: 0x75ac38765200: maj 3 min 0 rcv 3
+11-07 02:00:20.121  1405  1884 I SuperDelight: SuperDelightDownloadSlicingStrategy.getSlices():231 DownloadSlicing#getSlices(): result {slices=[delight:main_en_us_2020052800_1], last batch=true, sync metadata=false}
+11-07 02:00:20.121  1405  1884 I SP      : Syncing delight (2020070800) with slices: [main_en_us_2020052800_1], metadata: false
+11-07 02:00:20.127  1405  4908 I Delight5Facilitator: EmailLanguageModelLoader.run():29 Running email language model loader
+11-07 02:00:20.128  1405  1578 D EGL_emulation: eglMakeCurrent: 0x75ac38765200: ver 3 0 (tinfo 0x75abd888fa60) (first time)
+11-07 02:00:20.165   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:20.165  1405  1578 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:20.169  1405  4908 I CrankEngineLocales: CrankEngineLocales.getLocaleToUseForCrankEngine():67 Using locale en_US for emoji prediction
+11-07 02:00:20.169  1405  1578 D HostConnection: createUnique: call
+11-07 02:00:20.170  1405  1578 D HostConnection: HostConnection::get() New Host Connection established 0x75ac486823d0, tid 1578
+11-07 02:00:20.182  1405  1578 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:20.194  1405  2384 I native  : proto-store.cc:45 File not found: '/data/user/0/com.google.android.inputmethod.latin/files/personal/adapt_state.en.dat'.
+11-07 02:00:20.194  1405  2384 I native  : (This might be OK for example when a language is being loaded for the first time.)
+11-07 02:00:20.194  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():598 Loaded main LM 1.en
+11-07 02:00:20.194  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 7, version [n/a]
+11-07 02:00:20.195  1405  2384 I native  : blacklist-assembly.cc:116 LoadBlacklist en
+11-07 02:00:20.195  1405  2384 I native  : blacklist.cc:217 No blacklist file for a language. (This is OK if the language is loaded for the first time.) /data/user/0/com.google.android.inputmethod.latin/files/personal/blacklist.en_us.list
+11-07 02:00:20.195  1405  2384 E native  : android-decoder-jni.cc:521 Failed to load dynamic LM from /data/user/0/com.google.android.inputmethod.latin/files/personal/blacklist.en_us.list
+11-07 02:00:20.195  1405  2384 W Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():619 Failed to load dynamic LM 7.en
+11-07 02:00:20.195  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 4, version [n/a]
+11-07 02:00:20.196  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():616 Loaded dynamic LM 4.en
+11-07 02:00:20.197  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():578 loadLanguageModel() : 3, version [n/a]
+11-07 02:00:20.197  1405  2384 E native  : dynamic-lm.cc:754 Cannot load dynamic lm from /data/user/0/com.google.android.inputmethod.latin/files/personal/userhistory/UserHistory.en_US.dict, openBuffer failed.
+11-07 02:00:20.197  1405  2384 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():616 Loaded dynamic LM 3.en
+11-07 02:00:20.205  1405  1884 I SuperDelight: SuperDelightMergingStrategy.merge():57 SuperDelightMergingStrategy#merge(): selected[[main_en_us_2020052800_1]] synced[[main_en_us_2020052800_1]]
+11-07 02:00:20.205  1405  4908 I Delight5Facilitator: ContactsLanguageModelLoader.run():33 Running contacts language model loader
+11-07 02:00:20.208  1405  1884 I SP      : Registering next-word-predictor.20190717, url: https://www.gstatic.com/android/keyboard/next_word_predictor/prod/superpacks-manifest-20190717.json, constraints: *:*, flags: *, requested: 20190717, current: -1
+11-07 02:00:20.209  1405  1884 I SP      : Sync for delight succeeded in 173 ms: no changes
+11-07 02:00:20.209  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: @
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: !
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: #
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: %
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: &
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: *
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: +
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: /
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: =
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ?
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ^
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: _
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: `
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: {
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: |
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: }
+11-07 02:00:20.210  1405  2384 W native  : neural_spatial_model.cc:390 Output symbol table doesn't contain symbol: ~
+11-07 02:00:20.218  1405  1884 I SP      : GC for 'delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:20.220  1405  1884 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/next_word_predictor/prod/superpacks-manifest-20190717.json to next-word-predictor-20190717.fetched (constraints: m:b)
+11-07 02:00:20.221  1405  1884 I SP      : Registering emoji-predictor.20200212, url: https://www.gstatic.com/android/keyboard/emoji_predictor/superpacks-manifest-20200212.json, constraints: *:*, flags: *, requested: 20200212, current: -1
+11-07 02:00:20.233  1405  1884 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/emoji_predictor/superpacks-manifest-20200212.json to emoji-predictor-20200212.fetched (constraints: m:b)
+11-07 02:00:20.240   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.240   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:20.244   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.245   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:20.258  6258  6272 W System  : A resource failed to call dispose.
+11-07 02:00:20.284  1405  1405 I InlineSuggestionCandidateViewController: InlineSuggestionCandidateViewController.initializeAppToRightBoundaryRatio():343 Phenotype Inline app to ratio list is empty. Use default list.
+11-07 02:00:20.322  1405  1405 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-07 02:00:20.418  1405  1405 I KeyboardViewHelper: KeyboardViewHelper.getView():164 Get view with height ratio:1.000000; experiment height ratio:1.000000.
+11-07 02:00:20.452  1405  1405 I KeyboardViewHelper: KeyboardViewHelper.getView():164 Get view with height ratio:1.000000; experiment height ratio:1.000000.
+11-07 02:00:20.474   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.474   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:20.526   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.526   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:20.574  1405  8676 I LstmExtension: LstmExtension.onCreate():132 onCreate(): Finished in 0 ms
+11-07 02:00:20.574   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.574  1405  8676 I ConversationToQueryExtension: ConversationToQueryExtension.onCreate():89 onCreate()
+11-07 02:00:20.574   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:20.578  1405  1405 I Choreographer: Skipped 30 frames!  The application may be doing too much work on its main thread.
+11-07 02:00:20.588  1405  1405 I AndroidIME: KeyboardViewManager.saveKeyboardBottomGap():224 realScreenHeight: 1080 screenHeightInInches: 6.000000
+11-07 02:00:20.588  1405  1405 I AndroidIME: keyboardHolderHeight: 426 inputViewBottomGapFromScreen: 0
+11-07 02:00:20.588  1405  1405 I AndroidIME: getKeyboardBodyViewHolderPaddingBottom(): 0 getKeyboardBottomGapFromScreen(): 0
+11-07 02:00:20.588  1405  1405 I AndroidIME: keyboardBottomGap: 0 bodyViewHolderBottomPadding: 0
+11-07 02:00:20.588  1405  1405 I AndroidIME:
+11-07 02:00:20.645   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:20.646  8669  8669 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:20.652  8669  8669 D HostConnection: createUnique: call
+11-07 02:00:20.652  8669  8669 D HostConnection: HostConnection::get() New Host Connection established 0x7c17478e5710, tid 8669
+11-07 02:00:20.753  8669  8669 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:20.857   745   745 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-07 02:00:20.857   745   745 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-07 02:00:21.020  1405  8675 W putmethod.lati: Long monitor contention with owner ExUtils-F-P9-6 (8674) at android.content.res.XmlBlock android.content.res.AssetManager.openXmlBlockAsset(int, java.lang.String)(AssetManager.java:1098) waiters=1 in int android.content.res.AssetManager.getResourceArraySize(int) for 305ms
+11-07 02:00:21.021  1405  8673 W putmethod.lati: Long monitor contention with owner ExUtils-F-P9-6 (8674) at android.content.res.XmlBlock android.content.res.AssetManager.openXmlBlockAsset(int, java.lang.String)(AssetManager.java:1098) waiters=0 in boolean android.content.res.AssetManager.getThemeValue(long, int, android.util.TypedValue, boolean) for 427ms
+11-07 02:00:21.021  1405  1405 W putmethod.lati: Long monitor contention with owner ExUtils-F-P9-5 (8673) at boolean android.content.res.ResourcesImpl$ThemeImpl.resolveAttribute(int, android.util.TypedValue, boolean)(ResourcesImpl.java:1446) waiters=0 in android.content.res.TypedArray android.content.res.ResourcesImpl$ThemeImpl.obtainStyledAttributes(android.content.res.Resources$Theme, android.util.AttributeSet, int[], int, int) for 401ms
+11-07 02:00:21.100  1405  1405 I LstmExtension: LstmExtension.onCreateServiceInternal():143 onCreateServiceInternal()
+11-07 02:00:21.100  1405  1405 I LstmTrainingCache: TrainingCache.getCacheConfig():182 getCacheConfig()
+11-07 02:00:21.143  1482  4008 I FontsContentProvider: Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts
+11-07 02:00:21.144  1482  4008 I FontsContentProvider: Query [Noto Color Emoji Compat] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false}
+11-07 02:00:21.151  1405  1405 I LstmExtension: LstmExtension.onCreateServiceInternal():150 onCreateServiceInternal(): Finished in 52 ms
+11-07 02:00:21.153  1405  1405 I Choreographer: Skipped 32 frames!  The application may be doing too much work on its main thread.
+11-07 02:00:21.186  1405  8676 I ConversationToQueryClientSingleton: ConversationToQueryClientSingleton.register():101 registering client 'Conv2QueryExtension'
+11-07 02:00:21.187  1405  8676 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabled():134 isEnabled() : true
+11-07 02:00:21.187  1405  8676 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabled():141 isConv2QueryDisabledByChevronUi() : false
+11-07 02:00:21.187  1405  8676 I ConversationToQueryExtension: ConversationToQueryExtension.updateCandidateProvider():270 Create MagicGCandidateProvider
+11-07 02:00:21.188  1405  8676 I ConversationToQueryExtension: ConversationToQueryExtension.onCreate():128 onCreate() : Finished in 613 ms
+11-07 02:00:21.268   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c36e78 : 0(0 size) total buffers - 0(0 size) used buffers - 143/149 (recycle/alloc) - 6/149 (fetch/transfer)
+11-07 02:00:21.268   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:00:21.292  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac98760b58 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/153 (fetch/transfer)
+11-07 02:00:21.292  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:00:21.321  1482  4008 I FontsContentProvider: Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} end status Status{statusCode=SUCCESS, resolution=null}
+11-07 02:00:21.350  1405  1884 I SP      : Successfully got manifest for next-word-predictor-manifest: manifests:next-word-predictor-20190717
+11-07 02:00:21.376  8684  8686 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:21.385  1482  4008 I FontsContentProvider: Pulling font file for id = 4, cache size = 3
+11-07 02:00:21.386  6148  6168 I BruDreTest: screenshot: fontes_colar_magnet
+11-07 02:00:21.388  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_colar_magnet.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:21.430  1405  1884 I SP      : Successfully got manifest for emoji-predictor-manifest: manifests:emoji-predictor-20200212
+11-07 02:00:21.471  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_colar_magnet.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_colar_magnet.png
+11-07 02:00:21.472  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 75ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:21.472  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_colar_magnet.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:21.476  1482  2694 I FontsContentProvider: Pulling font file for id = 4, cache size = 3
+11-07 02:00:21.568  1405  1884 I SP      : Syncing next-word-predictor (20190717) with slices: [tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d], metadata: false
+11-07 02:00:21.631  1405  8673 W putmethod.lati: Long monitor contention with owner ExUtils-F-P9-6 (8674) at android.content.res.XmlBlock android.content.res.AssetManager.openXmlBlockAsset(int, java.lang.String)(AssetManager.java:1098) waiters=0 in java.lang.String android.content.res.AssetManager.getResourceTypeName(int) for 269ms
+11-07 02:00:21.665  1405  1884 I SP      : Scheduling job with delay of 0s for {m:b, bg}, 1 candidates
+11-07 02:00:21.670  1405  1884 I SP      : Scheduling: download registered, 0 started, 0 paused, 1 scheduled, 1 pending: next-word-predictor:tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d * {m:b, bg}
+11-07 02:00:21.671  1405  1884 I SP      : Syncing emoji-predictor (20200212) with slices: [tflite-emoji-pred-20200212], metadata: false
+11-07 02:00:21.696  1405  1884 I SP      : Scheduling job with delay of 0s for {m:b, bg}, 2 candidates
+11-07 02:00:21.701  1405  1884 I SP      : Scheduling: download registered, 0 started, 0 paused, 2 scheduled, 2 pending: next-word-predictor:tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d * {m:b, bg}, emoji-predictor:tflite-emoji-pred-20200212 * {m:b, bg}
+11-07 02:00:21.710  2847  8693 I Bugle   : CountryCodeDetector: updateMainDeviceCountry from default subscription network country. detected country: us
+11-07 02:00:21.384  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:133): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:21.392  1551  1551 I chatty  : uid=10159(com.google.android.providers.media.module) identical 3 lines
+11-07 02:00:21.392  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:137): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:22.020  1405  1578 I OpenGLRenderer: Davey! duration=1945ms; Flags=1, IntendedVsync=663276095529, Vsync=663776095509, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=663780831288, AnimationStart=663780831987, PerformTraversalsStart=663780855155, DrawStart=663802133864, SyncQueued=663808884641, SyncStart=663810396165, IssueDrawCommandsStart=663813394990, SwapBuffers=665172207253, FrameCompleted=665222707046, DequeueBufferDuration=6949938, QueueBufferDuration=2923266, GpuCompleted=-502761581221019727,
+11-07 02:00:22.097  1195  3203 V NativeCrypto: SSL shutdown failed: ssl=0x75ac48685fd8: I/O error during system call, Software caused connection abort
+11-07 02:00:22.182  1405  1578 I OpenGLRenderer: Davey! duration=1562ms; Flags=1, IntendedVsync=663809417391, Vsync=664342750703, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=664355882065, AnimationStart=664355883439, PerformTraversalsStart=664355883725, DrawStart=665244192063, SyncQueued=665245163605, SyncStart=665257907614, IssueDrawCommandsStart=665258384043, SwapBuffers=665361966570, FrameCompleted=665385051700, DequeueBufferDuration=10338185, QueueBufferDuration=3883068, GpuCompleted=-5607362699611062614,
+11-07 02:00:22.242  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:22.243  1405  1405 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-07 02:00:22.243  1405  1405 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-07 02:00:22.244  1405  1405 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.shutdown():77 shutdown()
+11-07 02:00:22.244  1405  1405 I AndroidIME: AbstractIme.onDeactivate():161 LatinIme.onDeactivate()
+11-07 02:00:22.255  1405  1405 I SpBackgroundTask: SuperpacksBackgroundJobService.onStartJob():23 onStartJob: android.app.job.JobParameters@cb67e54
+11-07 02:00:22.255  1405  1405 I SP      : ====> Starting job {m:b, bg}
+11-07 02:00:22.261  1405  1884 I SP      : Scheduling: job start ({m:b, bg}), 2 started, 0 paused, 0 scheduled, 2 pending: next-word-predictor:tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d @ * {m:b, bg}, emoji-predictor:tflite-emoji-pred-20200212 @ * {m:b, bg}
+11-07 02:00:22.262  1405  1884 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/next_word_predictor/prod/tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d.zip to tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d.zip.fetched (constraints: m:b)
+11-07 02:00:22.262  1405  1884 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/emoji_predictor/tflite-emoji-pred-7691e22dc0594ff81e5f017e9d407c5b.zip to tflite-emoji-pred-20200212.zip.fetched (constraints: m:b)
+11-07 02:00:22.892  1405  1884 I SP      : Download stopped: next-word-predictor:tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d, succeeded, size: 1854149
+11-07 02:00:22.896  1405  1884 I SP      : Scheduling: download stopped, 0 started, 0 paused, 0 scheduled, 1 pending: emoji-predictor:tflite-emoji-pred-20200212 @ {m:b, bg}
+11-07 02:00:22.990  1405  1884 I SP      : Sync for next-word-predictor succeeded in 1423 ms: {added: [tflite-nwp-45c6579035e9df4ffe5c1246f8d5615d], metadata: false
+11-07 02:00:23.028  1405  1884 I SP      : GC for 'next-word-predictor' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:23.035  1405  1884 I SP      : <==== Finishing job {m:b, bg}, 780 ms. elapsed since start
+11-07 02:00:23.036  1405  1884 I SP      : Download stopped: emoji-predictor:tflite-emoji-pred-20200212, succeeded, size: 1023405
+11-07 02:00:23.192  1405  1884 I SP      : Sync for emoji-predictor succeeded in 1521 ms: {added: [tflite-emoji-pred-20200212], metadata: false
+11-07 02:00:23.198  1405  1884 I SP      : GC for 'emoji-predictor' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-07 02:00:24.004  6148  7528 I BruDreTorrent: Sessão BitTorrent encerrada
+11-07 02:00:24.687   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:24.688  8703  8703 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:24.702  8703  8703 D HostConnection: createUnique: call
+11-07 02:00:24.702  8703  8703 D HostConnection: HostConnection::get() New Host Connection established 0x7072b390d690, tid 8703
+11-07 02:00:24.720  8703  8703 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:24.798  5957  6132 E libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-07 02:00:24.798  5957  6132 E libc    : Access denied finding property "service.adb.tls.port"
+11-07 02:00:24.776  5957  5957 W Binder:5957_4: type=1400 audit(0.0:141): avc: denied { read } for name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=629 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-07 02:00:24.796  5957  5957 W Binder:5957_4: type=1400 audit(0.0:142): avc: denied { read } for name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=489 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-07 02:00:24.849  1195  8691 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 02:00:24.849  1195  8691 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 02:00:24.849  1195  8691 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:24.886  8717  8719 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:24.884  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:143): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:24.887  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_nativas.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:24.884  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:144): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:24.935  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_nativas.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_nativas.png
+11-07 02:00:24.935  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 1ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:24.936  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_nativas.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:24.946  6148  6168 I BruDreTest: screenshot: fontes_nativas
+11-07 02:00:24.884  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:145): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:25.115  1195  8691 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 02:00:25.115  1195  8691 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 02:00:25.115  1195  8691 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.189  1195  2314 W GLSUser : [AppCertManager] Failed to get security token.
+11-07 02:00:25.189  1195  2314 W GLSUser : java.io.IOException: Invalid scope
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at adac.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):23)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at adac.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):18)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at adac.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):11)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at huk.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):16)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at hui.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):41)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at hud.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at hug.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):10)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at fzn.call(:com.google.android.gms@201817023@20.18.17 (040800-311416286):5)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at sji.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):12)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at sji.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):7)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at spj.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.189  1195  2314 W GLSUser : 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:00:25.247  1195  2314 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 02:00:25.247  1195  2314 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 02:00:25.247  1195  2314 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.736  1195  2314 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 02:00:25.736  1195  2314 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 02:00:25.736  1195  2314 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.793  1195  2314 W GLSUser : [AppCertManager] IOException while requesting key:
+11-07 02:00:25.793  1195  2314 W GLSUser : java.io.IOException: Invalid device key response.
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at huk.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):46)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at hui.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):41)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at hud.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at hug.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):10)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at fzn.call(:com.google.android.gms@201817023@20.18.17 (040800-311416286):5)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at sji.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):12)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at sji.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):7)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at spj.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 02:00:25.793  1195  2314 W GLSUser : 	at java.lang.Thread.run(Thread.java:923)
+11-07 02:00:25.996   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:25.996  8724  8724 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:26.009  8724  8724 D HostConnection: createUnique: call
+11-07 02:00:26.011  8724  8724 D HostConnection: HostConnection::get() New Host Connection established 0x72be0cc893d0, tid 8724
+11-07 02:00:26.031  8724  8724 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:26.188  8729  8731 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:26.190  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_preferencias.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:26.188  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:151): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:26.228  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_preferencias.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_preferencias.png
+11-07 02:00:26.229  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 37ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:26.229  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_preferencias.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:26.241  6148  6168 I BruDreTest: screenshot: fontes_preferencias
+11-07 02:00:26.188  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:153): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:27.393   166   166 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-07 02:00:27.393  8735  8735 I Gralloc4: mapper 4.x is not supported
+11-07 02:00:27.401  8735  8735 D HostConnection: createUnique: call
+11-07 02:00:27.402  8735  8735 D HostConnection: HostConnection::get() New Host Connection established 0x71e567e69e10, tid 8735
+11-07 02:00:27.418  8735  8735 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:27.561  8740  8742 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:00:27.562  1551  3302 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_diagnostico.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:27.560  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:159): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:27.568  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:160): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:27.615  6148  6168 I BruDreTest: screenshot: fontes_diagnostico
+11-07 02:00:27.617  1551  3302 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/fontes_diagnostico.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/fontes_diagnostico.png
+11-07 02:00:27.618  1551  3302 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 49ms, 0 inserts 0 updates 0 deletes
+11-07 02:00:27.619  1551  3302 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/fontes_diagnostico.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-07 02:00:27.568  1551  1551 W com.google.android.providers.media.module: type=1400 audit(0.0:161): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29199 scontext=u:r:mediaprovider_app:s0:c159,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-07 02:00:27.654   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 59, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-07 02:00:27.655   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=59)
+11-07 02:00:27.672   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 02:00:27.681  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: PAUSED
+11-07 02:00:27.681  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@ec31201
+11-07 02:00:27.699   418   418 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-07 02:00:27.783   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_CANCELLED
+11-07 02:00:28.060   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:28.060   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:00:28.060   362   362 E Layer   : [Surface(name=Task=87)/@0xf3c3916 - animation-leash#0] No local sync point found
+11-07 02:00:28.060   362   362 E Layer   : [Surface(name=Task=87)/@0xf3c3916 - animation-leash#0] No local sync point found
+11-07 02:00:28.115  1897  2303 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 02:00:28.116  1897  2352 W LocationOracle: No location history returned by ContextManager
+11-07 02:00:28.166  1195  2814 W GCoreFlp: No location to return for getLastLocation()
+11-07 02:00:28.181   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac48690e90, tid 6281
+11-07 02:00:28.219  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 02:00:28.222  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: STOPPED
+11-07 02:00:28.222  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@ec31201
+11-07 02:00:28.233   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:00:28.234  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:00:28.255   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38728270: maj 3 min 0 rcv 3
+11-07 02:00:28.271   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38728270: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:00:28.335  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@ec31201 in: DESTROYED
+11-07 02:00:28.335  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 02:00:28.349  6148  6168 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@958daa]
+11-07 02:00:28.364  6148  6168 I TestRunner: finished: t10_sourceManagerSectionsWithDpad(com.brudre.streaming.UiFlowTest)

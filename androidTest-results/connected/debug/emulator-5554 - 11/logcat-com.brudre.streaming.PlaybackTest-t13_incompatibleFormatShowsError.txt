@@ -1,0 +1,87 @@
+11-07 01:52:59.525  6148  6168 I TestRunner: started: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)
+11-07 01:52:59.560   495   599 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:52:59.560   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:52:59.565  6358  6361 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:52:59.596  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:52:59.600   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 01:52:59.615   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:52:59.622  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: PRE_ON_CREATE
+11-07 01:52:59.622  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:52:59.689  6148  6148 I ExoPlayerImpl: Init 542faf [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30]
+11-07 01:52:59.696  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: CREATED
+11-07 01:52:59.696  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@2af4bda
+11-07 01:52:59.698  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: STARTED
+11-07 01:52:59.698  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@2af4bda
+11-07 01:52:59.701  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: RESUMED
+11-07 01:52:59.701  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@2af4bda
+11-07 01:52:59.885   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:52:59.895   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:52:59.895   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +284ms
+11-07 01:53:00.072  1897  2303 I PBSessionCacheImpl: Deleted sessionId[8344888247796240] from persistence.
+11-07 01:53:00.103   745   745 D KeyguardClockSwitch: Updating clock: 153
+11-07 01:53:00.182  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal: Playback error
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at android.os.Looper.loop(Looper.java:223)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:   Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 01:53:00.289  6148  6370 E ExoPlayerImplInternal:       at java.lang.Thread.run(Thread.java:923)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: Erro de reprodução (streaming direto): ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 01:53:00.291  6148  6148 W BruDrePlayer: 	at java.lang.Thread.run(Thread.java:923)
+11-07 01:53:00.584  6148  6168 I BruDreTest: Mensagem exibida: Formato de vídeo incompatível com este aparelho.
+11-07 01:53:00.587   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:53:00.592   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 8, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:53:00.610   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:53:00.611  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: PAUSED
+11-07 01:53:00.612  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@2af4bda
+11-07 01:53:00.622   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=8)
+11-07 01:53:01.103   495   527 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:53:01.164   495  1023 W system_server: Long monitor contention with owner android.anim (538) at void com.android.server.wm.TaskChangeNotificationController.forAllLocalListeners(com.android.server.wm.TaskChangeNotificationController$TaskStackConsumer, android.os.Message)(TaskChangeNotificationController.java:351) waiters=1 in int com.android.server.wm.ActivityTaskManagerService.getLastResumedActivityUserId() for 137ms
+11-07 01:53:01.179   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming.test/0/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:53:01.179   495   542 I ActivityTaskManager: Displayed com.brudre.streaming.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity: +585ms
+11-07 01:53:01.179   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:53:01.303  6148  6148 I ExoPlayerImpl: Release 542faf [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30] [media3.common, media3.ui, media3.exoplayer, media3.decoder, media3.exoplayer.hls, media3.datasource, media3.datasource.okhttp, media3.extractor]
+11-07 01:53:01.327  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: STOPPED
+11-07 01:53:01.327  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@2af4bda
+11-07 01:53:01.351   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868d650, tid 6281
+11-07 01:53:01.360   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:53:01.385   495  6281 D EGL_emulation: eglCreateContext: 0x75ac3876e050: maj 3 min 0 rcv 3
+11-07 01:53:01.420   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac3876e050: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:53:01.433  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2af4bda in: DESTROYED
+11-07 01:53:01.433  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:53:01.563   745   780 I ndroid.systemu: NativeAlloc concurrent copying GC freed 4254(274KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6659KB/13MB, paused 20us total 125.377ms
+11-07 01:53:01.695   949   967 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 7804(503KB) AllocSpace objects, 2(104KB) LOS objects, 49% free, 4069KB/8138KB, paused 49us total 260.207ms
+11-07 01:53:01.710   949   969 W System  : A resource failed to call release.
+11-07 01:53:01.710   949   969 I chatty  : uid=10152(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 4 lines
+11-07 01:53:01.710   949   969 W System  : A resource failed to call release.
+11-07 01:53:01.774   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:53:01.775   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:53:01.775   362   362 E Layer   : [Surface(name=Task=14)/@0xdd62be7 - animation-leash#0] No local sync point found
+11-07 01:53:01.775   362   362 E Layer   : [Surface(name=Task=14)/@0xdd62be7 - animation-leash#0] No local sync point found
+11-07 01:53:01.784  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 01:53:01.788  1897  2319 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 01:53:01.793  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 01:53:01.803   495  1654 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:53:01.803   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:53:01.850  6390  6393 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:53:01.852  6148  6168 I TestRunner: finished: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)

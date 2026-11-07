@@ -1,0 +1,377 @@
+11-07 01:55:21.515  6148  6168 I TestRunner: started: t16_inAppUpdatePipeline(com.brudre.streaming.PlaybackTest)
+11-07 01:55:21.564   495   527 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:21.572   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:21.590   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868e310, tid 6281
+11-07 01:55:21.626   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:55:21.655   495  6281 D EGL_emulation: eglCreateContext: 0x75ac387328d0: maj 3 min 0 rcv 3
+11-07 01:55:21.657   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac387328d0: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:55:21.702  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 01:55:21.711  1897  2303 I TngMinusOneSync: Syncing TNG:-1
+11-07 01:55:21.722  1897  2353 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 01:55:21.830  1195  4497 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 01:55:21.830  1195  4497 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 01:55:21.830  1195  4497 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 01:55:21.868   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:55:21.868   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:55:21.868   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:55:21.868   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:55:21.869   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:55:21.870   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:55:21.870   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:55:21.870   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:55:21.871   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-07 01:55:21.871   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-07 01:55:21.911  1195  4497 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-07 01:55:21.911  1195  4497 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-07 01:55:21.911  1195  4497 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-07 01:55:21.984  6148  6168 I BruDreTest: Atualização: UpToDate (build atual 39)
+11-07 01:55:22.200  1405  1405 I PhenotypeModule: PhenotypeModule.receiveBroadcast():356 onReceive() urgent = false
+11-07 01:55:22.200  1405  1405 I PhenotypeModule: PhenotypeModule.maybeFetchAndUpdate():167 maybeFetchAndUpdate: forceRefresh=false
+11-07 01:55:22.204  1195  4497 I anhw    : Scheduling adaptive one off task with window [14400, 604800] in seconds [CONTEXT service_id=51 ]
+11-07 01:55:22.215  1405  6983 E PhenotypeModule: PhenotypeModule.handlePhenotypeConfigurationUpdates():246 Get empty configurations.
+11-07 01:55:22.217  1405  6983 I PhenotypeModule: PhenotypeModule.lambda$fetchAndUpdate$3():215 fetchAndUpdate() : Success, hasFlags=true, flagCount=447, lastFetchStatus=November 7, 1:55 AM {reason=2, isFullFetch=false, success=true, isEmpty=true, isDelta=false, updatedFlagsCount=0, deletedFlagsCount=0, totalTime=14}
+11-07 01:55:22.228  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-07 01:55:22.249   284   284 D Zygote  : Forked child process 6985
+11-07 01:55:22.260  2847  2926 I BuglePhenotype: onReceive for bugle package [CONTEXT package_name="com.google.android.apps.messaging" ]
+11-07 01:55:22.261  1195  6986 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-07 01:55:22.261  1195  6986 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-07 01:55:22.265   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 0
+11-07 01:55:22.266  2847  2847 W ConfigurationUpdatedRec: Received update for unknown package com.google.android.apps.messaging
+11-07 01:55:22.269  1195  6986 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-07 01:55:22.271  2847  2928 I BuglePhenotype: onReceive for cslib package [CONTEXT package_name="com.google.android.ims.library" ]
+11-07 01:55:22.273  2847  2847 W ConfigurationUpdatedRec: Received update for unknown package com.google.android.ims.library
+11-07 01:55:22.279  6985  6985 W .android.gms.u: Unexpected CPU variant for X86 using defaults: x86_64
+11-07 01:55:22.282   398   408 I adbd    : jdwp connection from 6985
+11-07 01:55:22.297  6985  6985 I .android.gms.u: The ClassLoaderContext is a special shared library.
+11-07 01:55:22.298  6985  6985 I chatty  : uid=10122 com.google.android.gms.ui identical 1 line
+11-07 01:55:22.300  6985  6985 I .android.gms.u: The ClassLoaderContext is a special shared library.
+11-07 01:55:22.300  6985  6985 D nativeloader: classloader namespace configured for unbundled product apk. library_path=/product/priv-app/PrebuiltGmsCore/lib/x86_64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/x86_64:/product/lib64:/system/product/lib64
+11-07 01:55:22.315  6985  6985 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config debugBuild: false
+11-07 01:55:22.315  6985  6985 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config debugBuild: false
+11-07 01:55:22.332  1195  6989 I anjv    : updateFromConfigurations using legacy put method [CONTEXT service_id=204 ]
+11-07 01:55:22.348  6985  6985 W DynamiteModule: Local module descriptor class for providerinstaller not found.
+11-07 01:55:22.350  6985  6985 W ProviderHelper: Unknown dynamite feature providerinstaller
+11-07 01:55:22.351  6985  6985 I DynamiteModule: Considering local module providerinstaller:0 and remote module providerinstaller:0
+11-07 01:55:22.351  6985  6985 W ProviderInstaller: Failed to load providerinstaller module: No acceptable module found. Local version is 0 and remote version is 0.
+11-07 01:55:22.355  6985  6985 V NativeCrypto: Registering com/google/android/gms/org/conscrypt/NativeCrypto's 286 native methods...
+11-07 01:55:22.360  6985  6985 I ProviderInstaller: Installed default security provider GmsCore_OpenSSL
+11-07 01:55:22.364  6985  6985 I Safeboot: Checking safeboot...
+11-07 01:55:22.364  6985  6985 I Safeboot: Not entering safeboot; wrong process.
+11-07 01:55:22.384  6985  6985 W bdhq    : Primes not initialized, returning default (no-op) Primes instance which will ignore all calls. Please call Primes.initialize(...) before using any Primes API.
+11-07 01:55:22.406  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-07 01:55:22.406  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag bindle_flags__bloblobber_blob to integer.
+11-07 01:55:22.407  1897  2319 W PhenotypeToGsaConfigs: Can't format flag bindle_flags__velour_jar to integer.
+11-07 01:55:22.435  1897  2323 I ModelDownloadListener: Schdedule model download
+11-07 01:55:22.436  1897  2352 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-07 01:55:22.436  1897  2352 I FedAssExpListener: Successfully processed experiments changed.
+11-07 01:55:22.438  1897  1897 I BgTaskExecutorImpl: Starting EXCLUSIVE background task UPDATE_HOTWORD_MODELS.
+11-07 01:55:22.439  1897  2323 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-07 01:55:22.441  1897  5869 I ModelDownloadController: requestHotwordModelUpdate modelType-2 modelLocale-en-US
+11-07 01:55:22.442  1897  5869 I ModelDownloadController: shouldDownloadModel: modelLocale is en-US
+11-07 01:55:22.442  1897  5869 I ModelDownloadController: We already downloaded model from given location.
+11-07 01:55:22.442  1897  5869 I ModelDownloadController: Model download not requested.
+11-07 01:55:22.459  1482  2013 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33 [CONTEXT service_id=21 ]
+11-07 01:55:22.460  1482  3454 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32 [CONTEXT service_id=21 ]
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.a(SourceFile:25)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(SourceFile:1)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.i.run(Unknown Source:2)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.l.a.l.call(Unknown Source:2)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.apps.tiktok.concurrent.aq.run(SourceFile:1)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at com.google.apps.tiktok.concurrent.f.run(Unknown Source:3)
+11-07 01:55:22.461  1897  2323 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:923)
+11-07 01:55:22.471  1482  6076 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 01:55:22.487  2847  2928 I BuglePhenotype: Notify about updates in current package [CONTEXT current_package_name="com.google.android.ims.library" ]
+11-07 01:55:22.489  2464  5723 I CarrierServices: [102] czm.b: Reinitialize CSLib Flags: com.google.android.ims.library
+11-07 01:55:22.493  1482  3454 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30 [CONTEXT service_id=21 ]
+11-07 01:55:22.500  2464  5723 W CarrierServices: [102] dvk.a: No config URL. RCS will be disabled!
+11-07 01:55:22.505  2464  5723 I CarrierServices: [102] dsd.a: RcsAvailabilityManager: Calculating Rcs Availability
+11-07 01:55:22.505  2847  2928 I BugleRcsEngine: [69] aeec.connect: Connecting SignupService
+11-07 01:55:22.511  2847  2928 I BugleRcsEngine: [69] aeec.connect: shouldUseCarrierServicesJibeService: true, CarrierServices rcs service found: true
+11-07 01:55:22.511  2847  2928 I BugleRcsEngine: [69] aeec.connect: Binding to JibeService in CarrierServices.
+11-07 01:55:22.517  2847  2847 I RcsClientLib: Service com.google.android.rcs.client.signup.SignupService connected. Will notify listeners: true
+11-07 01:55:22.518  1482  6076 I Icing   : Usage reports ok 2, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 01:55:22.523  1482  6076 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 01:55:22.526  2464  5723 I CarrierServices: [102] dtf.b: Bugle has minimum required RCS permissions: true
+11-07 01:55:22.540  2464  5723 I CarrierServices: [102] dtf.a: Rcs is enabled from user settings: true
+11-07 01:55:22.541  2464  7028 I CarrierServices: [103] eav.a: Received Provisioning Event: [Bugle information (100)]
+11-07 01:55:22.541  2464  7028 I CarrierServices: [103] eav.a: JibeService is running, passing event to provisioning engine.
+11-07 01:55:22.542  1482  6076 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 01:55:22.548  2464  5723 I CarrierServices: [102] dtf.c: Bugle is default SMS app: true
+11-07 01:55:22.550  1482  6076 W Icing   : No valid account for uploading user actions [CONTEXT service_id=21 ]
+11-07 01:55:22.551  2464  5723 W CarrierServices: [102] dvk.a: No config URL. RCS will be disabled!
+11-07 01:55:22.552  2464  5723 I CarrierServices: [102] ekb.b: Checking if using CarrierServices.apk is possible. Enabled: true, isAtLeastM: true, runningInsideBugle: false
+11-07 01:55:22.553  2464  5723 I CarrierServices: [102] chn.h: BindingManager: binding and reset P/H Flag stay same
+11-07 01:55:22.553  2464  5723 I CarrierServices: [102] dsd.a: RcsAvailabilityManager: Rcs Availability still DISABLED_VIA_GSERVICES (RCS is disabled for this carrier by Google)
+11-07 01:55:22.553  2464  4478 I CarrierServices: [101] dsd.a: RcsAvailabilityManager: Calculating Rcs Availability
+11-07 01:55:22.553  2464  7028 I CarrierServices: [103] dqc.a: Handling Provisioning Event: [Bugle information (100)]
+11-07 01:55:22.553  2464  7028 I CarrierServices: [103] dsd.a: RcsAvailabilityManager: Calculating Rcs Availability
+11-07 01:55:22.554  1482  6076 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0 [CONTEXT service_id=21 ]
+11-07 01:55:22.556  2464  4478 I CarrierServices: [101] dtf.b: Bugle has minimum required RCS permissions: true
+11-07 01:55:22.562  2464  4478 I CarrierServices: [101] dtf.a: Rcs is enabled from user settings: true
+11-07 01:55:22.565  2464  4478 I CarrierServices: [101] dtf.c: Bugle is default SMS app: true
+11-07 01:55:22.566  2464  4478 W CarrierServices: [101] dvk.a: No config URL. RCS will be disabled!
+11-07 01:55:22.568  2464  4478 I CarrierServices: [101] ekb.b: Checking if using CarrierServices.apk is possible. Enabled: true, isAtLeastM: true, runningInsideBugle: false
+11-07 01:55:22.571  2464  4478 I CarrierServices: [101] chn.h: BindingManager: binding and reset P/H Flag stay same
+11-07 01:55:22.571  2464  4478 I CarrierServices: [101] dsd.a: RcsAvailabilityManager: Rcs Availability still DISABLED_VIA_GSERVICES (RCS is disabled for this carrier by Google)
+11-07 01:55:22.572  2464  7028 I CarrierServices: [103] dtf.b: Bugle has minimum required RCS permissions: true
+11-07 01:55:22.572  2847  2928 I BugleRcs: RcsAvailabilityUtilForProvisioningEngineV2: Get Updated RcsAvailability, RcsAvailability: DISABLED_VIA_GSERVICES, SimId: Redacted-20
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting ChatSessionService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.chatsession.IChatSession: Service not registered: aeed@54cdd8c
+11-07 01:55:22.573  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@54cdd8c
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at koc.b(PG:36)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting EventService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.events.IEvent: Service not registered: aeed@66b9bdb
+11-07 01:55:22.573  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@66b9bdb
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.google.android.rcs.client.events.EventService.disconnect(PG:7)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at koc.b(PG:37)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting ContactsService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.contacts.IContactsManagement: Service not registered: aeed@856c151
+11-07 01:55:22.573  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@856c151
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at koc.b(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting FileTransferService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.filetransfer.IFileTransfer: Service not registered: aeed@6fe1ab7
+11-07 01:55:22.573  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@6fe1ab7
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at koc.b(PG:39)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting LocationSharingService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.locationsharing.ILocationSharing: Service not registered: aeed@3f5218d
+11-07 01:55:22.573  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@3f5218d
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at koc.b(PG:40)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.573  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.573  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting ImsConnectionTrackerService
+11-07 01:55:22.573  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.ims.IImsConnectionTracker: Service not registered: aeed@ecfab53
+11-07 01:55:22.574  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@ecfab53
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at koc.b(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.574  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting RcsProfileService
+11-07 01:55:22.574  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.profile.IRcsProfile: Service not registered: aeed@49f4989
+11-07 01:55:22.574  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@49f4989
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at koc.b(PG:42)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.574  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting BusinessInfoService
+11-07 01:55:22.574  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.businessinfo.IBusinessInfo: Service not registered: aeed@61fa9af
+11-07 01:55:22.574  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@61fa9af
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at koc.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.574  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting RcsMessagingService
+11-07 01:55:22.574  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.rcs.client.messaging.IMessaging: Service not registered: aeed@1a9f545
+11-07 01:55:22.574  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@1a9f545
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at koc.b(PG:44)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.574  2847  2847 I BugleRcsEngine: [2] aeec.disconnect: Disconnecting TransportControlService
+11-07 01:55:22.574  2847  2847 W RcsClientLib: Unexpected error when trying to unbind com.google.android.ims.rcsservice.transportcontrol.ITransportControl: Service not registered: aeed@fc731cb
+11-07 01:55:22.574  2847  2847 W RcsClientLib: java.lang.IllegalArgumentException: Service not registered: aeed@fc731cb
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.LoadedApk.forgetServiceDispatcher(LoadedApk.java:1757)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ContextImpl.unbindService(ContextImpl.java:1874)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.content.ContextWrapper.unbindService(ContextWrapper.java:792)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.b(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at aeec.disconnect(PG:41)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at koc.b(PG:45)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at kof.a(PG:38)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at riw.a(PG:43)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at rif.run(Unknown Source:1)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at afou.run(PG:3)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.os.Looper.loop(Looper.java:223)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-07 01:55:22.574  2847  2847 W RcsClientLib: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-07 01:55:22.574  2847  2847 W BugleRcs: disconnecting from all Rcs Services
+11-07 01:55:22.575  2847  2928 I BugleRcsEngine: [69] aeec.disconnect: Disconnecting SignupService
+11-07 01:55:22.576  2847  2928 I BugleRcs: RcsAvailabilityUtilForProvisioningEngineV2: success updating RCS availability async
+11-07 01:55:22.582  2464  7028 I CarrierServices: [103] dtf.a: Rcs is enabled from user settings: true
+11-07 01:55:22.586  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-07 01:55:22.586  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-07 01:55:22.586  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-07 01:55:22.589  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-07 01:55:22.589  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-07 01:55:22.590  1195  6988 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-07 01:55:22.592  1195  6996 I PTCommittedOperation: Receive new configuration for com.google.android.gms.clearcut.public
+11-07 01:55:22.593  2464  7028 I CarrierServices: [103] dtf.c: Bugle is default SMS app: true
+11-07 01:55:22.593   495  2409 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:22.598  1482  2041 E GmsClient: unable to connect to service: com.google.android.gms.auth.key.retrieval.service.START on com.google.android.gms
+11-07 01:55:22.598  2464  7028 W CarrierServices: [103] dvk.a: No config URL. RCS will be disabled!
+11-07 01:55:22.604  1482  7030 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-07 01:55:22.606  1482  7029 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-07 01:55:22.608  1482  6829 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-07 01:55:22.610  2464  7028 I CarrierServices: [103] ekb.b: Checking if using CarrierServices.apk is possible. Enabled: true, isAtLeastM: true, runningInsideBugle: false
+11-07 01:55:22.611  2464  7028 I CarrierServices: [103] chn.h: BindingManager: binding and reset P/H Flag stay same
+11-07 01:55:22.612  2464  7028 I CarrierServices: [103] dsd.a: RcsAvailabilityManager: Rcs Availability still DISABLED_VIA_GSERVICES (RCS is disabled for this carrier by Google)
+11-07 01:55:23.263  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 0
+11-07 01:55:24.034   418   418 I perfetto: probes_producer.cc:329  Producer stop (id=21)
+11-07 01:55:24.034   419   419 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-07 01:55:24.036   419   419 I perfetto: ng_service_impl.cc:1948 Tracing session 21 ended, total sessions:2
+11-07 01:55:24.183  6148  6168 I BruDreTest: Validação da release v9.0.37: Você já tem esta versão
+11-07 01:55:24.193   495  2360 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:24.193   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:24.204  7050  7054 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:24.205  6148  6168 I TestRunner: finished: t16_inAppUpdatePipeline(com.brudre.streaming.PlaybackTest)

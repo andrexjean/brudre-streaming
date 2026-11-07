@@ -1,0 +1,51 @@
+11-07 01:55:19.952  6148  6168 I TestRunner: started: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)
+11-07 01:55:19.985   495  2085 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:19.986   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:19.986  6923  6926 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:20.000  6928  6931 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:20.003  6148  6168 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-07 01:55:20.006   495   537 D EventSequenceValidator: Transition from ACTIVITY_CANCELLED to INTENT_STARTED
+11-07 01:55:20.010   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 22, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-07 01:55:20.010   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=22)
+11-07 01:55:20.011   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:55:20.018  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: PRE_ON_CREATE
+11-07 01:55:20.018  6148  6148 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-07 01:55:20.084  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: CREATED
+11-07 01:55:20.084  6148  6148 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@4be6c7e
+11-07 01:55:20.086  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: STARTED
+11-07 01:55:20.086  6148  6148 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@4be6c7e
+11-07 01:55:20.086  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: RESUMED
+11-07 01:55:20.086  6148  6148 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@4be6c7e
+11-07 01:55:20.219   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868e310, tid 6281
+11-07 01:55:20.248   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 01:55:20.259   495  6281 D EGL_emulation: eglCreateContext: 0x75ac386ecba0: maj 3 min 0 rcv 3
+11-07 01:55:20.260   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac386ecba0: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 01:55:20.358   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/91039/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:55:20.359   495   542 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +350ms
+11-07 01:55:20.367   495  2070 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:20.416   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:55:20.724  1897  2501 I PBSessionCacheImpl: Deleted sessionId[8344888247796264] from persistence.
+11-07 01:55:20.731  1897  2303 W SearchServiceCore: Abort, client detached.
+11-07 01:55:20.748   495   537 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-07 01:55:20.749   419   419 I perfetto: ing_service_impl.cc:758 Configured tracing session 23, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:3, uid:1071 session name: ""
+11-07 01:55:20.750   418   418 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=23)
+11-07 01:55:20.755  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: PAUSED
+11-07 01:55:20.755  6148  6148 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@4be6c7e
+11-07 01:55:20.756   495   537 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-07 01:55:21.025   495  1549 W system_server: Long monitor contention with owner android.anim (538) at void com.android.server.wm.TaskChangeNotificationController.forAllLocalListeners(com.android.server.wm.TaskChangeNotificationController$TaskStackConsumer, android.os.Message)(TaskChangeNotificationController.java:351) waiters=0 in com.android.server.wm.WindowProcessController com.android.server.wm.ActivityTaskManagerService$LocalService.getTopApp() for 127ms
+11-07 01:55:21.029   495   542 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming.test/0/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-07 01:55:21.033   495   537 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-07 01:55:21.068   495   542 I ActivityTaskManager: Displayed com.brudre.streaming.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity: +281ms
+11-07 01:55:21.277  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: STOPPED
+11-07 01:55:21.277  6148  6148 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@4be6c7e
+11-07 01:55:21.279  6148  6148 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@4be6c7e in: DESTROYED
+11-07 01:55:21.279  6148  6148 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-07 01:55:21.340   362   362 E Layer   : [Surface(name=Task=30)/@0xc5bac31 - animation-leash#0] No local sync point found
+11-07 01:55:21.340   362   362 E Layer   : [Surface(name=Task=30)/@0xc5bac31 - animation-leash#0] No local sync point found
+11-07 01:55:21.340   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:55:21.340   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 01:55:21.365   495  1549 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-07 01:55:21.365   495   674 D WifiActiveModeWarden: Switching all client mode managers
+11-07 01:55:21.367  6948  6952 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:21.477  6953  6957 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 01:55:21.507  6148  6168 I TestRunner: finished: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)

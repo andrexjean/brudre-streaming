@@ -1,0 +1,59 @@
+11-07 02:02:55.743  6148  6168 I TestRunner: started: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
+11-07 02:02:55.746  6148  6168 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:02:55.757  6148  6168 I BruDreTest: TLS: validação ativa • 124 CAs do sistema Android (trackers HTTPS); servidores web pela conexão segura do Android
+11-07 02:02:55.869  9170  9228 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-07 02:02:55.874   362   362 E Layer   : [Surface(name=Task=110)/@0x8e60466 - animation-leash#0] No local sync point found
+11-07 02:02:55.874   362   362 E Layer   : [Surface(name=Task=110)/@0x8e60466 - animation-leash#0] No local sync point found
+11-07 02:02:55.874   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:02:55.874   362   362 E Layer   : [Surface(name=Task=1)/@0xca04f6c - animation-leash#0] No local sync point found
+11-07 02:02:55.967   495  6281 D HostConnection: HostConnection::get() New Host Connection established 0x75ac4868e610, tid 6281
+11-07 02:02:55.992   495  2360 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:02:56.002   495  6281 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-07 02:02:56.010   495  6281 D EGL_emulation: eglCreateContext: 0x75ac38775530: maj 3 min 0 rcv 3
+11-07 02:02:56.015   495  6281 D EGL_emulation: eglMakeCurrent: 0x75ac38775530: ver 3 0 (tinfo 0x75abd8764a20) (first time)
+11-07 02:02:56.034  9170  9170 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-07 02:02:56.039  9170  9212 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-07 02:02:56.074  9170  9228 I TngMinusOneSync: Syncing TNG:-1
+11-07 02:02:56.478  6148  6168 I BruDreTest: OkHttp https://expired.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:56.538   376   454 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-07 02:02:56.538   376   454 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-07 02:02:56.538   495  1549 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:02:57.154  6148  6168 I BruDreTest: OkHttp https://wrong.host.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:57.726   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 0
+11-07 02:02:57.829  6148  6168 I BruDreTest: OkHttp https://self-signed.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:58.486  6148  6168 I BruDreTest: OkHttp https://untrusted-root.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:02:58.503  6148  8795 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-07 02:02:58.504  6148  8795 I BruDreTorrent: Sessão BitTorrent iniciada (conexões=40)
+11-07 02:02:58.517  6148  8795 I BruDreTorrent: Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:02:58.520  6148  8795 I BruDreTorrent: Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-07 02:02:58.508  6148  6148 W DefaultDispatch: type=1400 audit(0.0:367): avc: denied { read } for name="block" dev="sysfs" ino=2105 scontext=u:r:untrusted_app:s0:c167,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0 app=com.brudre.streaming
+11-07 02:02:58.641   495  1549 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-07 02:02:58.647  6148  6665 W BruDreWebSeed: Web seed falhou na peça 0: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sat Nov 07 02:02:58 UTC 2026)
+11-07 02:02:58.651  6148  9313 W BruDreWebSeed: Web seed falhou na peça 1: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sat Nov 07 02:02:58 UTC 2026)
+11-07 02:02:58.726  6148  6231 D BufferPoolAccessor2.0: evictor expired: 3, evicted: 0
+11-07 02:02:58.726   462   886 D BufferPoolAccessor2.0: evictor expired: 2, evicted: 0
+11-07 02:03:00.003   745   745 D KeyguardClockSwitch: Updating clock: 203
+11-07 02:03:00.710  6258  6272 W System  : A resource failed to call dispose.
+11-07 02:03:00.726  6148  6231 D BufferPoolAccessor2.0: bufferpool2 0x75ac986bffd8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/134 (fetch/transfer)
+11-07 02:03:00.726  6148  6231 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:03:00.726   462   886 D BufferPoolAccessor2.0: bufferpool2 0x74b2c1c362e8 : 0(0 size) total buffers - 0(0 size) used buffers - 123/128 (recycle/alloc) - 5/128 (fetch/transfer)
+11-07 02:03:00.726   462   886 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-07 02:03:04.177  1482  9552 I GmscoreIpa: Starting mediastore instant index
+11-07 02:03:04.762   495   548 E libprocessgroup: AddTidToCgroup failed to write '9553'; fd=67: Invalid argument
+11-07 02:03:04.762   495   548 E libprocessgroup: Failed to add task into cgroup
+11-07 02:03:04.762   495   548 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-07 02:03:18.525  6148  6168 I BruDreTest: libtorrent https://expired.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:03:18.531  6148  9313 I BruDreTorrent: Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-07 02:03:18.533  6148  9313 I BruDreTorrent: Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-07 02:03:18.528  6148  6148 W DefaultDispatch: type=1400 audit(0.0:368): avc: denied { read } for name="block" dev="sysfs" ino=2105 scontext=u:r:untrusted_app:s0:c167,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0 app=com.brudre.streaming
+11-07 02:03:18.651  6148  9346 W BruDreWebSeed: Web seed falhou na peça 0: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-07 02:03:18.651  6148  9346 W BruDreWebSeed:     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-07 02:03:18.651  6148  9346 W BruDreWebSeed:     DN: CN=*.badssl.com
+11-07 02:03:18.651  6148  9346 W BruDreWebSeed:     subjectAltNames: [*.badssl.com, badssl.com]
+11-07 02:03:18.660  6148  9339 W BruDreWebSeed: Web seed falhou na peça 1: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-07 02:03:18.660  6148  9339 W BruDreWebSeed:     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-07 02:03:18.660  6148  9339 W BruDreWebSeed:     DN: CN=*.badssl.com
+11-07 02:03:18.660  6148  9339 W BruDreWebSeed:     subjectAltNames: [*.badssl.com, badssl.com]
+11-07 02:03:38.534  6148  6168 I BruDreTest: libtorrent https://wrong.host.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-07 02:03:39.288  6148  6168 I BruDreTorrent: Sessão BitTorrent encerrada
+11-07 02:03:39.290  6148  6168 I TestRunner: finished: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
