@@ -371,9 +371,11 @@ class UiFlowTest {
         waitFocused("tor_paste")
         remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("src_dialog"); Thread.sleep(500); TestUtil.shot("fontes_colar_magnet")
-        remote(KeyEvent.KEYCODE_BACK)
-        // Fechou o diálogo: o foco volta para a janela do gerenciador (leva um instante); retorna às abas.
-        rule.waitUntil(10_000) { rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "src_dialog")).fetchSemanticsNodes().isEmpty() }
+        // Voltar: o 1º toque fecha o teclado na tela (comportamento do Android), o seguinte fecha o diálogo.
+        fun dialogOpen() = rule.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, "src_dialog")).fetchSemanticsNodes().isNotEmpty()
+        var backs = 0
+        while (dialogOpen() && backs++ < 3) { remote(KeyEvent.KEYCODE_BACK); Thread.sleep(400) }
+        rule.waitUntil(10_000) { !dialogOpen() }
         rule.waitUntil(10_000) { runCatching { rule.onNodeWithTag("src_tab_torrent").requestFocus(); rule.onNodeWithTag("src_tab_torrent").assertIsFocused(); true }.getOrDefault(false) }
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_native"); remote(KeyEvent.KEYCODE_DPAD_CENTER)
         waitTag("order_native_first"); waitPrefix("native_"); Thread.sleep(800); TestUtil.shot("fontes_nativas")
