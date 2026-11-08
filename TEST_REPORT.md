@@ -1,5 +1,35 @@
 # BruDre Streaming — Relatório de testes
 
+## Versão 9.2.46 (pedida como 9.2.43) — 08/11/2026 — correções de segurança, diagnóstico e homologação
+
+Release **v9.2.46** (versionCode 92046), commit `f29406b`. O número segue o build do CI: os builds 43 a 45 não passaram e não foram publicados.
+
+| Tipo de teste | Resultado |
+|---|---|
+| **Simulados** (JVM, sem rede) | **117/117** (11 novos em `V943Test`) |
+| **Rede real** (emulador Android 11 x86_64, internet) | **62/62** (5 novos em `V943DeviceTest` + `UiFlowTest.t12`). Na 1ª execução do build 46, `UiFlowTest.t05` falhou por tempo de interface (clique na aba antes de o painel fechar); passou na nova execução sem mudança de código |
+| **Release instalado no emulador** | Abertura 0,49 s; 0 crashes; 127 MB de PSS no Início |
+| **Físico** (Mi Stick) | **Não executado** |
+
+| Teste de rede real | Resultado | Evidência |
+|---|---|---|
+| Credenciais fora do armazenamento | PASS | Links Torznab com `{cred}`; o link `/dl/` exige a chave (401 sem ela) e tocou S01E02; 664 arquivos do app e o logcat do processo varridos sem a chave; relatório e exportação limpos |
+| Migração de registros antigos | PASS | Segredo do endereço movido para o CredentialStore; endereço com `{cred}` testado; histórico de torrent limpo |
+| Diagnóstico por etapas | PASS | vazio → Acessível/sem resultados; só NZB → Pesquisa funcional/conteúdo indisponível; normal → Pesquisa funcional; chave errada → Acessível/autenticação; DNS e TLS → Cadastrada; rede privada → bloqueada |
+| Reprodução validada | PASS | Só depois de um vídeo tocar pela fonte |
+| Tracker HTTPS local (certificado fixado) | PASS | Anúncio pelo OkHttp: 2 participantes recebidos e entregues ao motor |
+| Tracker com certificado vencido / host errado | PASS | Recusados com "Certificado de segurança inválido" |
+| Tracker com falha de DNS | PASS | "Endereço não encontrado (DNS)" |
+| Tracker UDP | PASS | opentrackr: 5 participantes |
+| DHT | PASS | Ubuntu: 1006; sintético: 20 |
+| Tracker HTTPS público (Ubuntu) | PARTIAL | Conexão TLS válida e resposta do tracker, mas recusa: "Requested download is not authorized for use with this tracker". Causa não determinada (provável regra de lista do próprio tracker) |
+| HTTPS interno do libtorrent | Falha comprovada | "init fail (BIO routines)" em todo tracker HTTPS, inclusive com certificado válido → por isso o anúncio passou para o OkHttp |
+| Memória (3 rodadas de teste e pesquisa) | PASS | PSS 216 → 220 MB |
+| Painel pelo D-pad | PASS | Foco chega em "Testar fontes" e no teste individual; etapa "Pesquisa funcional" registrada |
+| Internet Archive (descritor REST) | PASS | 49 resultados; tocou por BitTorrent em 9,4 s |
+| Internet Archive via Torznab (NOTLD) | FAIL | Não passou de 3 s em 180 s (repetiu da 9.2.42) |
+| Regressão 9.2.42 (Torznab local e público, fallback por duração, homologação, Wikimedia, Blender, distribuições) | PASS | Mesmas evidências da 9.2.42 |
+
 ## Versão 9.2 (v9.2.42) — 08/11/2026 — Source Engine 4.0
 
 GitHub Actions, emulador Android 11 x86_64 (TV 1080p) com internet real. Commit `320713c`, release **v9.2.42**.
