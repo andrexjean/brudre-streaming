@@ -96,8 +96,7 @@ class V92DeviceTest {
 
     /** Torznab em servidor LOCAL: bloqueado sem confirmação, certificado fixado, apikey cifrada, pesquisa, páginas, episódio e reprodução. */
     @Test fun t40_torznabLocalServerPinnedSearchPagesAndPlayback() {
-        val k = key
-        if (k == null) { survey("Torznab (servidor local)", "BLOCKED", "servidor de referência não iniciado no CI"); assumeTrue(false) }
+        val k: String = key ?: run { survey("Torznab (servidor local)", "BLOCKED", "servidor de referência não iniciado no CI"); assumeTrue(false); return }
         // 1) Sem confirmação, a rede privada é bloqueada (anti-SSRF)
         val blocked = runBlocking { services.inspector.inspect(lan, key = k) }
         assertEquals(ErrorKind.BLOCKED.name, blocked.test.kind)
@@ -150,9 +149,9 @@ class V92DeviceTest {
 
     /** Torznab em endpoint PÚBLICO (HTTPS com certificado válido): filme por TMDB, reprodução e descarte de categorias. */
     @Test fun t41_torznabPublicEndpoint() {
-        val k = key
-        val base = args.getString("torznabPublic")?.ifBlank { null }
-        if (k == null || base == null) { survey("Torznab (endpoint público)", "BLOCKED", "túnel HTTPS do CI indisponível nesta execução"); assumeTrue(false) }
+        val k: String? = key
+        val base: String? = args.getString("torznabPublic")?.ifBlank { null }
+        if (k == null || base == null) { survey("Torznab (endpoint público)", "BLOCKED", "túnel HTTPS do CI indisponível nesta execução"); assumeTrue(false); return }
         val r = saveViaUi(MainViewModel.SourceForm("Torznab público", "$base/torznab/", key = k))
         TestUtil.log("Cadastro público: ${r.first} ${r.second}")
         assertTrue(r.second, r.first)
@@ -212,13 +211,14 @@ class V92DeviceTest {
         for (id in listOf("internet-archive", "wikimedia-commons", "blender")) {
             val e = lib.single { it.id == id }
             val res = runCatching {
-                val r = runBlocking { services.inspector.inspect(e.addUrl!!) }
+                val addUrl: String = e.addUrl!!
+                val r = runBlocking { services.inspector.inspect(addUrl) }
                 if (!r.test.ok) error("cadastro: ${r.test.message}")
                 val t = r.type!!
-                services.sourceStore.put(com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(t, e.addUrl), e.name, e.addUrl, t, lastTest = r.test, config = r.config))
+                services.sourceStore.put(com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(t, addUrl), e.name, addUrl, t, lastTest = r.test, config = r.config))
                 if (!t.isSearchable) return@runCatching "catálogo: ${r.test.message}"
                 val q = when (id) { "internet-archive" -> "night of the living dead"; else -> "apollo 11" }
-                val hits = runBlocking { services.searchRepo.page(SearchTemplate.Query(q), 1) }.hits.filter { it.source.url == e.addUrl }
+                val hits = runBlocking { services.searchRepo.page(SearchTemplate.Query(q), 1) }.hits.filter { it.source.url == addUrl }
                 if (hits.isEmpty()) error("pesquisa sem resultados para \"$q\"")
                 val item = hits.first().item
                 val p = item.playables().first()
