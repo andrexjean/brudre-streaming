@@ -828,9 +828,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 finally { _testingSources.value = _testingSources.value - s.id }
             }
             val now = services.sourceStore.current
-            val S = com.brudre.streaming.sources.SourceStage
-            onResult("${now.size} fontes: ${now.count { !it.hasError && it.stage >= S.REACHABLE }} acessíveis, " +
-                "${now.count { !it.hasError && it.stage >= S.SEARCH_OK }} com pesquisa funcional, ${now.count { it.stage == S.PLAYBACK_OK }} com reprodução comprovada, " +
+            val reach = com.brudre.streaming.sources.SourceStage.REACHABLE
+            val search = com.brudre.streaming.sources.SourceStage.SEARCH_OK
+            val played = com.brudre.streaming.sources.SourceStage.PLAYBACK_OK
+            onResult("${now.size} fontes: ${now.count { !it.hasError && it.stage >= reach }} acessíveis, " +
+                "${now.count { !it.hasError && it.stage >= search }} com pesquisa funcional, ${now.count { it.stage == played }} com reprodução comprovada, " +
                 "${now.count { it.hasError }} com erro")
         }
     }
