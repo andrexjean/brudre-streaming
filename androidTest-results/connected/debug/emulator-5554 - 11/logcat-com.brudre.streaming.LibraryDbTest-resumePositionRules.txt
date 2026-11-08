@@ -1,0 +1,2 @@
+11-08 20:55:42.662  5466  5612 I TestRunner: started: resumePositionRules(com.brudre.streaming.LibraryDbTest)
+11-08 20:55:42.673  5466  5612 I TestRunner: finished: resumePositionRules(com.brudre.streaming.LibraryDbTest)

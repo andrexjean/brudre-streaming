@@ -1,0 +1,4 @@
+11-08 21:14:34.941  5466  5612 I TestRunner: started: t54_memoryDuringSourceTests(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:36.273  5466  5612 I BruDreTest: Memória (PSS do processo): antes 216 MB, depois 220 MB, variação 3 MB após 3 rodadas de teste e pesquisa
+11-08 21:14:36.273  5466  5612 I BruDreTest: SURVEY|Memória durante testes de fontes|PASS|PSS 216 → 220 MB (3 MB) após 3 rodadas com 4 fontes
+11-08 21:14:36.280  5466  5612 I TestRunner: finished: t54_memoryDuringSourceTests(com.brudre.streaming.V943DeviceTest)

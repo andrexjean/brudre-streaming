@@ -1,0 +1,524 @@
+--------- beginning of main
+--------- beginning of system
+--------- beginning of kernel
+11-08 21:04:06.512 I/TestRunner( 5466): finished: t08_cinematicIntro(com.brudre.streaming.UiFlowTest)
+11-08 21:04:06.516 I/TestRunner( 5466): started: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)
+11-08 21:04:12.018 I/BruDreTest( 5466): screenshot: home
+11-08 21:04:17.774 I/BruDreTest( 5466): screenshot: releases
+11-08 21:04:23.407 I/BruDreTest( 5466): screenshot: trending
+11-08 21:04:29.065 I/BruDreTest( 5466): screenshot: movies
+11-08 21:04:34.757 I/BruDreTest( 5466): screenshot: series
+11-08 21:04:40.362 I/BruDreTest( 5466): screenshot: classics
+11-08 21:04:45.989 I/BruDreTest( 5466): screenshot: docs
+11-08 21:04:55.422 I/BruDreTest( 5466): screenshot: live
+11-08 21:05:01.048 I/BruDreTest( 5466): screenshot: kids
+11-08 21:05:02.871 I/BruDreTest( 5466): screenshot: configuracoes
+11-08 21:05:03.920 I/BruDreTest( 5466): screenshot: configuracoes_fontes
+11-08 21:05:05.672 I/BruDreTest( 5466): screenshot: gerenciar_fontes
+11-08 21:05:07.040 I/BruDreTest( 5466): screenshot: gerenciar_fontes_adicionar
+11-08 21:05:11.165 I/BruDreTest( 5466): screenshot: detalhes_classico
+11-08 21:05:14.085 I/BruDreTest( 5466): screenshot: detalhes_gratis_app
+11-08 21:05:17.910 I/BruDreTest( 5466): screenshot: pesquisa
+11-08 21:05:18.295 I/TestRunner( 5466): finished: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)
+11-08 21:05:18.304 I/TestRunner( 5466): started: t06_titleWithoutSourceHasNoPlayButton(com.brudre.streaming.UiFlowTest)
+11-08 21:05:23.106 W/BruDreSources( 5466): Falha na fonte archive
+11-08 21:05:23.106 W/BruDreSources( 5466): com.brudre.streaming.data.CatalogException: Item não encontrado no Internet Archive
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at com.brudre.streaming.data.CatalogRepository.metadataJson(CatalogRepository.kt:162)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at com.brudre.streaming.data.CatalogRepository.access$metadataJson(CatalogRepository.kt:19)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at com.brudre.streaming.data.CatalogRepository$archiveDetails$2.invokeSuspend(CatalogRepository.kt:146)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-08 21:05:23.106 W/BruDreSources( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-08 21:05:23.689 I/TestRunner( 5466): finished: t06_titleWithoutSourceHasNoPlayButton(com.brudre.streaming.UiFlowTest)
+11-08 21:05:23.692 I/TestRunner( 5466): started: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-08 21:05:24.813 I/TestRunner( 5466): finished: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-08 21:05:24.824 I/TestRunner( 5466): started: t07_parentalControlAsksPin(com.brudre.streaming.UiFlowTest)
+11-08 21:05:30.140 I/TestRunner( 5466): finished: t07_parentalControlAsksPin(com.brudre.streaming.UiFlowTest)
+11-08 21:05:30.143 I/TestRunner( 5466): started: t11_worldContentSeparatedByLanguage(com.brudre.streaming.UiFlowTest)
+11-08 21:05:31.640 I/BruDreLive( 5466): Lista iptv_series: 451 canais de 525 (removidos: {inseguro=40, formato=9, pago=25})
+11-08 21:05:31.744 I/BruDreLive( 5466): Lista iptv_kids: 255 canais de 442 (removidos: {inseguro=69, formato=15, pago=102, url=1})
+11-08 21:05:31.808 I/BruDreLive( 5466): Lista iptv_movies: 499 canais de 781 (removidos: {inseguro=164, formato=36, pago=82})
+11-08 21:05:36.997 I/BruDreTest( 5466): screenshot: ao_vivo_mundo_filmes
+11-08 21:05:37.293 I/BruDreTest( 5466): Cinema Brasileiro: 20 filmes ([Cidade de Deus, Elize: Sombras de uma Mulher, O Agente Secreto, Ainda Estou Aqui, O Auto da Compadecida]) • séries BR: 20 • grátis BR: 20
+11-08 21:05:43.014 I/BruDreLive( 5466): Verificação: 103 de 106 canais no ar
+11-08 21:05:44.286 I/BruDreTest( 5466): screenshot: filmes_cinema_brasileiro
+11-08 21:05:44.812 I/TestRunner( 5466): finished: t11_worldContentSeparatedByLanguage(com.brudre.streaming.UiFlowTest)
+11-08 21:05:44.819 I/TestRunner( 5466): started: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)
+11-08 21:05:48.670 I/TestRunner( 5466): finished: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)
+11-08 21:05:48.671 I/TestRunner( 5466): started: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)
+11-08 21:05:52.504 I/TestRunner( 5466): finished: t02_remoteControlNavigation(com.brudre.streaming.UiFlowTest)
+11-08 21:05:52.514 I/TestRunner( 5466): started: v05_audioAndSubtitleTracks(com.brudre.streaming.V91DeviceTest)
+11-08 21:05:54.029 I/BruDreTest( 5466): Faixas: áudio=[pt, en] legendas=[pt]
+11-08 21:05:54.047 I/BruDrePlayer( 5466): Preferência salva: áudio=en legenda=-
+11-08 21:05:55.988 I/BruDreTest( 5466): screenshot: player_faixas
+11-08 21:05:56.567 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=1379 ms, travamentos=0 (0 ms), assistido=2 s, falhou=false, PSS=275 MB
+11-08 21:05:56.784 I/TestRunner( 5466): finished: v05_audioAndSubtitleTracks(com.brudre.streaming.V91DeviceTest)
+11-08 21:05:56.785 I/TestRunner( 5466): started: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
+11-08 21:05:56.786 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:05:56.786 I/BruDreTest( 5466): TLS: validação ativa • 124 CAs do sistema Android (trackers HTTPS); servidores web pela conexão segura do Android
+11-08 21:05:57.440 I/BruDreTest( 5466): OkHttp https://expired.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:05:58.056 I/BruDreTest( 5466): OkHttp https://wrong.host.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:05:58.658 I/BruDreTest( 5466): OkHttp https://self-signed.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:05:59.297 I/BruDreTest( 5466): OkHttp https://untrusted-root.badssl.com/ → TLS: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:05:59.325 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:05:59.327 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:05:59.331 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:05:59.333 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-08 21:05:59.411 W/BruDreWebSeed( 5466): Web seed falhou na peça 1: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sun Nov 08 21:05:59 UTC 2026)
+11-08 21:05:59.415 W/BruDreWebSeed( 5466): Web seed falhou na peça 0: SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateExpiredException: Certificate expired at Sat May 30 10:48:38 UTC 2020 (compared to Sun Nov 08 21:05:59 UTC 2026)
+11-08 21:06:19.339 I/BruDreTest( 5466): libtorrent https://expired.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:06:19.345 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:06:19.348 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S01E01.mp4 (445 KB), peças=21, legendas=1
+11-08 21:06:19.428 W/BruDreWebSeed( 5466): Web seed falhou na peça 1: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-08 21:06:19.428 W/BruDreWebSeed( 5466):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-08 21:06:19.428 W/BruDreWebSeed( 5466):     DN: CN=*.badssl.com
+11-08 21:06:19.428 W/BruDreWebSeed( 5466):     subjectAltNames: [*.badssl.com, badssl.com]
+11-08 21:06:19.429 W/BruDreWebSeed( 5466): Web seed falhou na peça 0: SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-08 21:06:19.429 W/BruDreWebSeed( 5466):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-08 21:06:19.429 W/BruDreWebSeed( 5466):     DN: CN=*.badssl.com
+11-08 21:06:19.429 W/BruDreWebSeed( 5466):     subjectAltNames: [*.badssl.com, badssl.com]
+11-08 21:06:39.353 I/BruDreTest( 5466): libtorrent https://wrong.host.badssl.com/ → peça inicial=false erro=Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:06:40.105 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:06:40.106 I/TestRunner( 5466): finished: v01_tlsCertificatesAreValidated(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:40.107 I/TestRunner( 5466): started: v09_memoryWithPlayerAndRelease(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:40.688 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:06:40.689 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:06:40.704 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:06:40.709 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-08 21:06:46.505 I/BruDreTest( 5466): Status BitTorrent: BitTorrent • 0 conectados de 10 conhecidos • 1 servidor(es) web • 0 B/s • buffer 26s
+11-08 21:06:47.239 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=760 ms, travamentos=0 (0 ms), assistido=5 s, falhou=false, PSS=247 MB
+11-08 21:06:48.465 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:06:48.793 I/BruDreTest( 5466): Memória (PSS, emulador x86_64): início=240 MB • player+torrent=205 MB • depois de sair=196 MB
+11-08 21:06:48.794 I/TestRunner( 5466): finished: v09_memoryWithPlayerAndRelease(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:48.795 I/TestRunner( 5466): started: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:51.040 I/BruDreTest( 5466): Redetecção: Salva com formato errado: formato redetectado — agora Feed RSS/Atom de vídeos (antes Catálogo BruDre (JSON)). 2 títulos com fonte reproduzível
+11-08 21:06:51.292 I/BruDreTest( 5466): Duplicada: Fonte duplicada: este endereço já está cadastrado como "Salva com formato errado" (Feed RSS/Atom de vídeos).
+11-08 21:06:51.670 I/TestRunner( 5466): finished: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:51.686 I/TestRunner( 5466): started: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:52.474 I/BruDreTest( 5466): Redireciona github.com → raw: CATALOG_JSON ok=true 5 títulos com fonte reproduzível
+11-08 21:06:53.209 I/BruDreTest( 5466): Redireciona para http://: BLOCKED Bloqueada pela segurança: O servidor redirecionou para um endereço sem criptografia (http://): bloqueado.
+11-08 21:06:53.286 I/BruDreTest( 5466): Redireciona para .apk: BLOCKED Bloqueada pela segurança: Arquivo executável bloqueado: example.com
+11-08 21:06:53.286 I/TestRunner( 5466): finished: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.288 I/TestRunner( 5466): started: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.791 I/TestRunner( 5466): finished: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.792 I/TestRunner( 5466): started: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.795 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:06:53.796 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:07:23.799 I/BruDreTest( 5466): Sem peers em 30005 ms: Sem participantes (peers): Nenhum participante enviou os metadados em 30s (torrent sem peers no momento).
+11-08 21:07:24.551 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:07:24.552 I/TestRunner( 5466): finished: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-08 21:07:24.554 I/TestRunner( 5466): started: v06_fallbackDuringPlayback(com.brudre.streaming.V91DeviceTest)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):   Caused by: java.io.EOFException
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:41.919 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-08 21:07:41.937 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): Caused by: java.io.EOFException
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:41.937 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):   Caused by: java.io.EOFException
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:47.197 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-08 21:07:47.218 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): Caused by: java.io.EOFException
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:47.218 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:51.141 I/BruDreTest( 5466): Falha no meio: trocas=2 posição=17039 (sem voltar do início)
+11-08 21:07:51.695 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=497 ms, travamentos=1 (4337 ms), assistido=22 s, falhou=false, PSS=206 MB
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:55.191 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-08 21:07:55.192 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:55.192 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:58.309 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-08 21:07:58.310 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:07:58.310 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:08:07.104 I/TestRunner( 5466): finished: v06_fallbackDuringPlayback(com.brudre.streaming.V91DeviceTest)
+11-08 21:08:07.106 I/TestRunner( 5466): started: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-08 21:08:07.188 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=null ms, travamentos=0 (0 ms), assistido=0 s, falhou=true, PSS=202 MB
+11-08 21:08:07.469 I/BruDreTest( 5466): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/opensearch/descricao.xml → OPENSEARCH ok=true OpenSearch (atom+xml): 1 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.613 I/BruDreTest( 5466): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/descritor.json → REST ok=true API REST: 2 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.679 I/BruDreTest( 5466): Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/search/paged/{slug}-p{page}.json → SEARCH ok=true API de pesquisa: 1 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.681 I/BruDreTest( 5466): Capacidades BruDre OpenSearch de teste: pesquisa por texto ✓ • por identificador ✗ • episódios ✗ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-08 21:08:07.682 I/BruDreTest( 5466): Capacidades API REST de teste: pesquisa por texto ✓ • por identificador ✓ • episódios ✓ • paginação ✓ • formatos: HTTP • limite: 30/min
+11-08 21:08:07.682 I/BruDreTest( 5466): Capacidades raw.githubusercontent.com: pesquisa por texto ✓ • por identificador ✗ • episódios ✓ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-08 21:08:07.705 I/BruDreTest( 5466): Página 1: [OPENSEARCH:Big Buck Bunny (2008), REST:Big Buck Bunny, REST:BruDre Teste Série, SEARCH:Big Buck Bunny] mais em=[search_52e1129eebd70788]
+11-08 21:08:07.770 I/BruDreTest( 5466): Página 2: [Big Buck Bunny (versão 2)] mais em=[]
+11-08 21:08:07.845 I/BruDreSources( 5466): Catálogo Paginado: 2 títulos (0 descartados)
+11-08 21:08:07.914 I/BruDreSources( 5466): Catálogo feed_477140bd0b7c1577: +1 títulos (página seguinte)
+11-08 21:08:07.920 I/TestRunner( 5466): finished: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-08 21:08:07.921 I/TestRunner( 5466): started: t45_homologationReport(com.brudre.streaming.V92DeviceTest)
+11-08 21:08:14.021 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=618 ms, travamentos=0 (0 ms), assistido=5 s, falhou=false, PSS=202 MB
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|RELATÓRIO DE HOMOLOGAÇÃO — BruDre Streaming
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|Gerado em: 08/11/2026 21:08
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|Situação: NÃO HOMOLOGADO até o usuário conferir e marcar o resultado abaixo (o app nunca aprova sozinho).
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|BruDre: versão 9.2.46 (92046)
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|Aparelho: Google sdk_gphone_x86_64 (Android 11, API 30) — EMULADOR: não vale como homologação
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|RAM total: 1981 MB • livre agora: 878 MB • limite de memória baixa: 216 MB • aparelho de pouca RAM: não
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|1. Tempo de abertura do app (a frio): sem medição
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|2. Tempo até o vídeo começar: todos mediana 618 ms, pior 618 ms (1 medições); BitTorrent sem medição
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|3. Memória do app durante a reprodução (PSS): média 203 MB, pico 203 MB
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|   Avisos de pouca memória do sistema: 0 (nível máximo 0)
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|4. Encerramentos inesperados (crash): 0
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|   Registro do sistema (últimas saídas do app): nenhum
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|5. Travamentos durante a reprodução (rebuffering): 0 em 1 sessões, 0 s no total
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|   Sessões que falharam: 0 • trocas de fonte: 0
+11-08 21:08:14.314 I/BruDreTest( 5466): HOMOLOG|   Erros de reprodução: nenhum
+11-08 21:08:14.314 I/BruDreTest( 5466): SURVEY|Rotina de homologação|PASS|relatório gerado em brudre-homologacao.txt: tempo até o vídeo, memória, travamentos, armazenamento e D-pad (emulador marcado como não homologação)
+11-08 21:08:14.315 I/TestRunner( 5466): finished: t45_homologationReport(com.brudre.streaming.V92DeviceTest)
+11-08 21:08:14.316 I/TestRunner( 5466): started: t43_realTorrentSourcesSurvey(com.brudre.streaming.V92DeviceTest)
+11-08 21:08:15.690 I/BruDreTest( 5466): Survey Debian: debian-13.7.0-amd64-netinst.iso 1 arquivos hash=7acf8fb590b2060dd9c3146ef770169d593433b0
+11-08 21:08:16.468 I/BruDreTest( 5466): Survey Ubuntu: ubuntu-24.04.3-live-server-amd64.iso 1 arquivos hash=a1dfefec1a9dd7fa8a041ebeeea271db55126d2f
+11-08 21:08:17.731 I/BruDreTest( 5466): SURVEY|Fedora|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/torrents, /ar/torrents, /be/torrents, /bg/torrents]
+11-08 21:08:19.124 I/BruDreTest( 5466): SURVEY|Linux Mint|FAIL|listagem HTTPS: HTTP 404
+11-08 21:08:21.823 I/BruDreTest( 5466): Survey Arch Linux: archlinux-2026.11.01-x86_64.iso 1 arquivos hash=ed0f013475535f19b5410d68fd20f627e4950b1f
+11-08 21:08:22.274 I/BruDreTest( 5466): SURVEY|openSUSE|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:22.931 I/BruDreTest( 5466): SURVEY|FreeBSD|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:25.603 I/BruDreTest( 5466): Survey NetBSD: NetBSD-11.1-amd64-dvd.iso 1 arquivos hash=d298b1c5125bf13f956b050a6ce0bf9b2c709f12
+11-08 21:08:26.388 I/BruDreTest( 5466): SURVEY|Slackware|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+11-08 21:08:27.087 I/BruDreTest( 5466): Survey Kali Linux: kali-linux-2026.3-hyperv-amd64.7z 1 arquivos hash=db0e18d8979934b694693c1cb402c94cb814be5b
+11-08 21:08:28.181 I/BruDreTest( 5466): SURVEY|Manjaro|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:29.075 I/BruDreTest( 5466): SURVEY|EndeavourOS|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:29.898 I/BruDreTest( 5466): Survey AlmaLinux: AlmaLinux-9.8-x86_64 7 arquivos hash=dab70fb0c6bf7283d995a12c07e79c26ad96e80d
+11-08 21:08:30.547 I/BruDreTest( 5466): Survey Rocky Linux: Rocky-9.8-x86_64-boot 5 arquivos hash=a97b295f4432d20c092774efefda77c66974fe34
+11-08 21:08:32.672 I/BruDreTest( 5466): SURVEY|FOSS Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/css/torrents.css, https://twitter.com/FossTorrents, https://bsky.app/profile/fosstorrents.bsky.social, /blog/torrents-with-web-seeds]
+11-08 21:08:33.294 I/BruDreTest( 5466): SURVEY|Academic Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [https://academictorrents.com/, https://reproducibilityinstitute.org/w/?utm_source=academictorrents, https://www.rapidseedbox.com/?utm_source=academictorrents, https://whatbox.ca/?utm_source=academictorrents]
+11-08 21:08:33.418 I/BruDreTest( 5466): SURVEY|eTree|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+11-08 21:08:34.551 I/BruDreTest( 5466): SURVEY|Public Domain Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [http://ads.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/, http://files.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/display.testimonials.indexed.html]
+11-08 21:08:34.592 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:08:34.593 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|Debian|PASS|.torrent oficial válido (debian-13.7.0-amd64-netinst.iso); participantes: conectados=0, conhecidos=178, enxame(tracker)=281
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|Ubuntu|PASS|.torrent oficial válido (ubuntu-24.04.3-live-server-amd64.iso); participantes: conectados=4, conhecidos=81, enxame(tracker)=100
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|Arch Linux|PASS|.torrent oficial válido (archlinux-2026.11.01-x86_64.iso); participantes: conectados=0, conhecidos=130, enxame(tracker)=149
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|NetBSD|PASS|.torrent oficial válido (NetBSD-11.1-amd64-dvd.iso); participantes: conectados=1, conhecidos=26, enxame(tracker)=8
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|Kali Linux|PASS|.torrent oficial válido (kali-linux-2026.3-hyperv-amd64.7z); participantes: conectados=0, conhecidos=45, enxame(tracker)=104
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|AlmaLinux|PASS|.torrent oficial válido (AlmaLinux-9.8-x86_64); participantes: conectados=0, conhecidos=87, enxame(tracker)=115
+11-08 21:10:04.707 I/BruDreTest( 5466): SURVEY|Rocky Linux|PASS|.torrent oficial válido (Rocky-9.8-x86_64-boot); participantes: conectados=0, conhecidos=27, enxame(tracker)=27
+11-08 21:10:05.459 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:10:05.460 I/TestRunner( 5466): finished: t43_realTorrentSourcesSurvey(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:05.461 I/TestRunner( 5466): started: t40_torznabLocalServerPinnedSearchPagesAndPlayback(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:05.967 I/BruDreTest( 5466): Servidor local: 5A:33:73:1B:02:57:A6:D4:97:9E:AE:DC:6A:F7:7A:99:D2:D8:A3:81:97:F8:52:6B:F8:08:A1:19:E5:D5:68:2E CN=brudre-torznab-ci autoassinado=true
+11-08 21:10:06.474 I/BruDreTest( 5466): Fixação errada: Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:10:11.270 I/BruDreTest( 5466): Cadastro: true Indexador Torznab/Newznab salvo: Torznab (BruDre Torznab de referencia (CI)) • texto • filmes por id • séries por temporada/episódio • 3 categorias • até 3 por página. Pesquisa de teste: 1 resultado(s) reproduzíveis para "night of the living dead"
+11-08 21:10:11.836 I/BruDreSearch( 5466): Torznab search_7579b112fc121f71: 2 de 3 aceitos; descartados {NZB (Usenet) não reproduzível=1}
+11-08 21:10:11.838 I/BruDreTest( 5466): Página 1: [BruDre Teste Serie (720p) [1x1], BruDre Teste Serie (720p) [1x2]] mais=[search_7579b112fc121f71]
+11-08 21:10:12.097 I/BruDreSearch( 5466): Torznab search_7579b112fc121f71: 0 de 1 aceitos; descartados {sem semeadores=1}
+11-08 21:10:12.098 I/BruDreSearch( 5466): Torznab local: respondeu sem resultados (1 itens brutos) para "BruDre Teste Serie"
+11-08 21:10:12.696 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:10:12.697 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:10:12.958 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:10:13.013 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-08 21:10:17.525 I/BruDreTest( 5466): SURVEY|Torznab (servidor local)|PASS|caps, apikey cifrada, erro 100, fixação de certificado, tvsearch+season, 2 páginas, NZB/0 semeadores descartados, S01E02 reproduzido
+11-08 21:10:17.537 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=825 ms, travamentos=0 (0 ms), assistido=4 s, falhou=false, PSS=197 MB
+11-08 21:10:17.565 I/TestRunner( 5466): finished: t40_torznabLocalServerPinnedSearchPagesAndPlayback(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:17.610 I/TestRunner( 5466): started: t44_fallbackComparesDuration(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):   Caused by: java.io.EOFException
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:10:35.509 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-08 21:10:35.532 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): Caused by: java.io.EOFException
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:10:35.532 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:10:38.346 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466): Playback error
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at android.os.Looper.loop(Looper.java:223)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):   Caused by: java.io.EOFException
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:10:40.856 E/ExoPlayerImplInternal( 5466):       at java.lang.Thread.run(Thread.java:923)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): Erro de reprodução (streaming direto): ERROR_CODE_IO_UNSPECIFIED
+11-08 21:10:40.875 W/BruDrePlayer( 5466): androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:713)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): Caused by: java.io.EOFException
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleDataQueue.sampleData(SampleDataQueue.java:186)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.SampleQueue.sampleData(SampleQueue.java:602)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.TrackOutput.sampleData(TrackOutput.java:161)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.readSample(Mp4Extractor.java:931)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.extractor.mp4.Mp4Extractor.read(Mp4Extractor.java:393)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.read(BundledExtractorsAdapter.java:147)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1122)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:10:40.875 W/BruDrePlayer( 5466): 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:10:43.038 W/BruDrePlayer( 5466): Duração incompatível: A fonte alternativa (streaming direto) tem duração 0:02:00, e a anterior tinha 0:00:30. Pode ser outra versão, edição ou episódio.
+11-08 21:10:43.204 I/BruDreTest( 5466): Duração: A fonte alternativa (streaming direto) tem duração 0:02:00, e a anterior tinha 0:00:30. Pode ser outra versão, edição ou episódio.
+11-08 21:10:45.466 I/BruDreTest( 5466): screenshot: fallback_duracao
+11-08 21:10:45.998 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=646 ms, travamentos=1 (5496 ms), assistido=22 s, falhou=false, PSS=200 MB
+11-08 21:10:46.094 I/BruDreTest( 5466): SURVEY|Fallback por duração|PASS|30 s → 120 s: pausou e perguntou (Continuar / Escolher outra fonte / Voltar)
+11-08 21:10:46.095 I/TestRunner( 5466): finished: t44_fallbackComparesDuration(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:46.096 I/TestRunner( 5466): started: t42_libraryServicesSearchAndPlay(com.brudre.streaming.V92DeviceTest)
+11-08 21:10:52.713 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:10:52.714 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:10:53.752 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:10:53.756 I/BruDreTorrent( 5466): Torrent pronto: The Killer extended France Bluray version 1989 Original HK Cinema English and Chinese subtitles (GeekJuiceMedia).ia.mp4 (792 MB), peças=1584, legendas=0
+11-08 21:11:02.015 I/BruDreTest( 5466): SURVEY|Internet Archive|PASS|49 resultados; "The Killer (1989) Extended France Bluray/DVDrip Version with The Original HK Cinema English & Chinese Subtitles (GeekJui" reproduziu em 9364 ms (BitTorrent)
+11-08 21:11:02.043 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=4689 ms, travamentos=0 (0 ms), assistido=4 s, falhou=false, PSS=260 MB
+11-08 21:11:02.169 W/BruDreWebSeed( 5466): Web seed falhou na peça 13: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-08 21:11:02.233 W/BruDreWebSeed( 5466): Web seed falhou na peça 12: RuntimeException: invalid torrent handle used [libtorrent:20]
+11-08 21:11:06.705 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:11:10.593 I/BruDreTest( 5466): SURVEY|Wikimedia Commons|PASS|48 resultados; "(Archivo 1969) Mónica en los preparativos del lanzamiento del Apollo 11" reproduziu em 7229 ms (HTTP)
+11-08 21:11:10.600 I/BruDreHomolog( 5466): Reprodução HTTP: até o vídeo=1698 ms, travamentos=0 (0 ms), assistido=5 s, falhou=false, PSS=207 MB
+11-08 21:11:10.674 I/BruDreTest( 5466): SURVEY|Blender Open Movies|PASS|catálogo: 5 títulos com fonte reproduzível
+11-08 21:11:10.677 I/TestRunner( 5466): finished: t42_libraryServicesSearchAndPlay(com.brudre.streaming.V92DeviceTest)
+11-08 21:11:10.678 I/TestRunner( 5466): started: t41_torznabPublicEndpoint(com.brudre.streaming.V92DeviceTest)
+11-08 21:11:14.435 I/BruDreTest( 5466): Cadastro público: true Indexador Torznab/Newznab salvo: Torznab (BruDre Torznab de referencia (CI)) • texto • filmes por id • séries por temporada/episódio • 3 categorias • até 3 por página. Pesquisa de teste: 1 resultado(s) reproduzíveis para "night of the living dead"
+11-08 21:11:14.648 I/BruDreTest( 5466): Filme: [Night of the Living Dead (480p) movie:10331 [https://archive.org/download/night_of_the_living_dead/night_of_the_living_dead_archive.torrent]]
+11-08 21:11:14.848 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:11:14.866 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:11:15.122 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:11:15.138 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S02E01.mp4 (445 KB), peças=21, legendas=0
+11-08 21:11:20.155 I/BruDreTest( 5466): SURVEY|Torznab (endpoint público)|PASS|caps em …/api, movie por tmdbid, tvsearch season 2, reprodução em 4756 ms
+11-08 21:11:20.285 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=852 ms, travamentos=0 (0 ms), assistido=4 s, falhou=false, PSS=218 MB
+11-08 21:11:21.156 W/BruDreTorrent( 5466): Falha ao baixar .torrent, tentando magnet: Erro do servidor (HTTP): Acesso negado pelo servidor (HTTP 403). A fonte exige autorização que o BruDre não possui.
+11-08 21:11:21.157 W/BruDrePlayer( 5466): Falha no torrent
+11-08 21:11:21.157 W/BruDrePlayer( 5466): com.brudre.streaming.sources.HttpStatusException: Servidor do .torrent respondeu 403
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine.downloadTorrentFile(TorrentEngine.kt:431)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine.access$downloadTorrentFile(TorrentEngine.kt:39)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine$loadTorrentBytes$3$bytes$1.invokeSuspend(TorrentEngine.kt:398)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine$loadTorrentBytes$3$bytes$1.invoke(Unknown Source:12)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine$loadTorrentBytes$3$bytes$1.invoke(Unknown Source:10)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.sources.SourceHttp.retrying(SourceHttp.kt:54)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.sources.SourceHttp.retrying$default(SourceHttp.kt:42)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine.loadTorrentBytes(TorrentEngine.kt:398)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine.access$loadTorrentBytes(TorrentEngine.kt:39)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at com.brudre.streaming.torrent.TorrentEngine$openNow$2.invokeSuspend(TorrentEngine.kt:123)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+11-08 21:11:21.157 W/BruDrePlayer( 5466): 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+11-08 21:11:22.812 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:14:21.672 I/BruDreTest( 5466): SURVEY|Internet Archive (.torrent via Torznab)|FAIL|Tempo esgotado esperando: reprodução passar de 3000ms (erro=null)
+11-08 21:14:21.674 I/TestRunner( 5466): finished: t41_torznabPublicEndpoint(com.brudre.streaming.V92DeviceTest)
+11-08 21:14:21.675 I/TestRunner( 5466): started: t52_diagnosticStagesAndFailures(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:21.679 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=null ms, travamentos=0 (0 ms), assistido=0 s, falhou=true, PSS=211 MB
+11-08 21:14:28.751 I/BruDreTest( 5466): Diagnóstico: vazio → Acessível / NO_RESULTS (2037 ms) — Torznab (BruDre Torznab de referencia (CI)) • texto • filmes por id • séries por temporada/episódio • 3 categorias • até 3 por página. Pesquisa de teste: respondeu no formato certo, mas sem resultados para "night of the living dead"
+11-08 21:14:30.789 I/BruDreSearch( 5466): Torznab teste: 0 de 3 aceitos; descartados {NZB (Usenet) não reproduzível=1, conteúdo adulto=1, categoria não é vídeo=1}
+11-08 21:14:30.789 I/BruDreTest( 5466): Diagnóstico: semvideo → Pesquisa funcional / UNAVAILABLE (2037 ms) — Torznab (BruDre Torznab de referencia (CI)) • texto • filmes por id • séries por temporada/episódio • 3 categorias • até 3 por página. Pesquisa de teste: 3 resultado(s) para "night of the living dead", nenhum com vídeo, magnet ou .torrent utilizável
+11-08 21:14:32.828 I/BruDreTest( 5466): Diagnóstico: pesquisa → Pesquisa funcional (2038 ms) — Torznab (BruDre Torznab de referencia (CI)) • texto • filmes por id • séries por temporada/episódio • 3 categorias • até 3 por página. Pesquisa de teste: 1 resultado(s) reproduzíveis para "night of the living dead"
+11-08 21:14:34.355 I/BruDreTest( 5466): Diagnóstico: chave errada → Acessível / AUTH (1526 ms) — Autenticação recusada: Credencial recusada pelo indexador (erro 100: Incorrect user credentials). Confira a chave em "Credencial".
+11-08 21:14:34.359 I/BruDreTest( 5466): Diagnóstico: dns → Cadastrada / DNS (4 ms) — Endereço não encontrado (DNS): Não foi possível localizar brudre-nao-existe.invalid. O nome do servidor não existe ou não é resolvido pela sua rede/provedor. Confira o endereço.
+11-08 21:14:34.919 I/BruDreTest( 5466): Diagnóstico: tls → Cadastrada / TLS (559 ms) — Certificado de segurança inválido: A conexão segura (HTTPS) falhou: certificado vencido, inválido ou data do aparelho errada.
+11-08 21:14:34.920 I/BruDreTest( 5466): Diagnóstico: bloqueada → Cadastrada / BLOCKED (0 ms) — Bloqueada pela segurança: Endereço da rede local: cadastre como servidor local (HTTPS com certificado confirmado)
+11-08 21:14:34.938 I/BruDreTest( 5466): SURVEY|Diagnóstico por etapas|PASS|vazio → Acessível / NO_RESULTS (2037 ms); semvideo → Pesquisa funcional / UNAVAILABLE (2037 ms); pesquisa → Pesquisa funcional (2038 ms); chave errada → Acessível / AUTH (1526 ms); dns → Cadastrada / DNS (4 ms); tls → Cadastrada / TLS (559 ms); bloqueada → Cadastrada / BLOCKED (0 ms)
+11-08 21:14:34.940 I/TestRunner( 5466): finished: t52_diagnosticStagesAndFailures(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:34.941 I/TestRunner( 5466): started: t54_memoryDuringSourceTests(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:36.273 I/BruDreTest( 5466): Memória (PSS do processo): antes 216 MB, depois 220 MB, variação 3 MB após 3 rodadas de teste e pesquisa
+11-08 21:14:36.273 I/BruDreTest( 5466): SURVEY|Memória durante testes de fontes|PASS|PSS 216 → 220 MB (3 MB) após 3 rodadas com 4 fontes
+11-08 21:14:36.280 I/TestRunner( 5466): finished: t54_memoryDuringSourceTests(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:36.281 I/TestRunner( 5466): started: t50_credentialsNeverPersistedAndAuthenticatedLinksStillWork(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:40.316 I/BruDreSearch( 5466): Torznab search_7579b112fc121f71: 2 de 3 aceitos; descartados {NZB (Usenet) não reproduzível=1}
+11-08 21:14:40.319 I/BruDreTest( 5466): Links dos resultados: [https://10.0.2.2:8443/dl/brudre-teste-serie.torrent?jackett_apikey=%7Bcred%7D, https://10.0.2.2:8443/dl/brudre-teste-serie.torrent?jackett_apikey=%7Bcred%7D]
+11-08 21:14:40.361 I/BruDreTLS( 5466): OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:14:40.365 I/BruDreTorrent( 5466): Sessão BitTorrent iniciada (conexões=40)
+11-08 21:14:40.538 I/BruDreTorrent( 5466): Fontes adicionadas: 4 trackers; web seeds pelo OkHttp: 1
+11-08 21:14:40.546 I/BruDreTorrent( 5466): Torrent pronto: BruDre.Teste.S01E02.mp4 (446 KB), peças=21, legendas=0
+11-08 21:14:45.604 I/BruDreHomolog( 5466): Reprodução BitTorrent: até o vídeo=707 ms, travamentos=0 (0 ms), assistido=4 s, falhou=false, PSS=208 MB
+11-08 21:14:47.387 I/BruDreTest( 5466): Arquivos com a chave: [] • linhas de log com a chave: 0
+11-08 21:14:47.402 I/BruDreTest( 5466): SURVEY|Credenciais fora do armazenamento|PASS|links {cred}; download autenticado tocou S01E02; 664 arquivos e o logcat varridos sem a chave; relatório e exportação limpos
+11-08 21:14:47.404 I/TestRunner( 5466): finished: t50_credentialsNeverPersistedAndAuthenticatedLinksStillWork(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:47.405 I/TestRunner( 5466): started: t51_oldRecordsMigrated(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:47.408 I/BruDreTest( 5466): Antes: segredo no arquivo de fontes = true
+11-08 21:14:47.933 I/BruDreTest( 5466): Depois da migração: 5 títulos com fonte reproduzível (SEARCH_OK)
+11-08 21:14:47.934 I/BruDreTest( 5466): SURVEY|Migração de registros antigos|PASS|fonte com token: segredo movido para o CredentialStore, endereço {cred} testado OK; histórico de torrent limpo
+11-08 21:14:47.936 I/TestRunner( 5466): finished: t51_oldRecordsMigrated(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:47.937 I/TestRunner( 5466): started: t53_trackersHttpsUdpDhtAndFailures(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:48.490 W/BruDreTorrent( 5466): Tracker HTTPS https://brudre-nao-existe.invalid/announce: DNS UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException: android_getaddrinfo failed: EAI_NODATA (No address associated with hostnam
+11-08 21:14:48.553 W/BruDreTorrent( 5466): Tracker HTTPS https://expired.badssl.com/announce: TLS SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← CertificateException: Unacceptable certificate: CN
+11-08 21:14:48.712 W/BruDreTorrent( 5466): Tracker HTTPS https://wrong.host.badssl.com/announce: TLS SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-08 21:14:48.712 W/BruDreTorrent( 5466):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-08 21:14:48.712 W/BruDreTorrent( 5466):     DN: CN=*.badssl.com
+11-08 21:14:48.712 W/BruDreTorrent( 5466):     subjectAltNames: [*.badssl.com
+11-08 21:15:18.509 I/BruDreTest( 5466): Trackers (sintético): tracker UDP (5), tracker HTTPS (2), DHT (20); respostas=[udp://tracker.opentrackr.org:1337/announce: 5, https://10.0.2.2:8443/announce: 2]; erros=[bf16e8 (https://10.0.2.2:8443/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://expired.badssl.com/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://10.0.2.2:8443/announce)[0.0.0.0:6881-v1] init fail (BIO routines) "" (1), bf16e8 (https://expired.badssl.com/announce)[0.0.0.0:6881-v1] init fail (BIO routines) "" (1), bf16e8 (https://wrong.host.badssl.com/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://brudre-nao-existe.invalid/announce)[[::]:6881-v1] Host not found (authoritative) "" (1), bf16e8 (udp://tracker.opentrackr.org:1337/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://wrong.host.badssl.com/announce)[0.0.0.0:6881-v1] init fail (BIO routines) "" (1), bf16e8 (https://brudre-nao-existe.invalid/announce)[0.0.0.0:6881-v1] Host not found (authoritative) "" (1), bf16e8 (https://10.0.2.2:8443/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (2), https://brudre-nao-existe.invalid/announce: Endereço não encontrado (DNS) — UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException: android_getaddrinfo failed: EAI_NO, https://expired.badssl.com/announce: Certificado de segurança inválido — SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB ← Certificat, https://wrong.host.badssl.com/announce: Certificado de segurança inválido — SSLPeerUnverifiedException: Hostname wrong.host.badssl.com not verified:
+11-08 21:15:18.509 I/BruDreTest( 5466):     certificate: sha256/BNBJav49MLSts2dh4HIlPAWZz2tVwG6qlpMhHv7Iyg0=
+11-08 21:15:18.509 I/BruDreTest( 5466):     DN: CN=*.badss]; alertas do motor=30; HTTPS entregues=2
+11-08 21:15:18.509 I/BruDreTest( 5466): SURVEY|Tracker HTTPS (servidor local, certificado fixado)|PASS|anúncio pelo OkHttp: 2 participantes recebidos, 2 entregues ao motor
+11-08 21:15:18.509 I/BruDreTest( 5466): HTTPS interno do libtorrent: [bf16e8 (https://10.0.2.2:8443/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://expired.badssl.com/announce)[[::]:6881-v1] skipping tracker announce (unreachable) "" (1), bf16e8 (https://10.0.2.2:8443/announce)[0.0.0.0:6881-v1] init fail (BIO routines) "" (1)]
+11-08 21:15:18.510 I/BruDreTest( 5466): SURVEY|Tracker com certificado inválido|PASS|vencido e host errado recusados: https://expired.badssl.com/announce: Certificado de segurança inválido — SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
+11-08 21:15:18.510 I/BruDreTest( 5466): SURVEY|Tracker com falha de DNS|PASS|https://brudre-nao-existe.invalid/announce: Endereço não encontrado (DNS) — UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException
+11-08 21:15:18.510 I/BruDreTest( 5466): SURVEY|Tracker UDP|PASS|respostas: [udp://tracker.opentrackr.org:1337/announce: 5]
+11-08 21:16:04.816 I/BruDreTest( 5466): Ubuntu: DHT (1006); respostas=[]; erros=[https://ipv6.torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.), https://torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.)]; conhecidos=500; enxame=0
+11-08 21:16:04.816 I/BruDreTest( 5466): SURVEY|Tracker HTTPS público (Ubuntu)|PARTIAL|via DHT (1006); respostas []; erros [https://ipv6.torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.), https://torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.)]
+11-08 21:16:04.816 I/BruDreTest( 5466): SURVEY|DHT|PASS|participantes via DHT: Ubuntu=1006 sintético=20
+11-08 21:16:05.969 I/BruDreTorrent( 5466): Sessão BitTorrent encerrada
+11-08 21:16:05.970 I/TestRunner( 5466): finished: t53_trackersHttpsUdpDhtAndFailures(com.brudre.streaming.V943DeviceTest)
+11-08 21:16:05.971 I/TestRunner( 5466): run finished: 62 tests, 0 failed, 0 ignored

@@ -1,0 +1,38 @@
+11-08 21:08:07.106  5466  5612 I TestRunner: started: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)
+11-08 21:08:07.188  5466  9216 I BruDreHomolog: Reprodução HTTP: até o vídeo=null ms, travamentos=0 (0 ms), assistido=0 s, falhou=true, PSS=202 MB
+11-08 21:08:07.253   912   926 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 4815(335KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 3874KB/7749KB, paused 15us total 250.181ms
+11-08 21:08:07.254   912   928 W System  : A resource failed to call release.
+11-08 21:08:07.254   912   928 I chatty  : uid=10153(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-08 21:08:07.254   912   928 W System  : A resource failed to call release.
+11-08 21:08:07.282  9368  9415 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-08 21:08:07.289  9368  9397 W LocationOracle: No location history returned by ContextManager
+11-08 21:08:07.346  9368  9368 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 21:08:07.365   355   355 E Layer   : [Surface(name=Task=120)/@0xdaff7f1 - animation-leash#0] No local sync point found
+11-08 21:08:07.365   355   355 E Layer   : [Surface(name=Task=120)/@0xdaff7f1 - animation-leash#0] No local sync point found
+11-08 21:08:07.365   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:08:07.365   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:08:07.415  9368  9402 E MDD     : DownloadProgressMonitor: Can't find file group for uri: android://com.google.android.googlequicksearchbox/files/sharedminusonemodule/shared/SharedMinusOneData.pb.tmp
+11-08 21:08:07.430  9368  9415 I TngMinusOneSync: Syncing TNG:-1
+11-08 21:08:07.436   714   728 I ndroid.systemu: NativeAlloc concurrent copying GC freed 5060(358KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6920KB/13MB, paused 18us total 425.134ms
+11-08 21:08:07.457  1135  2834 W GCoreFlp: No location to return for getLastLocation()
+11-08 21:08:07.469  5466  5612 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/opensearch/descricao.xml → OPENSEARCH ok=true OpenSearch (atom+xml): 1 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.520  5466  5480 W System  : A resource failed to call dispose.
+11-08 21:08:07.540   495   505 I system_server: NativeAlloc concurrent copying GC freed 136477(6210KB) AllocSpace objects, 27(1200KB) LOS objects, 49% free, 15MB/30MB, paused 37us total 226.391ms
+11-08 21:08:07.540   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 21:08:07.540   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 21:08:07.542   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 21:08:07.542   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 21:08:07.613  5466  5612 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/rest/descritor.json → REST ok=true API REST: 2 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.666   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf4e390, tid 5836
+11-08 21:08:07.669   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:08:07.671   495  5836 D EGL_emulation: eglCreateContext: 0x7e75ac03d560: maj 3 min 0 rcv 3
+11-08 21:08:07.672   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75ac03d560: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:08:07.679  5466  5612 I BruDreTest: Fonte https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/search/paged/{slug}-p{page}.json → SEARCH ok=true API de pesquisa: 1 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:08:07.681  5466  5612 I BruDreTest: Capacidades BruDre OpenSearch de teste: pesquisa por texto ✓ • por identificador ✗ • episódios ✗ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-08 21:08:07.682  5466  5612 I BruDreTest: Capacidades API REST de teste: pesquisa por texto ✓ • por identificador ✓ • episódios ✓ • paginação ✓ • formatos: HTTP • limite: 30/min
+11-08 21:08:07.682  5466  5612 I BruDreTest: Capacidades raw.githubusercontent.com: pesquisa por texto ✓ • por identificador ✗ • episódios ✓ • paginação ✓ • formatos: HTTP, HLS, magnet, .torrent
+11-08 21:08:07.705  5466  5612 I BruDreTest: Página 1: [OPENSEARCH:Big Buck Bunny (2008), REST:Big Buck Bunny, REST:BruDre Teste Série, SEARCH:Big Buck Bunny] mais em=[search_52e1129eebd70788]
+11-08 21:08:07.770  5466  5612 I BruDreTest: Página 2: [Big Buck Bunny (versão 2)] mais em=[]
+11-08 21:08:07.845  5466  9216 I BruDreSources: Catálogo Paginado: 2 títulos (0 descartados)
+11-08 21:08:07.914  5466  9216 I BruDreSources: Catálogo feed_477140bd0b7c1577: +1 títulos (página seguinte)
+11-08 21:08:07.920  5466  5612 I TestRunner: finished: v04_multiSourceSearchAndPagination(com.brudre.streaming.V91DeviceTest)

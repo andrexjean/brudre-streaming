@@ -1,0 +1,73 @@
+11-08 21:05:23.692  5466  5612 I TestRunner: started: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)
+11-08 21:05:23.696  5466  5612 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@2c21086]
+11-08 21:05:23.699  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:05:23.715   355   355 E Layer   : [Surface(name=Task=100)/@0x1f9c820 - animation-leash#0] No local sync point found
+11-08 21:05:23.715   355   355 E Layer   : [Surface(name=Task=100)/@0x1f9c820 - animation-leash#0] No local sync point found
+11-08 21:05:23.715   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:05:23.715   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:05:23.716  1878  2306 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-08 21:05:23.766   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:05:23.785   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 52, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-08 21:05:23.785   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=52)
+11-08 21:05:23.800  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: PRE_ON_CREATE
+11-08 21:05:23.800  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:05:23.846  1878  1878 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 21:05:23.851  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: CREATED
+11-08 21:05:23.851  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@343a455
+11-08 21:05:23.852  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: STARTED
+11-08 21:05:23.852  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@343a455
+11-08 21:05:23.853  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: RESUMED
+11-08 21:05:23.853  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@343a455
+11-08 21:05:23.865  1878  2306 I TngMinusOneSync: Syncing TNG:-1
+11-08 21:05:23.929   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf52950, tid 5836
+11-08 21:05:23.937  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:23.938  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:23.938   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:23.991   495  5836 D EGL_emulation: eglCreateContext: 0x7e75ac03b9e0: maj 3 min 0 rcv 3
+11-08 21:05:24.019   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75ac03b9e0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:05:24.095   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:05:24.097   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:05:24.111  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: PAUSED
+11-08 21:05:24.112  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@343a455
+11-08 21:05:24.114  1878  2491 I PBSessionCacheImpl: Deleted sessionId[8261325519147167] from persistence.
+11-08 21:05:24.131  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: STOPPED
+11-08 21:05:24.131  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@343a455
+11-08 21:05:24.142  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@343a455 in: DESTROYED
+11-08 21:05:24.143  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:05:24.149   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:24.151  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: PRE_ON_CREATE
+11-08 21:05:24.151  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-08 21:05:24.155  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: CREATED
+11-08 21:05:24.155  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@eb6e531
+11-08 21:05:24.156  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: STARTED
+11-08 21:05:24.156  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@eb6e531
+11-08 21:05:24.157  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: RESUMED
+11-08 21:05:24.157  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@eb6e531
+11-08 21:05:24.159  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 21:05:24.163   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +330ms
+11-08 21:05:24.165   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:24.182   306   357 I chatty  : uid=1000(system) HwBinder:306_1 identical 1 line
+11-08 21:05:24.199   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:24.201  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:24.201  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:24.232   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:24.265   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:24.641  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:24.641  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:24.644   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:05:24.646   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 53, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:3, uid:1071 session name: ""
+11-08 21:05:24.646   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=53)
+11-08 21:05:24.659  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: PAUSED
+11-08 21:05:24.659  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@eb6e531
+11-08 21:05:24.755   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming.test/0/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:05:24.755   495   537 I ActivityTaskManager: Displayed com.brudre.streaming.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity: +113ms
+11-08 21:05:24.755   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:05:24.776   912   928 W System  : A resource failed to call release.
+11-08 21:05:24.776   912   928 I chatty  : uid=10153(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-08 21:05:24.776   912   928 W System  : A resource failed to call release.
+11-08 21:05:24.793  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: STOPPED
+11-08 21:05:24.793  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@eb6e531
+11-08 21:05:24.808  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@eb6e531 in: DESTROYED
+11-08 21:05:24.808  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:05:24.809  5466  5612 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@2c21086]
+11-08 21:05:24.813  5466  5612 I TestRunner: finished: t01_launchShowsBrandHeroAndFocus(com.brudre.streaming.UiFlowTest)

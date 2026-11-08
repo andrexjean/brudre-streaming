@@ -1,0 +1,130 @@
+11-08 21:01:18.900  5466  5612 I TestRunner: started: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)
+11-08 21:01:18.905  5466  5612 I BruDreTest: DNS: Endereço não encontrado (DNS): Não foi possível localizar brudre-nao-existe.invalid. O nome do servidor não existe ou não é resolvido pela sua rede/provedor. Confira o endereço. | UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException: android_getaddrinfo failed: EAI_NODATA (No address associated with hostname)
+11-08 21:01:18.995  5466  5612 I BruDreTest: HTTP: Erro do servidor (HTTP): Arquivo não encontrado no servidor (HTTP 404). O endereço pode ter mudado ou sido removido.
+11-08 21:01:20.905   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=36)
+11-08 21:01:20.906   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 36 ended, total sessions:0
+11-08 21:01:20.907   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 21:01:21.164  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:01:21.164  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:01:22.314  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:01:22.314  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:01:22.788  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:01:23.048  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:01:23.048  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:01:28.429   284   284 D Zygote  : Forked child process 8286
+11-08 21:01:28.434  8286  8286 W gearhead:share: Unexpected CPU variant for X86 using defaults: x86_64
+11-08 21:01:28.436   398   409 I adbd    : jdwp connection from 8286
+11-08 21:01:28.442  8286  8286 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+11-08 21:01:28.442  8286  8286 I gearhead:share: The ClassLoaderContext is a special shared library.
+11-08 21:01:28.444  8286  8286 I gearhead:share: The ClassLoaderContext is a special shared library.
+11-08 21:01:28.444  8286  8286 D nativeloader: classloader namespace configured for unbundled product apk. library_path=/product/priv-app/AndroidAutoFullPrebuilt/lib/x86_64:/product/priv-app/AndroidAutoFullPrebuilt/AndroidAutoFullPrebuilt.apk!/lib/x86_64:/product/lib64:/system/product/lib64
+11-08 21:01:28.447  8286  8286 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-08 21:01:28.447  8286  8286 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-08 21:01:28.450  8286  8286 I MultiDex: VM with version 2.1.0 has multidex support
+11-08 21:01:28.450  8286  8286 I MultiDex: install
+11-08 21:01:28.450  8286  8286 I MultiDex: VM has multidex support, MultiDex support library is disabled.
+11-08 21:01:28.451  8286  8286 W Primes  : Primes not initialized, returning default (no-op) Primes instance which will ignore all calls. Please call Primes.initialize(...) before using any Primes API.
+11-08 21:01:28.452  8286  8286 I CAR.GH  : onCreate
+11-08 21:01:28.454  8286  8306 W gearhead:share: Accessing hidden field Ljava/util/Collections$SynchronizedCollection;->mutex:Ljava/lang/Object; (greylist-max-o, reflection, denied)
+11-08 21:01:28.454  8286  8306 W gearhead:share: Accessing hidden method Ljava/util/Collections$SynchronizedSet;-><init>(Ljava/util/Set;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 21:01:28.454  8286  8306 W gearhead:share: Accessing hidden method Ljava/util/Collections$SynchronizedCollection;-><init>(Ljava/util/Collection;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 21:01:28.456  8286  8286 I CAR.GH  : Process: SHARED_SERVICE
+11-08 21:01:28.457  8286  8286 V PrimesApiImpl: Primes instant initialization
+11-08 21:01:28.458  8286  8307 I PrimesApiImpl: background initialization
+11-08 21:01:28.486   495  1955 D WifiNl80211Manager: Scan result ready event
+11-08 21:01:28.486   495  1955 D WifiNative: Scan result ready event
+11-08 21:01:28.501  8286  8286 I CAR.TOKEN: useTransitionalToken: true
+11-08 21:01:28.512  8286  8286 I GAv4    : Google Analytics 201.7.02 is starting up. To enable debug logging on a device run:
+11-08 21:01:28.512  8286  8286 I GAv4    :   adb shell setprop log.tag.GAv4 DEBUG
+11-08 21:01:28.512  8286  8286 I GAv4    :   adb logcat -s GAv4
+11-08 21:01:28.515  8286  8317 W GAv4    : AnalyticsReceiver is not registered or is disabled. Register the receiver for reliable dispatching on non-Google Play devices. See http://goo.gl/8Rd3yj for instructions.
+11-08 21:01:28.516  8286  8317 W GAv4    : CampaignTrackingReceiver is not registered, not exported or is disabled. Installation campaign tracking is not possible. See http://goo.gl/8Rd3yj for instructions.
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: getToken() called while client was disconnected!
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: java.lang.RuntimeException: Current stack
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at btj.e(SourceFile:25)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at dpo.<init>(SourceFile:17)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at epd.a(Unknown Source:2)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at hrz.a(Unknown Source:11)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at hsw.a(SourceFile:23)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at hry.apply(Unknown Source:2)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at j$.util.Map$$CC.computeIfAbsent$$dflt$$(Unknown Source:957)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at mg.computeIfAbsent(Unknown Source:0)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at j$.util.Map$$Dispatch.computeIfAbsent(Unknown Source:6)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at hsa.a(SourceFile:9)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at hsa.c(SourceFile:11)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at cxf.a(SourceFile:43)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at eqg.a(SourceFile:32)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at com.google.android.projection.gearhead.GhApplication.onCreate(SourceFile:78)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.app.Instrumentation.callApplicationOnCreate(Instrumentation.java:1192)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:6712)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.app.ActivityThread.access$1300(ActivityThread.java:237)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1913)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-08 21:01:28.517  8286  8286 W GH.CarClientManager: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-08 21:01:28.517  8286  8317 W GAv4    : AnalyticsService not registered in the app manifest. Hits might not be delivered reliably. See http://goo.gl/8Rd3yj for instructions.
+11-08 21:01:28.526  8286  8286 I GH.CONFIG: groups:
+11-08 21:01:28.527  8286  8286 I GH.CONFIG: everyone
+11-08 21:01:28.536  8286  8286 I GH.IconVerifyService: triggerSource = BOOT_COMPLETE, componentState = 2
+11-08 21:01:28.551  8286  8286 I CAR.ANALYTICS: Flushing event queue to clearcut
+11-08 21:01:28.572   284   284 I Zygote  : Process 5901 exited due to signal 9 (Killed)
+11-08 21:01:28.574   714   714 V KeyguardUpdateMonitor: onSubscriptionInfoChanged()
+11-08 21:01:28.575   714   714 V KeyguardUpdateMonitor: SubInfo:{id=1 iccId=89014103211118510720 simSlotIndex=0 carrierId=1 displayName=T-Mobile carrierName=T-Mobile nameSource=3 iconTint=-16746133 number=+15555215554 dataRoaming=0 iconBitmap=android.graphics.Bitmap@cbe48ca mcc=310 mnc=260 countryIso=us isEmbedded=false nativeAccessRules=null cardString=89014103211118510720 cardId=-1 isOpportunistic=false groupUUID=null isGroupDisabled=false profileClass=-1 ehplmns=null hplmns=null subscriptionType=0 groupOwner=null carrierConfigAccessRules=null areUiccApplicationsEnabled=true}
+11-08 21:01:28.575  1037  1037 D Telephony: isEmergencyPreferredAccount: subId=1, activeData=1
+11-08 21:01:28.575  1037  1037 D Telephony: isEmergencyPreferredAccount: Device does not require preference.
+11-08 21:01:28.610   495   540 I libprocessgroup: Successfully killed process cgroup uid 10137 pid 5901 in 43ms
+11-08 21:01:33.459  8286  8305 I gearhead:share: Waiting for a blocking GC ProfileSaver
+11-08 21:01:34.324   284   284 I Zygote  : Process 6207 exited due to signal 9 (Killed)
+11-08 21:01:34.364   495   540 I libprocessgroup: Successfully killed process cgroup uid 10143 pid 6207 in 43ms
+11-08 21:01:45.634  1359  8322 I GmscoreIpa: Starting mediastore instant index
+11-08 21:01:48.426  1878  1878 I BgTaskExecutorImpl: Starting EXCLUSIVE background task INTERNAL_PERIODIC_TASK_SYNC.
+11-08 21:01:48.432  1878  1878 I BgTaskExecutorImpl: Starting PERIODIC background task OPA_ASSISTANT_LANGUAGE_TRANSITION_TASK.
+11-08 21:01:48.477   495  1952 D WifiNl80211Manager: Scan result ready event
+11-08 21:01:48.477   495  1952 D WifiNative: Scan result ready event
+11-08 21:01:52.891  5466  5612 I BruDreTest: Inalcançável em 33031 ms: Tempo esgotado: O servidor demorou demais para responder. Verifique a internet ou tente mais tarde. | SocketTimeoutException: failed to connect to /192.0.2.1 (port 443) from /10.0.2.16 (port 54074) after 10000ms
+11-08 21:01:52.892  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:01:52.894   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:01:52.896   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 37, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-08 21:01:52.896   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=37)
+11-08 21:01:52.913  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: PRE_ON_CREATE
+11-08 21:01:52.913  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:01:52.942   417   417 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-08 21:01:52.945  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: CREATED
+11-08 21:01:52.945  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@4a41c60
+11-08 21:01:52.948  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: STARTED
+11-08 21:01:52.948  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@4a41c60
+11-08 21:01:52.952  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: RESUMED
+11-08 21:01:52.952  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@4a41c60
+11-08 21:01:53.302   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:01:53.307   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:01:53.307   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +406ms
+11-08 21:01:53.352  1878  2491 I PBSessionCacheImpl: Deleted sessionId[8261325519147124] from persistence.
+11-08 21:01:53.355   284   284 I Zygote  : Process 5201 exited due to signal 9 (Killed)
+11-08 21:01:53.363  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 21:01:53.378   495   540 I libprocessgroup: Successfully killed process cgroup uid 10134 pid 5201 in 44ms
+11-08 21:01:54.133   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:01:54.139  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: PAUSED
+11-08 21:01:54.139  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@4a41c60
+11-08 21:01:54.313   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf590d0, tid 5836
+11-08 21:01:54.343   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:01:54.379   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abfd83b0: maj 3 min 0 rcv 3
+11-08 21:01:54.382   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abfd83b0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:01:54.400   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:01:54.422  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: STOPPED
+11-08 21:01:54.422  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@4a41c60
+11-08 21:01:54.569   912   926 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 8006(472KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 3856KB/7712KB, paused 15us total 175.094ms
+11-08 21:01:54.570   912   928 W System  : A resource failed to call release.
+11-08 21:01:54.570   912   928 I chatty  : uid=10153(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-08 21:01:54.570   912   928 W System  : A resource failed to call release.
+11-08 21:01:54.579   714   728 I ndroid.systemu: NativeAlloc concurrent copying GC freed 9308(562KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6820KB/13MB, paused 17us total 290.140ms
+11-08 21:01:54.625  1878  2306 W ThreadPoolDumper: Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+11-08 21:01:54.665   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:01:54.665   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:01:54.665   355   355 E Layer   : [Surface(name=Task=74)/@0x648c908 - animation-leash#0] No local sync point found
+11-08 21:01:54.665   355   355 E Layer   : [Surface(name=Task=74)/@0x648c908 - animation-leash#0] No local sync point found
+11-08 21:01:54.680  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@4a41c60 in: DESTROYED
+11-08 21:01:54.680  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:01:54.692  5466  5612 I TestRunner: finished: t30_networkErrorsAndSaveWithoutValidation(com.brudre.streaming.SourceEngineTest)

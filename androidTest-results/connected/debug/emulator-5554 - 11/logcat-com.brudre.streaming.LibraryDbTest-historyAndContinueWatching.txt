@@ -1,0 +1,2 @@
+11-08 20:55:42.617  5466  5612 I TestRunner: started: historyAndContinueWatching(com.brudre.streaming.LibraryDbTest)
+11-08 20:55:42.661  5466  5612 I TestRunner: finished: historyAndContinueWatching(com.brudre.streaming.LibraryDbTest)

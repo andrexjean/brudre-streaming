@@ -1,0 +1,12 @@
+release_instalado: 1
+processo_vivo: 10574
+crashes: 0
+TotalTime: 489
+WaitTime: 493
+Total frames rendered: 143
+Janky frames: 143 (100.00%)
+50th percentile: 73ms
+90th percentile: 117ms
+95th percentile: 150ms
+99th percentile: 200ms
+           TOTAL PSS:   129638            TOTAL RSS:   243856       TOTAL SWAP PSS:      331

@@ -1,0 +1,59 @@
+11-08 21:08:14.316  5466  5612 I TestRunner: started: t43_realTorrentSourcesSurvey(com.brudre.streaming.V92DeviceTest)
+11-08 21:08:14.678   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:08:14.679   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:08:14.679   495   525 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:08:15.690  5466  5612 I BruDreTest: Survey Debian: debian-13.7.0-amd64-netinst.iso 1 arquivos hash=7acf8fb590b2060dd9c3146ef770169d593433b0
+11-08 21:08:16.468  5466  5612 I BruDreTest: Survey Ubuntu: ubuntu-24.04.3-live-server-amd64.iso 1 arquivos hash=a1dfefec1a9dd7fa8a041ebeeea271db55126d2f
+11-08 21:08:16.991   495   525 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:08:17.620  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:08:17.620  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:08:17.731  5466  5612 I BruDreTest: SURVEY|Fedora|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/torrents, /ar/torrents, /be/torrents, /bg/torrents]
+11-08 21:08:18.272   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=66)
+11-08 21:08:18.272   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:08:18.273   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 66 ended, total sessions:0
+11-08 21:08:18.274   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 21:08:18.623  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:08:18.623  5805  5820 W System  : A resource failed to call release.
+11-08 21:08:18.623  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:08:18.873  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:08:18.873  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:08:19.124  5466  5612 I BruDreTest: SURVEY|Linux Mint|FAIL|listagem HTTPS: HTTP 404
+11-08 21:08:19.403  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760c1119f8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/222 (fetch/transfer)
+11-08 21:08:19.403  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:08:19.408   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb2f288 : 0(0 size) total buffers - 0(0 size) used buffers - 213/218 (recycle/alloc) - 6/218 (fetch/transfer)
+11-08 21:08:19.408   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:08:21.823  5466  5612 I BruDreTest: Survey Arch Linux: archlinux-2026.11.01-x86_64.iso 1 arquivos hash=ed0f013475535f19b5410d68fd20f627e4950b1f
+11-08 21:08:22.274  5466  5612 I BruDreTest: SURVEY|openSUSE|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:22.931  5466  5612 I BruDreTest: SURVEY|FreeBSD|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:25.603  5466  5612 I BruDreTest: Survey NetBSD: NetBSD-11.1-amd64-dvd.iso 1 arquivos hash=d298b1c5125bf13f956b050a6ce0bf9b2c709f12
+11-08 21:08:26.388  5466  5612 I BruDreTest: SURVEY|Slackware|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+11-08 21:08:27.087  5466  5612 I BruDreTest: Survey Kali Linux: kali-linux-2026.3-hyperv-amd64.7z 1 arquivos hash=db0e18d8979934b694693c1cb402c94cb814be5b
+11-08 21:08:28.181  5466  5612 I BruDreTest: SURVEY|Manjaro|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:29.075  5466  5612 I BruDreTest: SURVEY|EndeavourOS|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+11-08 21:08:29.898  5466  5612 I BruDreTest: Survey AlmaLinux: AlmaLinux-9.8-x86_64 7 arquivos hash=dab70fb0c6bf7283d995a12c07e79c26ad96e80d
+11-08 21:08:30.547  5466  5612 I BruDreTest: Survey Rocky Linux: Rocky-9.8-x86_64-boot 5 arquivos hash=a97b295f4432d20c092774efefda77c66974fe34
+11-08 21:08:32.672  5466  5612 I BruDreTest: SURVEY|FOSS Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/css/torrents.css, https://twitter.com/FossTorrents, https://bsky.app/profile/fosstorrents.bsky.social, /blog/torrents-with-web-seeds]
+11-08 21:08:33.294  5466  5612 I BruDreTest: SURVEY|Academic Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [https://academictorrents.com/, https://reproducibilityinstitute.org/w/?utm_source=academictorrents, https://www.rapidseedbox.com/?utm_source=academictorrents, https://whatbox.ca/?utm_source=academictorrents]
+11-08 21:08:33.418  5466  5612 I BruDreTest: SURVEY|eTree|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+11-08 21:08:34.551  5466  5612 I BruDreTest: SURVEY|Public Domain Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [http://ads.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/, http://files.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/display.testimonials.indexed.html]
+11-08 21:08:34.592  5466  9216 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:08:34.593  5466  9216 I BruDreTorrent: Sessão BitTorrent iniciada (conexões=40)
+11-08 21:08:34.592  5466  5466 W DefaultDispatch: type=1400 audit(0.0:376): avc: denied { read } for name="block" dev="sysfs" ino=2105 scontext=u:r:untrusted_app:s0:c167,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0 app=com.brudre.streaming
+11-08 21:08:34.600  5466  5466 I chatty  : uid=10167(com.brudre.streaming) identical 5 lines
+11-08 21:08:34.600  5466  5466 W DefaultDispatch: type=1400 audit(0.0:382): avc: denied { read } for name="block" dev="sysfs" ino=2105 scontext=u:r:untrusted_app:s0:c167,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0 app=com.brudre.streaming
+11-08 21:08:43.890  9368  9418 W GmsLocationProvider: Error removing location updates: 16
+11-08 21:09:00.001   714   714 D KeyguardClockSwitch: Updating clock: 909
+11-08 21:09:00.018   714   714 D KeyguardClockSwitch: Updating clock: 909
+11-08 21:09:18.536  1135  9744 I anjv    : updateFromConfigurations using legacy put method [CONTEXT service_id=204 ]
+11-08 21:09:18.570   495  1757 D WifiNl80211Manager: Scan result ready event
+11-08 21:09:18.570   495  1757 D WifiNative: Scan result ready event
+11-08 21:10:00.002   714   714 D KeyguardClockSwitch: Updating clock: 910
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|Debian|PASS|.torrent oficial válido (debian-13.7.0-amd64-netinst.iso); participantes: conectados=0, conhecidos=178, enxame(tracker)=281
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|Ubuntu|PASS|.torrent oficial válido (ubuntu-24.04.3-live-server-amd64.iso); participantes: conectados=4, conhecidos=81, enxame(tracker)=100
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|Arch Linux|PASS|.torrent oficial válido (archlinux-2026.11.01-x86_64.iso); participantes: conectados=0, conhecidos=130, enxame(tracker)=149
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|NetBSD|PASS|.torrent oficial válido (NetBSD-11.1-amd64-dvd.iso); participantes: conectados=1, conhecidos=26, enxame(tracker)=8
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|Kali Linux|PASS|.torrent oficial válido (kali-linux-2026.3-hyperv-amd64.7z); participantes: conectados=0, conhecidos=45, enxame(tracker)=104
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|AlmaLinux|PASS|.torrent oficial válido (AlmaLinux-9.8-x86_64); participantes: conectados=0, conhecidos=87, enxame(tracker)=115
+11-08 21:10:04.707  5466  5612 I BruDreTest: SURVEY|Rocky Linux|PASS|.torrent oficial válido (Rocky-9.8-x86_64-boot); participantes: conectados=0, conhecidos=27, enxame(tracker)=27
+11-08 21:10:05.459  5466  5612 I BruDreTorrent: Sessão BitTorrent encerrada
+11-08 21:10:05.460  5466  5612 I TestRunner: finished: t43_realTorrentSourcesSurvey(com.brudre.streaming.V92DeviceTest)

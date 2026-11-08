@@ -1,0 +1,8 @@
+11-08 21:01:09.617  5466  5612 I TestRunner: started: t28_dynamicSearchAndMultipleSources(com.brudre.streaming.SourceEngineTest)
+11-08 21:01:09.620  5466  5480 W System  : A resource failed to call release.
+11-08 21:01:09.620  5466  5480 W System  : A resource failed to call release.
+11-08 21:01:09.621  5466  5480 W System  : A resource failed to call dispose.
+11-08 21:01:09.713  5466  5612 I BruDreTest: API de pesquisa: SEARCH ok=true API de pesquisa: 1 resultado(s) reproduzíveis para "big buck bunny"
+11-08 21:01:09.735  5466  6733 I BruDreSources: Catálogo Blender: 5 títulos (0 descartados)
+11-08 21:01:10.686  5466  5612 I BruDreTest: Fontes do título: [Obras abertas (BruDre) [HTTP • BitTorrent], Blender [BitTorrent], Blender [HLS], Pesquisa de teste (pesquisa) [HTTP]] • Fonte oficial do titular • streaming direto + torrent oficial • mais 3 fonte(s) cadastrada(s)
+11-08 21:01:10.761  5466  5612 I TestRunner: finished: t28_dynamicSearchAndMultipleSources(com.brudre.streaming.SourceEngineTest)

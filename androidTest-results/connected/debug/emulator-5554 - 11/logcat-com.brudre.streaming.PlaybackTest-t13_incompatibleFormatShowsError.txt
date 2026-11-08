@@ -1,0 +1,222 @@
+11-08 20:56:03.065  5466  5612 I TestRunner: started: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)
+11-08 20:56:03.066   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf54450, tid 5836
+11-08 20:56:03.070   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 20:56:03.081   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abffb4b0: maj 3 min 0 rcv 3
+11-08 20:56:03.086   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abffb4b0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 20:56:03.090  1359  5910 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:03.091  1359  5685 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:03.094  1359  5685 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:03.125   495  2366 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:56:03.127  6013  6019 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:56:03.128   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:56:03.178  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 20:56:03.181   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 20:56:03.190  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:03.190  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:03.191  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:03.206  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: PRE_ON_CREATE
+11-08 20:56:03.206  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 20:56:03.236  5466  5466 I ExoPlayerImpl: Init 3df75d [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30]
+11-08 20:56:03.287  1135  5279 I PTCommittedOperation: Receive new configuration for com.google.android.gms.trustlet_voiceunlock
+11-08 20:56:03.324  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: CREATED
+11-08 20:56:03.324  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@2e22b55
+11-08 20:56:03.329  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: STARTED
+11-08 20:56:03.329  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@2e22b55
+11-08 20:56:03.330  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: RESUMED
+11-08 20:56:03.330  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@2e22b55
+11-08 20:56:03.335  5901  5901 V MediaRouter: Selecting route: RouteInfo{ name=Phone, description=null, status=null, category=RouteCategory{ name=System types=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO  groupable=false }, supportedTypes=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO , presentationDisplay=null }
+11-08 20:56:03.343  5901  5901 W s.youtube.musi: Accessing hidden field Ljava/util/Collections$SynchronizedCollection;->mutex:Ljava/lang/Object; (greylist-max-o, reflection, denied)
+11-08 20:56:03.343  5901  5901 W s.youtube.musi: Accessing hidden method Ljava/util/Collections$SynchronizedSet;-><init>(Ljava/util/Set;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 20:56:03.343  5901  5901 W s.youtube.musi: Accessing hidden method Ljava/util/Collections$SynchronizedCollection;-><init>(Ljava/util/Collection;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 20:56:03.352  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.SegmentedButtonContentMeasurePolicy$measure$2.<init>(java.util.List, androidx.compose.ui.layout.MeasureScope, androidx.compose.material3.SegmentedButtonContentMeasurePolicy, int, java.util.List, int) took 1.051s (16.17 bytecodes/s) (1024B approximate peak alloc)
+11-08 20:56:03.424  5901  5901 V MediaRouter: Selecting route: RouteInfo{ name=Phone, description=null, status=null, category=RouteCategory{ name=System types=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO  groupable=false }, supportedTypes=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO , presentationDisplay=null }
+11-08 20:56:03.454  5449  5449 W dex2oat32: Verification of java.lang.Object androidx.compose.material3.SliderKt$rangeSliderPressDragModifier$1$1$1.invokeSuspend(java.lang.Object) took 269.400ms (1863.39 bytecodes/s) (10144B approximate peak alloc)
+11-08 20:56:03.458  1359  4601 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:03.463  1359  5655 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:03.466  1359  5082 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:03.520  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:03.520  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:03.535  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:03.574  5449  5771 W dex2oat32: Verification of java.lang.Boolean androidx.compose.material3.SliderKt$rangeSliderStartThumbSemantics$1$1.invoke(float) took 220.941ms (1018.37 bytecodes/s) (3600B approximate peak alloc)
+11-08 20:56:03.586   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 20:56:03.587   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +365ms
+11-08 20:56:03.603   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 20:56:03.611  1359  5695 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:03.613  1359  5695 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:03.613  1135  5900 I PTCommittedOperation: Receive new configuration for com.google.android.gms.octarine
+11-08 20:56:03.625  1359  4605 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:03.835  1878  3050 I PBSessionCacheImpl: Deleted sessionId[8261325519146893] from persistence.
+11-08 20:56:03.925  5449  5449 W dex2oat32: Verification of long androidx.compose.material3.SliderKt.SliderRange(kotlin.ranges.ClosedFloatingPointRange) took 125.991ms (1031.81 bytecodes/s) (2432B approximate peak alloc)
+11-08 20:56:03.925  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 20:56:03.949  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:03.949  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:03.952  1359  5910 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:03.955  1359  5910 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:03.957  1359  5695 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:03.959  1135  3915 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:03.965  1135  5277 I PTCommittedOperation: Receive new configuration for com.google.android.gms.googlehelp
+11-08 20:56:03.970  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.SnackbarData.performAction() took 271.447ms (0.00 bytecodes/s) (464B approximate peak alloc)
+11-08 20:56:03.982  5901  5947 I s.youtube.musi: Waiting for a blocking GC ClassLinker
+11-08 20:56:04.058  1359  5910 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.059  1359  5709 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.061  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.061  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.062  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.066  1359  4601 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.068  1135  5279 I PTCommittedOperation: Receive new configuration for com.google.android.gms.chromesync
+11-08 20:56:04.111  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.111  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.111  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.116  5901  5949 I s.youtube.musi: WaitForGcToComplete blocked ClassLinker on ClassLinker for 1.559s
+11-08 20:56:04.118  5901  5947 I s.youtube.musi: WaitForGcToComplete blocked ClassLinker on ClassLinker for 135.785ms
+11-08 20:56:04.119  5449  5449 W dex2oat32: Verification of void androidx.compose.material3.SurfaceKt.Surface-T9BRK9s(androidx.compose.ui.Modifier, androidx.compose.ui.graphics.Shape, long, long, float, float, androidx.compose.foundation.BorderStroke, kotlin.jvm.functions.Function2, androidx.compose.runtime.Composer, int, int) took 108.685ms (2153.00 bytecodes/s) (5048B approximate peak alloc)
+11-08 20:56:04.129  1359  5910 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.131  1135  5900 I PTCommittedOperation: Receive new configuration for com.google.android.gms.credential_manager
+11-08 20:56:04.134  1359  4601 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.137  1359  4601 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.188  5901  5936 W s.youtube.musi: Long monitor contention with owner yt-background8-8 (5949) at java.lang.ClassLoader android.app.LoadedApk.getClassLoader()(LoadedApk.java:960) waiters=0 in java.lang.ClassLoader android.app.LoadedApk.getClassLoader() for 1.995s
+11-08 20:56:04.202  5901  5949 I DynamiteModule: Considering local module com.google.android.gms.ads.dynamite:0 and remote module com.google.android.gms.ads.dynamite:21400
+11-08 20:56:04.202  5901  5949 I DynamiteModule: Selected remote version of com.google.android.gms.ads.dynamite, version >= 21400
+11-08 20:56:04.229  5901  5936 V NativeCrypto: Registering com/google/android/gms/org/conscrypt/NativeCrypto's 286 native methods...
+11-08 20:56:04.258  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.258  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.259  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.261  1359  5910 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.263  1359  5910 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.265  1359  5928 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.270  1135  5278 I PTCommittedOperation: Receive new configuration for com.google.android.gms.chimera_debug
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal: Playback error
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at android.os.Looper.loop(Looper.java:223)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:   Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 20:56:04.314  5466  6030 E ExoPlayerImplInternal:       at java.lang.Thread.run(Thread.java:923)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: Erro de reprodução (streaming direto): ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:707)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at android.os.Looper.loop(Looper.java:223)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: Caused by: androidx.media3.exoplayer.source.UnrecognizedInputFormatException: None of the available extractors (FlvExtractor, FlacExtractor, WavExtractor, FragmentedMp4Extractor, Mp4Extractor, AmrExtractor, PsExtractor, OggExtractor, TsExtractor, MatroskaExtractor, AdtsExtractor, Ac3Extractor, Ac4Extractor, Mp3Extractor, AviExtractor, JpegExtractor, PngExtractor, WebpExtractor, BmpExtractor, HeifExtractor, AvifExtractor) could read the stream. {contentIsMalformed=false, dataType=1}
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.source.BundledExtractorsAdapter.init(BundledExtractorsAdapter.java:108)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1100)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 20:56:04.316  5466  5466 W BruDrePlayer: 	at java.lang.Thread.run(Thread.java:923)
+11-08 20:56:04.344  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.TabKt.TabBaselineLayout(kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, androidx.compose.runtime.Composer, int) took 140.558ms (7434.65 bytecodes/s) (15624B approximate peak alloc)
+11-08 20:56:04.371   284   284 I Zygote  : Process 2077 exited due to signal 9 (Killed)
+11-08 20:56:04.390   495   543 E libprocessgroup: AddTidToCgroup failed to write '6036'; fd=67: Invalid argument
+11-08 20:56:04.390   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 20:56:04.390   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 20:56:04.401   495   540 I libprocessgroup: Successfully killed process cgroup uid 10081 pid 2077 in 47ms
+11-08 20:56:04.407  1359  5655 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.418  1135  6011 I PTCommittedOperation: Receive new configuration for com.google.android.gms.autofill
+11-08 20:56:04.434  5449  5449 W dex2oat32: Verification of androidx.compose.ui.layout.MeasureResult androidx.compose.material3.TabRowKt$TabRowImpl$1$2$1.measure-3p2s80s(androidx.compose.ui.layout.MeasureScope, java.util.List, long) took 120.330ms (5027.82 bytecodes/s) (8976B approximate peak alloc)
+11-08 20:56:04.438  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.438  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.438  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.441  1359  5910 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.444  1359  5082 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.482  1359  2226 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.483  1359  2226 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.484  1359  5082 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.487   495   543 E libprocessgroup: AddTidToCgroup failed to write '6037'; fd=118: Invalid argument
+11-08 20:56:04.488   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 20:56:04.488   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 20:56:04.504  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.504  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.508  1135  5687 I PTCommittedOperation: Receive new configuration for com.google.android.gms.cast
+11-08 20:56:04.510  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.547  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.TabRowKt.ScrollableTabRow-sKfQg0A(int, androidx.compose.ui.Modifier, long, long, float, kotlin.jvm.functions.Function3, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, androidx.compose.runtime.Composer, int, int) took 133.661ms (4496.44 bytecodes/s) (12296B approximate peak alloc)
+11-08 20:56:04.588  5901  5936 I ProviderInstaller: Installed default security provider GmsCore_OpenSSL
+11-08 20:56:04.590  1359  5269 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:04.591  1359  5269 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:04.592  1359  2226 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:04.615  1135  3915 I PTCommittedOperation: Receive new configuration for com.google.android.gms.fido
+11-08 20:56:04.616  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:04.616  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:04.616  1135  5277 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:04.658  5466  5612 I BruDreTest: Mensagem exibida: Formato de vídeo incompatível com este aparelho.
+11-08 20:56:04.669   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 20:56:04.705  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: PAUSED
+11-08 20:56:04.705  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@2e22b55
+11-08 20:56:04.726   495  1727 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:56:04.807   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 5, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-08 20:56:04.807   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=5)
+11-08 20:56:04.825   495  1963 W system_server: Long monitor contention with owner Binder:495_21 (2366) at void com.android.server.wm.ActivityTaskManagerService.activityPaused(android.os.IBinder)(ActivityTaskManagerService.java:1848) waiters=2 in boolean com.android.server.wm.WindowProcessController.hasActivities() for 111ms
+11-08 20:56:04.826   495   532 W system_server: Long monitor contention with owner Binder:495_21 (2366) at void com.android.server.wm.ActivityTaskManagerService.activityPaused(android.os.IBinder)(ActivityTaskManagerService.java:1848) waiters=3 in int com.android.server.wm.WindowManagerService.relayoutWindow(com.android.server.wm.Session, android.view.IWindow, int, android.view.WindowManager$LayoutParams, int, int, int, int, long, android.graphics.Rect, android.graphics.Rect, android.graphics.Rect, android.graphics.Rect, android.graphics.Rect, android.view.DisplayCutout$ParcelableWrapper, android.util.MergedConfiguration, android.view.SurfaceControl, android.view.InsetsState, android.view.InsetsSourceControl[], android.graphics.Point, android.view.SurfaceControl) for 113ms
+11-08 20:56:04.845  5901  5949 I DynamiteLoaderV2: [71] AdsFdrDynamite.integ
+11-08 20:56:04.848   417   417 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-08 20:56:04.873  5901  5949 W s.youtube.musi: Unsupported class loader
+11-08 20:56:05.168  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.TextFieldKt.TextField(androidx.compose.ui.text.input.TextFieldValue, kotlin.jvm.functions.Function1, androidx.compose.ui.Modifier, boolean, boolean, androidx.compose.ui.text.TextStyle, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, boolean, androidx.compose.ui.text.input.VisualTransformation, androidx.compose.foundation.text.KeyboardOptions, androidx.compose.foundation.text.KeyboardActions, boolean, int, int, androidx.compose.foundation.interaction.MutableInteractionSource, androidx.compose.ui.graphics.Shape, androidx.compose.material3.TextFieldColors, androidx.compose.runtime.Composer, int, int, int, int) took 619.733ms (2720.52 bytecodes/s) (63456B approximate peak alloc)
+11-08 20:56:05.187  5449  5449 W dex2oat32: Verification of void androidx.compose.material3.TextFieldKt$TextField$4.<init>(androidx.compose.ui.text.input.TextFieldValue, kotlin.jvm.functions.Function1, androidx.compose.ui.Modifier, boolean, boolean, androidx.compose.ui.text.TextStyle, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, boolean, androidx.compose.ui.text.input.VisualTransformation, androidx.compose.foundation.text.KeyboardOptions, androidx.compose.foundation.text.KeyboardActions, boolean, int, int, androidx.compose.foundation.interaction.MutableInteractionSource, androidx.compose.ui.graphics.Shape, androidx.compose.material3.TextFieldColors, int, int, int, int) took 750.255ms (153.28 bytecodes/s) (1920B approximate peak alloc)
+11-08 20:56:05.188   495  1083 W system_server: Long monitor contention with owner android.anim (532) at void com.android.server.wm.WindowSurfacePlacer$Traverser.run()(WindowSurfacePlacer.java:59) waiters=4 in boolean com.android.server.wm.WindowProcessController.hasActivities() for 123ms
+11-08 20:56:05.240   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf590d0, tid 5836
+11-08 20:56:05.261   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 20:56:05.318  5901  5921 I s.youtube.musi: Waiting for a blocking GC ProfileSaver
+11-08 20:56:05.324   495  5836 D EGL_emulation: eglCreateContext: 0x7e75ac015fa0: maj 3 min 0 rcv 3
+11-08 20:56:05.327   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75ac015fa0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 20:56:05.383  5466  5466 I ExoPlayerImpl: Release 3df75d [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30] [media3.common, media3.ui, media3.exoplayer, media3.decoder, media3.exoplayer.hls, media3.datasource, media3.datasource.okhttp, media3.extractor]
+11-08 20:56:05.390  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: STOPPED
+11-08 20:56:05.390  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@2e22b55
+11-08 20:56:05.410  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2e22b55 in: DESTROYED
+11-08 20:56:05.410  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 20:56:05.425  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:05.425  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:05.426  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:05.432  1359  1366 I gle.android.gm: Background young concurrent copying GC freed 63898(2729KB) AllocSpace objects, 0(0B) LOS objects, 48% free, 10MB/20MB, paused 4.005ms total 849.629ms
+11-08 20:56:05.445  5466  5618 I BruDreHomolog: Reprodução HTTP: até o vídeo=null ms, travamentos=0 (0 ms), assistido=0 s, falhou=true, PSS=150 MB
+11-08 20:56:05.502   912   926 I s.nexuslaunche: NativeAlloc concurrent copying GC freed 12068(632KB) AllocSpace objects, 2(104KB) LOS objects, 49% free, 3793KB/7587KB, paused 11us total 282.633ms
+11-08 20:56:05.503   912   928 W System  : A resource failed to call release.
+11-08 20:56:05.503   912   928 I chatty  : uid=10153(com.google.android.apps.nexuslauncher) FinalizerDaemon identical 1 line
+11-08 20:56:05.503   912   928 W System  : A resource failed to call release.
+11-08 20:56:05.552  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.TextFieldKt.TextField(java.lang.String, kotlin.jvm.functions.Function1, androidx.compose.ui.Modifier, boolean, boolean, androidx.compose.ui.text.TextStyle, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, boolean, androidx.compose.ui.text.input.VisualTransformation, androidx.compose.foundation.text.KeyboardOptions, androidx.compose.foundation.text.KeyboardActions, boolean, int, int, androidx.compose.foundation.interaction.MutableInteractionSource, androidx.compose.ui.graphics.Shape, androidx.compose.material3.TextFieldColors, androidx.compose.runtime.Composer, int, int, int, int) took 384.197ms (4388.37 bytecodes/s) (63408B approximate peak alloc)
+11-08 20:56:05.572   495   531 W system_server: Long monitor contention with owner Binder:495_1C (1963) at void com.android.server.wm.TaskChangeNotificationController.forAllLocalListeners(com.android.server.wm.TaskChangeNotificationController$TaskStackConsumer, android.os.Message)(TaskChangeNotificationController.java:351) waiters=0 in void com.android.server.wm.WindowManagerService$H.handleMessage(android.os.Message) for 173ms
+11-08 20:56:05.572   495   538 W system_server: Long monitor contention with owner Binder:495_1C (1963) at void com.android.server.wm.TaskChangeNotificationController.forAllLocalListeners(com.android.server.wm.TaskChangeNotificationController$TaskStackConsumer, android.os.Message)(TaskChangeNotificationController.java:351) waiters=1 in boolean com.android.server.wm.WindowProcessController.hasActivitiesOrRecentTasks() for 153ms
+11-08 20:56:05.572   495  1757 W system_server: Long monitor contention with owner Binder:495_1C (1963) at void com.android.server.wm.TaskChangeNotificationController.forAllLocalListeners(com.android.server.wm.TaskChangeNotificationController$TaskStackConsumer, android.os.Message)(TaskChangeNotificationController.java:351) waiters=2 in void com.android.server.wm.WindowManagerService$LocalService.setAccessibilityIdToSurfaceMetadata(android.os.IBinder, int) for 101ms
+11-08 20:56:05.592  1529  3034 I Dialer  : OmtpVvmCarrierCfgHlpr - OmtpEvent:CONFIG_STATUS_SMS_TIME_OUT
+11-08 20:56:05.592  1359  5910 I GmscoreIpa: Starting mediastore instant index
+11-08 20:56:05.594  1359  4601 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:56:05.595  1359  5083 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:56:05.597  1529  1529 I Dialer  : RetryPolicy - discarding deferred status: configuration_state=4
+11-08 20:56:05.607  1359  5269 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:56:05.607   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 20:56:05.613  1135  3908 I PTCommittedOperation: Receive new configuration for com.google.android.gms.gass
+11-08 20:56:05.621  1529  1529 I Dialer  : VvmTaskExecutor - no more tasks, stopping service if no task are added in 5000 millis
+11-08 20:56:05.628  1529  1529 I Dialer  : VvmTaskReceiver - task received
+11-08 20:56:05.628  1529  1529 I Dialer  : VvmTaskReceiver - TaskExecutor already running
+11-08 20:56:05.629  1529  1529 I Dialer  : Task.createTask - create task:com.android.voicemail.impl.ActivationTask
+11-08 20:56:05.629  1529  1529 I Dialer  : RetryPolicy - retry #1 for com.android.voicemail.impl.ActivationTask@22af95a queued, executing in 5000
+11-08 20:56:05.629  1529  1529 I Dialer  : VvmTaskExecutor - com.android.voicemail.impl.ActivationTask@22af95a added
+11-08 20:56:05.629  1529  1529 I Dialer  : VvmTaskExecutor - minimal wait time:5000
+11-08 20:56:05.629  1529  1529 I Dialer  : VvmTaskExecutor - sleep for 5000 millis
+11-08 20:56:05.705   495   526 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:56:05.706  5449  5771 W dex2oat32: Verification of void androidx.compose.material3.TimePickerKt.PeriodToggleImpl(androidx.compose.ui.Modifier, androidx.compose.material3.TimePickerState, androidx.compose.material3.TimePickerColors, androidx.compose.ui.layout.MeasurePolicy, androidx.compose.ui.graphics.Shape, androidx.compose.ui.graphics.Shape, androidx.compose.runtime.Composer, int) took 111.574ms (7403.12 bytecodes/s) (15864B approximate peak alloc)
+11-08 20:56:05.709   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:56:05.710  6052  6055 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:56:05.781   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 20:56:05.784   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 20:56:05.797   714   728 I ndroid.systemu: NativeAlloc concurrent copying GC freed 20761(1007KB) AllocSpace objects, 1(20KB) LOS objects, 49% free, 6671KB/13MB, paused 15us total 579.642ms
+11-08 20:56:05.823   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 20:56:05.823   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 20:56:05.862  5449  5771 W dex2oat32: Verification of int androidx.compose.material3.TimePickerStateImpl.getHour() took 152.940ms (117.69 bytecodes/s) (1016B approximate peak alloc)
+11-08 20:56:05.891  1878  1878 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 20:56:05.896  6057  6060 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:56:05.913  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Updating password complexity components state.
+11-08 20:56:05.913  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.admin.DeviceAdminReceiver
+11-08 20:56:05.913  1135  5278 I Auth    : [AuthManaged,PasswordComplexityHelperImpl] Disabling com.google.android.gms.auth.managed.ui.SetNewPasswordActivity
+11-08 20:56:05.915   355   355 E Layer   : [Surface(name=Task=14)/@0x335f088 - animation-leash#0] No local sync point found
+11-08 20:56:05.915   355   355 E Layer   : [Surface(name=Task=14)/@0x335f088 - animation-leash#0] No local sync point found
+11-08 20:56:05.915   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 20:56:05.915   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 20:56:05.923  5466  5612 I TestRunner: finished: t13_incompatibleFormatShowsError(com.brudre.streaming.PlaybackTest)

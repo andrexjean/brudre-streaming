@@ -1,0 +1,8 @@
+11-08 20:56:49.008  5466  5612 I TestRunner: started: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)
+11-08 20:56:49.050   495  1954 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:56:49.050   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:56:49.070  6512  6515 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:56:49.153   495  2365 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:56:49.153   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:56:49.173  1135  1152 I .gms.persisten: Background young concurrent copying GC freed 76658(4502KB) AllocSpace objects, 44(1500KB) LOS objects, 31% free, 13MB/20MB, paused 42us total 108.744ms
+11-08 20:56:49.179  5466  5612 I TestRunner: finished: t12_cacheCleanup(com.brudre.streaming.PlaybackTest)

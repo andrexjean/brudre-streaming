@@ -1,0 +1,11 @@
+Torznab de referência em :8080 (HTTP p/ túnel)
+GET /api?t=caps&
+GET /torznab/
+GET /torznab/?t=caps&
+GET /torznab/api?t=caps&
+GET /torznab/?t=caps&
+GET /torznab/api?t=caps&
+GET /torznab/api?t=movie&q=night%20of%20the%20living%20dead&cat=2000&extended=1&offset=0&limit=3&
+GET /torznab/api?t=movie&q=Night%20of%20the%20Living%20Dead&tmdbid=10331&cat=2000&extended=1&offset=0&limit=3&
+GET /torznab/api?t=tvsearch&q=BruDre%20Teste%20Serie&season=2&cat=5000&extended=1&offset=0&limit=3&
+GET /dl/brudre-teste-serie.torrent?jackett_

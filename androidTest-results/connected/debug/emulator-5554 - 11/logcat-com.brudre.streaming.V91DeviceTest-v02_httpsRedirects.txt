@@ -1,0 +1,16 @@
+11-08 21:06:51.686  5466  5612 I TestRunner: started: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:51.688   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:06:51.732  9368  9368 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 21:06:51.740   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abff1060: maj 3 min 0 rcv 3
+11-08 21:06:51.752  9368  9415 I TngMinusOneSync: Syncing TNG:-1
+11-08 21:06:51.768   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abff1060: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:06:52.348  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:06:52.348  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:06:52.375  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760c081f58 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/250 (fetch/transfer)
+11-08 21:06:52.375  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:06:52.474  5466  5612 I BruDreTest: Redireciona github.com → raw: CATALOG_JSON ok=true 5 títulos com fonte reproduzível
+11-08 21:06:53.104   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb2f288 : 0(0 size) total buffers - 0(0 size) used buffers - 241/246 (recycle/alloc) - 7/246 (fetch/transfer)
+11-08 21:06:53.104   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:06:53.209  5466  5612 I BruDreTest: Redireciona para http://: BLOCKED Bloqueada pela segurança: O servidor redirecionou para um endereço sem criptografia (http://): bloqueado.
+11-08 21:06:53.286  5466  5612 I BruDreTest: Redireciona para .apk: BLOCKED Bloqueada pela segurança: Arquivo executável bloqueado: example.com
+11-08 21:06:53.286  5466  5612 I TestRunner: finished: v02_httpsRedirects(com.brudre.streaming.V91DeviceTest)

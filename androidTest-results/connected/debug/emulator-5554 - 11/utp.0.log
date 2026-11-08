@@ -1,0 +1,109 @@
+INFO: Constructing runner from config.
+INFO: Configuring Android Instrumentation driver: android_instrumentation_runtime {
+  instrumentation_info {
+    app_package: "com.brudre.streaming"
+    test_package: "com.brudre.streaming.test"
+    test_runner_class: "androidx.test.runner.AndroidJUnitRunner"
+  }
+  instrumentation_args {
+    args_map {
+      key: "additionalTestOutputDir"
+      value: "/sdcard/Android/media/com.brudre.streaming/additional_test_output"
+    }
+    args_map {
+      key: "torznabKey"
+      value: "af0e75ea2b0bd196ab7a1caf79c91313"
+    }
+    args_map {
+      key: "torznabPublic"
+      value: "https://port-minority-regarding-fitted.trycloudflare.com"
+    }
+    no_window_animation: true
+  }
+}
+am_instrument_timeout: 31536000
+
+INFO: Configuring AndroidTestApkInstallerPlugin: apks_to_install {
+  apk_paths: "/home/runner/work/brudre-streaming/brudre-streaming/app/build/outputs/apk/debug/app-debug.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+apks_to_install {
+  apk_paths: "/home/runner/work/brudre-streaming/brudre-streaming/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+
+INFO: No installables found in test fixture. Nothing to install.
+INFO: Installing [/home/runner/work/brudre-streaming/brudre-streaming/app/build/outputs/apk/debug/app-debug.apk] on device emulator-5554.
+INFO: Installing [/home/runner/work/brudre-streaming/brudre-streaming/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk] on device emulator-5554.
+INFO: Start logcat streaming.
+INFO: Running Android Instrumentation driver.
+INFO: Copying files from device to host: /sdcard/Android/media/com.brudre.streaming/additional_test_output to /home/runner/work/brudre-streaming/brudre-streaming/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 11
+INFO: Stop logcat streaming.
+INFO: Uninstalling com.brudre.streaming for device emulator-5554.
+INFO: Uninstalling com.brudre.streaming.test for device emulator-5554.
+INFO: Execute com.brudre.streaming.LibraryDbTest.myListAddRemovePersists: PASSED
+INFO: Execute com.brudre.streaming.LibraryDbTest.historyAndContinueWatching: PASSED
+INFO: Execute com.brudre.streaming.LibraryDbTest.resumePositionRules: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t18_liveChannelPlays: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t19_hlsPlayback: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t13_incompatibleFormatShowsError: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t15_catalogTitlesFindFreeSource: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t07b_internetArchiveItemResolvesAndPlays: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t12_cacheCleanup: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t17_iptvOrgListsLoad: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t24_sourceManagerLifecycle: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t08_torrentPlaybackWithSeek: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t07_directPlaybackStartsAndSavesProgress: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t08b_magnetOnlyTorrent: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t13b_noSourceShowsMessage: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t16_inAppUpdatePipeline: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t20_urlGuardAndValidation: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t22_externalCatalogPlaysEverySourceType: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t11_resumesFromSavedPosition: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t14_lowMemoryReleasesCachesDuringPlayback: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t23_manualMagnetLinkPlaysProgressively: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t21_allLiveChannelsChecked: PASSED
+INFO: Execute com.brudre.streaming.PlaybackTest.t10_networkInterruptionIsHandled: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t28_dynamicSearchAndMultipleSources: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t27_sharedMagnetAndTorrentFromOtherApps: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t31_searchCancellation: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t30_networkErrorsAndSaveWithoutValidation: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t26_torrentCacheCleanupPolicy: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t25_importedTorrentEpisodeSelectionSubtitlesAndResume: PASSED
+INFO: Execute com.brudre.streaming.SourceEngineTest.t29_fallbackToNextSourceAndHistory: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t12_sourceEngineDiagnosticsWithDpad: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t10_sourceManagerSectionsWithDpad: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t04_searchFindsTitles: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t03_catalogLoadsAutomatically: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t08_cinematicIntro: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t09_screensForVisualCheck: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t06_titleWithoutSourceHasNoPlayButton: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t01_launchShowsBrandHeroAndFocus: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t07_parentalControlAsksPin: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t11_worldContentSeparatedByLanguage: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t05_myListFromDetails: PASSED
+INFO: Execute com.brudre.streaming.UiFlowTest.t02_remoteControlNavigation: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v05_audioAndSubtitleTracks: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v01_tlsCertificatesAreValidated: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v09_memoryWithPlayerAndRelease: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v03_redetectFormatAndDuplicates: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v02_httpsRedirects: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v08_settingsPersistence: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v07_noPeers: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v06_fallbackDuringPlayback: PASSED
+INFO: Execute com.brudre.streaming.V91DeviceTest.v04_multiSourceSearchAndPagination: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t45_homologationReport: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t43_realTorrentSourcesSurvey: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t40_torznabLocalServerPinnedSearchPagesAndPlayback: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t44_fallbackComparesDuration: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t42_libraryServicesSearchAndPlay: PASSED
+INFO: Execute com.brudre.streaming.V92DeviceTest.t41_torznabPublicEndpoint: PASSED
+INFO: Execute com.brudre.streaming.V943DeviceTest.t52_diagnosticStagesAndFailures: PASSED
+INFO: Execute com.brudre.streaming.V943DeviceTest.t54_memoryDuringSourceTests: PASSED
+INFO: Execute com.brudre.streaming.V943DeviceTest.t50_credentialsNeverPersistedAndAuthenticatedLinksStillWork: PASSED
+INFO: Execute com.brudre.streaming.V943DeviceTest.t51_oldRecordsMigrated: PASSED
+INFO: Execute com.brudre.streaming.V943DeviceTest.t53_trackersHttpsUdpDhtAndFailures: PASSED

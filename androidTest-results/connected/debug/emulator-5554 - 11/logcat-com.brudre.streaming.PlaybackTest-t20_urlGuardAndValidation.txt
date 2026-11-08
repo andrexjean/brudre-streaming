@@ -1,0 +1,28 @@
+11-08 20:58:37.243  5466  5612 I TestRunner: started: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)
+11-08 20:58:37.250   495   819 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:58:37.251   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:58:37.251  6952  6956 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:58:37.259  5466  5612 I BruDreTest: UrlGuard https://127.0.0.1:9/x.m3u8 → BlockedUrlException: Destino local bloqueado: 127.0.0.1
+11-08 20:58:37.260  5466  5612 I BruDreTest: UrlGuard https://localhost/x.m3u8 → BlockedUrlException: Destino local bloqueado: localhost
+11-08 20:58:37.260  5466  5612 I BruDreTest: UrlGuard https://[::1]/x.m3u8 → BlockedUrlException: Destino local bloqueado: ::1
+11-08 20:58:37.261  5466  5612 I BruDreTest: UrlGuard https://169.254.169.254/latest → BlockedUrlException: Destino local bloqueado: 169.254.169.254
+11-08 20:58:37.261  5466  5612 I BruDreTest: UrlGuard https://archive.org/download/x/setup.apk → BlockedUrlException: Arquivo executável bloqueado: archive.org
+11-08 20:58:37.598  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 20:58:37.598  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 20:58:37.676   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=15)
+11-08 20:58:37.677   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 20:58:37.678   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 20:58:37.678   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 15 ended, total sessions:0
+11-08 20:58:37.890  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760bf8dfd8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/100 (fetch/transfer)
+11-08 20:58:37.890  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 20:58:37.891   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb2f978 : 0(0 size) total buffers - 0(0 size) used buffers - 92/96 (recycle/alloc) - 4/96 (fetch/transfer)
+11-08 20:58:37.891   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 20:58:38.484  5805  5820 W System  : A resource failed to call dispose.
+11-08 20:58:38.831  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 20:58:38.831  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 20:58:40.978  5466  5612 I BruDreTest: Validador, item inexistente no acervo: UNKNOWN
+11-08 20:58:40.980  5466  5612 I BruDreTest: Aparelho: Google sdk_gphone_x86_64 • Android 11 (API 30) • x86_64 • RAM 1981 MB • H.264 HW até 2160p  H.265 software  VP9 HW até 2160p  AV1 não  AAC software
+11-08 20:58:40.987   495  1758 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:58:40.987   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:58:40.987  6966  6970 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:58:40.995  5466  5612 I TestRunner: finished: t20_urlGuardAndValidation(com.brudre.streaming.PlaybackTest)

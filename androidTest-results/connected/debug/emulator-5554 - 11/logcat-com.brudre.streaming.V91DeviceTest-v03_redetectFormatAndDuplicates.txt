@@ -1,0 +1,50 @@
+11-08 21:06:48.795  5466  5612 I TestRunner: started: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:48.799  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:06:48.801   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:06:48.801   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 61, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-08 21:06:48.802   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=61)
+11-08 21:06:48.812  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: PRE_ON_CREATE
+11-08 21:06:48.812  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:06:48.839  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: CREATED
+11-08 21:06:48.839  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@9e57bcd
+11-08 21:06:48.840  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: STARTED
+11-08 21:06:48.840  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@9e57bcd
+11-08 21:06:48.840  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: RESUMED
+11-08 21:06:48.841  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@9e57bcd
+11-08 21:06:49.003   495  6413 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf545d0, tid 6413
+11-08 21:06:49.006   495  6413 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:06:49.008   495  6413 D EGL_emulation: eglCreateContext: 0x7e75ac041c30: maj 3 min 0 rcv 3
+11-08 21:06:49.016   495  6413 D EGL_emulation: eglMakeCurrent: 0x7e75ac041c30: ver 3 0 (tinfo 0x7e754c050ec0) (first time)
+11-08 21:06:49.092   495  1727 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf54810, tid 1727
+11-08 21:06:49.096   495  1727 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:06:49.136   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:06:49.137   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +312ms
+11-08 21:06:49.137   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:06:49.241   424  1005 E IPCThreadState: binder thread pool (1 threads) starved for 104 ms
+11-08 21:06:49.276  9368  9415 W SearchServiceCore: Abort, client detached.
+11-08 21:06:49.283  9368  9474 I PBSessionCacheImpl: Deleted sessionId[41202693887968450] from persistence.
+11-08 21:06:50.215   495  1727 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:06:50.278   495  1727 D WifiNl80211Manager: Scan result ready event
+11-08 21:06:50.278   495  1727 D WifiNative: Scan result ready event
+11-08 21:06:50.318  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:06:50.318  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:06:51.040  5466  5612 I BruDreTest: Redetecção: Salva com formato errado: formato redetectado — agora Feed RSS/Atom de vídeos (antes Catálogo BruDre (JSON)). 2 títulos com fonte reproduzível
+11-08 21:06:51.292  5466  5612 I BruDreTest: Duplicada: Fonte duplicada: este endereço já está cadastrado como "Salva com formato errado" (Feed RSS/Atom de vídeos).
+11-08 21:06:51.294   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:06:51.295   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 62, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:3, uid:1071 session name: ""
+11-08 21:06:51.295   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=62)
+11-08 21:06:51.299  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: PAUSED
+11-08 21:06:51.299  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@9e57bcd
+11-08 21:06:51.341   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:06:51.524  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: STOPPED
+11-08 21:06:51.525  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@9e57bcd
+11-08 21:06:51.532   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:06:51.532   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:06:51.532   355   355 E Layer   : [Surface(name=Task=115)/@0x4b03b80 - animation-leash#0] No local sync point found
+11-08 21:06:51.532   355   355 E Layer   : [Surface(name=Task=115)/@0x4b03b80 - animation-leash#0] No local sync point found
+11-08 21:06:51.534   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=60)
+11-08 21:06:51.534   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:06:51.535   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 60 ended, total sessions:2
+11-08 21:06:51.599  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@9e57bcd in: DESTROYED
+11-08 21:06:51.599  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:06:51.670  5466  5612 I TestRunner: finished: v03_redetectFormatAndDuplicates(com.brudre.streaming.V91DeviceTest)

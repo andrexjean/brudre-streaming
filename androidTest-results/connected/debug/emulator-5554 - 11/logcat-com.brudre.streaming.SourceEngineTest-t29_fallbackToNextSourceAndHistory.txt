@@ -1,0 +1,298 @@
+11-08 21:03:03.291  5466  5612 I TestRunner: started: t29_fallbackToNextSourceAndHistory(com.brudre.streaming.SourceEngineTest)
+11-08 21:03:03.303  5466  6652 I BruDreHomolog: Reprodução BitTorrent: até o vídeo=1468 ms, travamentos=0 (0 ms), assistido=1 s, falhou=false, PSS=203 MB
+11-08 21:03:03.523   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:03:03.523   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:03:03.523   495  1143 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:03.782  5466  5480 W System  : A resource failed to call dispose.
+11-08 21:03:03.785  5466  5480 W System  : A resource failed to call dispose.
+11-08 21:03:04.044   495   543 E libprocessgroup: AddTidToCgroup failed to write '8540'; fd=67: Invalid argument
+11-08 21:03:04.044   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 21:03:04.044   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 21:03:04.046  3214  8541 I Bugle   : CountryCodeDetector: updateMainDeviceCountry from default subscription network country. detected country: us
+11-08 21:03:04.534   495  1964 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:04.563   495  1964 D WifiNl80211Manager: Scan result ready event
+11-08 21:03:04.563   495  1964 D WifiNative: Scan result ready event
+11-08 21:03:05.478  5466  6652 I BruDreSources: Catálogo Fonte quebrada: 1 títulos (0 descartados)
+11-08 21:03:05.550  5466  6652 I BruDreSources: Catálogo Fonte boa: 1 títulos (0 descartados)
+11-08 21:03:05.597  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:03:05.597  5805  5820 W System  : A resource failed to call release.
+11-08 21:03:05.597  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:03:05.597  5805  5820 W System  : A resource failed to call dispose.
+11-08 21:03:05.651  5466  5612 I BruDreTest: Elephants Dream: [Fonte quebrada, Fonte boa, Obras abertas (BruDre)]
+11-08 21:03:05.652  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:03:05.654   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:03:05.657   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 44, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-08 21:03:05.657   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=44)
+11-08 21:03:05.664  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760bfa8708 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/266 (fetch/transfer)
+11-08 21:03:05.664  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:03:05.671  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: PRE_ON_CREATE
+11-08 21:03:05.671  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:03:05.681   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb31e78 : 0(0 size) total buffers - 0(0 size) used buffers - 252/257 (recycle/alloc) - 7/256 (fetch/transfer)
+11-08 21:03:05.681   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:03:05.691   417   417 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-08 21:03:05.711  5466  5466 I ExoPlayerImpl: Init c23517e [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30]
+11-08 21:03:05.720  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: CREATED
+11-08 21:03:05.721  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@3238eb1
+11-08 21:03:05.722  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: STARTED
+11-08 21:03:05.722  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@3238eb1
+11-08 21:03:05.722  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: RESUMED
+11-08 21:03:05.722  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@3238eb1
+11-08 21:03:05.885   495  6413 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf54d50, tid 6413
+11-08 21:03:05.906   495  6413 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:03:05.910   495  6413 D EGL_emulation: eglCreateContext: 0x7e75abfd87d0: maj 3 min 0 rcv 3
+11-08 21:03:05.922   495  6413 D EGL_emulation: eglMakeCurrent: 0x7e75abfd87d0: ver 3 0 (tinfo 0x7e754c050ec0) (first time)
+11-08 21:03:05.967   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:03:05.967   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +287ms
+11-08 21:03:05.978   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:03:06.052  1878  2491 I PBSessionCacheImpl: Deleted sessionId[8261325519147143] from persistence.
+11-08 21:03:06.059  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 21:03:06.110  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:03:06.110  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:03:06.235   495  2365 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:06.664  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 0
+11-08 21:03:07.682   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb33598 : 0(0 size) total buffers - 0(0 size) used buffers - 34/39 (recycle/alloc) - 5/39 (fetch/transfer)
+11-08 21:03:07.682   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:03:08.183  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:03:08.183  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:03:08.664  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760c07d558 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/43 (fetch/transfer)
+11-08 21:03:08.665  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal: Playback error
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:   androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at android.os.Looper.loop(Looper.java:223)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:   Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:03:08.976  5466  8551 E ExoPlayerImplInternal:       at java.lang.Thread.run(Thread.java:923)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: Erro de reprodução (streaming direto): ERROR_CODE_IO_BAD_HTTP_STATUS
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: androidx.media3.exoplayer.ExoPlaybackException: Source error
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleIoException(ExoPlayerImplInternal.java:737)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:709)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at android.os.Looper.loop(Looper.java:223)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: Caused by: androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException: Response code: 404
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.datasource.okhttp.OkHttpDataSource.open(OkHttpDataSource.java:310)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.datasource.DefaultDataSource.open(DefaultDataSource.java:275)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at com.brudre.streaming.torrent.RoutingDataSource.open(TorrentDataSource.kt:129)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.datasource.StatsDataSource.open(StatsDataSource.java:87)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.source.ProgressiveMediaPeriod$ExtractingLoadable.load(ProgressiveMediaPeriod.java:1085)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at androidx.media3.exoplayer.upstream.Loader$LoadTask.run(Loader.java:450)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:03:08.977  5466  5466 W BruDrePlayer: 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:03:09.066   290   336 E android.hardware.audio.service.ranchu: device/generic/goldfish/audio/primary_device.cpp:getParameters:234 failure: Result::NOT_SUPPORTED
+11-08 21:03:09.078  5466  8558 I OMXClient: IOmx service obtained
+11-08 21:03:09.078   433   745 I OMXMaster: makeComponentInstance(OMX.android.goldfish.h264.decoder) in android.hardwar process
+11-08 21:03:09.078   433   745 I GoldfishOMXPlugin: makeComponentInstance 'OMX.android.goldfish.h264.decoder'
+11-08 21:03:09.078   433   745 I GoldfishOMXPlugin: Using goldfish codec for 'avcdec'
+11-08 21:03:09.078   433   745 I goldfish_avcdec: created GoldfishAVCDec 96 object 0xf3902c10
+11-08 21:03:09.083  5466  8557 D SurfaceUtils: connecting to surface 0x7e76ac17cf10, reason connectToSurface
+11-08 21:03:09.099  5466  8557 I MediaCodec: [OMX.android.goldfish.h264.decoder] setting surface generation to 5597249
+11-08 21:03:09.099  5466  8557 D SurfaceUtils: disconnecting from surface 0x7e76ac17cf10, reason connectToSurface(reconnect)
+11-08 21:03:09.099  5466  8557 D SurfaceUtils: connecting to surface 0x7e76ac17cf10, reason connectToSurface(reconnect)
+11-08 21:03:09.099   433   745 W OMXNodeInstance: [0xf44804e0:android.goldfish.h264.decoder] component does not support metadata mode; using fallback
+11-08 21:03:09.099  5466  8558 E ACodec  : [OMX.android.goldfish.h264.decoder] setPortMode on output to DynamicANWBuffer failed w/ err -1010
+11-08 21:03:09.099   433  7825 E OMXNodeInstance: getParameter(0xf44804e0:android.goldfish.h264.decoder, ??(0x6f600011)) ERROR: UnsupportedIndex(0x8000101a)
+11-08 21:03:09.099   433  7825 W OMXNodeInstance: [0xf44804e0:android.goldfish.h264.decoder] component does not support metadata mode; using fallback
+11-08 21:03:09.110   433  7825 D GoldfishVideoDecoderOMXComponent: Color Aspects preference: 1
+11-08 21:03:09.110   433   805 E OMXNodeInstance: setConfig(0xf44804e0:android.goldfish.h264.decoder, ConfigPriority(0x6f800002)) ERROR: UnsupportedIndex(0x8000101a)
+11-08 21:03:09.110  5466  8558 I ACodec  : codec does not support config priority (err -1010)
+11-08 21:03:09.110   433   805 E OMXNodeInstance: getConfig(0xf44804e0:android.goldfish.h264.decoder, ConfigAndroidVendorExtension(0x6f100004)) ERROR: UnsupportedIndex(0x8000101a)
+11-08 21:03:09.110   433   767 E OMXNodeInstance: getConfig(0xf44804e0:android.goldfish.h264.decoder, ??(0x7f000003)) ERROR: UnsupportedSetting(0x80001019)
+11-08 21:03:09.113  5466  8558 D SurfaceUtils: disconnecting from surface 0x7e76ac17cf10, reason setNativeWindowSizeFormatAndUsage
+11-08 21:03:09.113  5466  8558 D SurfaceUtils: connecting to surface 0x7e76ac17cf10, reason setNativeWindowSizeFormatAndUsage
+11-08 21:03:09.113  5466  8558 D SurfaceUtils: set up nativeWindow 0x7e76ac17cf10 for 320x180, color 0x13, rotation 0, usage 0x1002900
+11-08 21:03:09.118   305   305 W android.hardware.graphics.allocator@3.0-service: gralloc_alloc: Requested OMX_COLOR_FormatYUV420Planar, given YCbCr_420_888, taking experimental path. usage=1000900
+11-08 21:03:09.122   305   354 W android.hardware.graphics.allocator@3.0-service: gralloc_alloc: Requested OMX_COLOR_FormatYUV420Planar, given YCbCr_420_888, taking experimental path. usage=1000900
+11-08 21:03:09.136   305   305 W android.hardware.graphics.allocator@3.0-service: gralloc_alloc: Requested OMX_COLOR_FormatYUV420Planar, given YCbCr_420_888, taking experimental path. usage=1000900
+11-08 21:03:09.143   305   305 I chatty  : uid=1000(system) allocator@3.0-s identical 1 line
+11-08 21:03:09.146   305   305 W android.hardware.graphics.allocator@3.0-service: gralloc_alloc: Requested OMX_COLOR_FormatYUV420Planar, given YCbCr_420_888, taking experimental path. usage=1000900
+11-08 21:03:09.160   433  8559 I goldfish_avcdec: GoldfishAVC decoder version 1.0
+11-08 21:03:09.161   430   471 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-08 21:03:09.171  5466  8561 D CCodec  : allocate(c2.android.aac.decoder)
+11-08 21:03:09.171   442   975 V C2Store : in init
+11-08 21:03:09.171   442   975 V C2Store : loading dll
+11-08 21:03:09.177  5466  8561 I CCodec  : Created component [c2.android.aac.decoder]
+11-08 21:03:09.178  5466  8561 D CCodecConfig: read media type: audio/mp4a-latm
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.max-count.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: output.subscribed-indices.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: input.buffers.allocator-ids.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.allocator-ids.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.allocator-ids.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.pool-ids.values
+11-08 21:03:09.178  5466  8561 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.pool-ids.values
+11-08 21:03:09.179  5466  8561 I CCodecConfig: query failed after returning 19 values (BAD_INDEX)
+11-08 21:03:09.179  5466  8561 D CCodecConfig: c2 config diff is Dict {
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 coded.aac-packaging.value = 0
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 coded.bitrate.value = 64000
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 coded.pl.level = 0
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 coded.pl.profile = 8192
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::i32 coding.drc.album-mode.value = 0
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::float coding.drc.attenuation-factor.value = 1
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::float coding.drc.boost-factor.value = 1
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::i32 coding.drc.compression-mode.value = 3
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::i32 coding.drc.effect-type.value = 3
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::float coding.drc.encoded-level.value = 0.25
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::float coding.drc.reference-level.value = -16
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 input.buffers.max-size.value = 8192
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 input.delay.value = 0
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   string input.media-type.value = "audio/mp4a-latm"
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 output.delay.value = 2
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::float output.drc.output-loudness.value = 0.25
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   string output.media-type.value = "audio/raw"
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 raw.channel-count.value = 1
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 raw.max-channel-count.value = 8
+11-08 21:03:09.179  5466  8561 D CCodecConfig:   c2::u32 raw.sample-rate.value = 44100
+11-08 21:03:09.179  5466  8561 D CCodecConfig: }
+11-08 21:03:09.230   433  8559 D GoldfishVideoDecoderOMXComponent: Color Aspects preference: 1
+11-08 21:03:09.231  5466  8561 D CCodec  : [c2.android.aac.decoder] buffers are bound to CCodec for this session
+11-08 21:03:09.231  5466  8561 D CCodecConfig: no c2 equivalents for flags
+11-08 21:03:09.231  5466  8561 D CCodecConfig: config failed => CORRUPTED
+11-08 21:03:09.231   433   805 E OMXNodeInstance: getConfig(0xf44804e0:android.goldfish.h264.decoder, ??(0x7f000003)) ERROR: UnsupportedSetting(0x80001019)
+11-08 21:03:09.232  5466  8561 W Codec2Client: query -- param skipped: index = 1107298332.
+11-08 21:03:09.232  5466  8561 D CCodec  : client requested max input size 151, which is smaller than what component recommended (8192); overriding with component recommendation.
+11-08 21:03:09.232  5466  8561 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+11-08 21:03:09.232  5466  8561 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-album-mode = 0
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-boost-level = 127
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-cut-level = 127
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-effect-type = 3
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-heavy-compression = 3
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-encoded-target-level = -1
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-max-output-channel_count = 8
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-target-ref-level = 64
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t channel-count = 1
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t level = 0
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t max-input-size = 8192
+11-08 21:03:09.232  5466  8561 D CCodec  :   string mime = "audio/mp4a-latm"
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t profile = 2
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t sample-rate = 44100
+11-08 21:03:09.232  5466  8561 D CCodec  : } and output: AMessage(what = 0x00000000) = {
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-album-mode = 0
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-boost-level = 127
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-cut-level = 127
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-effect-type = 3
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-heavy-compression = 3
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-drc-output-loudness = -1
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-encoded-target-level = -1
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-max-output-channel_count = 8
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t aac-target-ref-level = 64
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t channel-count = 1
+11-08 21:03:09.232  5466  8561 D CCodec  :   string mime = "audio/raw"
+11-08 21:03:09.232  5466  8561 D CCodec  :   int32_t sample-rate = 44100
+11-08 21:03:09.232  5466  8561 D CCodec  : }
+11-08 21:03:09.232  5466  8561 W Codec2Client: query -- param skipped: index = 1342179345.
+11-08 21:03:09.232  5466  8561 W Codec2Client: query -- param skipped: index = 2415921170.
+11-08 21:03:09.232  5466  8561 W Codec2Client: query -- param skipped: index = 1610614798.
+11-08 21:03:09.233  5466  8561 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.233  5466  8561 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.233  5466  8561 D CCodecBufferChannel: [c2.android.aac.decoder#282] Created input block pool with allocatorID 16 => poolID 48 - OK (0)
+11-08 21:03:09.233   442   483 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x71c70fb31e78 cached: 0/0M, 0/0% in use; allocs: 257, 98% recycled; transfers: 256, 97% unfetched
+11-08 21:03:09.233   442   483 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x71c70fb33598 cached: 0/0M, 0/0% in use; allocs: 39, 87% recycled; transfers: 39, 87% unfetched
+11-08 21:03:09.233   442   482 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.233   442   482 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.233  5466  5736 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x7e760bfa8708 cached: 0/0M, 0/0% in use; allocs: 7, 14% recycled; transfers: 266, 98% unfetched
+11-08 21:03:09.234  5466  5736 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x7e760c07d558 cached: 0/0M, 0/0% in use; allocs: 7, 14% recycled; transfers: 43, 86% unfetched
+11-08 21:03:09.234  5466  8561 I CCodecBufferChannel: [c2.android.aac.decoder#282] Created output block pool with allocatorID 16 => poolID 57 - OK
+11-08 21:03:09.234  5466  8561 D CCodecBufferChannel: [c2.android.aac.decoder#282] Configured output block pool ids 57 => OK
+11-08 21:03:09.234   442  8562 D SimpleC2Component: Using output block pool with poolID 57 => got 57 - 0
+11-08 21:03:09.234  5466  8561 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.235   442   482 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.241   442  8562 I C2SoftAacDec: Reconfiguring decoder: 0->44100 Hz, 0->1 channels
+11-08 21:03:09.330   442  8562 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.344  5466  5736 E FMQ     : grantorIdx must be less than 3
+11-08 21:03:09.361  5466  8561 D CCodecConfig: c2 config diff is   c2::i32 coding.drc.compression-mode.value = 1
+11-08 21:03:09.361  5466  8561 D CCodecBuffers: [c2.android.aac.decoder#282:Output[N]] popFromStashAndRegister: output format changed to AMessage(what = 0x00000000) = {
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-album-mode = 0
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-boost-level = 127
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-cut-level = 127
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-effect-type = 3
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-heavy-compression = 1
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-drc-output-loudness = -1
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-encoded-target-level = -1
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-max-output-channel_count = 8
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t aac-target-ref-level = 64
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t channel-count = 1
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   string mime = "audio/raw"
+11-08 21:03:09.361  5466  8561 D CCodecBuffers:   int32_t sample-rate = 44100
+11-08 21:03:09.361  5466  8561 D CCodecBuffers: }
+11-08 21:03:09.407   378  8525 W AudioFlinger: createTrack_l(): mismatch between requested flags (00000008) and output flags (00000002)
+11-08 21:03:09.407   378  8525 D AudioFlinger: Client defaulted notificationFrames to 5512 for frameCount 11025
+11-08 21:03:09.409   378  8525 D AF::TrackHandle: OpPlayAudio: track:89 usage:1 not muted
+11-08 21:03:09.418   495  2365 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:09.418   495  2365 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:09.418   378  8525 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:03:09.418   378  8525 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:03:09.420   495  1143 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:09.420   495  1143 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:09.510  5466  8551 D AudioTrack: getTimestamp_l(49): device stall time corrected using current time 530989106704
+11-08 21:03:09.665   378   454 D AudioFlinger: mixer(0x7edc7d2af040) throttle end: throttle time(11)
+11-08 21:03:09.914   378   454 D AudioFlinger: mixer(0x7edc7d2af040) throttle end: throttle time(107)
+11-08 21:03:10.047   378   454 D AudioFlinger: mixer(0x7edc7d2af040) throttle end: throttle time(12)
+11-08 21:03:10.660   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=44)
+11-08 21:03:10.661   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:03:10.662   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 44 ended, total sessions:0
+11-08 21:03:10.667   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 21:03:11.075  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:03:11.075  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:03:12.238  5466  5612 I BruDreTest: Tentativas: [streaming direto:feed_19f31c0cc62887f0, streaming direto:feed_e9b5fc0ccd17e0bf, streaming direto:null, BitTorrent:null] atual=feed_e9b5fc0ccd17e0bf
+11-08 21:03:12.239   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:03:12.240   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 45, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:1, uid:1071 session name: ""
+11-08 21:03:12.240   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=45)
+11-08 21:03:12.246  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: PAUSED
+11-08 21:03:12.246  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@3238eb1
+11-08 21:03:12.341   417   417 I perfetto: ftrace_procfs.cc:176    enabled ftrace
+11-08 21:03:12.397  5466  8571 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf69510, tid 8571
+11-08 21:03:12.401  5466  8571 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:03:12.405  5466  8571 D EGL_emulation: eglCreateContext: 0x7e75ac018620: maj 3 min 0 rcv 3
+11-08 21:03:12.410  5466  8571 D EGL_emulation: eglMakeCurrent: 0x7e75ac018620: ver 3 0 (tinfo 0x7e754bff5480) (first time)
+11-08 21:03:12.428   495  1143 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:03:12.438   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf53490, tid 5836
+11-08 21:03:12.459  5466  8571 E EGL_emulation: eglQueryContext 32c0  EGL_BAD_ATTRIBUTE
+11-08 21:03:12.459  5466  8571 E EGL_emulation: tid 8571: eglQueryContext(2019): error 0x3004 (EGL_BAD_ATTRIBUTE)
+11-08 21:03:12.460  5466  8557 D SurfaceUtils: connecting to surface 0x7e76ac1cff80, reason connectToSurface
+11-08 21:03:12.460  5466  8557 I MediaCodec: [OMX.android.goldfish.h264.decoder] setting surface generation to 5597250
+11-08 21:03:12.460  5466  8557 D SurfaceUtils: disconnecting from surface 0x7e76ac1cff80, reason connectToSurface(reconnect)
+11-08 21:03:12.460  5466  8557 D SurfaceUtils: connecting to surface 0x7e76ac1cff80, reason connectToSurface(reconnect)
+11-08 21:03:12.461  5466  8558 D SurfaceUtils: disconnecting from surface 0x7e76ac1cff80, reason setNativeWindowSizeFormatAndUsage
+11-08 21:03:12.461  5466  8558 D SurfaceUtils: connecting to surface 0x7e76ac1cff80, reason setNativeWindowSizeFormatAndUsage
+11-08 21:03:12.461  5466  8558 D SurfaceUtils: set up nativeWindow 0x7e76ac1cff80 for 320x180, color 0x13, rotation 0, usage 0x1002900
+11-08 21:03:12.461  5466  8557 D SurfaceUtils: disconnecting from surface 0x7e76ac17cf10, reason disconnectFromSurface
+11-08 21:03:12.462   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:03:12.510   495  5836 D EGL_emulation: eglCreateContext: 0x7e75ac03eed0: maj 3 min 0 rcv 3
+11-08 21:03:12.511   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75ac03eed0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:03:12.579   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:03:12.629  5466  5466 I ExoPlayerImpl: Release c23517e [AndroidXMedia3/1.5.1] [generic_x86_64_arm64, sdk_gphone_x86_64, Google, 30] [media3.common, media3.ui, media3.exoplayer, media3.decoder, media3.exoplayer.hls, media3.datasource, media3.datasource.okhttp, media3.extractor]
+11-08 21:03:12.682  5466  8561 D CCodecBuffers: [c2.android.aac.decoder#282:1D-Output.Impl[N]] Client returned a buffer it does not own according to our record: 0
+11-08 21:03:12.682  5466  8561 D CCodecBuffers: [c2.android.aac.decoder#282:1D-Output.Impl[N]] Client returned a buffer it does not own according to our record: 1
+11-08 21:03:12.682  5466  8561 D CCodecBuffers: [c2.android.aac.decoder#282:1D-Output.Impl[N]] Client returned a buffer it does not own according to our record: 2
+11-08 21:03:12.682  5466  8561 I CCodecConfig: query failed after returning 19 values (BAD_INDEX)
+11-08 21:03:12.682  5466  8561 D CCodecConfig: c2 config diff is   c2::i32 coding.drc.compression-mode.value = 3
+11-08 21:03:12.682  5466  8561 W Codec2Client: query -- param skipped: index = 1342179345.
+11-08 21:03:12.682  5466  8561 W Codec2Client: query -- param skipped: index = 2415921170.
+11-08 21:03:12.682  5466  8561 W Codec2Client: query -- param skipped: index = 1610614798.
+11-08 21:03:12.684  5466  8557 D SurfaceUtils: disconnecting from surface 0x7e76ac1cff80, reason disconnectFromSurface
+11-08 21:03:12.759  5466  8561 D CCodecBufferChannel: [c2.android.aac.decoder#282] MediaCodec discarded an unknown buffer
+11-08 21:03:12.759  5466  8561 I chatty  : uid=10167(com.brudre.streaming) identical 2 lines
+11-08 21:03:12.759  5466  8561 D CCodecBufferChannel: [c2.android.aac.decoder#282] MediaCodec discarded an unknown buffer
+11-08 21:03:12.773  5466  8561 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+11-08 21:03:12.774   442   975 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+11-08 21:03:12.774   442   975 V C2Store : in ~ComponentModule
+11-08 21:03:12.774   442   975 V C2Store : unloading dll
+11-08 21:03:12.779  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: STOPPED
+11-08 21:03:12.779  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@3238eb1
+11-08 21:03:12.780  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@3238eb1 in: DESTROYED
+11-08 21:03:12.780  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:03:12.780  5466  5612 I BruDreTest: Histórico: A=✓ 0 • ✗ 1 (falhou 1 seguida) B=✓ 1 • ✗ 0 • ~330 ms
+11-08 21:03:12.786  5466  6733 I BruDreHomolog: Reprodução HTTP: até o vídeo=3647 ms, travamentos=0 (0 ms), assistido=3 s, falhou=false, PSS=198 MB
+11-08 21:03:12.788  5466  5612 I TestRunner: finished: t29_fallbackToNextSourceAndHistory(com.brudre.streaming.SourceEngineTest)

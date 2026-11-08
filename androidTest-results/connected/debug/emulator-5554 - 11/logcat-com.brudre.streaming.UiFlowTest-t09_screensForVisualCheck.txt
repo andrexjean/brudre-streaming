@@ -1,0 +1,439 @@
+11-08 21:04:06.516  5466  5612 I TestRunner: started: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)
+11-08 21:04:06.519  5466  5612 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@5ed89e3]
+11-08 21:04:06.554   714   728 I ndroid.systemu: NativeAlloc concurrent copying GC freed 10943(564KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6768KB/13MB, paused 17us total 194.576ms
+11-08 21:04:06.557   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf4f110, tid 5836
+11-08 21:04:06.565   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:06.572  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:04:06.600   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abfd0530: maj 3 min 0 rcv 3
+11-08 21:04:06.632   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abfd0530: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:04:06.642   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:04:06.669  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: PRE_ON_CREATE
+11-08 21:04:06.669  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:04:06.709  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: CREATED
+11-08 21:04:06.710  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@2383636
+11-08 21:04:06.715  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: STARTED
+11-08 21:04:06.715  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@2383636
+11-08 21:04:06.721  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: RESUMED
+11-08 21:04:06.721  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@2383636
+11-08 21:04:06.777   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:04:06.777   378   447 W APM::AudioPolicyEngine: getDevicesForStrategy() unknown strategy: -1
+11-08 21:04:06.777   495   997 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:04:06.784  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760bfbf6b8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/332 (fetch/transfer)
+11-08 21:04:06.784  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:04:07.088   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:04:07.093   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:04:07.094   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +446ms
+11-08 21:04:07.238  1878  2489 I PBSessionCacheImpl: Deleted sessionId[8261325519147161] from persistence.
+11-08 21:04:07.245  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: PAUSED
+11-08 21:04:07.248  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 21:04:07.253  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@2383636
+11-08 21:04:07.259  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: STOPPED
+11-08 21:04:07.259  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@2383636
+11-08 21:04:07.271  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@2383636 in: DESTROYED
+11-08 21:04:07.271  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:04:07.280  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: PRE_ON_CREATE
+11-08 21:04:07.280  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-08 21:04:07.282   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:04:07.286  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: CREATED
+11-08 21:04:07.286  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@59fd009
+11-08 21:04:07.287  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: STARTED
+11-08 21:04:07.287  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@59fd009
+11-08 21:04:07.287  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: RESUMED
+11-08 21:04:07.288  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@59fd009
+11-08 21:04:07.298   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:04:07.348   306   357 I chatty  : uid=1000(system) HwBinder:306_1 identical 3 lines
+11-08 21:04:07.367   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:04:07.713  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:07.713  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:08.763   495  1749 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:04:09.502   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb30068 : 0(0 size) total buffers - 0(0 size) used buffers - 56/60 (recycle/alloc) - 4/59 (fetch/transfer)
+11-08 21:04:09.502   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:04:09.570  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:09.570  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:09.770   495  1749 D WifiNl80211Manager: Scan result ready event
+11-08 21:04:09.770   495  1749 D WifiNative: Scan result ready event
+11-08 21:04:09.784  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760bfafcf8 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/71 (fetch/transfer)
+11-08 21:04:09.784  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:04:10.502   442   871 D BufferPoolAccessor2.0: bufferpool2 0x71c70fb302b8 : 0(0 size) total buffers - 0(0 size) used buffers - 48/52 (recycle/alloc) - 4/51 (fetch/transfer)
+11-08 21:04:10.502   442   871 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:04:10.784  5466  5746 D BufferPoolAccessor2.0: bufferpool2 0x7e760bfe4908 : 0(0 size) total buffers - 0(0 size) used buffers - 1/7 (recycle/alloc) - 6/63 (fetch/transfer)
+11-08 21:04:10.784  5466  5746 D BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+11-08 21:04:11.022  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:11.022  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:11.100   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=50)
+11-08 21:04:11.100   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:04:11.100   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 50 ended, total sessions:0
+11-08 21:04:11.101   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 21:04:11.414  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:11.415  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:11.547   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:11.547  8938  8938 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:11.551  8938  8938 D HostConnection: createUnique: call
+11-08 21:04:11.551  8938  8938 D HostConnection: HostConnection::get() New Host Connection established 0x721c023a4150, tid 8938
+11-08 21:04:11.567  8938  8938 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:12.004  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/home.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:12.014  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/home.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/home.png
+11-08 21:04:12.015  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 11ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:12.016  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/home.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:12.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:219): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:12.018  5466  5612 I BruDreTest: screenshot: home
+11-08 21:04:12.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:220): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:12.064  5466  8235 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf5bd10, tid 8235
+11-08 21:04:12.066  5466  8235 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:12.067  5466  8235 D EGL_emulation: eglCreateContext: 0x7e75abf6ef50: maj 3 min 0 rcv 3
+11-08 21:04:12.068  5466  8235 D EGL_emulation: eglMakeCurrent: 0x7e75abf6ef50: ver 3 0 (tinfo 0x7e754c0060d0) (first time)
+11-08 21:04:12.133  5466  5480 W System  : A resource failed to call release.
+11-08 21:04:12.135  5466  5480 I chatty  : uid=10167(com.brudre.streaming) FinalizerDaemon identical 4 lines
+11-08 21:04:12.135  5466  5480 W System  : A resource failed to call release.
+11-08 21:04:12.257  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:12.258  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:12.440  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:04:12.440  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:04:17.259   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:17.259  8949  8949 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:17.265  8949  8949 D HostConnection: createUnique: call
+11-08 21:04:17.265  8949  8949 D HostConnection: HostConnection::get() New Host Connection established 0x7d4202119650, tid 8949
+11-08 21:04:17.274  8949  8949 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:17.758  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/releases.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:17.774  5466  5612 I BruDreTest: screenshot: releases
+11-08 21:04:17.777  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/releases.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/releases.png
+11-08 21:04:17.779  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 8ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:17.780  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/releases.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:17.756  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:227): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:17.768  1838  1838 I chatty  : uid=10160(com.google.android.providers.media.module) identical 3 lines
+11-08 21:04:17.768  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:231): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:22.938   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:22.940  8960  8960 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:22.944  8960  8960 D HostConnection: createUnique: call
+11-08 21:04:22.945  8960  8960 D HostConnection: HostConnection::get() New Host Connection established 0x79ad205c9150, tid 8960
+11-08 21:04:22.953  8960  8960 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:23.375  8966  8968 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:04:23.376  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/trending.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:23.372  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:235): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:23.396  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/trending.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/trending.png
+11-08 21:04:23.397  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 20ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:23.397  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/trending.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:23.372  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:237): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:23.407  5466  5612 I BruDreTest: screenshot: trending
+11-08 21:04:23.372  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:238): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:24.419  1359  8970 I GmscoreIpa: Starting mediastore instant index
+11-08 21:04:28.579   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:28.579  8974  8974 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:28.584  8974  8974 D HostConnection: createUnique: call
+11-08 21:04:28.584  8974  8974 D HostConnection: HostConnection::get() New Host Connection established 0x769a67716d50, tid 8974
+11-08 21:04:28.595  8974  8974 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:29.040  8979  8981 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:04:29.045  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/movies.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:29.044  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:243): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:29.065  5466  5612 I BruDreTest: screenshot: movies
+11-08 21:04:29.067  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/movies.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/movies.png
+11-08 21:04:29.068  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 21ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:29.069  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/movies.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:29.044  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:244): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:34.248   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:34.248  8985  8985 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:34.254  8985  8985 D HostConnection: createUnique: call
+11-08 21:04:34.254  8985  8985 D HostConnection: HostConnection::get() New Host Connection established 0x75d01c315e50, tid 8985
+11-08 21:04:34.265  8985  8985 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:34.743  8990  8992 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:04:34.744  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/series.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:34.756  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/series.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/series.png
+11-08 21:04:34.757  5466  5612 I BruDreTest: screenshot: series
+11-08 21:04:34.758  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 5ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:34.759  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/series.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:34.740  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:251): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:34.748  1838  1838 I chatty  : uid=10160(com.google.android.providers.media.module) identical 3 lines
+11-08 21:04:34.752  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:255): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:39.942   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:39.942  8996  8996 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:39.946  8996  8996 D HostConnection: createUnique: call
+11-08 21:04:39.946  8996  8996 D HostConnection: HostConnection::get() New Host Connection established 0x76ee361e89d0, tid 8996
+11-08 21:04:39.959  8996  8996 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:40.350  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/classics.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:40.358  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/classics.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/classics.png
+11-08 21:04:40.358  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 8ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:40.359  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/classics.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:40.362  5466  5612 I BruDreTest: screenshot: classics
+11-08 21:04:40.348  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:259): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:40.554  5466  8235 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbfa40d0, tid 8235
+11-08 21:04:40.556  5466  8235 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:40.557  5466  8235 D EGL_emulation: eglCreateContext: 0x7e75ac064860: maj 3 min 0 rcv 3
+11-08 21:04:40.558  5466  8235 D EGL_emulation: eglMakeCurrent: 0x7e75ac064860: ver 3 0 (tinfo 0x7e754c0060d0) (first time)
+11-08 21:04:45.540   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:45.540  9007  9007 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:45.544  9007  9007 D HostConnection: createUnique: call
+11-08 21:04:45.544  9007  9007 D HostConnection: HostConnection::get() New Host Connection established 0x784c02dec510, tid 9007
+11-08 21:04:45.552  9007  9007 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:45.617  2887  5828 E libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-08 21:04:45.618  2887  5828 E libc    : Access denied finding property "service.adb.tls.port"
+11-08 21:04:45.608  2887  2887 W Binder:2887_9: type=1400 audit(0.0:267): avc: denied { read } for name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=8594 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-08 21:04:45.616  2887  2887 W Binder:2887_9: type=1400 audit(0.0:268): avc: denied { read } for name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=8454 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-08 21:04:45.654  1135  2453 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-08 21:04:45.654  1135  2453 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-08 21:04:45.654  1135  2453 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:45.958  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/docs.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:45.956  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:269): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:45.981  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/docs.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/docs.png
+11-08 21:04:45.982  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 1ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:45.982  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/docs.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:45.989  5466  5612 I BruDreTest: screenshot: docs
+11-08 21:04:45.956  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:271): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:46.040  1135  2453 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-08 21:04:46.041  1135  2453 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-08 21:04:46.041  1135  2453 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.063  5466  8235 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbfa40d0, tid 8235
+11-08 21:04:46.067  5466  8235 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:46.068  5466  8235 D EGL_emulation: eglCreateContext: 0x7e75abfc5060: maj 3 min 0 rcv 3
+11-08 21:04:46.068  5466  8235 D EGL_emulation: eglMakeCurrent: 0x7e75abfc5060: ver 3 0 (tinfo 0x7e754c0060d0) (first time)
+11-08 21:04:46.082  1135  2200 W GLSUser : [AppCertManager] Failed to get security token.
+11-08 21:04:46.082  1135  2200 W GLSUser : java.io.IOException: Invalid scope
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at adac.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):23)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at adac.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):18)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at adac.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):11)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at huk.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):16)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at hui.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):41)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at hud.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at hug.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):10)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at fzn.call(:com.google.android.gms@201817023@20.18.17 (040800-311416286):5)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at sji.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):12)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at sji.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):7)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at spj.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.082  1135  2200 W GLSUser : 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:04:46.123  1135  2200 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-08 21:04:46.124  1135  2200 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-08 21:04:46.124  1135  2200 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.622  1135  2200 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-08 21:04:46.622  1135  2200 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):2)
+11-08 21:04:46.622  1135  2200 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.646  1135  2200 W GLSUser : [AppCertManager] IOException while requesting key:
+11-08 21:04:46.646  1135  2200 W GLSUser : java.io.IOException: Invalid device key response.
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at huk.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):46)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at hui.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):41)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at hud.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at hug.a(:com.google.android.gms@201817023@20.18.17 (040800-311416286):10)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at fzn.call(:com.google.android.gms@201817023@20.18.17 (040800-311416286):5)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at sji.b(:com.google.android.gms@201817023@20.18.17 (040800-311416286):12)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at sji.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):7)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at spj.run(:com.google.android.gms@201817023@20.18.17 (040800-311416286):0)
+11-08 21:04:46.646  1135  2200 W GLSUser : 	at java.lang.Thread.run(Thread.java:923)
+11-08 21:04:55.205   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:04:55.205  9025  9025 I Gralloc4: mapper 4.x is not supported
+11-08 21:04:55.209  9025  9025 D HostConnection: createUnique: call
+11-08 21:04:55.214  9025  9025 D HostConnection: HostConnection::get() New Host Connection established 0x7698925db690, tid 9025
+11-08 21:04:55.228  9025  9025 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:04:55.405  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/live.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:55.400  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:277): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:55.422  5466  5612 I BruDreTest: screenshot: live
+11-08 21:04:55.400  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:278): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:55.427  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/live.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/live.png
+11-08 21:04:55.427  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 22ms, 0 inserts 0 updates 0 deletes
+11-08 21:04:55.428  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/live.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:04:55.400  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:279): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:55.404  1838  1838 I chatty  : uid=10160(com.google.android.providers.media.module) identical 1 line
+11-08 21:04:55.404  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:281): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:04:58.608  1359  9034 I GmscoreIpa: Starting mediastore instant index
+11-08 21:05:00.000   714   714 D KeyguardClockSwitch: Updating clock: 905
+11-08 21:05:00.018   714   714 D KeyguardClockSwitch: Updating clock: 905
+11-08 21:05:00.598   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:00.598  9038  9038 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:00.605  9038  9038 D HostConnection: createUnique: call
+11-08 21:05:00.605  9038  9038 D HostConnection: HostConnection::get() New Host Connection established 0x7ba8211c4690, tid 9038
+11-08 21:05:00.614  9038  9038 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:01.028  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/kids.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:01.024  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:285): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:01.040  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/kids.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/kids.png
+11-08 21:05:01.041  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 12ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:01.041  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/kids.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:01.048  5466  5612 I BruDreTest: screenshot: kids
+11-08 21:05:01.024  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:286): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:01.340   495  1957 D WifiNl80211Manager: Scan result ready event
+11-08 21:05:01.340   495  1957 D WifiNative: Scan result ready event
+11-08 21:05:02.680   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:02.681  9049  9049 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:02.687  9049  9049 D HostConnection: createUnique: call
+11-08 21:05:02.688  9049  9049 D HostConnection: HostConnection::get() New Host Connection established 0x77e19a266ed0, tid 9049
+11-08 21:05:02.698  9049  9049 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:02.853  9054  9056 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:05:02.854  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/configuracoes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:02.852  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:293): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:02.871  5466  5612 I BruDreTest: screenshot: configuracoes
+11-08 21:05:02.872  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/configuracoes.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/configuracoes.png
+11-08 21:05:02.873  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 18ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:02.874  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/configuracoes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:02.852  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:294): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:03.728   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:03.729  9060  9060 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:03.733  9060  9060 D HostConnection: createUnique: call
+11-08 21:05:03.733  9060  9060 D HostConnection: HostConnection::get() New Host Connection established 0x714433e12690, tid 9060
+11-08 21:05:03.743  9060  9060 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:03.894  9065  9067 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:05:03.892  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:301): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:03.894  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/configuracoes_fontes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:03.892  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:302): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:03.912  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/configuracoes_fontes.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/configuracoes_fontes.png
+11-08 21:05:03.912  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 17ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:03.912  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/configuracoes_fontes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:03.892  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:303): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:03.920  5466  5612 I BruDreTest: screenshot: configuracoes_fontes
+11-08 21:05:03.892  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:304): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:04.089  5466  5477 I rudre.streamin: Compiler allocated 4122KB to compile void com.brudre.streaming.ui.screens.SourceManagerScreenKt.SourceCard(com.brudre.streaming.sources.UserSource, int, int, boolean, boolean, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int)
+11-08 21:05:05.477   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:05.478  9072  9072 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:05.484  9072  9072 D HostConnection: createUnique: call
+11-08 21:05:05.484  9072  9072 D HostConnection: HostConnection::get() New Host Connection established 0x737e7d21fa50, tid 9072
+11-08 21:05:05.495  9072  9072 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:05.639  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/gerenciar_fontes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:05.636  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:309): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:05.661  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/gerenciar_fontes.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/gerenciar_fontes.png
+11-08 21:05:05.664  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 24ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:05.664  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/gerenciar_fontes.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:05.636  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:311): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:05.672  5466  5612 I BruDreTest: screenshot: gerenciar_fontes
+11-08 21:05:05.636  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:312): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:05.848   355   355 E SurfaceFlinger: [com.brudre.streaming/com.brudre.streaming.ui.MainActivity#2] rejecting buffer: bufWidth=1920, bufHeight=1080, front.active_legacy.{w=1720, h=752}
+11-08 21:05:06.094  1424  1424 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-08 21:05:06.094  1424  1424 I AndroidIME: AbstractIme.onActivate():84 LatinIme.onActivate() : EditorInfo = Package = com.brudre.streaming : Type = Text : Learning = Enable : Suggestion = Show : AutoCorrection = Enable : Microphone = Show : NoPersonalizedLearning = Disable : AutoStartVoiceInput = Disable, IncognitoMode = false
+11-08 21:05:06.095  1424  1424 I Delight5Facilitator: Delight5Facilitator.initializeForIme():561 initializeForIme() : Locale = [en_US], layout = qwerty
+11-08 21:05:06.095  1424  1424 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+11-08 21:05:06.095  1424  1424 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+11-08 21:05:06.098  1424  1424 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-08 21:05:06.099  1424  8633 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():160 maybeScheduleAutoPackDownloadForFallback()
+11-08 21:05:06.099  1424  8633 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():197 maybeScheduleAutoPackDownload() for language tag en-US
+11-08 21:05:06.129  1424  1424 W KeyboardModeManager: KeyboardModeManager.setInputView():302 setInputView() : inputView = com.google.android.apps.inputmethod.libs.framework.core.InputView{bcdf3c7 V.E...... ......ID 0,0-1920,1032}
+11-08 21:05:06.129  1424  1424 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabledForHostApp():252 Conv2Query not enabled due to current app [com.brudre.streaming] not in whitelist
+11-08 21:05:06.129  1424  1424 I ConversationToQueryExtension: ConversationToQueryExtension.onActivate():162 onActivate() : Disabled by unsupported host app
+11-08 21:05:06.129  1424  1424 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomatically():336 No private IME option set to start voice input.
+11-08 21:05:06.346   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.346   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.351   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.352   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.466   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.466   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.473   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.486   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.494   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.494   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.498   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:06.498   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:06.794   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:06.795  9083  9083 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:06.813  9083  9083 D HostConnection: createUnique: call
+11-08 21:05:06.814  9083  9083 D HostConnection: HostConnection::get() New Host Connection established 0x7ae1b8ea7e10, tid 9083
+11-08 21:05:06.853  9083  9083 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:07.002  9088  9090 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:05:07.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:317): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:07.003  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/gerenciar_fontes_adicionar.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:07.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:318): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:07.028  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/gerenciar_fontes_adicionar.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/gerenciar_fontes_adicionar.png
+11-08 21:05:07.028  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 26ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:07.029  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/gerenciar_fontes_adicionar.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:07.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:319): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:07.040  5466  5612 I BruDreTest: screenshot: gerenciar_fontes_adicionar
+11-08 21:05:07.000  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:320): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:07.067  1424  1424 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-08 21:05:07.068  1424  1424 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltip():130 dismissTooltip(): tooltip with id inline_suggestion_tooltip not found in tooltipManager.
+11-08 21:05:07.068  1424  1424 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-08 21:05:07.068  1424  1424 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.shutdown():77 shutdown()
+11-08 21:05:07.069  1424  1424 I AndroidIME: AbstractIme.onDeactivate():161 LatinIme.onDeactivate()
+11-08 21:05:07.184   495   505 I system_server: Background young concurrent copying GC freed 295163(11MB) AllocSpace objects, 66(1980KB) LOS objects, 42% free, 17MB/31MB, paused 22us total 139.841ms
+11-08 21:05:07.192   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 21:05:07.192   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 21:05:07.194   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 21:05:07.194   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 21:05:07.195   495   506 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.AlarmManagerService$2
+11-08 21:05:07.195   495   506 I BpBinder: onLastStrongRef automatically unlinking death recipients: <uncached descriptor>
+11-08 21:05:07.781  5466  8235 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf88710, tid 8235
+11-08 21:05:07.787  5466  8235 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:07.813  5466  8235 D EGL_emulation: eglCreateContext: 0x7e75ac0267a0: maj 3 min 0 rcv 3
+11-08 21:05:07.857  5466  8235 D EGL_emulation: eglMakeCurrent: 0x7e75ac0267a0: ver 3 0 (tinfo 0x7e754c0060d0) (first time)
+11-08 21:05:09.381  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:09.381  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:10.484   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:10.484  9096  9096 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:10.488  9096  9096 D HostConnection: createUnique: call
+11-08 21:05:10.489  9096  9096 D HostConnection: HostConnection::get() New Host Connection established 0x7f84515eee50, tid 9096
+11-08 21:05:10.504   495   543 E libprocessgroup: AddTidToCgroup failed to write '9100'; fd=67: Invalid argument
+11-08 21:05:10.504   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 21:05:10.504   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 21:05:10.506  9096  9096 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:10.970  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:10.970  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:11.140  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/detalhes_classico.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:11.136  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:325): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:11.165  5466  5612 I BruDreTest: screenshot: detalhes_classico
+11-08 21:05:11.166  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/detalhes_classico.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/detalhes_classico.png
+11-08 21:05:11.166  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 24ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:11.167  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/detalhes_classico.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:11.136  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:327): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:11.140  1838  1838 I chatty  : uid=10160(com.google.android.providers.media.module) identical 1 line
+11-08 21:05:11.140  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:329): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:13.000  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:05:13.000  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:05:13.371   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:13.371  9108  9108 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:13.375  9108  9108 D HostConnection: createUnique: call
+11-08 21:05:13.380  9108  9108 D HostConnection: HostConnection::get() New Host Connection established 0x7d4bed5c6010, tid 9108
+11-08 21:05:13.395  9108  9108 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:14.058  9113  9115 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:05:14.059  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/detalhes_gratis_app.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:14.056  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:333): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:14.064  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:334): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:14.078  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/detalhes_gratis_app.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/detalhes_gratis_app.png
+11-08 21:05:14.079  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 12ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:14.079  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/detalhes_gratis_app.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:14.085  5466  5612 I BruDreTest: screenshot: detalhes_gratis_app
+11-08 21:05:14.064  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:335): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:14.276  1424  1424 W SessionManager: SessionManager.beginSession():53 Try to begin an already begun session [INPUT_SESSION], end it first
+11-08 21:05:14.296  1424  1424 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():128 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-08 21:05:14.296  1424  1424 I AndroidIME: AbstractIme.onActivate():84 LatinIme.onActivate() : EditorInfo = Package = com.brudre.streaming : Type = Text : Learning = Enable : Suggestion = Show : AutoCorrection = Enable : Microphone = Show : NoPersonalizedLearning = Disable : AutoStartVoiceInput = Disable, IncognitoMode = false
+11-08 21:05:14.296  1424  1424 I Delight5Facilitator: Delight5Facilitator.initializeForIme():561 initializeForIme() : Locale = [en_US], layout = qwerty
+11-08 21:05:14.296  1424  1424 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+11-08 21:05:14.296  1424  1424 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+11-08 21:05:14.297  1424  8633 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():160 maybeScheduleAutoPackDownloadForFallback()
+11-08 21:05:14.297  1424  8633 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():197 maybeScheduleAutoPackDownload() for language tag en-US
+11-08 21:05:14.299  1424  1424 I KeyboardWrapper: KeyboardWrapper.consumeEvent():264 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+11-08 21:05:14.311  1424  1424 W KeyboardModeManager: KeyboardModeManager.setInputView():302 setInputView() : inputView = com.google.android.apps.inputmethod.libs.framework.core.InputView{bcdf3c7 V.E...... ......ID 0,0-1920,1032}
+11-08 21:05:14.311  1424  1424 I ConversationToQueryExtension: ConversationToQueryExtension.isEnabledForHostApp():252 Conv2Query not enabled due to current app [com.brudre.streaming] not in whitelist
+11-08 21:05:14.311  1424  1424 I ConversationToQueryExtension: ConversationToQueryExtension.onActivate():162 onActivate() : Disabled by unsupported host app
+11-08 21:05:14.311  1424  1424 I VoiceImeExtension: VoiceImeExtension.shouldStartVoiceInputAutomatically():336 No private IME option set to start voice input.
+11-08 21:05:14.530   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:14.530   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:14.530   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:14.531   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:14.616   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:14.616   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:14.734  5466  5480 W System  : A resource failed to call release.
+11-08 21:05:14.810   714   714 D InterruptionStateProvider: No bubble up: not allowed to bubble: -1|android|8|null|1000
+11-08 21:05:14.810   714   714 D InterruptionStateProvider: No heads up: unimportant notification: -1|android|8|null|1000
+11-08 21:05:14.828  1424  1424 E InputContextLock: InputContextLock.maybeTrackAcquireLockTime():29 Acquire InputContextLock takes 5 ms, mainThreadForSure=true.
+11-08 21:05:17.711   162   162 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device manifest.
+11-08 21:05:17.711  9121  9121 I Gralloc4: mapper 4.x is not supported
+11-08 21:05:17.715  9121  9121 D HostConnection: createUnique: call
+11-08 21:05:17.717  9121  9121 D HostConnection: HostConnection::get() New Host Connection established 0x71e10fb2b490, tid 9121
+11-08 21:05:17.733  9121  9121 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:17.882  9127  9129 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 21:05:17.883  1838  3037 I MediaProvider: Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/pesquisa.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:17.880  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:341): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:17.903  1838  3037 W ModernMediaScanner: Failed to visit /sdcard/brudre_shots/pesquisa.png: java.nio.file.AccessDeniedException: /sdcard/brudre_shots/pesquisa.png
+11-08 21:05:17.903  1838  3037 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 19ms, 0 inserts 0 updates 0 deletes
+11-08 21:05:17.903  1838  3037 I MediaProvider: End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/brudre_shots/pesquisa.png flg=0x1400010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService }
+11-08 21:05:17.910  5466  5612 I BruDreTest: screenshot: pesquisa
+11-08 21:05:17.880  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:343): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:17.912   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:05:17.918  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: PAUSED
+11-08 21:05:17.918  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@59fd009
+11-08 21:05:17.880  1838  1838 W com.google.android.providers.media.module: type=1400 audit(0.0:344): avc: denied { read } for comm=4173796E635461736B202331 name="primary" dev="tmpfs" ino=29921 scontext=u:r:mediaprovider_app:s0:c160,c256,c512,c768 tcontext=u:object_r:mnt_pass_through_file:s0 tclass=lnk_file permissive=0 app=com.google.android.providers.media.module
+11-08 21:05:18.045   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:05:18.065  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: STOPPED
+11-08 21:05:18.065  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@59fd009
+11-08 21:05:18.147  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@59fd009 in: DESTROYED
+11-08 21:05:18.147  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:05:18.155  5466  5612 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@5ed89e3]
+11-08 21:05:18.217   714   728 I ndroid.systemu: NativeAlloc concurrent copying GC freed 29335(1399KB) AllocSpace objects, 7(140KB) LOS objects, 49% free, 6800KB/13MB, paused 24us total 132.056ms
+11-08 21:05:18.295  5466  5612 I TestRunner: finished: t09_screensForVisualCheck(com.brudre.streaming.UiFlowTest)

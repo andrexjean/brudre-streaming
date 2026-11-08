@@ -1,0 +1,5 @@
+11-08 21:14:47.405  5466  5612 I TestRunner: started: t51_oldRecordsMigrated(com.brudre.streaming.V943DeviceTest)
+11-08 21:14:47.408  5466  5612 I BruDreTest: Antes: segredo no arquivo de fontes = true
+11-08 21:14:47.933  5466  5612 I BruDreTest: Depois da migração: 5 títulos com fonte reproduzível (SEARCH_OK)
+11-08 21:14:47.934  5466  5612 I BruDreTest: SURVEY|Migração de registros antigos|PASS|fonte com token: segredo movido para o CredentialStore, endereço {cred} testado OK; histórico de torrent limpo
+11-08 21:14:47.936  5466  5612 I TestRunner: finished: t51_oldRecordsMigrated(com.brudre.streaming.V943DeviceTest)

@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.brudre.streaming/.ui.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.brudre.streaming/.ui.MainActivity
+TotalTime: 489
+WaitTime: 493
+Complete

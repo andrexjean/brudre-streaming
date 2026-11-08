@@ -1,0 +1,122 @@
+11-08 21:05:44.819  5466  5612 I TestRunner: started: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)
+11-08 21:05:44.820  5466  5612 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@54742cf]
+11-08 21:05:44.847   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abfd2000: maj 3 min 0 rcv 3
+11-08 21:05:44.848   398   409 I adbd    : jdwp connection from 9368
+11-08 21:05:44.851  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 21:05:44.852   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abfd2000: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:05:44.879   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:05:44.933  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: PRE_ON_CREATE
+11-08 21:05:44.935  9368  9368 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+11-08 21:05:44.935  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 21:05:44.994  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: CREATED
+11-08 21:05:44.994  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@a53ec8c
+11-08 21:05:44.995  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: STARTED
+11-08 21:05:44.995  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@a53ec8c
+11-08 21:05:45.002  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: RESUMED
+11-08 21:05:45.002  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@a53ec8c
+11-08 21:05:45.014  9368  9368 I earchbox:searc: The ClassLoaderContext is a special shared library.
+11-08 21:05:45.051  9368  9368 I earchbox:searc: The ClassLoaderContext is a special shared library.
+11-08 21:05:45.054  9368  9368 D nativeloader: classloader namespace configured for unbundled product apk. library_path=/product/priv-app/Velvet/lib/x86:/product/priv-app/Velvet/Velvet.apk!/lib/x86:/product/lib:/system/product/lib
+11-08 21:05:45.236  9368  9368 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config debugBuild: false
+11-08 21:05:45.286  9368  9368 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config debugBuild: false
+11-08 21:05:45.321  9368  9368 I MultiDex: VM with version 2.1.0 has multidex support
+11-08 21:05:45.321  9368  9368 I MultiDex: install
+11-08 21:05:45.321  9368  9368 I MultiDex: VM has multidex support, MultiDex support library is disabled.
+11-08 21:05:45.375   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:05:45.378   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.ui.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 21:05:45.379   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.ui.MainActivity: +498ms
+11-08 21:05:45.396  5466  5478 I rudre.streamin: Background young concurrent copying GC freed 276127(9706KB) AllocSpace objects, 34(852KB) LOS objects, 21% free, 29MB/37MB, paused 213us total 382.897ms
+11-08 21:05:45.411  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: PAUSED
+11-08 21:05:45.411  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@a53ec8c
+11-08 21:05:45.413  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: STOPPED
+11-08 21:05:45.413  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@a53ec8c
+11-08 21:05:45.425  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@a53ec8c in: DESTROYED
+11-08 21:05:45.425  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:05:45.432   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:45.435  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: PRE_ON_CREATE
+11-08 21:05:45.435  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was DESTROYED
+11-08 21:05:45.438  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: CREATED
+11-08 21:05:45.439  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.ui.MainActivity@e7dbc3b
+11-08 21:05:45.440  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: STARTED
+11-08 21:05:45.440  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.ui.MainActivity@e7dbc3b
+11-08 21:05:45.440  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: RESUMED
+11-08 21:05:45.440  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.ui.MainActivity@e7dbc3b
+11-08 21:05:45.448   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:45.465   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:45.471  9368  9368 W earchbox:searc: Accessing hidden field Ljava/util/Collections$SynchronizedCollection;->mutex:Ljava/lang/Object; (greylist-max-o, reflection, denied)
+11-08 21:05:45.471  9368  9368 W earchbox:searc: Accessing hidden method Ljava/util/Collections$SynchronizedSet;-><init>(Ljava/util/Set;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 21:05:45.471  9368  9368 W earchbox:searc: Accessing hidden method Ljava/util/Collections$SynchronizedCollection;-><init>(Ljava/util/Collection;Ljava/lang/Object;)V (greylist-max-o, reflection, denied)
+11-08 21:05:45.498   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:45.515   306   357 W EmuHWC2 : No layers, exit, buffer 0x0
+11-08 21:05:45.567  9368  9368 I TetheringManager: registerTetheringEventCallback:com.google.android.googlequicksearchbox
+11-08 21:05:45.572  9368  9368 I Search.LoginHelperImpl: Getting accounts.
+11-08 21:05:45.688  9368  9368 E OverlaySController: Calling with an invalid UID, the interface will not work
+11-08 21:05:45.702   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf52950, tid 5836
+11-08 21:05:45.705   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:45.706   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abfbdef0: maj 3 min 0 rcv 3
+11-08 21:05:45.711   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abfbdef0: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 21:05:45.715  9368  9407 I SharedPreferencesProto: load shared preferences: file not found
+11-08 21:05:46.086  9368  9401 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-08 21:05:46.086  9368  9401 I FedAssExpListener: Successfully processed experiments changed.
+11-08 21:05:46.101  9368  9397 I ModelDownloadListener: Schdedule model download
+11-08 21:05:46.132  9368  9368 I BgTaskExecutorImpl: Starting EXCLUSIVE background task UPDATE_HOTWORD_MODELS.
+11-08 21:05:46.164   495   543 E libprocessgroup: AddTidToCgroup failed to write '9414'; fd=67: Invalid argument
+11-08 21:05:46.164   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 21:05:46.164   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 21:05:46.177  9368  9415 I EventBusThread: Event Bus thread starting with TID 9415
+11-08 21:05:46.188  9368  9397 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-08 21:05:46.295  5466  8235 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbfd13d0, tid 8235
+11-08 21:05:46.308  5466  8235 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:46.310  5466  8235 D EGL_emulation: eglCreateContext: 0x7e75abfae400: maj 3 min 0 rcv 3
+11-08 21:05:46.311  5466  8235 D EGL_emulation: eglMakeCurrent: 0x7e75abfae400: ver 3 0 (tinfo 0x7e754c0060d0) (first time)
+11-08 21:05:46.337  9368  9399 I BistoSettingsListener: listener created
+11-08 21:05:46.354  9368  9415 I MicroDataManager: isInitializing-false locale not changed-false model not changed-false
+11-08 21:05:46.361  9368  9418 I ModelDownloadController: requestHotwordModelUpdate modelType-2 modelLocale-en-US
+11-08 21:05:46.363  5466  9218 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbfd0c50, tid 9218
+11-08 21:05:46.367  9368  9415 I MicroDetectionWorker: Initializing MicroDataManager InitializeType-1, isForced-false, isActivePhoneEnrollment-false isActiveGoogleHomeEnrollment-false
+11-08 21:05:46.368  9368  9415 I MicroDetectionState: Should stop hotword detection immediately - false
+11-08 21:05:46.368  9368  9415 W SearchServiceCore: Abort, client detached.
+11-08 21:05:46.443  9368  9418 I ModelDownloadController: shouldDownloadModel: modelLocale is en-US
+11-08 21:05:46.443  9368  9418 I ModelDownloadController: We already downloaded model from given location.
+11-08 21:05:46.443  9368  9418 I ModelDownloadController: Model download not requested.
+11-08 21:05:46.461  5466  9218 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:46.490   495   543 E libprocessgroup: AddTidToCgroup failed to write '9420'; fd=118: Invalid argument
+11-08 21:05:46.490   495   543 E libprocessgroup: Failed to add task into cgroup
+11-08 21:05:46.490   495   543 W libprocessgroup: ExecuteForTask failed for aggregate profile: Invalid argument
+11-08 21:05:46.670  9368  9385 I MicroDataManager: isInitializing-true locale not changed-true model not changed-true
+11-08 21:05:46.672  9368  9385 I HotwordHelper: hasHotwordEverywhere-true
+11-08 21:05:46.688  1649  1649 E HwDetectorWithState: a: 3
+11-08 21:05:46.688  1649  1649 I GsaVoiceInteractionSrv: #checkDspStatus
+11-08 21:05:46.688  1649  1649 I BistoHotwordHelper: setting speaker id present: false
+11-08 21:05:46.688  1649  1649 I BistoHotwordHelper: setting hotword model of size: 623108 bytes
+11-08 21:05:46.688  1649  1649 I BistoHotwordHelper: setting modeltype: X Google
+11-08 21:05:46.688  1649  1649 I BistoHotwordHelper: setting hotword voice locale: en-US
+11-08 21:05:46.690  9368  9415 W SessionLifecycleManager: Client : AttachedClient[41202693887968438, ClientConfig[mFlags=[40000088001] mSuggestFlags=[0] mClientId=HOTWORD_SERVICE mSessionType=search publicSearchServiceCallerUid=-1]] has no associated SessionController
+11-08 21:05:46.710  5466  5477 I rudre.streamin: Compiler allocated 5509KB to compile void com.brudre.streaming.ui.screens.DetailsDialogKt.AvailableSection(com.brudre.streaming.data.TitleDetails, java.util.List, boolean, boolean, androidx.compose.ui.focus.FocusRequester, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int)
+11-08 21:05:46.750  5466  9265 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf66bd0, tid 9265
+11-08 21:05:46.829  9368  9415 I MicroDataManager: isInitializing-false locale not changed-true model not changed-true
+11-08 21:05:46.832  9368  9415 I MicroDetectionState: Should stop hotword detection immediately - false
+11-08 21:05:46.834  5466  9265 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:46.851  9368  9413 W earchbox:searc: Long monitor contention with owner Blocking Thread #1 (9404) at void com.google.android.apps.gsa.l.d.a(com.google.android.apps.gsa.l.c)(SourceFile:20) waiters=0 in void com.google.android.apps.gsa.l.d.a(com.google.android.apps.gsa.l.c) for 366ms
+11-08 21:05:47.196  5466  5478 I rudre.streamin: Background concurrent copying GC freed 355413(15MB) AllocSpace objects, 110(2308KB) LOS objects, 49% free, 24MB/48MB, paused 29us total 904.282ms
+11-08 21:05:47.221  5466  5480 W System  : A resource failed to call release.
+11-08 21:05:47.222  5466  5480 W System  : A resource failed to call release.
+11-08 21:05:48.290   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 21:05:48.318   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 57, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-08 21:05:48.318   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=57)
+11-08 21:05:48.328  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: PAUSED
+11-08 21:05:48.329  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.ui.MainActivity@e7dbc3b
+11-08 21:05:48.442   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 21:05:48.459  9368  9368 E OverlaySController: Calling with an invalid UID, the interface will not work
+11-08 21:05:48.583   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:05:48.583   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 21:05:48.583   355   355 E Layer   : [Surface(name=Task=107)/@0x6fa2058 - animation-leash#0] No local sync point found
+11-08 21:05:48.583   355   355 E Layer   : [Surface(name=Task=107)/@0x6fa2058 - animation-leash#0] No local sync point found
+11-08 21:05:48.603   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf52950, tid 5836
+11-08 21:05:48.608   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 21:05:48.646  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: STOPPED
+11-08 21:05:48.646  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.ui.MainActivity@e7dbc3b
+11-08 21:05:48.657  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.ui.MainActivity@e7dbc3b in: DESTROYED
+11-08 21:05:48.657  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 21:05:48.660  5466  5612 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@54742cf]
+11-08 21:05:48.670  5466  5612 I TestRunner: finished: t05_myListFromDetails(com.brudre.streaming.UiFlowTest)

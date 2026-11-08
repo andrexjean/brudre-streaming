@@ -1,0 +1,2 @@
+11-08 21:06:53.288  5466  5612 I TestRunner: started: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.791  5466  5612 I TestRunner: finished: v08_settingsPersistence(com.brudre.streaming.V91DeviceTest)

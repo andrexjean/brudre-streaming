@@ -1,0 +1,19 @@
+11-08 21:06:53.792  5466  5612 I TestRunner: started: v07_noPeers(com.brudre.streaming.V91DeviceTest)
+11-08 21:06:53.795  5466  7409 I BruDreTLS: OpenSSL do libtorrent usando /data/user/0/com.brudre.streaming/files/tls/ca-bundle.pem (124 CAs)
+11-08 21:06:53.796  5466  7409 I BruDreTorrent: Sessão BitTorrent iniciada (conexões=40)
+11-08 21:06:53.803   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=61)
+11-08 21:06:53.803   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:06:53.803   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 61 ended, total sessions:1
+11-08 21:06:54.220  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:06:54.220  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:06:56.297   417   417 I perfetto: probes_producer.cc:329  Producer stop (id=62)
+11-08 21:06:56.298   418   418 E libc    : The property "ro.build.fingerprint" has a value with length 92 that is too large for __system_property_get()/__system_property_read(); use __system_property_read_callback() instead.
+11-08 21:06:56.299   417   417 I perfetto: ftrace_procfs.cc:183    disabled ftrace
+11-08 21:06:56.299   418   418 I perfetto: ng_service_impl.cc:1948 Tracing session 62 ended, total sessions:0
+11-08 21:06:56.614  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():180 call()
+11-08 21:06:56.615  1424  1481 I PeriodicStatsRunner: PeriodicStatsRunner.call():184 No submit PeriodicStats since input started.
+11-08 21:07:00.002   714   714 D KeyguardClockSwitch: Updating clock: 907
+11-08 21:07:17.381  9368  9418 W GmsLocationProvider: Error removing location updates: 16
+11-08 21:07:23.799  5466  5612 I BruDreTest: Sem peers em 30005 ms: Sem participantes (peers): Nenhum participante enviou os metadados em 30s (torrent sem peers no momento).
+11-08 21:07:24.551  5466  5612 I BruDreTorrent: Sessão BitTorrent encerrada
+11-08 21:07:24.552  5466  5612 I TestRunner: finished: v07_noPeers(com.brudre.streaming.V91DeviceTest)

@@ -1,0 +1,26 @@
+11-08 20:55:42.405  5466  5612 I TestRunner: started: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)
+11-08 20:55:42.426  1878  2997 W GmsClient: mServiceBroker is null, client disconnected
+11-08 20:55:42.459   284   284 D Zygote  : Forked child process 5629
+11-08 20:55:42.475  5629  5629 W oid.setupwizar: Unexpected CPU variant for X86 using defaults: x86_64
+11-08 20:55:42.483   398   409 I adbd    : jdwp connection from 5629
+11-08 20:55:42.501  5629  5629 I oid.setupwizar: The ClassLoaderContext is a special shared library.
+11-08 20:55:42.507  5629  5629 I oid.setupwizar: The ClassLoaderContext is a special shared library.
+11-08 20:55:42.507  5629  5629 D nativeloader: classloader namespace configured for unbundled product apk. library_path=/product/priv-app/SetupWizardPrebuilt/lib/x86_64:/product/priv-app/SetupWizardPrebuilt/SetupWizardPrebuilt.apk!/lib/x86_64:/product/lib64:/system/product/lib64
+11-08 20:55:42.510  4451  5608 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10116; state: DISABLED
+11-08 20:55:42.519  5629  5629 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-08 20:55:42.519  5629  5629 D NetworkSecurityConfig: No Network Security Config specified, using platform default
+11-08 20:55:42.527  1359  4607 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:55:42.531  1359  5082 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:55:42.532  1359  3910 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:55:42.538  1135  2465 I GCoreUlr: DispatchingService ignoring Intent { act=android.net.wifi.WIFI_STATE_CHANGED flg=0x44000010 (has extras) } because ULR inactive
+11-08 20:55:42.540  5466  5478 I rudre.streamin: ThreadFlipBegin blocked for 14.336ms
+11-08 20:55:42.540  5629  5629 I SetupWizard: [bea] Start loading FRP status
+11-08 20:55:42.546  1135  1135 I GCoreUlr: Unbound from all signal providers.
+11-08 20:55:42.546  1135  1135 I GCoreUlr: Stopping handler for UlrDispSvcFast
+11-08 20:55:42.571  1135  5278 I PTCommittedOperation: Receive new configuration for com.google.android.gms.people
+11-08 20:55:42.574  1359  1366 I gle.android.gm: Background young concurrent copying GC freed 77163(3888KB) AllocSpace objects, 24(1264KB) LOS objects, 18% free, 22MB/27MB, paused 16us total 147.917ms
+11-08 20:55:42.587  1878  1909 I earchbox:searc: Background concurrent copying GC freed 120542(5404KB) AllocSpace objects, 33(2612KB) LOS objects, 49% free, 10151KB/19MB, paused 18us total 483.264ms
+11-08 20:55:42.595  1359  5082 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+11-08 20:55:42.596  1359  5624 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-08 20:55:42.596  1359  5624 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-08 20:55:42.616  5466  5612 I TestRunner: finished: myListAddRemovePersists(com.brudre.streaming.LibraryDbTest)

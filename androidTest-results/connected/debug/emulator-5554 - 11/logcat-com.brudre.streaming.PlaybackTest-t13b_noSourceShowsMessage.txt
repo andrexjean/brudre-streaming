@@ -1,0 +1,54 @@
+11-08 20:58:32.518  5466  5612 I TestRunner: started: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)
+11-08 20:58:32.523  1878  2353 W LocationOracle: No location history returned by ContextManager
+11-08 20:58:32.551  1135  2834 W GCoreFlp: No location to return for getLastLocation()
+11-08 20:58:32.553   495  1286 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:58:32.553   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:58:32.553  6897  6901 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:58:32.594  6902  6906 I cmd     : oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:58:32.600  5466  5612 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-08 20:58:32.612  1878  1878 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 20:58:32.624  1878  2306 I TngMinusOneSync: Syncing TNG:-1
+11-08 20:58:32.633   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 20:58:32.650  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: PRE_ON_CREATE
+11-08 20:58:32.650  5466  5466 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-08 20:58:32.675   418   418 I perfetto: ing_service_impl.cc:758 Configured tracing session 15, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-08 20:58:32.675   417   417 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=15)
+11-08 20:58:32.676   495  5836 D HostConnection: HostConnection::get() New Host Connection established 0x7e75bbf51510, tid 5836
+11-08 20:58:32.679   495  5836 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-08 20:58:32.681   495  5836 D EGL_emulation: eglCreateContext: 0x7e75abfbc370: maj 3 min 0 rcv 3
+11-08 20:58:32.714   495  5836 D EGL_emulation: eglMakeCurrent: 0x7e75abfbc370: ver 3 0 (tinfo 0x7e754c055ed0) (first time)
+11-08 20:58:32.750  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: CREATED
+11-08 20:58:32.750  5466  5466 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.brudre.streaming.player.PlayerActivity@2ac10f9
+11-08 20:58:32.753  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: STARTED
+11-08 20:58:32.753  5466  5466 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.brudre.streaming.player.PlayerActivity@2ac10f9
+11-08 20:58:32.753  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: RESUMED
+11-08 20:58:32.753  5466  5466 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.brudre.streaming.player.PlayerActivity@2ac10f9
+11-08 20:58:32.994   495  1758 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-08 20:58:33.042   714   854 D EglHelper: createEglContext start
+11-08 20:58:33.047   714   854 D EGL_emulation: eglCreateContext: 0x7e75abfa6160: maj 3 min 0 rcv 3
+11-08 20:58:33.047   714   854 D EglHelper: createEglContext done
+11-08 20:58:33.047   714   854 D EglHelper: createEglSurface start
+11-08 20:58:33.109   714   854 D EglHelper: createEglSurface done
+11-08 20:58:33.136   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 20:58:33.154   495   537 D ArtManagerInternalImpl: /data/misc/iorapd/com.brudre.streaming/92046/com.brudre.streaming.player.PlayerActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-08 20:58:33.158   495   537 I ActivityTaskManager: Displayed com.brudre.streaming/.player.PlayerActivity: +489ms
+11-08 20:58:33.193  1878  2489 I PBSessionCacheImpl: Deleted sessionId[8261325519147010] from persistence.
+11-08 20:58:33.215   495   531 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-08 20:58:33.257  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: PAUSED
+11-08 20:58:33.257  5466  5466 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.brudre.streaming.player.PlayerActivity@2ac10f9
+11-08 20:58:33.314  1878  2306 W SearchServiceCore: Abort, client detached.
+11-08 20:58:33.474   495   531 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-08 20:58:33.833   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 20:58:33.833   355   355 E Layer   : [Surface(name=Task=1)/@0xc4fc9d2 - animation-leash#0] No local sync point found
+11-08 20:58:33.833   355   355 E Layer   : [Surface(name=Task=29)/@0xdf73721 - animation-leash#0] No local sync point found
+11-08 20:58:33.833   355   355 E Layer   : [Surface(name=Task=29)/@0xdf73721 - animation-leash#0] No local sync point found
+11-08 20:58:33.931  1878  1878 I BgTaskExecutorImpl: Starting EXCLUSIVE background task TNG_MINUS_ONE_SYNC.
+11-08 20:58:33.938  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: STOPPED
+11-08 20:58:33.939  5466  5466 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.brudre.streaming.player.PlayerActivity@2ac10f9
+11-08 20:58:33.955  5466  5466 D LifecycleMonitor: Lifecycle status change: com.brudre.streaming.player.PlayerActivity@2ac10f9 in: DESTROYED
+11-08 20:58:33.955  5466  5466 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-08 20:58:33.988  1878  2306 I TngMinusOneSync: Syncing TNG:-1
+11-08 20:58:34.007   495   819 I WifiService: setWifiEnabled package=com.android.shell uid=2000 enable=true
+11-08 20:58:34.010  5466  5619 I BruDreHomolog: Reprodução HTTP: até o vídeo=null ms, travamentos=0 (0 ms), assistido=0 s, falhou=true, PSS=161 MB
+11-08 20:58:34.013   495   643 D WifiActiveModeWarden: Switching all client mode managers
+11-08 20:58:34.046  5466  5612 I TestRunner: finished: t13b_noSourceShowsMessage(com.brudre.streaming.PlaybackTest)

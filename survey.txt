@@ -1,0 +1,36 @@
+SURVEY|Rotina de homologação|PASS|relatório gerado em brudre-homologacao.txt: tempo até o vídeo, memória, travamentos, armazenamento e D-pad (emulador marcado como não homologação)
+SURVEY|Fedora|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/torrents, /ar/torrents, /be/torrents, /bg/torrents]
+SURVEY|Linux Mint|FAIL|listagem HTTPS: HTTP 404
+SURVEY|openSUSE|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+SURVEY|FreeBSD|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+SURVEY|Slackware|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+SURVEY|Manjaro|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+SURVEY|EndeavourOS|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [nenhum]
+SURVEY|FOSS Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [/css/torrents.css, https://twitter.com/FossTorrents, https://bsky.app/profile/fosstorrents.bsky.social, /blog/torrents-with-web-seeds]
+SURVEY|Academic Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [https://academictorrents.com/, https://reproducibilityinstitute.org/w/?utm_source=academictorrents, https://www.rapidseedbox.com/?utm_source=academictorrents, https://whatbox.ca/?utm_source=academictorrents]
+SURVEY|eTree|BLOCKED|listagem HTTPS: HTTP 403 (servidor recusa cliente automatizado)
+SURVEY|Public Domain Torrents|PARTIAL|listagem respondeu (HTTP 200), nenhum .torrent direto na página; links com 'torrent': [http://ads.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/, http://files.publicdomaintorrents.com, http://ads.publicdomaintorrents.com/display.testimonials.indexed.html]
+SURVEY|Debian|PASS|.torrent oficial válido (debian-13.7.0-amd64-netinst.iso); participantes: conectados=0, conhecidos=178, enxame(tracker)=281
+SURVEY|Ubuntu|PASS|.torrent oficial válido (ubuntu-24.04.3-live-server-amd64.iso); participantes: conectados=4, conhecidos=81, enxame(tracker)=100
+SURVEY|Arch Linux|PASS|.torrent oficial válido (archlinux-2026.11.01-x86_64.iso); participantes: conectados=0, conhecidos=130, enxame(tracker)=149
+SURVEY|NetBSD|PASS|.torrent oficial válido (NetBSD-11.1-amd64-dvd.iso); participantes: conectados=1, conhecidos=26, enxame(tracker)=8
+SURVEY|Kali Linux|PASS|.torrent oficial válido (kali-linux-2026.3-hyperv-amd64.7z); participantes: conectados=0, conhecidos=45, enxame(tracker)=104
+SURVEY|AlmaLinux|PASS|.torrent oficial válido (AlmaLinux-9.8-x86_64); participantes: conectados=0, conhecidos=87, enxame(tracker)=115
+SURVEY|Rocky Linux|PASS|.torrent oficial válido (Rocky-9.8-x86_64-boot); participantes: conectados=0, conhecidos=27, enxame(tracker)=27
+SURVEY|Torznab (servidor local)|PASS|caps, apikey cifrada, erro 100, fixação de certificado, tvsearch+season, 2 páginas, NZB/0 semeadores descartados, S01E02 reproduzido
+SURVEY|Fallback por duração|PASS|30 s → 120 s: pausou e perguntou (Continuar / Escolher outra fonte / Voltar)
+SURVEY|Internet Archive|PASS|49 resultados; "The Killer (1989) Extended France Bluray/DVDrip Version with The Original HK Cinema English & Chinese Subtitles (GeekJui" reproduziu em 9364 ms (BitTorrent)
+SURVEY|Wikimedia Commons|PASS|48 resultados; "(Archivo 1969) Mónica en los preparativos del lanzamiento del Apollo 11" reproduziu em 7229 ms (HTTP)
+SURVEY|Blender Open Movies|PASS|catálogo: 5 títulos com fonte reproduzível
+SURVEY|Torznab (endpoint público)|PASS|caps em …/api, movie por tmdbid, tvsearch season 2, reprodução em 4756 ms
+SURVEY|Internet Archive (.torrent via Torznab)|FAIL|Tempo esgotado esperando: reprodução passar de 3000ms (erro=null)
+SURVEY|Diagnóstico por etapas|PASS|vazio → Acessível / NO_RESULTS (2037 ms); semvideo → Pesquisa funcional / UNAVAILABLE (2037 ms); pesquisa → Pesquisa funcional (2038 ms); chave errada → Acessível / AUTH (1526 ms); dns → Cadastrada / DNS (4 ms); tls → Cadastrada / TLS (559 ms); bloqueada → Cadastrada / BLOCKED (0 ms)
+SURVEY|Memória durante testes de fontes|PASS|PSS 216 → 220 MB (3 MB) após 3 rodadas com 4 fontes
+SURVEY|Credenciais fora do armazenamento|PASS|links {cred}; download autenticado tocou S01E02; 664 arquivos e o logcat varridos sem a chave; relatório e exportação limpos
+SURVEY|Migração de registros antigos|PASS|fonte com token: segredo movido para o CredentialStore, endereço {cred} testado OK; histórico de torrent limpo
+SURVEY|Tracker HTTPS (servidor local, certificado fixado)|PASS|anúncio pelo OkHttp: 2 participantes recebidos, 2 entregues ao motor
+SURVEY|Tracker com certificado inválido|PASS|vencido e host errado recusados: https://expired.badssl.com/announce: Certificado de segurança inválido — SSLHandshakeException: Unacceptable certificate: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
+SURVEY|Tracker com falha de DNS|PASS|https://brudre-nao-existe.invalid/announce: Endereço não encontrado (DNS) — UnknownHostException: Unable to resolve host "brudre-nao-existe.invalid": No address associated with hostname ← GaiException
+SURVEY|Tracker UDP|PASS|respostas: [udp://tracker.opentrackr.org:1337/announce: 5]
+SURVEY|Tracker HTTPS público (Ubuntu)|PARTIAL|via DHT (1006); respostas []; erros [https://ipv6.torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.), https://torrent.ubuntu.com/announce: recusado (Requested download is not authorized for use with this tracker.)]
+SURVEY|DHT|PASS|participantes via DHT: Ubuntu=1006 sintético=20
