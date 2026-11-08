@@ -203,11 +203,14 @@ class V943DeviceTest {
             assertTrue("tracker HTTPS local respondeu: ${b.trackerReplies}", b.trackerReplies.any { it.startsWith("$lanHost/announce: 2") })
             survey("Tracker HTTPS (servidor local, certificado fixado)", "PASS", "anúncio pelo OkHttp: 2 participantes recebidos, ${b.httpsConnected} entregues ao motor")
         } else survey("Tracker HTTPS (servidor local)", "BLOCKED", "servidor de referência ausente")
-        val cert = b.trackerErrors.filter { it.contains("badssl") }
+        // Entradas do anúncio pelo OkHttp começam pelo endereço; as do motor (libtorrent) pelo hash — este falha em todo HTTPS ("init fail (BIO routines)")
+        val cert = b.trackerErrors.filter { it.startsWith("https://") && it.contains("badssl") }
         assertTrue("certificado inválido recusado: $cert", cert.size >= 2 && cert.all { it.contains("Certificado", true) })
+        val engineHttps = b.trackerErrors.filter { !it.startsWith("https://") && it.contains("https://") }
+        TestUtil.log("HTTPS interno do libtorrent: ${engineHttps.take(3)}")
         assertFalse("tracker com certificado inválido aceito", b.trackerReplies.any { it.contains("badssl") })
         survey("Tracker com certificado inválido", "PASS", "vencido e host errado recusados: ${cert.joinToString(" | ").take(220)}")
-        val dns = b.trackerErrors.filter { it.contains("brudre-nao-existe") }
+        val dns = b.trackerErrors.filter { it.startsWith("https://") && it.contains("brudre-nao-existe") }
         assertTrue("falha de DNS identificada: $dns", dns.any { it.contains("DNS") })
         survey("Tracker com falha de DNS", "PASS", dns.joinToString(" | ").take(200))
         val udp = b.trackerReplies.any { it.startsWith("udp://") } || b.viaUdp > 0

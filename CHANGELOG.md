@@ -1,8 +1,8 @@
 # Changelog — BruDre Streaming
 
-## 9.2.45 (novembro de 2026) — Correções de segurança, diagnóstico e homologação
+## 9.2.46 (novembro de 2026) — Correções de segurança, diagnóstico e homologação
 
-Versão corretiva pedida como "9.2.43". O número segue o build do CI; os builds 43 e 44 não passaram nos testes e não foram publicados.
+Versão corretiva pedida como "9.2.43". O número segue o build do CI; os builds 43, 44 e 45 não passaram nos testes e não foram publicados.
 
 ### Credenciais (correção crítica)
 - Links de download de indexadores Torznab (`/dl/…?jackett_apikey=…`, `…/download?apikey=…`) não carregam mais a chave. Ela vira o marcador `{cred}`.
@@ -38,7 +38,7 @@ Versão corretiva pedida como "9.2.43". O número segue o build do CI; os builds
 - `.torrent` remoto: novas tentativas e cache de metadados por endereço.
 
 ### BitTorrent
-- **Trackers HTTPS agora funcionam.** O teste do CI mostrou que o HTTPS interno do libtorrent não achava ninguém num torrent só com tracker HTTPS (Ubuntu). É o mesmo problema que já afetava os web seeds.
+- **Trackers HTTPS agora funcionam.** O teste do CI mostrou que o HTTPS interno do libtorrent falha em todo tracker HTTPS com "init fail (BIO routines)", até com certificado válido. É o mesmo problema que já afetava os web seeds.
 - O anúncio HTTPS passou a ser feito pelo cliente protegido, com a validação de certificados do Android, e os participantes recebidos são entregues ao motor. Funciona como os web seeds desde a 9.1.
 - O diagnóstico mostra **qual mecanismo achou participantes**: tracker UDP, tracker HTTPS, tracker HTTP ou DHT.
 - Também lista as falhas de tracker (certificado, DNS). A validação de certificado continua ligada.
