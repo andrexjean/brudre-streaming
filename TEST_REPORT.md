@@ -1,5 +1,32 @@
 # BruDre Streaming — Relatório de testes
 
+## Versão 9.2 (v9.2.42) — 08/11/2026 — Source Engine 4.0
+
+GitHub Actions, emulador Android 11 x86_64 (TV 1080p) com internet real. Commit `320713c`, release **v9.2.42**.
+**Nada aqui foi executado no Mi Stick físico.**
+
+| Ambiente | Resultado |
+|---|---|
+| Testes unitários (JVM) | **106/106** (13 novos em `V92Test`) |
+| Emulador, internet real | **56/56** (6 novos em `V92DeviceTest`; `SourceEngineTest.t30` e `UiFlowTest.t10` ajustados à 9.2) |
+| Release instalado no emulador | Abertura a frio 0,42 s, 0 crashes, 113 MB de PSS no Início |
+| Mi Stick físico | **Não executado** |
+
+| Teste real | Resultado | Evidência |
+|---|---|---|
+| Torznab, servidor local (TLS autoassinado, certificado fixado) | PASS | rede privada bloqueada sem confirmação; certificado errado recusado; apikey errada → erro 100; apikey colada no endereço vai cifrada; tvsearch + season; 2 páginas; NZB e sem semeadores descartados; S01E02 tocou o arquivo certo do pacote; fixação relida após reinício |
+| Torznab, endpoint público (HTTPS válido, túnel) | PASS | `…/torznab/` → `/api` descoberto; filme por tmdbid; tvsearch season 2; reprodução em 4,5 s |
+| Internet Archive (descritor REST + .torrent) | PARTIAL | execução 42485720804: 47 resultados, tocou por BitTorrent em 10 s; execução 42487960745: tempo esgotado no cadastro |
+| Internet Archive via Torznab (NOTLD 1968) | FAIL | não passou de 3 s em 180 s (Archive lento nesta execução) |
+| Wikimedia Commons (descritor REST) | PASS | 48 resultados; vídeo WebM tocou em 6,7 s |
+| Blender Open Movies (catálogo) | PASS | 5 títulos |
+| Debian, Ubuntu, Arch, NetBSD, Kali, AlmaLinux, Rocky | PASS | .torrent oficial HTTPS lido; participantes reais vistos (DHT/tracker), sem baixar arquivos |
+| Fedora, openSUSE, FreeBSD, Manjaro, EndeavourOS, FOSS Torrents, Academic Torrents, Public Domain Torrents | PARTIAL | páginas responderam, mas sem link .torrent direto (o link fica em páginas internas ou só em HTTP) |
+| Slackware, eTree | BLOCKED | HTTP 403 para cliente automatizado |
+| Linux Mint | FAIL | página de torrents respondeu 404 |
+| Fallback por duração | PASS | 30 s → 120 s: pausou e perguntou |
+| Rotina de homologação | PASS | relatório gerado; no emulador ele se declara inválido como homologação |
+
 ## Versão 9.1 (v9.1.39) — 07/11/2026
 
 Resultados separados por ambiente. **Nada aqui foi executado no Mi Stick físico.**
