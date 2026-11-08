@@ -144,3 +144,58 @@ Para APIs JSON documentadas (ex.: um servidor de mídia próprio), cadastre o en
 
 - O mesmo endereço (com variação de maiúsculas, barra final ou ordem de parâmetros) ou o mesmo hash de magnet é recusado como duplicado.
 - Fonte salva sem validar fica desativada. O teste identifica o formato do zero. Se o formato bater e passar nas regras de segurança e de estrutura, ela fica "VALIDADA — ATIVE" e você decide quando ativar.
+
+
+## Torznab e Newznab (9.2)
+
+Cadastre o endpoint do seu indexador, por exemplo `https://indexador.exemplo/api` ou `…/torznab/`; o `/api` é descoberto sozinho.
+- A chave pode ir no campo "Credencial" ou colada no endereço (`?apikey=…`). Nos dois casos ela fica cifrada no aparelho e nunca aparece na exportação.
+- O teste de cadastro lê `t=caps` e faz uma pesquisa real.
+
+| Recurso | Suporte |
+|---|---|
+| `t=caps` (funções, parâmetros, categorias, limites) | sim |
+| `t=search` (texto) | sim |
+| `t=movie` com `tmdbid`/`imdbid` | sim, quando o indexador declara |
+| `t=tvsearch` com `season` (+ `tmdbid`) | sim, quando o indexador declara |
+| `cat` | filmes 2000, TV 5000, documentários 5080; adulto 6000 sempre bloqueado |
+| `offset`/`limit` | sim; limite = menor entre 50 e o máximo do caps |
+| Atributos lidos | `magneturl`, `infohash`, `seeders`, `peers`, `size`, `season`, `episode`, `tmdbid`, `category`, `year` |
+| Erros `<error code>` | 100–199 credencial, 200–299 parâmetro, 500–599 limite de uso |
+| NZB (Newznab/Usenet) | descartado: o app não tem cliente NNTP |
+
+**Restrições do protocolo × restrições de provedor.** O adaptador é neutro: funciona com qualquer endpoint compatível, desde que HTTPS. Para a rede local, o certificado precisa estar confirmado. O que pode ou não ser usado depende do provedor e do acervo. Isso está documentado na Biblioteca, não no protocolo.
+
+## Servidores locais (9.2)
+
+Para usar um servidor da sua rede (Jackett, Prowlarr, Jellyfin, catálogo próprio):
+1. Ligue HTTPS no servidor. O Prowlarr tem opção nativa; o Jackett funciona atrás de um proxy reverso, como o Caddy. Certificado autoassinado serve.
+2. Em Fontes → Adicionar, digite `https://192.168.x.y:porta/…`. Aparece o quadro **Servidor local**.
+3. **Ler certificado**: confira a impressão digital SHA-256 com a do servidor e escolha **Confirmo: é o meu servidor**.
+4. Salve. A partir daí, só esse certificado é aceito naquele host:porta. Se o certificado mudar, a conexão é recusada até você confirmar de novo.
+
+Continua bloqueado: HTTP sem criptografia, o próprio aparelho (127.0.0.1) e endereços link-local.
+
+## Biblioteca e matriz de avaliação (9.2)
+
+`app/src/main/assets/source_library.json` (formato `brudre-biblioteca`) lista serviços e protocolos e diz o estado de cada um.
+- Estados possíveis: integrado, só teste do motor, não aplicável, avaliado sem API, encerrado, não integrado.
+- Cada provedor avaliado traz disponibilidade, API/feed, adaptador compatível, condição para integração autorizada e o teste realizado.
+- "Adicionar" só existe para fontes com acervo autorizado. O cadastro passa pelas mesmas validações de qualquer fonte.
+
+### Correspondência com a especificação (interfaces)
+| Especificação | Implementação |
+|---|---|
+| IndexerProvider / IndexerAdapterFactory | `SearchAdapter` + `Adapters.forSource` |
+| IndexerDescriptor | `UserSource` (+ `RestDescriptor`, `OpenSearch`, `TorznabCaps` em `config`) |
+| IndexerCapabilities | `SourceCapabilities` |
+| IndexerSearchRequest / Result | `SearchTemplate.Query` / `SearchHit` + `SearchPage` |
+| IndexerHealth | `SourceTest` + `SourceStats` (falhas, tempo de resposta) |
+| IndexerRegistry | `IndexerRegistry` (biblioteca) + `SourceStore` (fontes do usuário) |
+
+## Homologação do aparelho (9.2)
+
+Em Fontes → Diagnóstico → **Homologação do aparelho**:
+- Use o app normalmente: abrir, assistir filmes e episódios por HTTP e BitTorrent, e fazer uma sessão longa.
+- Marque o D-pad.
+- Toque em **Gerar relatório**. O arquivo `brudre-homologacao.txt` fica na pasta do app (Android/data/com.brudre.streaming/files) e pode ser compartilhado.

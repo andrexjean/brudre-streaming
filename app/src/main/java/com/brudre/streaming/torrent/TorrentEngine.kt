@@ -182,6 +182,54 @@ class TorrentEngine(
         stream
     }
 
+    /** Resultado do diagnóstico de rede: participantes vistos por torrent (−1 = .torrent inválido). */
+    data class PeerProbe(val name: String, val connected: Int, val known: Int, val swarm: Int) {
+        val best get() = maxOf(connected, known, swarm)
+    }
+
+    /**
+     * Diagnóstico da rede BitTorrent (DHT, trackers, participantes): adiciona os torrents SEM baixar nenhum arquivo
+     * (todas as prioridades IGNORE), observa por [seconds] e remove tudo (inclusive a pasta de teste).
+     */
+    suspend fun probePeers(torrents: List<ByteArray>, seconds: Int): List<PeerProbe> = withContext(Dispatchers.IO) {
+        opening.incrementAndGet()
+        val dir = File(context.cacheDir, "torrent-probe").apply { mkdirs() }
+        val handles = ArrayList<TorrentHandle>()
+        try {
+            val s = ensureSession()
+            val infos = torrents.map { b -> runCatching { TorrentInfo(b) }.getOrNull() }
+            infos.filterNotNull().forEach { ti ->
+                s.download(ti, dir, null, Priority.array(Priority.IGNORE, ti.numFiles()), null, TorrentFlags.UPLOAD_MODE)
+            }
+            val found = infos.map { ti ->
+                ti ?: return@map null
+                var h: TorrentHandle? = null
+                val t0 = System.currentTimeMillis()
+                while (h == null && System.currentTimeMillis() - t0 < 10_000) { h = s.find(ti.infoHash())?.takeIf { it.isValid }; if (h == null) delay(100) }
+                h?.also { th -> handles += th; FALLBACK_TRACKERS.forEach { runCatching { th.addTracker(AnnounceEntry(it)) } }; runCatching { th.resume(); th.forceReannounce(); th.forceDHTAnnounce() } }
+            }
+            val best = IntArray(infos.size)
+            val conn = IntArray(infos.size)
+            val known = IntArray(infos.size)
+            val end = System.currentTimeMillis() + seconds * 1000L
+            while (System.currentTimeMillis() < end) {
+                coroutineContext.ensureActive()
+                found.forEachIndexed { i, h ->
+                    val st = h?.takeIf { it.isValid }?.let { runCatching { it.status() }.getOrNull() } ?: return@forEachIndexed
+                    conn[i] = maxOf(conn[i], st.numPeers())
+                    known[i] = maxOf(known[i], runCatching { st.listPeers() }.getOrDefault(0))
+                    best[i] = maxOf(best[i], runCatching { maxOf(st.numComplete(), 0) + maxOf(st.numIncomplete(), 0) }.getOrDefault(0))
+                }
+                delay(1_000)
+            }
+            infos.mapIndexed { i, ti -> if (ti == null) PeerProbe("(inválido)", -1, -1, -1) else PeerProbe(ti.name(), conn[i], known[i], best[i]) }
+        } finally {
+            session?.let { s -> handles.forEach { runCatching { s.remove(it, SessionHandle.DELETE_FILES) } } }
+            dir.deleteRecursively()
+            opening.decrementAndGet()
+        }
+    }
+
     /**
      * Metadados (.torrent) de um magnet, .torrent remoto ou importado, para listar os arquivos antes de tocar.
      * O resultado fica guardado em [metaDir] (pelo hash) e não é buscado de novo.
@@ -341,6 +389,17 @@ class TorrentEngine(
             val fs = ti.files()
             val n = ti.numFiles()
             if (index != null && index in 0 until n && VIDEO_EXT.any { fs.fileName(index).lowercase().endsWith(it) }) return index
+            // Dica de episódio ("S01E02", vinda de indexadores): o arquivo desse episódio no pacote da temporada.
+            Regex("^S(\\d{1,2})E(\\d{1,3})$", RegexOption.IGNORE_CASE).matchEntire(hint ?: "")?.let { m ->
+                val want = EpisodeId(m.groupValues[1].toInt(), m.groupValues[2].toInt())
+                for (i in 0 until n) {
+                    if (VIDEO_EXT.none { fs.fileName(i).lowercase().endsWith(it) }) continue
+                    if (TorrentContent.episodeOf(fs.filePath(i).replace('\\', '/')) == want) return i
+                }
+                // Só um vídeo no torrent: é o episódio anunciado. Vários e nenhum é o pedido: não toca outro episódio.
+                val videos = (0 until n).filter { i -> VIDEO_EXT.any { fs.fileName(i).lowercase().endsWith(it) } }
+                return videos.singleOrNull()
+            }
             if (!hint.isNullOrBlank()) {
                 for (i in 0 until n) {
                     val path = fs.filePath(i).replace('\\', '/')

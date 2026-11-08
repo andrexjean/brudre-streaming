@@ -1,0 +1,17 @@
+{
+  "format": "brudre-adapter",
+  "version": 1,
+  "name": "Wikimedia Commons (vídeos livres)",
+  "search": {
+    "url": "https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrsearch=filetype%3Avideo%20filemime%3Avideo%2Fwebm%20{query}&gsrlimit={limit}&gsroffset={offset}&prop=imageinfo&iiprop=url%7Csize%7Cmime",
+    "items": "query.pages",
+    "hasMore": "continue"
+  },
+  "fields": {"id": "pageid", "title": "title"},
+  "media": [{"type": "http", "url": "{imageinfo.0.url}"}],
+  "titleCleanup": true,
+  "categories": ["documentarios", "livre"],
+  "restrictions": "Licenças livres (CC BY, CC BY-SA, domínio público). Algumas exigem atribuição ao autor.",
+  "sampleQuery": "apollo 11",
+  "rateLimitPerMinute": 60
+}

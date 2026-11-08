@@ -202,6 +202,7 @@ class SourceManager(
         fun rank(id: String) = st.indexOfFirst { it.id == id }.let { if (it < 0) 500 else it }
         fun unreliable(id: String) = st.firstOrNull { it.id == id }?.stats?.unreliable == true
         fun health(id: String) = st.firstOrNull { it.id == id }?.stats?.summary
+        fun latency(id: String) = st.firstOrNull { it.id == id }?.stats?.avgLatencyMs ?: 0
         val catalogJob = async {
             if (feeds.enabledFeeds().isEmpty()) emptyList()
             else runCatching { withTimeout(15_000) { feeds.matches(names, t.year, tmdbId, series) } }.getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
@@ -209,7 +210,14 @@ class SourceManager(
         val searchJob = async {
             val repo = searchRepo ?: return@async emptyList()
             if (repo.sources().isEmpty() || names.isEmpty()) return@async emptyList()
-            val q = SearchTemplate.Query(t.name, tmdbId, t.year, tmdbId?.substringBefore(':') ?: series?.let { if (it) "tv" else "movie" })
+            val category = when {
+                t.kind == com.brudre.streaming.data.Kind.KIDS -> "infantil"
+                t.genres.any { it.contains("Document", true) } -> "documentarios"
+                series == true -> "series"
+                series == false -> "filmes"
+                else -> null
+            }
+            val q = SearchTemplate.Query(t.name, tmdbId, t.year, tmdbId?.substringBefore(':') ?: series?.let { if (it) "tv" else "movie" }, category = category)
             runCatching { withTimeout(SearchRepository.PER_SOURCE_MS + 4_000) { repo.search(q) } }
                 .getOrElse { if (it is CancellationException && it !is TimeoutCancellationException) throw it; emptyList() }
                 .filter { h -> TitleMatcher.matchesItem(h.item, names, t.year, tmdbId, series) }
@@ -221,14 +229,14 @@ class SourceManager(
             val ps = item.playables()
             if (ps.isNotEmpty()) out += SourceRanker.Candidate(
                 SourceRanker.option(id, name, item, ps, health(id), TitleMatcher.confident(item, t.year, tmdbId)),
-                rank(id), unreliable(id),
+                rank(id), unreliable(id), latency(id), health(id),
             )
         }
         searchJob.await().forEach { h ->
             val ps = h.item.playables()
             if (ps.isNotEmpty()) out += SourceRanker.Candidate(
                 SourceRanker.option(h.source.id, "${h.source.name} (pesquisa)", h.item, ps, health(h.source.id), TitleMatcher.confident(h.item, t.year, tmdbId)),
-                rank(h.source.id), unreliable(h.source.id),
+                rank(h.source.id), unreliable(h.source.id), latency(h.source.id), health(h.source.id),
             )
         }
         torrents?.invoke()?.matches(names, t.year, tmdbId)?.forEach { e ->
@@ -300,7 +308,8 @@ class SourceManager(
 
 /** Ordem e junção das fontes de um título (funções puras, testadas em SourceManagerTest). */
 object SourceRanker {
-    data class Candidate(val option: SourceOption, val priority: Int, val unreliable: Boolean)
+    /** [latencyMs] = tempo médio de resposta observado (0 = sem medição). */
+    data class Candidate(val option: SourceOption, val priority: Int, val unreliable: Boolean, val latencyMs: Int = 0, val history: String? = null)
 
     /**
      * Ordem final: fontes cadastradas pela prioridade do usuário (as que falharam 3x seguidas vão para o fim),
@@ -314,12 +323,34 @@ object SourceRanker {
             { prefs.preferredSourceId.isNotEmpty() && it.option.sourceId != prefs.preferredSourceId },
             { languageScore(it.option.audio, prefs.audio) }, { languageScore(it.option.subtitles, prefs.subtitle) },
             { resolutionScore(it.option.quality, prefs.resolution) }, { it.priority },
-        )).map { it.option }
+            { if (it.latencyMs > 0) it.latencyMs else Int.MAX_VALUE },
+        )).map { it.option.copy(reasons = explain(it, prefs)) }
         return when {
             native == null -> users
             userFirst -> users + native
             else -> listOf(native) + users
         }
+    }
+
+    /** Motivos legíveis da posição — só com dados reais; o que falta aparece como desconhecido. */
+    fun explain(c: Candidate, prefs: com.brudre.streaming.data.SourcePreferences): List<String> {
+        val o = c.option
+        val r = ArrayList<String>()
+        r += if (o.confident) "título conferido (TMDB ou nome + ano)" else "sem ano para conferir: só manual"
+        if (prefs.preferredSourceId.isNotEmpty() && o.sourceId == prefs.preferredSourceId) r += "sua fonte preferida"
+        if (prefs.audio.isNotBlank() && prefs.audio != "off") r += when (languageScore(o.audio, prefs.audio)) {
+            0 -> "áudio ${com.brudre.streaming.data.Languages.name(prefs.audio)} informado"
+            1 -> "áudio desconhecido"
+            else -> "áudio informado: ${o.audio.joinToString { com.brudre.streaming.data.Languages.name(it) }}"
+        }
+        if (prefs.subtitle.isNotBlank() && prefs.subtitle != "off" && languageScore(o.subtitles, prefs.subtitle) == 0) r += "legenda ${com.brudre.streaming.data.Languages.name(prefs.subtitle)}"
+        r += o.quality?.let { q -> if (prefs.resolution > 0 && resolutionScore(q, prefs.resolution) == 0) "$q (preferida)" else q } ?: "resolução desconhecida"
+        r += "formato: ${o.formats}"
+        if (c.unreliable) r += "falhou 3x seguidas: vai para o fim"
+        c.history?.let { r += "histórico: $it" }
+        if (c.latencyMs > 0) r += "resposta ~${c.latencyMs} ms"
+        r += "prioridade ${c.priority + 1} na sua lista"
+        return r
     }
 
     /** 0 = idioma preferido informado, 1 = desconhecido, 2 = informado e diferente. */

@@ -14,6 +14,10 @@ interface SearchAdapter {
     val capabilities: SourceCapabilities
     /** Cabeçalhos exigidos pela fonte (autenticação declarada no descritor). */
     val headers: Map<String, String> get() = emptyMap()
+    /** "GET" ou "POST" (GraphQL). */
+    val method: String get() = "GET"
+    /** Corpo JSON do POST para a consulta, ou null. */
+    fun body(q: SearchTemplate.Query, page: Int): String? = null
     /** Endereço da página [page] (1, 2, …) para a consulta, ou null se a fonte não pagina e page > 1. */
     fun url(q: SearchTemplate.Query, page: Int): String?
     /** Converte a resposta em itens + se há mais páginas. */
@@ -25,10 +29,11 @@ data class AdapterPage(val items: List<FeedItem>, val hasMore: Boolean)
 object Adapters {
     const val PAGE_SIZE = 50
 
-    fun forSource(s: UserSource): SearchAdapter = when (s.type) {
+    fun forSource(s: UserSource, key: String? = null): SearchAdapter = when (s.type) {
         SourceType.SEARCH -> BruDreTemplateAdapter(s.url)
         SourceType.OPENSEARCH -> OpenSearchAdapter(OpenSearch.fromConfig(s.config ?: throw ClassifiedException(ErrorKind.CATALOG, "Descrição OpenSearch não carregada: use Atualizar")))
-        SourceType.REST -> RestAdapter(RestDescriptor.parse(s.config ?: throw ClassifiedException(ErrorKind.CATALOG, "Descritor não carregado: use Atualizar")))
+        SourceType.REST -> RestAdapter(RestDescriptor.parse(s.config ?: throw ClassifiedException(ErrorKind.CATALOG, "Descritor não carregado: use Atualizar")), key)
+        SourceType.TORZNAB -> TorznabAdapter(TorznabCaps.fromConfig(s.config ?: throw ClassifiedException(ErrorKind.CATALOG, "Capacidades do indexador não carregadas: use Atualizar")), key)
         else -> throw ClassifiedException(ErrorKind.FORMAT, "${s.type.label} não oferece pesquisa")
     }
 
@@ -128,11 +133,25 @@ data class RestDescriptor(
     val media: List<Pair<String, String>>,
     val headers: Map<String, String>,
     val ratePerMinute: Int?,
+    /** "GET" (REST) ou "POST" (GraphQL e APIs que pesquisam por corpo JSON). */
+    val method: String = "GET",
+    /** Corpo do POST (JSON). Marcadores {query} etc. são escapados como texto JSON. */
+    val body: String? = null,
+    /** Limpa títulos de arquivo ("File:Nome_do_video.webm" → "Nome do video"). */
+    val titleCleanup: Boolean = false,
+    /** Categorias declaradas (filmes, series, documentarios, infantil, livre): quais títulos consultar nesta fonte. */
+    val categories: Set<String> = emptySet(),
+    /** Restrições de uso declaradas pelo provedor (exibidas ao usuário). */
+    val restrictions: String? = null,
+    /** Texto usado no teste de cadastro (o exemplo padrão pode não existir na fonte). */
+    val sampleQuery: String? = null,
 ) {
     val capabilities: SourceCapabilities get() = SourceCapabilities(
-        textSearch = true, idLookup = lookupUrl != null, episodes = fields.containsKey("episode"), pagination = Adapters.paged(searchUrl),
-        mediaFormats = media.map { it.first.uppercase() }.distinct(), auth = headers.isNotEmpty(), ratePerMinute = ratePerMinute,
+        textSearch = true, idLookup = lookupUrl != null, episodes = fields.containsKey("episode"), pagination = Adapters.paged(searchUrl + (body ?: "")),
+        mediaFormats = media.map { it.first.uppercase() }.distinct(), auth = headers.isNotEmpty() || needsKey, ratePerMinute = ratePerMinute,
     )
+    /** O descritor usa {key}: a chave fica guardada cifrada no aparelho (nunca no descritor nem na exportação). */
+    val needsKey: Boolean get() = searchUrl.contains("{key}") || (body?.contains("{key}") == true) || headers.values.any { it.contains("{key}") } || media.any { it.second.contains("{key}") }
 
     companion object {
         /** Só estes cabeçalhos podem ser enviados (autenticação); nada de Cookie, Host etc. */
@@ -144,7 +163,16 @@ data class RestDescriptor(
             if (o.optInt("version", 1) != 1) throw ClassifiedException(ErrorKind.FORMAT, "Versão do descritor não suportada")
             val search = o.optJSONObject("search") ?: throw ClassifiedException(ErrorKind.CATALOG, "Descritor sem \"search\"")
             val url = search.optString("url")
-            SearchTemplate.check(url)?.let { throw ClassifiedException(ErrorKind.BLOCKED, it) }
+            val method = search.optString("method", "GET").uppercase()
+            if (method != "GET" && method != "POST") throw ClassifiedException(ErrorKind.FORMAT, "Método não suportado: $method")
+            val body = search.optString("body").ifBlank { null }?.take(8192)
+            if (body != null && method != "POST") throw ClassifiedException(ErrorKind.FORMAT, "\"body\" exige \"method\": \"POST\"")
+            // GraphQL/POST: o texto pesquisado vai no corpo; o endereço precisa ser https e seguro.
+            if (method == "POST") {
+                if (body == null || !(body.contains("{query}") || body.contains("{slug}"))) throw ClassifiedException(ErrorKind.CATALOG, "POST precisa de \"body\" com {query}")
+                if (!url.startsWith("https://")) throw ClassifiedException(ErrorKind.BLOCKED, "Use um endereço https://")
+                UrlGuard.check(SearchTemplate.expand(url, SearchTemplate.Query("x")))?.let { throw ClassifiedException(ErrorKind.BLOCKED, it) }
+            } else SearchTemplate.check(url.replace("{key}", "chave"))?.let { throw ClassifiedException(ErrorKind.BLOCKED, it) }
             val lookup = o.optJSONObject("lookup")?.optString("url")?.takeIf { it.isNotBlank() }
             if (lookup != null && (!lookup.contains("{tmdb}") || !lookup.startsWith("https://"))) throw ClassifiedException(ErrorKind.BLOCKED, "\"lookup\" precisa ser https:// com {tmdb}")
             val fields = o.optJSONObject("fields")?.let { f -> f.keys().asSequence().associateWith { f.getString(it) } } ?: emptyMap()
@@ -153,10 +181,15 @@ data class RestDescriptor(
             if (media.isEmpty()) throw ClassifiedException(ErrorKind.CATALOG, "Descritor sem \"media\" (endereço do vídeo)")
             val headers = o.optJSONObject("headers")?.let { h -> h.keys().asSequence().associateWith { h.getString(it) } }.orEmpty()
             headers.keys.firstOrNull { it.lowercase() !in ALLOWED_HEADERS }?.let { throw ClassifiedException(ErrorKind.BLOCKED, "Cabeçalho não permitido no descritor: $it") }
+            if (headers.values.any { it.length > 512 || it.any { c -> c == '\r' || c == '\n' } }) throw ClassifiedException(ErrorKind.BLOCKED, "Valor de cabeçalho inválido")
             return RestDescriptor(
                 o.optString("name", "API REST").take(60), url, search.optString("items", "items"), search.optString("hasMore").ifBlank { null },
                 lookup, fields, o.optJSONObject("kinds")?.let { k -> k.keys().asSequence().associate { it.lowercase() to k.getString(it) } }.orEmpty(),
                 media, headers, o.optInt("rateLimitPerMinute", 0).takeIf { it > 0 },
+                method, body, o.optBoolean("titleCleanup", false),
+                o.optJSONArray("categories")?.let { a -> (0 until a.length()).map { a.getString(it).lowercase() }.toSet() }.orEmpty(),
+                o.optString("restrictions").ifBlank { null }?.take(300),
+                o.optString("sampleQuery").ifBlank { null }?.take(80),
             )
         }
 
@@ -182,24 +215,42 @@ data class RestDescriptor(
     }
 }
 
-class RestAdapter(private val d: RestDescriptor) : SearchAdapter {
+class RestAdapter(private val d: RestDescriptor, private val key: String? = null) : SearchAdapter {
     override val capabilities = d.capabilities
-    override val headers get() = d.headers
+    override val headers get() = d.headers.mapValues { (_, v) -> v.replace("{key}", key ?: "") }
+    override val method get() = d.method
+
+    override fun body(q: SearchTemplate.Query, page: Int): String? = d.body?.let { b ->
+        fun js(v: String?) = org.json.JSONObject.quote(v ?: "").removeSurrounding("\"")
+        b.replace("{query}", js(q.text)).replace("{slug}", js(SearchTemplate.slug(q.text))).replace("{tmdb}", js(q.tmdbId))
+            .replace("{year}", js(q.year)).replace("{type}", js(q.type)).replace("{season}", js(q.season?.toString()))
+            .replace("{page}", page.toString()).replace("{offset}", ((page - 1) * Adapters.PAGE_SIZE).toString()).replace("{limit}", Adapters.PAGE_SIZE.toString())
+            .replace("{key}", js(key))
+    }
 
     override fun url(q: SearchTemplate.Query, page: Int): String? {
-        if (page == 1 && q.tmdbId != null && d.lookupUrl != null) return SearchTemplate.expand(d.lookupUrl, q, Adapters.PAGE_SIZE)
+        if (page == 1 && q.tmdbId != null && d.lookupUrl != null) return withKey(SearchTemplate.expand(d.lookupUrl, q, Adapters.PAGE_SIZE))
         if (page > 1 && !capabilities.pagination) return null
-        return SearchTemplate.expand(d.searchUrl, q.copy(page = page), Adapters.PAGE_SIZE)
+        return withKey(SearchTemplate.expand(d.searchUrl, q.copy(page = page), Adapters.PAGE_SIZE))
     }
+
+    private fun withKey(url: String) = url.replace("{key}", java.net.URLEncoder.encode(key ?: "", "UTF-8"))
+
+    /** "File:Nome_do_video.webm" → "Nome do video". */
+    private fun clean(t: String) = if (!d.titleCleanup) t else t.substringAfter(':').substringBeforeLast('.').replace('_', ' ').trim()
 
     /** Mapeia cada item para o catálogo JSON do BruDre e usa o parser comum (com todas as validações). */
     override fun parse(body: String, sourceId: String): AdapterPage {
         val t = body.trimStart('﻿', ' ', '\n', '\r', '\t')
         if (!t.startsWith("{") && !t.startsWith("[")) throw ClassifiedException(if (t.startsWith("<")) ErrorKind.FORMAT else ErrorKind.CATALOG, "A API deveria responder JSON")
         val root: Any = try { if (t.startsWith("[")) JSONArray(t) else JSONObject(t) } catch (e: Exception) { throw ClassifiedException(ErrorKind.CATALOG, "JSON inválido na resposta da API") }
-        val arr = (if (root is JSONArray) root else RestDescriptor.at(root, d.itemsPath)) as? JSONArray
-            ?: (root as? JSONObject)?.let { JSONArray().put(it) } // "lookup" pode devolver um item só
-            ?: JSONArray()
+        val found = if (root is JSONArray) root else RestDescriptor.at(root, d.itemsPath)
+        val arr = when (found) {
+            is JSONArray -> found
+            // Mapa de itens (ex.: MediaWiki "query.pages": {"123": {...}}) → lista
+            is JSONObject -> JSONArray().apply { found.keys().forEach { k -> found.optJSONObject(k)?.let { put(it) } } }
+            else -> (root as? JSONObject)?.takeIf { d.lookupUrl != null }?.let { JSONArray().put(it) } ?: JSONArray() // "lookup" devolve um item
+        }
         val f = d.fields
         val items = JSONArray()
         for (i in 0 until minOf(arr.length(), FeedParser.MAX_ITEMS)) {
@@ -211,7 +262,7 @@ class RestAdapter(private val d: RestDescriptor) : SearchAdapter {
             val kind = v("kind")?.lowercase()?.let { d.kinds[it] ?: it.uppercase() }
             val season = v("season")?.toIntOrNull()
             val episode = v("episode")?.toIntOrNull()
-            val title = (if (episode != null) v("series") else null) ?: v("title") ?: continue
+            val title = ((if (episode != null) v("series") else null) ?: v("title"))?.let { clean(it) }?.ifBlank { null } ?: continue
             val o = JSONObject().put("id", (v("id") ?: title) + (if (episode != null) "-s${season ?: 1}e$episode" else "")).put("title", title)
             v("year")?.let { y -> o.put("year", y.take(4)) }
             v("synopsis")?.let { x -> o.put("synopsis", x) }
@@ -226,7 +277,8 @@ class RestAdapter(private val d: RestDescriptor) : SearchAdapter {
             items.put(o)
         }
         val feed = SearchRepository.parse(JSONObject().put("name", d.name).put("items", items).toString(), sourceId)
-        val more = d.hasMorePath?.let { (RestDescriptor.at(root, it) as? Boolean) } ?: (capabilities.pagination && arr.length() >= Adapters.PAGE_SIZE)
+        // hasMore: booleano, ou presença de um objeto de continuação (ex.: MediaWiki "continue")
+        val more = d.hasMorePath?.let { p -> RestDescriptor.at(root, p).let { v -> if (v is Boolean) v else v != null } } ?: (capabilities.pagination && arr.length() >= Adapters.PAGE_SIZE)
         return AdapterPage(feed.items, more && capabilities.pagination)
     }
 

@@ -92,6 +92,24 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Servidor Torznab de referência (rede local com TLS + endpoint HTTPS público por túnel)
+        run: |
+          TORZNAB_KEY=$(openssl rand -hex 16)
+          echo "TORZNAB_KEY=$TORZNAB_KEY" >> "$GITHUB_ENV"
+          openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/tz.key -out /tmp/tz.crt -days 2 \
+            -subj "/CN=brudre-torznab-ci" -addext "subjectAltName=IP:10.0.2.2" 2>/dev/null
+          nohup python3 ci/torznab_server.py --port 8443 --cert /tmp/tz.crt --key /tmp/tz.key --apikey "$TORZNAB_KEY" > torznab-lan.log 2>&1 &
+          nohup python3 ci/torznab_server.py --port 8080 --apikey "$TORZNAB_KEY" > torznab-public.log 2>&1 &
+          sleep 2
+          curl -skf "https://127.0.0.1:8443/api?t=caps&apikey=$TORZNAB_KEY" > /dev/null && echo "Torznab local: ok"
+          # Túnel HTTPS temporário (certificado válido) para o cenário de endpoint público. Falhou? O teste fica BLOCKED.
+          curl -sSL -o /tmp/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && chmod +x /tmp/cloudflared || true
+          if [ -x /tmp/cloudflared ]; then
+            nohup /tmp/cloudflared tunnel --no-autoupdate --url http://127.0.0.1:8080 > cloudflared.log 2>&1 &
+            for i in $(seq 1 30); do URL=$(grep -o 'https://[a-z0-9-]*\.trycloudflare\.com' cloudflared.log | head -1); [ -n "$URL" ] && break; sleep 2; done
+            for i in $(seq 1 30); do [ -n "${URL:-}" ] && curl -sf "$URL/api?t=caps&apikey=$TORZNAB_KEY" > /dev/null && { echo "TORZNAB_PUBLIC=$URL" >> "$GITHUB_ENV"; echo "Torznab público: $URL"; break; }; sleep 3; done
+          fi
+
       - name: Testes instrumentados no emulador (Android 11, x86_64)
         uses: reactivecircus/android-emulator-runner@v2
         env:
@@ -110,7 +128,7 @@ jobs:
         if: always()
         run: |
           mkdir -p /tmp/res
-          cp instrumented.log logcat.txt meminfo.txt instrumented.exit /tmp/res/ 2>/dev/null || true
+          cp instrumented.log logcat.txt meminfo.txt instrumented.exit survey.txt torznab-lan.log torznab-public.log /tmp/res/ 2>/dev/null || true
           cp -r shots /tmp/res/ 2>/dev/null || true
           cp -r perf /tmp/res/ 2>/dev/null || true
           cp -r app/build/outputs/androidTest-results /tmp/res/ 2>/dev/null || true
@@ -136,8 +154,8 @@ jobs:
       - name: Publicar release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v9.1.${{ github.run_number }}
-          name: BruDre Streaming 9.1 (build ${{ github.run_number }})
+          tag_name: v9.2.${{ github.run_number }}
+          name: BruDre Streaming 9.2 (build ${{ github.run_number }})
           make_latest: "true"
           body: |
             APK para Android TV (Xiaomi Mi TV Stick e compatíveis).

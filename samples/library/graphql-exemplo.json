@@ -1,0 +1,15 @@
+{
+  "format": "brudre-adapter",
+  "version": 1,
+  "name": "Exemplo GraphQL (modelo)",
+  "search": {
+    "url": "https://meu-servidor.exemplo/graphql",
+    "method": "POST",
+    "body": "{\"query\": \"query($q: String!, $p: Int!) { search(text: $q, page: $p) { items { id title year video } hasMore } }\", \"variables\": {\"q\": \"{query}\", \"p\": {page}}}",
+    "items": "data.search.items",
+    "hasMore": "data.search.hasMore"
+  },
+  "fields": {"id": "id", "title": "title", "year": "year"},
+  "media": [{"type": "http", "url": "{video}"}],
+  "headers": {"Authorization": "Bearer {key}"}
+}

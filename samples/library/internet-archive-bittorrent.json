@@ -1,0 +1,15 @@
+{
+  "format": "brudre-adapter",
+  "version": 1,
+  "name": "Internet Archive (BitTorrent)",
+  "search": {
+    "url": "https://archive.org/advancedsearch.php?q=({query})%20AND%20mediatype%3Amovies%20AND%20(collection%3Afeature_films%20OR%20collection%3Aprelinger%20OR%20collection%3Aanimationandcartoons%20OR%20collection%3Aclassic_cartoons%20OR%20licenseurl%3A*creativecommons*)&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=year&rows={limit}&page={page}&output=json",
+    "items": "response.docs"
+  },
+  "fields": {"id": "identifier", "title": "title", "year": "year"},
+  "media": [{"type": "torrent", "url": "https://archive.org/download/{identifier}/{identifier}_archive.torrent"}],
+  "categories": ["filmes", "documentarios", "livre"],
+  "restrictions": "Somente acervos de domínio público e itens com licença Creative Commons do Internet Archive. Respeite a licença de cada item.",
+  "sampleQuery": "night of the living dead",
+  "rateLimitPerMinute": 30
+}

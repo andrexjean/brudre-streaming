@@ -247,6 +247,8 @@ data class SourceOption(
     /** Idiomas de áudio/legenda INFORMADOS pela fonte (vazio = desconhecido). */
     val audio: List<String> = emptyList(),
     val subtitles: List<String> = emptyList(),
+    /** Por que a fonte está nesta posição (classificação explicável). */
+    val reasons: List<String> = emptyList(),
 ) {
     val languageInfo: String get() = listOf(
         "áudio: " + (audio.takeIf { it.isNotEmpty() }?.joinToString(", ") { Languages.name(it) } ?: "desconhecido"),

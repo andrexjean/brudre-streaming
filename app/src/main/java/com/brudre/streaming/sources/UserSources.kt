@@ -16,13 +16,14 @@ enum class SourceType(val label: String) {
     TORRENT("Arquivo .torrent"),
     SEARCH("API de pesquisa (BruDre)"),
     OPENSEARCH("OpenSearch (descrição XML)"),
-    REST("API REST (descritor BruDre)");
+    REST("API REST (descritor BruDre)"),
+    TORZNAB("Indexador Torznab/Newznab");
 
     val isCatalog get() = this == CATALOG_JSON || this == RSS
     val isSingle get() = this == HLS || this == VIDEO || this == MAGNET || this == TORRENT
     val isTorrent get() = this == MAGNET || this == TORRENT
     /** Fontes consultadas sob demanda (pesquisa dinâmica). */
-    val isSearchable get() = this == SEARCH || this == OPENSEARCH || this == REST
+    val isSearchable get() = this == SEARCH || this == OPENSEARCH || this == REST || this == TORZNAB
 
     /** Prefixo do id: mantém o roteamento dos módulos (catálogos, TV ao vivo, links, pesquisa). */
     val idPrefix get() = when {
@@ -55,22 +56,42 @@ data class SourceTest(val ok: Boolean, val at: Long, val message: String, val it
     }
 }
 
+/** Como a fonte autentica (a credencial em si fica cifrada no aparelho). */
+enum class AuthMethod(val label: String) {
+    NONE("Sem autenticação"),
+    URL_KEY("Chave no endereço ({key} / apikey)"),
+    HEADER_KEY("Cabeçalho X-Api-Key"),
+    BEARER("Token (Authorization: Bearer)");
+
+    /** Cabeçalho a enviar com a credencial (nenhum para chave no endereço). */
+    fun header(secret: String?): Pair<String, String>? = when {
+        secret.isNullOrEmpty() -> null
+        this == HEADER_KEY -> "X-Api-Key" to secret
+        this == BEARER -> "Authorization" to "Bearer $secret"
+        else -> null
+    }
+}
+
 /** Histórico de uso real (reprodução e pesquisa): ordena as fontes e rebaixa as que falham seguidamente. */
-data class SourceStats(val ok: Int = 0, val fail: Int = 0, val streak: Int = 0, val lastAt: Long = 0, val lastError: String? = null) {
+data class SourceStats(val ok: Int = 0, val fail: Int = 0, val streak: Int = 0, val lastAt: Long = 0, val lastError: String? = null, val avgLatencyMs: Int = 0) {
     /** 3 falhas seguidas: a fonte vai para o fim da fila automática (continua disponível na escolha manual). */
     val unreliable: Boolean get() = streak >= 3
     val summary: String get() = when {
         ok == 0 && fail == 0 -> "sem uso ainda"
-        else -> "✓ $ok • ✗ $fail" + if (streak > 0) " (falhou $streak seguida${if (streak > 1) "s" else ""})" else ""
+        else -> "✓ $ok • ✗ $fail" + (if (streak > 0) " (falhou $streak seguida${if (streak > 1) "s" else ""})" else "") + (if (avgLatencyMs > 0) " • ~$avgLatencyMs ms" else "")
     }
 
-    fun record(success: Boolean, error: String? = null, now: Long = System.currentTimeMillis()) =
-        if (success) copy(ok = ok + 1, streak = 0, lastAt = now, lastError = null) else copy(fail = fail + 1, streak = streak + 1, lastAt = now, lastError = error ?: lastError)
+    fun record(success: Boolean, error: String? = null, now: Long = System.currentTimeMillis(), latencyMs: Int? = null): SourceStats {
+        // Média móvel do tempo de resposta (só respostas bem-sucedidas medidas)
+        val lat = if (success && latencyMs != null) (if (avgLatencyMs == 0) latencyMs else (avgLatencyMs * 3 + latencyMs) / 4) else avgLatencyMs
+        return if (success) copy(ok = ok + 1, streak = 0, lastAt = now, lastError = null, avgLatencyMs = lat)
+        else copy(fail = fail + 1, streak = streak + 1, lastAt = now, lastError = error ?: lastError)
+    }
 
-    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("fail", fail).put("streak", streak).put("at", lastAt).put("err", lastError ?: JSONObject.NULL)
+    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("fail", fail).put("streak", streak).put("at", lastAt).put("err", lastError ?: JSONObject.NULL).put("lat", avgLatencyMs)
 
     companion object {
-        fun fromJson(o: JSONObject?) = if (o == null) SourceStats() else SourceStats(o.optInt("ok"), o.optInt("fail"), o.optInt("streak"), o.optLong("at"), o.optStringOrNull("err"))
+        fun fromJson(o: JSONObject?) = if (o == null) SourceStats() else SourceStats(o.optInt("ok"), o.optInt("fail"), o.optInt("streak"), o.optLong("at"), o.optStringOrNull("err"), o.optInt("lat"))
     }
 }
 
@@ -91,7 +112,20 @@ data class UserSource(
     val config: String? = null,
     /** Validada depois de ter sido salva sem validação: aguardando o usuário ativar. */
     val validatedAt: Long = 0,
+    /** Autenticação (a credencial fica cifrada no [CredentialStore], nunca aqui). */
+    val auth: AuthMethod = AuthMethod.NONE,
+    /** Tempo-limite por consulta (s) e máximo de resultados por página desta fonte. */
+    val timeoutSec: Int = DEFAULT_TIMEOUT_S,
+    val resultLimit: Int = DEFAULT_LIMIT,
+    /** Categorias atendidas (vazio = todas): "filmes", "series", "documentarios", "infantil", "livre". */
+    val categories: Set<String> = emptySet(),
+    /** Formato escolhido manualmente pelo usuário (a detecção automática não confirmou). */
+    val manualType: Boolean = false,
+    /** Servidor local autorizado: SHA-256 do certificado confirmado pelo usuário (fixado só para este host:porta). */
+    val localPin: String? = null,
 ) {
+    /** A fonte deve ser consultada para títulos desta categoria? */
+    fun serves(category: String?): Boolean = categories.isEmpty() || category == null || category in categories || "livre" in categories
     val capabilities: SourceCapabilities get() = SourceCapabilities.of(this)
 
     fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("url", url).put("type", type.name)
@@ -101,10 +135,17 @@ data class UserSource(
         .put("pending", pending)
         .put("config", config ?: JSONObject.NULL)
         .put("validatedAt", validatedAt)
+        .put("auth", auth.name).put("timeout", timeoutSec).put("limit", resultLimit)
+        .put("categories", JSONArray(categories.toList())).put("manualType", manualType)
+        .put("localPin", localPin ?: JSONObject.NULL)
 
     companion object {
         fun idFor(type: SourceType, url: String) = type.idPrefix + M3uParser.stableId("feed", url.trim())
         const val MAX_CONFIG = 64 * 1024
+        const val DEFAULT_TIMEOUT_S = 12
+        const val DEFAULT_LIMIT = 50
+        val CATEGORIES = listOf("filmes", "series", "documentarios", "infantil", "livre")
+        val CATEGORY_LABELS = mapOf("filmes" to "Filmes", "series" to "Séries", "documentarios" to "Documentários", "infantil" to "Infantil", "livre" to "Domínio público / livre")
 
         /**
          * Endereço normalizado para achar duplicadas: esquema/servidor em minúsculas, sem porta padrão,
@@ -140,6 +181,12 @@ data class UserSource(
                 pending = o.optBoolean("pending", false),
                 config = o.optStringOrNull("config")?.take(MAX_CONFIG),
                 validatedAt = o.optLong("validatedAt", 0),
+                auth = runCatching { AuthMethod.valueOf(o.optString("auth", "NONE")) }.getOrDefault(AuthMethod.NONE),
+                timeoutSec = o.optInt("timeout", DEFAULT_TIMEOUT_S).coerceIn(3, 60),
+                resultLimit = o.optInt("limit", DEFAULT_LIMIT).coerceIn(5, 200),
+                categories = o.optJSONArray("categories")?.let { a -> (0 until a.length()).map { a.getString(it) }.filter { it in CATEGORIES }.toSet() }.orEmpty(),
+                manualType = o.optBoolean("manualType", false),
+                localPin = o.optStringOrNull("localPin")?.let { LocalServers.normalizePin(it) }?.takeIf { it.length == 64 },
             )
         }
     }
@@ -151,7 +198,7 @@ object UserSourcesJson {
 
     fun export(list: List<UserSource>): String = JSONObject()
         .put("format", FORMAT).put("version", 1)
-        .put("sources", JSONArray().apply { list.sortedBy { it.priority }.forEach { put(it.toJson().apply { remove("test"); remove("stats") }) } })
+        .put("sources", JSONArray().apply { list.sortedBy { it.priority }.forEach { put(it.toJson().apply { remove("test"); remove("stats"); remove("localPin") }) } })
         .toString(2)
 
     /** Lê um arquivo exportado; fontes inseguras ou de formato desconhecido são descartadas. */
@@ -160,7 +207,11 @@ object UserSourcesJson {
         if (root.optString("format") != FORMAT) throw IllegalArgumentException("Não é um arquivo de fontes do BruDre")
         val arr = root.optJSONArray("sources") ?: return emptyList()
         return (0 until arr.length()).mapNotNull { i -> arr.optJSONObject(i)?.let { UserSource.fromJson(it) } }
-            .filter { s -> isSafe(s.type, s.url) }
+            .map { s ->
+                // Fixações de certificado nunca vêm de arquivo: servidor local importado entra desativado, aguardando confirmação no aparelho.
+                if (isLocalAddress(s.url)) s.copy(localPin = null, enabled = false, pending = true) else s.copy(localPin = null)
+            }
+            .filter { s -> isSafe(s.type, s.url) || (s.pending && isLocalAddress(s.url) && s.url.startsWith("https://", true)) }
             .distinctBy { it.id }
             .distinctBy { UserSource.normalizedUrl(it.url) }
             .take(MAX_SOURCES)
@@ -172,9 +223,20 @@ object UserSourcesJson {
     fun isSafe(type: SourceType, url: String): Boolean = when (type) {
         SourceType.MAGNET -> FeedParser.isValidMagnet(url)
         SourceType.SEARCH -> SearchTemplate.isTemplate(url) && SearchTemplate.check(url) == null
-        SourceType.OPENSEARCH, SourceType.REST -> UrlGuard.isAllowed(url) && url.startsWith("https://", true)
+        SourceType.OPENSEARCH, SourceType.REST, SourceType.TORZNAB -> UrlGuard.isAllowed(url) && url.startsWith("https://", true) && !url.contains("apikey=", true)
         else -> UrlGuard.isAllowed(url) && url.startsWith("https://", true)
     }
+
+    /** IP literal da rede privada (servidor local). */
+    fun isLocalAddress(url: String): Boolean = UrlGuard.hostOf(url)?.let { h ->
+        val lit = h.removePrefix("[").removeSuffix("]")
+        if (!Regex("^\\d{1,3}(\\.\\d{1,3}){3}$").matches(lit) && !lit.contains(':')) return@let false
+        runCatching { LocalServers.isPrivate(java.net.InetAddress.getByName(lit)) }.getOrDefault(false)
+    } == true
+
+    /** Pode ser servidor da rede local (IP privado ou nome de rede doméstica)? Mostra a opção de fixar certificado. */
+    fun mayBeLocal(url: String): Boolean = isLocalAddress(url) ||
+        UrlGuard.hostOf(url)?.let { h -> listOf(".local", ".lan", ".home", ".home.arpa", ".internal").any { h.endsWith(it) } } == true
 
     fun listToJson(list: List<UserSource>): String = JSONArray().apply { list.forEach { put(it.toJson()) } }.toString()
     fun listFromJson(json: String): List<UserSource> = runCatching {
@@ -213,6 +275,8 @@ object SourceDetector {
             else Detection(null, "JSON sem a lista \"items\" do formato de catálogo do BruDre")
             text.startsWith("<") -> when {
                 lower.contains("<opensearchdescription") -> Detection(SourceType.OPENSEARCH, "Descrição OpenSearch")
+                Regex("<caps\\b").containsMatchIn(lower) -> Detection(SourceType.TORZNAB, "Capacidades Torznab/Newznab")
+                Regex("<error\\s+code=\"\\d+\"").containsMatchIn(lower) -> Detection(null, "Resposta de erro de API de indexação (Torznab/Newznab?)")
                 lower.contains("<rss") || lower.contains("<channel") -> Detection(SourceType.RSS, "Feed RSS")
                 Regex("<feed\\b").containsMatchIn(lower) && lower.contains("<entry") -> Detection(SourceType.RSS, "Feed Atom")
                 lower.contains("<html") || lower.contains("<!doctype html") -> Detection(null, "É uma página web, não uma fonte de vídeo")
@@ -236,6 +300,7 @@ object SourceDetector {
             path.endsWith(".m3u") -> SourceType.M3U
             path.endsWith(".json") -> SourceType.CATALOG_JSON
             path.endsWith(".rss") || path.endsWith(".xml") || path.endsWith("/feed") -> SourceType.RSS
+            path.contains("torznab") || path.contains("newznab") -> SourceType.TORZNAB
             listOf(".mp4", ".m4v", ".mkv", ".webm", ".mov").any { path.endsWith(it) } -> SourceType.VIDEO
             else -> null
         }
@@ -304,6 +369,8 @@ data class SourceCapabilities(
             }
             SourceType.REST -> s.config?.let { runCatching { RestDescriptor.parse(it).capabilities }.getOrNull() }
                 ?: SourceCapabilities(true, false, false, false, listOf("?"))
+            SourceType.TORZNAB -> s.config?.let { runCatching { TorznabAdapter(TorznabCaps.fromConfig(it), null).capabilities.copy(auth = true) }.getOrNull() }
+                ?: SourceCapabilities(true, false, false, true, listOf("magnet", ".torrent"), auth = true)
         }
     }
 }

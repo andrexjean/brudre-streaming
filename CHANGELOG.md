@@ -1,5 +1,35 @@
 # Changelog — BruDre Streaming
 
+## 9.2 (novembro de 2026) — Source Engine 4.0
+
+### Protocolos de indexação (adaptadores genéricos, nenhum indexador pré-cadastrado)
+- **Torznab**: capacidades (`t=caps`), pesquisa por texto, filme por TMDB/IMDb (`t=movie`), série por temporada/episódio (`t=tvsearch`), categorias, paginação `offset/limit`, erros do protocolo traduzidos (ex.: código 100 = credencial recusada). A `apikey` colada no endereço sai do endereço e vai cifrada.
+- **Newznab**: mesmo adaptador. Itens NZB (Usenet) são descartados. Tocá-los exigiria um cliente NNTP com yEnc, que não existe no app, e uma conta paga em provedor Usenet. Só entram itens com magnet ou .torrent.
+- Resultados vão para o fluxo atual: conferência de título e ano, classificação, motor BitTorrent. O hash (`infohash`) vira magnet. Categoria adulta (6000) é sempre bloqueada. Software, áudio e itens sem semeadores são descartados. O episódio anunciado pelo indexador escolhe o arquivo certo dentro do pacote da temporada.
+- Também existentes e mantidos: OpenSearch, RSS/Atom, REST por descritor, **GraphQL (POST)**, catálogo paginado.
+
+### Servidores locais autorizados (Jackett/Prowlarr/Jellyfin na sua rede)
+- Endereços da rede privada (10/8, 172.16/12, 192.168/16, fc00::/7) só funcionam como **servidor local confirmado**. A pasta Fontes mostra a impressão digital SHA-256 do certificado; você confere e confirma. Depois disso só aquele certificado é aceito, e só naquele host:porta.
+- Sempre HTTPS: o tráfego sem criptografia continua desligado no app inteiro. Loopback e link-local continuam bloqueados.
+- Antes, só a validação de certificado barrava a rede privada. Agora ela é **bloqueada explicitamente** (anti-SSRF, inclusive nomes que resolvem para IP privado).
+- Importar fontes nunca traz certificado fixado: o servidor local entra desativado até ser confirmado no aparelho.
+
+### Cadastro avançado
+- Protocolo (automático ou manual), autenticação (chave no endereço, X-Api-Key, Bearer), credencial cifrada pelo Android Keystore, categorias, tempo-limite, resultados por página, ativa/inativa.
+
+### Biblioteca de fontes (Fontes → Biblioteca)
+- 41 entradas: 31 serviços e 10 protocolos.
+- 10 provedores avaliados tecnicamente, cada um com disponibilidade, API/feed, adaptador correspondente, condição para integração autorizada e teste: 1337x, YTS, EZTV, The Pirate Bay, TorrentGalaxy, Nyaa, LimeTorrents, RuTracker, Torlock e EXT.to. Nenhum é integrado.
+
+### Classificação explicável e fallback
+- Cada fonte em "Escolher fonte" mostra **por que está naquela posição**: título conferido, fonte preferida, áudio e legenda, resolução, formato, histórico, tempo de resposta e prioridade. O tempo de resposta médio desempata.
+- Ao trocar de fonte, o player **compara a duração**. Se a diferença passar de 60 s ou 5% (o que for maior), ele pausa e pergunta: Continuar, Escolher outra fonte ou Voltar.
+
+### Homologação do aparelho (Fontes → Diagnóstico)
+- Mede no uso real: abertura a frio, tempo até o vídeo, travamentos (rebuffering), falhas, encerramentos inesperados, memória (PSS e avisos do sistema), armazenamento e a sessão mais longa.
+- Lista de conferência do D-pad e "Testar rede BitTorrent", que conta participantes sem baixar arquivos.
+- O relatório é salvo na pasta do app e pode ser compartilhado. No emulador, ele se declara inválido como homologação.
+
 ## 9.1 (novembro de 2026) — Segurança, descoberta de fontes e reprodução
 
 ### Segurança TLS (crítico)

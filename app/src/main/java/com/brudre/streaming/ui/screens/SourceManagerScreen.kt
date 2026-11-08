@@ -35,10 +35,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,7 +76,7 @@ import java.util.Locale
 
 /** Seções do gerenciador (Configurações → Gerenciar fontes). */
 enum class SourceSection(val label: String, val tag: String) {
-    MINE("Minhas fontes", "mine"), CATALOGS("Catálogos", "catalogs"), TORRENT("BitTorrent", "torrent"),
+    MINE("Minhas fontes", "mine"), LIBRARY("Biblioteca", "library"), CATALOGS("Catálogos", "catalogs"), TORRENT("BitTorrent", "torrent"),
     NATIVE("Fontes nativas", "native"), DIAG("Diagnóstico", "diag"),
 }
 
@@ -147,6 +149,7 @@ fun SourceManagerScreen(vm: MainViewModel, onDismiss: () -> Unit) {
                         }
                         torrentHistory(this, vm, onLink = { linking = it })
                     }
+                    SourceSection.LIBRARY -> libraryItems(this, vm, sources, toast)
                     SourceSection.NATIVE -> item(key = "native") { NativeSection(vm) }
                     SourceSection.DIAG -> item(key = "diag") { DiagnosticsSection(vm, sources, toast) }
                 }
@@ -156,20 +159,20 @@ fun SourceManagerScreen(vm: MainViewModel, onDismiss: () -> Unit) {
 
         if (adding || editing != null) {
             val e = editing
-            SourceDialog(
-                title = if (e == null) "Adicionar fonte" else "Editar fonte",
-                initialName = e?.name ?: "",
-                initialUrl = e?.url ?: "https://",
+            AdvancedSourceDialog(
+                source = e,
+                hasCredential = e?.let { vm.hasCredential(it.id) } ?: false,
                 onDismiss = { adding = false; editing = null },
-                onSave = { name, url, done ->
-                    vm.saveSource(e?.id, name, url) { ok, msg, detail ->
+                onSave = { form, done ->
+                    vm.saveSource(e?.id, form) { ok, msg, detail ->
                         if (ok) toast(msg)
                         done(ok, msg, detail)
                         if (ok) { adding = false; editing = null }
                     }
                 },
-                onSaveUnvalidated = { name, url, done ->
-                    vm.saveSourceUnvalidated(e?.id, name, url) { ok, msg, detail ->
+                onReadCert = { u, done -> vm.readLocalCertificate(u, done) },
+                onSaveUnvalidated = { form, done ->
+                    vm.saveSourceUnvalidated(e?.id, form.name, form.url) { ok, msg, detail ->
                         if (ok) toast(msg)
                         done(ok, msg, detail)
                         if (ok) { adding = false; editing = null }
@@ -473,6 +476,8 @@ private fun DiagnosticsSection(vm: MainViewModel, sources: List<UserSource>, toa
         Text("Dados temporários (vídeo, imagens, listas): ${CacheManager.formatBytes(cache)}", color = BruColors.TextDim, fontSize = 13.sp)
         Text("Certificados HTTPS do BitTorrent: ${com.brudre.streaming.torrent.TlsTrust.status}", color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_tls"))
         Spacer(Modifier.height(10.dp))
+        HomologationPanel(vm, toast)
+        Spacer(Modifier.height(10.dp))
         Text("Validação e estatísticas", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(
             "${sources.size} fontes • ${sources.count { it.enabled }} ativas • ${sources.count { it.pending }} aguardando validação • " +
@@ -498,6 +503,75 @@ private fun DiagnosticsSection(vm: MainViewModel, sources: List<UserSource>, toa
             }
         }
     }
+}
+
+/** Homologação do aparelho: medições reais do uso, checklist do D-pad, teste da rede BitTorrent e relatório exportável. */
+@Composable
+private fun HomologationPanel(vm: MainViewModel, toast: (String) -> Unit) {
+    val H = com.brudre.streaming.data.Homologation
+    var report by remember { mutableStateOf<String?>(null) }
+    var probe by remember { mutableStateOf<String?>(null) }
+    var tick by remember { mutableStateOf(0) }
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    Text("Homologação do aparelho", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    Text(
+        "Use o app normalmente por alguns dias (abrir, assistir filmes e episódios, BitTorrent e HTTP, uma sessão longa) e gere o relatório. " +
+            "Só vale como homologação quando gerado no próprio aparelho — o emulador não homologa o Mi Stick.",
+        color = BruColors.TextFaint, fontSize = 12.sp,
+    )
+    Text("Controle remoto (D-pad): marque o que você conferiu", color = Color.White, fontSize = 14.sp, modifier = Modifier.padding(top = 6.dp))
+    H.DPAD_ITEMS.forEach { (k, label) ->
+        key(k, tick) {
+            val state = H.dpad(k)
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 2.dp)) {
+                BruChip("OK", selected = state == true, modifier = Modifier.testTag("hom_ok_$k")) { H.setDpad(k, if (state == true) null else true); tick++ }
+                Spacer(Modifier.width(6.dp))
+                BruChip("Falhou", selected = state == false, modifier = Modifier.testTag("hom_fail_$k")) { H.setDpad(k, if (state == false) null else false); tick++ }
+                Spacer(Modifier.width(10.dp))
+                Text(label, color = BruColors.TextDim, fontSize = 12.sp)
+            }
+        }
+    }
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 8.dp)) {
+        item {
+            BruButton("Gerar relatório", primary = true, modifier = Modifier.testTag("hom_report")) {
+                scope.launch {
+                    val f = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { H.export() } }
+                    f.onSuccess { file ->
+                        report = file.readText()
+                        toast("Relatório salvo em ${file.path}")
+                        runCatching {
+                            val send = android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain")
+                                .putExtra(android.content.Intent.EXTRA_SUBJECT, "Homologação BruDre Streaming").putExtra(android.content.Intent.EXTRA_TEXT, report)
+                            vm.launcher?.invoke(android.content.Intent.createChooser(send, "Compartilhar relatório"))
+                        }
+                    }.onFailure { toast("Não foi possível gerar: ${it.message}") }
+                }
+            }
+        }
+        item {
+            BruButton(if (probe == "testando") "Testando (40 s)…" else "Testar rede BitTorrent", modifier = Modifier.testTag("hom_bt")) {
+                if (probe == "testando") return@BruButton
+                probe = "testando"
+                scope.launch {
+                    probe = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                        runCatching {
+                            // .torrent de filmes abertos (Blender/WebTorrent, licença livre): só conta participantes, nada é baixado.
+                            val urls = listOf("https://webtorrent.io/torrents/sintel.torrent", "https://webtorrent.io/torrents/big-buck-bunny.torrent")
+                            val bytes = urls.mapNotNull { u -> runCatching { vm.services.inspector.fetchBytes(u, com.brudre.streaming.torrent.TorrentContent.MAX_TORRENT_BYTES.toLong()) }.getOrNull() }
+                            if (bytes.isEmpty()) error("não foi possível baixar os .torrent de teste")
+                            val r = vm.services.torrent.probePeers(bytes, 40)
+                            vm.services.torrent.shutdownIfIdle()
+                            r.joinToString("; ") { "${it.name}: ${it.connected} conectados, ${it.known} conhecidos, enxame ${it.swarm}" }
+                        }.getOrElse { "Falhou: ${it.message}" }
+                    }
+                }
+            }
+        }
+        item { BruButton("Zerar medições", modifier = Modifier.testTag("hom_reset")) { H.reset(); report = null; tick++; toast("Medições zeradas") } }
+    }
+    probe?.takeIf { it != "testando" }?.let { Text("Rede BitTorrent: $it", color = BruColors.TextDim, fontSize = 12.sp, modifier = Modifier.testTag("hom_bt_result")) }
+    report?.let { Text(it, color = BruColors.TextDim, fontSize = 11.sp, modifier = Modifier.padding(top = 6.dp).testTag("hom_text")) }
 }
 
 @Composable
@@ -581,6 +655,208 @@ private fun SourceDialog(
                     BruButton(if (showDetail) "Ocultar detalhes" else "Detalhes técnicos", modifier = Modifier.testTag("src_dialog_details")) { showDetail = !showDetail }
                 }
                 BruButton("Cancelar", onClick = onDismiss)
+            }
+        }
+    }
+}
+
+/**
+ * Cadastro avançado: nome, endereço, protocolo (automático ou manual), autenticação + credencial (cifrada,
+ * nunca exibida), categorias, tempo-limite, limite de resultados e estado. Tudo navegável pelo D-pad.
+ */
+@Composable
+private fun AdvancedSourceDialog(
+    source: UserSource?,
+    hasCredential: Boolean,
+    onDismiss: () -> Unit,
+    onSave: (MainViewModel.SourceForm, (Boolean, String, String?) -> Unit) -> Unit,
+    onSaveUnvalidated: (MainViewModel.SourceForm, (Boolean, String, String?) -> Unit) -> Unit,
+    onReadCert: (String, (Boolean, String, String?) -> Unit) -> Unit = { _, _ -> },
+) {
+    var name by remember { mutableStateOf(source?.name ?: "") }
+    var localPin by remember { mutableStateOf(source?.localPin) }
+    var certText by remember { mutableStateOf<String?>(null) }
+    var readPin by remember { mutableStateOf<String?>(null) }
+    var url by remember { mutableStateOf(source?.url ?: "https://") }
+    var advanced by remember { mutableStateOf(source != null && (source.manualType || source.auth != com.brudre.streaming.sources.AuthMethod.NONE || source.categories.isNotEmpty())) }
+    var type by remember { mutableStateOf(if (source?.manualType == true) source.type else null) }
+    var auth by remember { mutableStateOf(source?.auth ?: com.brudre.streaming.sources.AuthMethod.NONE) }
+    var key by remember { mutableStateOf("") }
+    var timeout by remember { mutableStateOf(source?.timeoutSec ?: UserSource.DEFAULT_TIMEOUT_S) }
+    var limit by remember { mutableStateOf(source?.resultLimit ?: UserSource.DEFAULT_LIMIT) }
+    var categories by remember { mutableStateOf(source?.categories ?: emptySet()) }
+    var enabled by remember { mutableStateOf(source?.enabled ?: true) }
+    var busy by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf<String?>(null) }
+    var detail by remember { mutableStateOf<String?>(null) }
+    var showDetail by remember { mutableStateOf(false) }
+    val colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = BruColors.Cyan, unfocusedBorderColor = BruColors.CardBorder,
+        focusedTextColor = Color.White, unfocusedTextColor = Color.White, cursorColor = BruColors.Cyan,
+    )
+    fun form() = MainViewModel.SourceForm(name, url, type, auth, key.takeIf { it.isNotEmpty() }, timeout, limit, categories, enabled, localPin)
+    val done: (Boolean, String, String?) -> Unit = { ok, msg, d -> busy = false; if (!ok) { message = msg; detail = d } }
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        LazyColumn(
+            Modifier.clip(RoundedCornerShape(16.dp)).background(BruColors.Navy).border(1.dp, BruColors.CardBorder, RoundedCornerShape(16.dp))
+                .width(860.dp).padding(24.dp).testTag("src_dialog"),
+        ) {
+            item {
+                Text(if (source == null) "Adicionar fonte" else "Editar fonte", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    "Endereço https://, magnet, descrição OpenSearch, descritor REST/GraphQL, indexador Torznab/Newznab (a apikey colada no endereço vai cifrada) ou modelo com {query}. O formato é identificado e testado antes de salvar.",
+                    color = BruColors.TextFaint, fontSize = 13.sp,
+                )
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(name, { name = it.take(60) }, singleLine = true, label = { Text("Nome da fonte") }, colors = colors, modifier = Modifier.fillMaxWidth().testTag("src_name"))
+                Spacer(Modifier.height(8.dp))
+                OutlinedTextField(
+                    url, { url = it.trim().take(4096) }, singleLine = true, label = { Text("Endereço") },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), colors = colors, modifier = Modifier.fillMaxWidth().testTag("src_url"),
+                )
+                if (com.brudre.streaming.sources.UserSourcesJson.mayBeLocal(url)) {
+                    Column(Modifier.padding(top = 10.dp).border(1.dp, BruColors.CardBorder, RoundedCornerShape(10.dp)).padding(12.dp).testTag("src_local")) {
+                        Text("Servidor local (rede privada)", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(
+                            localPin?.let { "Certificado confirmado: ${com.brudre.streaming.sources.LocalServers.pretty(it).take(29)}…  Só este certificado é aceito neste endereço." }
+                                ?: "Só HTTPS. Leia o certificado do servidor e confira a impressão digital SHA-256 com a do seu servidor antes de confirmar.",
+                            color = BruColors.TextFaint, fontSize = 12.sp, modifier = Modifier.testTag("src_local_state"),
+                        )
+                        certText?.let { Text(it, color = BruColors.TextDim, fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp).testTag("src_local_cert")) }
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(top = 8.dp)) {
+                            item {
+                                BruButton("Ler certificado", modifier = Modifier.testTag("src_local_read")) {
+                                    certText = "Lendo…"; readPin = null
+                                    onReadCert(url) { ok, text, pin -> certText = text; readPin = if (ok) pin else null }
+                                }
+                            }
+                            readPin?.let { p ->
+                                item { BruButton("Confirmo: é o meu servidor", primary = true, modifier = Modifier.testTag("src_local_confirm")) { localPin = p; readPin = null } }
+                            }
+                            if (localPin != null) item { BruButton("Remover confirmação", modifier = Modifier.testTag("src_local_forget")) { localPin = null } }
+                        }
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                BruChip(if (advanced) "Ocultar opções avançadas" else "Opções avançadas", selected = advanced, modifier = Modifier.testTag("src_advanced")) { advanced = !advanced }
+            }
+            if (advanced) {
+                item { ChoiceRow("Protocolo", listOf<Pair<String, com.brudre.streaming.sources.SourceType?>>("Automático" to null) + SourceType.entries.map { it.label to it }, type, "src_type") { type = it } }
+                item { ChoiceRow("Autenticação", com.brudre.streaming.sources.AuthMethod.entries.map { it.label to it }, auth, "src_auth") { auth = it } }
+                if (auth != com.brudre.streaming.sources.AuthMethod.NONE) item {
+                    OutlinedTextField(
+                        key, { key = it.trim().take(512) }, singleLine = true,
+                        label = { Text(if (hasCredential) "Credencial (guardada — deixe vazio para manter)" else "Credencial (chave ou token)") },
+                        visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                        colors = colors, modifier = Modifier.fillMaxWidth().padding(top = 6.dp).testTag("src_key"),
+                    )
+                    Text("Cifrada pelo Android Keystore; nunca aparece na tela nem na exportação.", color = BruColors.TextFaint, fontSize = 11.sp)
+                }
+                item {
+                    Text("Categorias (vazio = todas)", color = Color.White, fontSize = 15.sp, modifier = Modifier.padding(top = 8.dp))
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), contentPadding = PaddingValues(vertical = 6.dp)) {
+                        items(UserSource.CATEGORIES, key = { it }) { c ->
+                            BruChip(UserSource.CATEGORY_LABELS[c] ?: c, selected = c in categories, modifier = Modifier.testTag("src_cat_$c")) {
+                                categories = if (c in categories) categories - c else categories + c
+                            }
+                        }
+                    }
+                }
+                item { ChoiceRow("Tempo-limite por consulta", listOf(5, 12, 20, 30).map { "$it s" to it }, timeout, "src_timeout") { timeout = it } }
+                item { ChoiceRow("Resultados por página", listOf(20, 50, 100).map { "$it" to it }, limit, "src_limit") { limit = it } }
+                item { ChoiceRow("Estado", listOf("Ativa" to true, "Inativa" to false), enabled, "src_enabled") { enabled = it } }
+            }
+            item {
+                message?.let { Text(it, color = BruColors.Danger, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp).testTag("src_dialog_msg")) }
+                if (showDetail) detail?.let { Text(it, color = BruColors.TextDim, fontSize = 11.sp, modifier = Modifier.padding(top = 6.dp).testTag("src_dialog_detail")) }
+                Spacer(Modifier.height(14.dp))
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    item {
+                        BruButton(if (busy) "Verificando…" else if (message != null) "Testar novamente" else "Identificar, testar e salvar", primary = true, modifier = Modifier.testTag("src_save")) {
+                            if (!busy) { busy = true; message = null; detail = null; showDetail = false; onSave(form(), done) }
+                        }
+                    }
+                    if (message != null) item {
+                        BruButton("Salvar sem validar", modifier = Modifier.testTag("src_save_unvalidated")) { if (!busy) { busy = true; onSaveUnvalidated(form(), done) } }
+                    }
+                    if (message != null && detail != null) item {
+                        BruButton(if (showDetail) "Ocultar detalhes" else "Detalhes técnicos", modifier = Modifier.testTag("src_dialog_details")) { showDetail = !showDetail }
+                    }
+                    item { BruButton("Cancelar", onClick = onDismiss) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T> ChoiceRow(label: String, options: List<Pair<String, T>>, selected: T, tag: String, onPick: (T) -> Unit) {
+    Column(Modifier.padding(top = 8.dp)) {
+        Text(label, color = Color.White, fontSize = 15.sp)
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), contentPadding = PaddingValues(vertical = 6.dp)) {
+            items(options.size) { i ->
+                val (text, value) = options[i]
+                BruChip(text, selected = value == selected, modifier = Modifier.testTag("${tag}_$i")) { onPick(value) }
+            }
+        }
+    }
+}
+
+/** Biblioteca de fontes candidatas avaliadas: serviços e protocolos contados separadamente; "Adicionar" só onde há integração. */
+private fun libraryItems(scope: androidx.compose.foundation.lazy.LazyListScope, vm: MainViewModel, mine: List<UserSource>, toast: (String) -> Unit) {
+    val entries = com.brudre.streaming.sources.IndexerRegistry.entries(vm.getApplication<android.app.Application>())
+    val services = entries.count { it.isService }
+    val integrated = entries.count { it.integration == com.brudre.streaming.sources.IndexerRegistry.Integration.INTEGRADO }
+    scope.item(key = "lib_head") {
+        Text(
+            "${entries.size} entradas avaliadas: $services serviços e ${entries.size - services} protocolos • $integrated integrados. " +
+                "Serviços de software livre distribuem sistemas (não vídeo) e servem só para testar o motor BitTorrent.",
+            color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(900.dp).testTag("lib_summary"),
+        )
+    }
+    com.brudre.streaming.sources.IndexerRegistry.GROUPS.forEach { (group, label) ->
+        val list = entries.filter { it.group == group }
+        if (list.isEmpty()) return@forEach
+        scope.item(key = "lib_g_$group") { Text(label, color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 14.dp, bottom = 4.dp)) }
+        scope.items(list, key = { "lib_${it.id}" }) { e -> LibraryCard(e, added = e.addUrl != null && mine.any { UserSource.normalizedUrl(it.url) == UserSource.normalizedUrl(e.addUrl) }) { finished ->
+            vm.saveSource(null, MainViewModel.SourceForm(e.name, e.addUrl!!)) { ok, msg, _ -> finished(); toast(if (ok) "${e.name}: adicionada. $msg" else "${e.name}: $msg") }
+        } }
+    }
+}
+
+@Composable
+private fun LibraryCard(e: com.brudre.streaming.sources.IndexerRegistry.Entry, added: Boolean, onAdd: (finished: () -> Unit) -> Unit) {
+    val shape = RoundedCornerShape(12.dp)
+    var busy by remember(e.id) { mutableStateOf(false) }
+    Row(
+        Modifier.padding(vertical = 4.dp).width(900.dp).clip(shape).background(BruColors.Card).border(1.dp, BruColors.CardBorder, shape)
+            .padding(horizontal = 18.dp, vertical = 10.dp).testTag("lib_card_${e.id}"),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(e.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.width(10.dp))
+                Text(e.integration.label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(
+                        when (e.integration) {
+                            com.brudre.streaming.sources.IndexerRegistry.Integration.INTEGRADO -> Color(0xCC1F8A4C)
+                            com.brudre.streaming.sources.IndexerRegistry.Integration.NAO_INTEGRADO, com.brudre.streaming.sources.IndexerRegistry.Integration.NAO_SUPORTADO, com.brudre.streaming.sources.IndexerRegistry.Integration.INDISPONIVEL -> Color(0xCC8A2A2A)
+                            else -> Color(0xCC5A5F73)
+                        },
+                    ).padding(horizontal = 8.dp, vertical = 2.dp))
+            }
+            Text(listOfNotNull(e.protocol, e.search.ifBlank { null }?.let { "pesquisa: $it" }, e.torrent.ifBlank { null }?.let { "torrent: $it" }).joinToString(" • "),
+                color = BruColors.TextDim, fontSize = 12.sp)
+            Text(e.note, color = BruColors.TextFaint, fontSize = 12.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+            e.restrictions?.let { Text("Restrições: $it", color = BruColors.TextFaint, fontSize = 11.sp) }
+            listOfNotNull(e.availability?.let { "Disponibilidade: $it" }, e.api?.let { "API/feed: $it" }, e.adapter?.let { "Adaptadores: $it" },
+                e.condition?.let { "Condição para integrar: $it" }, e.test?.let { "Teste: $it" }).forEach { Text(it, color = BruColors.TextFaint, fontSize = 11.sp) }
+        }
+        if (e.addUrl != null) {
+            Spacer(Modifier.width(12.dp))
+            BruButton(if (added) "Já adicionada" else if (busy) "Testando…" else "Adicionar", primary = !added, modifier = Modifier.testTag("lib_add_${e.id}")) {
+                if (!added && !busy) { busy = true; onAdd { busy = false } }
             }
         }
     }

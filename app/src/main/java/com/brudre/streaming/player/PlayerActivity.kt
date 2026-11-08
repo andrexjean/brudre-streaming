@@ -87,6 +87,23 @@ class PlayerActivity : ComponentActivity() {
     private var announcedTracks = false
     private val isLive: Boolean get() = ::playable.isInitialized && playable.live
 
+    /** Duração da primeira fonte que tocou: a alternativa precisa bater (mesmo filme/episódio, mesma versão). */
+    private var referenceDurationMs = C.TIME_UNSET
+    private var durationAttempt = -1
+    private var durationDialog: AlertDialog? = null
+    @Volatile var durationMismatch: String? = null
+        private set
+
+    /** Medições para o relatório de homologação (tempo até o vídeo, travamentos, memória). */
+    private val openedAt = android.os.SystemClock.elapsedRealtime()
+    private var firstReadyAt = 0L
+    private var bufferingSince = 0L
+    private var rebuffers = 0
+    private var rebufferMs = 0L
+    private var fatalShown = false
+    private var pssPeakKb = 0
+    private var homologRecorded = false
+
     /** Último estado observado, para testes instrumentados. */
     @Volatile var lastErrorMessage: String? = null
         private set
@@ -201,8 +218,15 @@ class PlayerActivity : ComponentActivity() {
         p.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_READY) {
+                    val nowMs = android.os.SystemClock.elapsedRealtime()
+                    if (firstReadyAt == 0L) {
+                        firstReadyAt = nowMs
+                        lifecycleScope.launch(Dispatchers.IO) { pssPeakKb = maxOf(pssPeakKb, com.brudre.streaming.data.Homologation.pssKb()) }
+                    }
+                    if (bufferingSince > 0) { rebufferMs += nowMs - bufferingSince; bufferingSince = 0 }
                     hasBeenReady = true
                     reconnects = 0
+                    checkDuration()
                     watchdogJob?.cancel()
                     stallJob?.cancel()
                     if (currentAttempt !is SourceAttempt.Torrent) showStatus(null)
@@ -211,6 +235,7 @@ class PlayerActivity : ComponentActivity() {
                     com.brudre.streaming.torrent.TorrentLibrary.hashOf(title.id)?.let { h -> services.appScope.launch(Dispatchers.IO) { services.torrentLibrary.markPlayed(h) } }
                 }
                 if (state == Player.STATE_BUFFERING && hasBeenReady) {
+                    if (bufferingSince == 0L) { bufferingSince = android.os.SystemClock.elapsedRealtime(); rebuffers++ }
                     // Travou no meio: se não voltar em pouco tempo, troca de fonte.
                     stallJob?.cancel()
                     stallJob = lifecycleScope.launch {
@@ -441,6 +466,32 @@ class PlayerActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Fallback inteligente: depois de trocar de fonte, confere a duração com a da fonte anterior.
+     * Diferença maior que max(60 s, 5%) indica outra versão/edição (ou outro episódio): pausa e pergunta.
+     */
+    private fun checkDuration() {
+        val d = player?.duration ?: return
+        if (isLive || d == C.TIME_UNSET || d <= 0) return
+        if (referenceDurationMs == C.TIME_UNSET) { referenceDurationMs = d; durationAttempt = attemptIndex; return }
+        if (attemptIndex == durationAttempt || durationDialog?.isShowing == true) return
+        if (durationsMatch(referenceDurationMs, d)) { durationAttempt = attemptIndex; return }
+        fun fmt(ms: Long) = "%d:%02d:%02d".format(ms / 3_600_000, ms / 60_000 % 60, ms / 1000 % 60)
+        val msg = "A fonte alternativa (${currentAttempt?.label ?: "outra fonte"}) tem duração ${fmt(d)}, e a anterior tinha ${fmt(referenceDurationMs)}. " +
+            "Pode ser outra versão, edição ou episódio."
+        durationMismatch = msg
+        Log.w(TAG, "Duração incompatível: $msg")
+        player?.pause()
+        durationDialog = AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+            .setTitle("Duração diferente")
+            .setMessage(msg)
+            .setCancelable(false)
+            .setPositiveButton("Continuar assim") { _, _ -> referenceDurationMs = d; durationAttempt = attemptIndex; player?.play() }
+            .setNeutralButton("Escolher outra fonte") { _, _ -> services.chooseSourceFor = title; finish() }
+            .setNegativeButton("Voltar") { _, _ -> finish() }
+            .show()
+    }
+
     /** Idiomas de áudio/legenda em uso: aplicados na próxima fonte (mesmo filme/episódio). */
     private fun rememberTracks() {
         val p = player ?: return
@@ -454,6 +505,7 @@ class PlayerActivity : ComponentActivity() {
     }
 
     private fun showFatal(message: String) {
+        fatalShown = true
         lastErrorMessage = message
         showStatus(null)
         errorDialog?.dismiss()
@@ -555,8 +607,23 @@ class PlayerActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+        recordHomologation()
         releaseAll()
         super.onDestroy()
+    }
+
+    private fun recordHomologation() {
+        if (homologRecorded || !::playable.isInitialized) return
+        homologRecorded = true
+        val end = android.os.SystemClock.elapsedRealtime()
+        val kind = when { isLive -> "Ao vivo"; currentAttempt is SourceAttempt.Torrent -> "BitTorrent"; else -> "HTTP" }
+        val pss = pssPeakKb
+        services.appScope.launch(Dispatchers.IO) {
+            com.brudre.streaming.data.Homologation.recordPlayback(com.brudre.streaming.data.Homologation.Playback(
+                kind, firstReadyAt.takeIf { it > 0 }?.let { it - openedAt }, rebuffers, rebufferMs,
+                if (firstReadyAt > 0) end - firstReadyAt - rebufferMs else 0L, fatalShown, switches, maxOf(pss, com.brudre.streaming.data.Homologation.pssKb()),
+            ))
+        }
     }
 
     private fun releaseAll() {
@@ -639,6 +706,9 @@ class PlayerActivity : ComponentActivity() {
 
     companion object {
         private const val TAG = "BruDrePlayer"
+        /** Mesma obra: diferença de até max(60 s, 5%) (créditos, cortes de abertura, arredondamentos do contêiner). */
+        fun durationsMatch(referenceMs: Long, otherMs: Long): Boolean =
+            kotlin.math.abs(referenceMs - otherMs) <= maxOf(60_000L, referenceMs / 20)
         private const val TORRENT_START_TIMEOUT_MS = 90_000L
         private const val TORRENT_STALL_MS = 45_000L
         private const val SESSION_IDLE_MS = 20_000L

@@ -34,8 +34,8 @@ android {
         targetSdk = 35
         // Número do build do GitHub Actions: cada release tem versionCode maior (permite atualizar por cima).
         val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
-        versionCode = 91000 + buildNumber
-        versionName = "9.1.$buildNumber"
+        versionCode = 92000 + buildNumber
+        versionName = "9.2.$buildNumber"
         buildConfigField("int", "BUILD_NUMBER", buildNumber.toString())
         buildConfigField("String", "UPDATE_REPO", "\"andrexjean/brudre-streaming\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

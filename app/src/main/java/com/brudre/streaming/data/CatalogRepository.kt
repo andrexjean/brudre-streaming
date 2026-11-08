@@ -216,7 +216,7 @@ class CatalogRepository(
     }
 
     companion object {
-        const val USER_AGENT = "BruDreStreaming/8.0 (Android TV; uso domestico)"
+        const val USER_AGENT = "BruDreStreaming/9.2 (Android TV; uso domestico; +https://github.com/andrexjean/brudre-streaming)"
         private const val CACHE_TTL_MS = 6 * 60 * 60 * 1000L
         private const val MATCH_TTL_MS = 7 * 24 * 60 * 60 * 1000L
         /**

@@ -32,6 +32,7 @@ class BruDreApp : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+        com.brudre.streaming.data.Homologation.init(this)
         services = Services(this)
     }
 
@@ -39,6 +40,7 @@ class BruDreApp : Application(), ImageLoaderFactory {
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
+        com.brudre.streaming.data.Homologation.onTrimMemory(level)
         if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
             services.releaseMemory()
             Log.i("BruDre", "Memória baixa (nível $level): caches liberados")
@@ -100,7 +102,9 @@ class Services(private val app: Context) {
     /** APIs de pesquisa autorizadas cadastradas pelo usuário. */
     /** Pedido do player para reabrir a escolha de fonte de um título (todas as fontes falharam). */
     @Volatile var chooseSourceFor: com.brudre.streaming.data.Title? = null
-    val searchRepo: com.brudre.streaming.sources.SearchRepository by lazy { com.brudre.streaming.sources.SearchRepository(guardedHttp, sourceStore) }
+    val searchRepo: com.brudre.streaming.sources.SearchRepository by lazy { com.brudre.streaming.sources.SearchRepository(guardedHttp, sourceStore, credentials) }
+    /** Credenciais das fontes, cifradas pelo Android Keystore. */
+    val credentials: com.brudre.streaming.sources.CredentialStore by lazy { com.brudre.streaming.sources.CredentialStore(app) }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 
     val imageCacheDir: File get() = File(app.cacheDir, "images")

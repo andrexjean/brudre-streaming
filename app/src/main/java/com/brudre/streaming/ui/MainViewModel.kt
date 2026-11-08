@@ -602,34 +602,96 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         live.refreshRegistry()
     }
 
-    /** Identifica o formato, valida estrutura e conexão e só então salva (nova fonte ou edição de [oldId]). */
-    fun saveSource(oldId: String?, name: String, url: String, onResult: (Boolean, String, String?) -> Unit) {
+    /** Campos do cadastro avançado de fonte. [type] null = detectar automaticamente. */
+    data class SourceForm(
+        val name: String,
+        val url: String,
+        val type: com.brudre.streaming.sources.SourceType? = null,
+        val auth: com.brudre.streaming.sources.AuthMethod = com.brudre.streaming.sources.AuthMethod.NONE,
+        /** Credencial digitada agora (null = manter a que já está guardada). */
+        val key: String? = null,
+        val timeoutSec: Int = com.brudre.streaming.sources.UserSource.DEFAULT_TIMEOUT_S,
+        val limit: Int = com.brudre.streaming.sources.UserSource.DEFAULT_LIMIT,
+        val categories: Set<String> = emptySet(),
+        val enabled: Boolean = true,
+        /** Servidor local: impressão digital SHA-256 confirmada pelo usuário. */
+        val localPin: String? = null,
+    )
+
+    /** Lê o certificado de um servidor da rede local para o usuário conferir antes de confirmar. */
+    fun readLocalCertificate(url: String, onResult: (Boolean, String, String?) -> Unit) {
         viewModelScope.launch {
-            val r = services.inspector.inspect(url)
+            try {
+                val c = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { com.brudre.streaming.sources.LocalServers.fetchCertificate(url.trim()) }
+                val fmt = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("pt", "BR"))
+                onResult(true, "SHA-256: ${com.brudre.streaming.sources.LocalServers.pretty(c.pin)}\nEmitido para: ${c.subject}" +
+                    (if (c.selfSigned) " (autoassinado)" else "\nEmissor: ${c.issuer}") + "\nVálido até ${fmt.format(c.notAfter)}. Confira com a impressão digital mostrada no seu servidor.", c.pin)
+            } catch (e: Exception) {
+                val f = com.brudre.streaming.sources.ErrorClassifier.classify(e)
+                onResult(false, f.summary, null)
+            }
+        }
+    }
+
+    /** Identifica o formato, valida estrutura e conexão e só então salva (nova fonte ou edição de [oldId]). */
+    fun saveSource(oldId: String?, name: String, url: String, onResult: (Boolean, String, String?) -> Unit) =
+        saveSource(oldId, SourceForm(name, url), onResult)
+
+    fun saveSource(oldId: String?, form: SourceForm, onResult: (Boolean, String, String?) -> Unit) {
+        viewModelScope.launch {
+            // Chave colada no endereço (…/api?apikey=…, comum em Torznab/Newznab): sai do endereço e vai cifrada.
+            val (url, urlKey) = if (form.url.contains("apikey=", true) && !com.brudre.streaming.sources.SearchTemplate.isTemplate(form.url)) com.brudre.streaming.sources.Torznab.splitKey(form.url) else form.url to null
+            val form = if (urlKey != null) form.copy(url = url, key = form.key?.ifBlank { null } ?: urlKey) else form
+            val key = form.key ?: oldId?.let { services.credentials.get(it) }
+            val oldSrc = oldId?.let { services.sourceStore.get(it) }
+            val pin = form.localPin ?: oldSrc?.localPin?.takeIf { com.brudre.streaming.sources.LocalServers.keyOf(oldSrc.url) == com.brudre.streaming.sources.LocalServers.keyOf(form.url) }
+            // Servidor local: a fixação vale já para o teste; se não salvar, é desfeita.
+            pin?.let { com.brudre.streaming.sources.LocalServers.register(form.url, it) }
+            fun undoPin() { if (pin != null && services.sourceStore.current.none { it.localPin != null && com.brudre.streaming.sources.LocalServers.keyOf(it.url) == com.brudre.streaming.sources.LocalServers.keyOf(form.url) }) com.brudre.streaming.sources.LocalServers.unregister(form.url) }
+            // Formato escolhido à mão: as mesmas validações de segurança e de estrutura valem.
+            val r = services.inspector.inspect(form.url, forcedType = form.type, key = key, auth = form.auth)
             val type = r.type
             if (type == null || !r.test.ok) {
-                onResult(false, (type?.let { "${it.label} — " } ?: "") + r.test.message, r.test.detail)
+                undoPin()
+                val hint = if (pin == null && com.brudre.streaming.sources.UserSourcesJson.mayBeLocal(form.url)) "\nServidor da rede local? Use \"Ler certificado\" e confirme antes de salvar." else ""
+                onResult(false, (type?.let { "${it.label} — " } ?: "") + r.test.message + hint, r.test.detail)
                 return@launch
             }
-            val clean = url.trim()
+            val clean = form.url.trim()
+            if (!com.brudre.streaming.sources.UserSourcesJson.isSafe(type, clean)) {
+                undoPin()
+                onResult(false, "${com.brudre.streaming.sources.ErrorKind.BLOCKED.title}: endereço não permitido para ${type.label}", null)
+                return@launch
+            }
             services.sourceStore.duplicateOf(clean, oldId)?.let { d ->
+                undoPin()
                 onResult(false, "Fonte duplicada: este endereço já está cadastrado como \"${d.name}\" (${d.type.label}).", null)
                 return@launch
             }
+            val old = oldId?.let { services.sourceStore.get(it) }
             val src = com.brudre.streaming.sources.UserSource(
                 id = com.brudre.streaming.sources.UserSource.idFor(type, clean),
-                name = name.trim().ifBlank { r.suggestedName ?: type.label }.take(60),
-                url = clean, type = type, priority = services.sourceStore.current.size, lastTest = r.test, config = r.config,
+                name = form.name.trim().ifBlank { r.suggestedName ?: type.label }.take(60),
+                url = clean, type = type, enabled = form.enabled, priority = old?.priority ?: services.sourceStore.current.size, lastTest = r.test, config = r.config,
+                auth = form.auth, timeoutSec = form.timeoutSec.coerceIn(3, 60), resultLimit = form.limit.coerceIn(5, 200),
+                categories = form.categories, manualType = form.type != null, stats = old?.stats ?: com.brudre.streaming.sources.SourceStats(),
+                localPin = pin, pending = false,
             )
             try {
-                if (oldId != null) services.sourceStore.replace(oldId, src.copy(stats = services.sourceStore.get(oldId)?.stats ?: src.stats)) else services.sourceStore.put(src)
+                if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
+                if (form.key != null) services.credentials.put(src.id, form.key.ifBlank { null }) else if (oldId != null) services.credentials.move(oldId, src.id)
+                if (form.auth == com.brudre.streaming.sources.AuthMethod.NONE && type != com.brudre.streaming.sources.SourceType.TORZNAB && !(r.config?.contains("{key}") ?: false) && !clean.contains("{key}")) services.credentials.put(src.id, null)
                 afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
                 onResult(true, "${type.label} salvo: ${r.test.message}", null)
             } catch (e: Exception) {
+                undoPin()
                 onResult(false, e.message ?: "Não foi possível salvar", e.toString())
             }
         }
     }
+
+    /** Tem credencial guardada? (para a tela mostrar "guardada" sem nunca exibir o valor) */
+    fun hasCredential(id: String) = services.credentials.has(id)
 
     /**
      * Salvar sem validar: registra uma fonte temporariamente indisponível, DESATIVADA até um teste dar certo.
@@ -676,7 +738,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private suspend fun runTest(src: com.brudre.streaming.sources.UserSource): String {
         val store = services.sourceStore
         if (src.pending) {
-            val r = services.inspector.inspect(src.url)
+            val r = services.inspector.inspect(src.url, key = services.credentials.get(src.id), auth = src.auth)
             return when {
                 r.type == null || !r.test.ok -> { store.saveTest(src.id, r.test); "${src.name}: ainda não validada — ${r.test.message}" }
                 r.type != src.type -> {
@@ -687,7 +749,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 else -> { store.markValidated(src.id, r.test, r.config); afterSourcesChanged(src.id); "${src.name}: validada (${r.type.label}, ${r.test.message}). Ative quando quiser." }
             }
         }
-        val r = services.inspector.inspect(src.url, forcedType = src.type)
+        val r = services.inspector.inspect(src.url, forcedType = src.type, key = services.credentials.get(src.id), auth = src.auth)
         store.saveTest(src.id, r.test, r.config)
         return "${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}"
     }
@@ -702,17 +764,20 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _testingSources.value = _testingSources.value + id
         viewModelScope.launch {
             try {
-                val r = services.inspector.inspect(src.url)
+                val key = services.credentials.get(src.id)
+                // Formato escolhido à mão é respeitado; senão, identifica de novo.
+                val r = services.inspector.inspect(src.url, forcedType = if (src.manualType) src.type else null, key = key, auth = src.auth)
                 val t = r.type
                 if (t != null && r.test.ok && t != src.type && com.brudre.streaming.sources.UserSourcesJson.isSafe(t, src.url)) {
                     val converted = src.copy(id = com.brudre.streaming.sources.UserSource.idFor(t, src.url), type = t, lastTest = r.test, config = r.config)
                     services.sourceStore.replace(src.id, converted)
+                    services.credentials.move(src.id, converted.id)
                     afterSourcesChanged(src.id, converted.id)
                     onResult("${src.name}: formato redetectado — agora ${t.label} (antes ${src.type.label}). ${r.test.message}")
                 } else if (src.pending) {
                     onResult(runTest(src))
                 } else {
-                    val test = if (t == null) r.test else if (t == src.type) r.test else services.inspector.inspect(src.url, forcedType = src.type).test
+                    val test = if (t == null) r.test else if (t == src.type) r.test else services.inspector.inspect(src.url, forcedType = src.type, key = key, auth = src.auth).test
                     services.sourceStore.saveTest(src.id, test, if (t == src.type) r.config else null)
                     onResult("${src.name}: ${if (test.ok) "OK" else "falhou"} — ${test.message}")
                 }
@@ -746,7 +811,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         afterSourcesChanged(id)
     }
 
-    fun deleteSource(id: String) { services.sourceStore.remove(id); afterSourcesChanged(id) }
+    fun deleteSource(id: String) { services.sourceStore.remove(id); services.credentials.put(id, null); afterSourcesChanged(id) }
 
     /** Exporta para um arquivo na pasta do app (acessível por gerenciadores de arquivos da TV). */
     fun exportSources(onResult: (String) -> Unit) {

@@ -28,6 +28,7 @@ class SourceStore(context: Context, settings: AppSettings) {
     val current: List<UserSource> get() = _sources.value
 
     init {
+        syncLocal(current)
         // Migração da 8.0: catálogos e listas M3U guardados nas configurações antigas.
         val s = settings.current
         if (s.feeds.isNotEmpty() || s.customLists.isNotEmpty()) {
@@ -48,7 +49,13 @@ class SourceStore(context: Context, settings: AppSettings) {
         val normalized = list.mapIndexed { i, s -> s.copy(priority = i) }
         prefs.edit().putString(KEY, UserSourcesJson.listToJson(normalized)).commit()
         _sources.value = normalized
+        syncLocal(normalized)
     }
+
+    /** Servidores locais confirmados passam a valer para o guarda de rede (e deixam de valer ao excluir a fonte). */
+    private fun syncLocal(list: List<UserSource>) = LocalServers.sync(
+        list.mapNotNull { s -> s.localPin?.let { pin -> LocalServers.keyOf(s.url)?.let { it to pin } } }.toMap(),
+    )
 
     fun get(id: String) = current.firstOrNull { it.id == id }
     fun ofType(vararg types: SourceType) = current.filter { it.type in types }
@@ -100,9 +107,9 @@ class SourceStore(context: Context, settings: AppSettings) {
 
     /** Resultado real de uso (reprodução/pesquisa). Gravado sem bloquear: chamado de várias threads. */
     @Synchronized
-    fun recordResult(id: String, ok: Boolean, error: String? = null) {
+    fun recordResult(id: String, ok: Boolean, error: String? = null, latencyMs: Int? = null) {
         if (current.none { it.id == id }) return
-        save(current.map { if (it.id == id) it.copy(stats = it.stats.record(ok, error)) else it })
+        save(current.map { if (it.id == id) it.copy(stats = it.stats.record(ok, error, latencyMs = latencyMs)) else it })
     }
 
     /** Sobe (delta = -1) ou desce (+1) na prioridade. */
@@ -137,12 +144,16 @@ class SourceInspector(
     private val validator: StreamValidator,
     private val search: () -> SearchRepository,
 ) {
+    @Volatile private var key: String? = null
+    @Volatile private var auth: AuthMethod = AuthMethod.NONE
     private val client = guarded.newBuilder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).callTimeout(25, TimeUnit.SECONDS).build()
 
     /** [config] = configuração resolvida no teste (modelo OpenSearch, descritor REST), gravada com a fonte. */
     data class Inspection(val type: SourceType?, val test: SourceTest, val suggestedName: String?, val config: String? = null)
 
-    suspend fun inspect(url: String, forcedType: SourceType? = null): Inspection = withContext(Dispatchers.IO) {
+    suspend fun inspect(url: String, forcedType: SourceType? = null, key: String? = null, auth: AuthMethod = AuthMethod.NONE): Inspection = withContext(Dispatchers.IO) {
+        this@SourceInspector.key = key
+        this@SourceInspector.auth = auth
         val u = url.trim()
         val now = System.currentTimeMillis()
         fun fail(kind: ErrorKind, msg: String, detail: String? = null) = Inspection(null, SourceTest(false, now, "${kind.title}: $msg", 0, kind.name, detail ?: msg), null)
@@ -151,7 +162,7 @@ class SourceInspector(
         val type: SourceType
         if (forcedType != null) type = forcedType else {
             if (SearchTemplate.isTemplate(u)) {
-                SearchTemplate.check(u)?.let { return@withContext fail(ErrorKind.BLOCKED, it) }
+                SearchTemplate.check(u.replace("{key}", "chave"))?.let { return@withContext fail(ErrorKind.BLOCKED, it) }
             } else if (!u.startsWith("magnet:", true)) {
                 UrlGuard.check(u)?.let { return@withContext fail(ErrorKind.BLOCKED, it) }
                 if (!u.startsWith("https://", true)) return@withContext fail(ErrorKind.BLOCKED, "Use um endereço https:// (conexões sem criptografia são bloqueadas)")
@@ -159,9 +170,13 @@ class SourceInspector(
             val det = try {
                 if (u.startsWith("magnet:", true) || SearchTemplate.isTemplate(u)) SourceDetector.classify(u, null, ByteArray(0)) else head(u)
             } catch (e: Exception) {
-                return@withContext failWith(e)
+                if (e is CancellationException) throw e
+                // Indexadores costumam recusar o endereço "puro" (400/401/404); só respondem a t=caps.
+                if (e is HttpStatusException && probeTorznab(u) != null) SourceDetector.Detection(SourceType.TORZNAB, "Torznab/Newznab")
+                else return@withContext failWith(e)
             }
-            type = det.type ?: return@withContext fail(
+            val torznab = if (det.type == null && !u.startsWith("magnet:", true) && !SearchTemplate.isTemplate(u) && !det.reason.contains("executável", true)) probeTorznab(u) else null
+            type = det.type ?: torznab ?: return@withContext fail(
                 when {
                     u.startsWith("magnet:", true) -> ErrorKind.MAGNET
                     det.reason.contains("executável", true) -> ErrorKind.BLOCKED
@@ -178,6 +193,13 @@ class SourceInspector(
         } catch (e: Exception) {
             failWith(e, type)
         }
+    }
+
+    /** Endereço que não se identificou sozinho: é um endpoint Torznab/Newznab? (responde só com t=caps) */
+    private suspend fun probeTorznab(url: String): SourceType? = Torznab.candidates(url).firstNotNullOfOrNull { c ->
+        // Credencial recusada também identifica o protocolo (o teste mostra a mensagem do indexador).
+        runCatching { Torznab.parseCaps(search().fetch(Torznab.capsUrl(c, key)), c); SourceType.TORZNAB }
+            .getOrElse { e -> if (e is ClassifiedException && e.kind == ErrorKind.HTTP && e.message?.contains("Credencial") == true) SourceType.TORZNAB else null }
     }
 
     private fun head(url: String): SourceDetector.Detection {
@@ -204,15 +226,28 @@ class SourceInspector(
             SourceType.REST -> {
                 val text = fetchText(url)
                 val d = RestDescriptor.parse(text)
-                val adapter = RestAdapter(d)
-                val sample = SearchTemplate.Query("big buck bunny", null, "2008", "movie", 1)
-                val pg = adapter.parse(search().fetch(adapter.url(sample, 1)!!, d.headers), "teste")
-                Inspection(type, SourceTest(true, now, "API REST respondeu: ${pg.items.size} resultado(s) para \"${sample.text}\"", pg.items.size), d.name, text.take(UserSource.MAX_CONFIG))
+                if (d.needsKey && key.isNullOrEmpty()) throw ClassifiedException(ErrorKind.HTTP, "Esta API exige uma chave: informe em \"Credencial\" (fica cifrada no aparelho)")
+                val adapter = RestAdapter(d, key)
+                val sample = SearchTemplate.Query(d.sampleQuery ?: "big buck bunny", null, null, "movie", 1)
+                val pg = adapter.parse(search().fetch(adapter.url(sample, 1)!!, adapter.headers + listOfNotNull(auth.header(key)).toMap(), adapter.body(sample, 1)), "teste")
+                Inspection(type, SourceTest(true, now, "API REST respondeu: ${pg.items.size} resultado(s) reproduzíveis para \"${sample.text}\"", pg.items.size), d.name, text.take(UserSource.MAX_CONFIG))
+            }
+            SourceType.TORZNAB -> {
+                // 1) capacidades (no endereço digitado ou em …/api); 2) pesquisa real com a amostra; 3) segunda página
+                var lastError: Exception? = null
+                val caps = Torznab.candidates(url).firstNotNullOfOrNull { c ->
+                    UrlGuard.check(c)?.let { throw BlockedUrlException(it) }
+                    try { Torznab.parseCaps(search().fetch(Torznab.capsUrl(c, key)), c) } catch (e: ClassifiedException) { if (e.kind == ErrorKind.HTTP) throw e; lastError = e; null } catch (e: Exception) { lastError = e; null }
+                } ?: throw (lastError ?: ClassifiedException(ErrorKind.FORMAT, "Não respondeu às capacidades Torznab/Newznab"))
+                val adapter = TorznabAdapter(caps, key)
+                val sample = SearchTemplate.Query("night of the living dead", null, "1968", "movie", 1)
+                val pg = adapter.parse(search().fetch(adapter.url(sample, 1)), "teste")
+                Inspection(type, SourceTest(true, now, "${caps.summary}. Pesquisa de teste: ${pg.items.size} resultado(s) reproduzíveis (magnet/.torrent)" + if (pg.hasMore) ", há mais páginas" else "", pg.items.size), caps.server ?: UrlGuard.hostOf(caps.base), caps.toConfig())
             }
             SourceType.SEARCH -> {
                 SearchTemplate.check(url)?.let { throw BlockedUrlException(it) }
                 val sample = SearchTemplate.Query("big buck bunny", "movie:10378", "2008", "movie", 1)
-                val text = search().fetch(SearchTemplate.expand(url, sample))
+                val text = search().fetch(SearchTemplate.expand(url, sample).replace("{key}", java.net.URLEncoder.encode(key ?: "", "UTF-8")), listOfNotNull(auth.header(key)).toMap())
                 val feed = SearchRepository.parse(text, "teste")
                 Inspection(type, SourceTest(true, now, "API respondeu: ${feed.items.size} resultado(s) para \"${sample.text}\"", feed.items.size), UrlGuard.hostOf(url.substringBefore('{')))
             }

@@ -104,6 +104,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm.launcher = { startActivity(it) }
+        // Homologação: tempo de abertura a frio (até a primeira tela desenhada).
+        window.decorView.post { com.brudre.streaming.data.Homologation.onFirstFrame() }
         // Magnet / .torrent aberto ou compartilhado por outro app.
         if (savedInstanceState == null) vm.handleIncoming(intent)
         setContent {

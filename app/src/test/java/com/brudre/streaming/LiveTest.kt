@@ -150,7 +150,11 @@ class LiveTest {
 
     @Test fun urlGuard() {
         assertNull(UrlGuard.check("https://archive.org/download/x/y.mp4"))
+        // 9.2: rede privada só como servidor local confirmado (certificado fixado)
+        assertNotNull(UrlGuard.check("http://192.168.0.10:8080/lista.m3u"))
+        com.brudre.streaming.sources.LocalServers.register("http://192.168.0.10:8080/lista.m3u", "ab".repeat(32))
         assertNull(UrlGuard.check("http://192.168.0.10:8080/lista.m3u"))
+        com.brudre.streaming.sources.LocalServers.sync(emptyMap())
         assertNotNull(UrlGuard.check("file:///sdcard/a.mp4"))
         assertNotNull(UrlGuard.check("javascript:alert(1)"))
         assertNotNull(UrlGuard.check("content://com.x/y"))

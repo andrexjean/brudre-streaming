@@ -36,7 +36,9 @@ class GuardInterceptor : Interceptor {
 object GuardDns : Dns {
     override fun lookup(hostname: String): List<InetAddress> {
         val all = Dns.SYSTEM.lookup(hostname)
-        val ok = all.filterNot { UrlGuard.isBlockedAddress(it) }
+        // Nomes que resolvem para a rede privada só valem para servidores locais cadastrados (anti-SSRF / DNS rebinding).
+        val local = LocalServers.isRegisteredHost(hostname)
+        val ok = all.filterNot { UrlGuard.isBlockedAddress(it) || (LocalServers.isPrivate(it) && !local) }
         if (ok.isEmpty()) throw UnknownHostException("Destino bloqueado: $hostname")
         return ok
     }
@@ -47,6 +49,9 @@ object GuardedHttp {
     fun client(base: OkHttpClient): OkHttpClient = base.newBuilder()
         .cache(null)
         .dns(GuardDns)
+        // Validação padrão do Android; certificado fixado só para servidores locais confirmados pelo usuário.
+        .sslSocketFactory(LocalServers.socketFactory, LocalServers.trustManager)
+        .hostnameVerifier(LocalServers.hostnameVerifier)
         // Antes de conectar (IPs literais não passam pelo DNS) e em cada redirecionamento.
         .addInterceptor(GuardInterceptor())
         .addNetworkInterceptor(GuardInterceptor())

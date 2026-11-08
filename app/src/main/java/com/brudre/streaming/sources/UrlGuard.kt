@@ -39,7 +39,11 @@ object UrlGuard {
         val host = uri.host?.lowercase()?.trimEnd('.') ?: return "Endereço sem servidor"
         if (host.isEmpty()) return "Endereço sem servidor"
         if (host == "localhost" || host.endsWith(".localhost")) return "Destino local bloqueado"
-        literalAddress(host)?.let { if (isBlockedAddress(it)) return "Destino local bloqueado" }
+        literalAddress(host)?.let {
+            if (isBlockedAddress(it)) return "Destino local bloqueado"
+            // Rede privada: só servidor local cadastrado (HTTPS com certificado confirmado pelo usuário).
+            if (LocalServers.isPrivate(it) && !LocalServers.allows(url)) return "Endereço da rede local: cadastre como servidor local (HTTPS com certificado confirmado)"
+        }
         if (uri.port != -1 && uri.port !in 1..65535) return "Porta inválida"
         if (isExecutablePath(uri.rawPath)) return "Arquivo executável bloqueado"
         return null

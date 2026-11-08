@@ -14,6 +14,8 @@ import kotlinx.coroutines.withTimeout
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
@@ -30,7 +32,8 @@ object SearchTemplate {
 
     fun isTemplate(url: String) = url.contains("{query}") || url.contains("{slug}")
 
-    data class Query(val text: String, val tmdbId: String? = null, val year: String? = null, val type: String? = null, val season: Int? = null, val page: Int = 1)
+    /** [category] = "filmes", "series"… — fontes que declaram outras categorias não são consultadas. */
+    data class Query(val text: String, val tmdbId: String? = null, val year: String? = null, val type: String? = null, val season: Int? = null, val page: Int = 1, val category: String? = null)
 
     fun slug(text: String) = TitleMatcher.normalize(text).replace(' ', '-')
 
@@ -74,6 +77,7 @@ data class SearchPage(val hits: List<SearchHit>, val moreFrom: Set<String>)
 class SearchRepository(
     guarded: OkHttpClient,
     private val store: SourceStore,
+    private val credentials: CredentialStore? = null,
 ) {
     private val client = guarded.newBuilder().connectTimeout(8, TimeUnit.SECONDS).readTimeout(10, TimeUnit.SECONDS).callTimeout(PER_SOURCE_MS, TimeUnit.MILLISECONDS).build()
     /** Fontes com autenticação: sem seguir redirecionamentos (o token nunca vai para outro servidor). */
@@ -91,7 +95,7 @@ class SearchRepository(
 
     /** Página [page] (1, 2…). Com [only], consulta só as fontes indicadas (as que ainda têm resultados). */
     suspend fun page(q: SearchTemplate.Query, page: Int, only: Set<String>? = null): SearchPage = coroutineScope {
-        val list = sources().filter { only == null || it.id in only }
+        val list = sources().filter { (only == null || it.id in only) && it.serves(q.category) }
         if (list.isEmpty() || q.text.isBlank()) return@coroutineScope SearchPage(emptyList(), emptySet())
         val key = listOf(q.text, q.tmdbId, q.year, q.type, q.season, page, list.joinToString { it.id }).joinToString("|")
         cache[key]?.let { (at, p) -> if (System.currentTimeMillis() - at < CACHE_MS) return@coroutineScope p }
@@ -99,9 +103,11 @@ class SearchRepository(
             async {
                 semaphore.withPermit {
                     try {
-                        val adapter = Adapters.forSource(src)
-                        val r = withTimeout(PER_SOURCE_MS + 2_000) { query(src, adapter, q, page) } ?: return@withPermit null
-                        store.recordResult(src.id, true)
+                        val key = credentials?.get(src.id)
+                        val adapter = Adapters.forSource(src, key)
+                        val t0 = System.currentTimeMillis()
+                        val r = withTimeout(src.timeoutSec * 1000L + 2_000) { query(src, adapter, q, page, key) } ?: return@withPermit null
+                        store.recordResult(src.id, true, latencyMs = (System.currentTimeMillis() - t0).toInt())
                         src to r
                     } catch (e: CancellationException) {
                         throw e
@@ -114,7 +120,7 @@ class SearchRepository(
                 }
             }
         }.awaitAll().filterNotNull()
-        val hits = results.flatMap { (src, r) -> r.items.take(MAX_RESULTS).map { SearchHit(src, it) } }
+        val hits = results.flatMap { (src, r) -> r.items.take(src.resultLimit.coerceAtMost(MAX_RESULTS * 4)).map { SearchHit(src, it) } }
         // Mesma obra vinda de duas fontes fica nas duas (são alternativas); duplicatas da MESMA fonte saem.
         val dedup = hits.distinctBy { it.source.id + "|" + (it.item.tmdbId ?: TitleMatcher.normalize(it.item.title.name)) + "|" + it.item.title.year + "|" + it.item.episodes.firstOrNull()?.let { e -> "${e.season}x${e.number}" } }
         val p = SearchPage(dedup, results.filter { it.second.hasMore }.map { it.first.id }.toSet())
@@ -123,8 +129,8 @@ class SearchRepository(
     }
 
     /** Uma consulta HTTP (cancelável) a uma fonte, com limite por minuto e resposta limitada a [MAX_BYTES]. */
-    suspend fun query(src: UserSource, adapter: SearchAdapter, q: SearchTemplate.Query, page: Int): AdapterPage? {
-        val url = adapter.url(q, page) ?: return null
+    suspend fun query(src: UserSource, adapter: SearchAdapter, q: SearchTemplate.Query, page: Int, key: String? = null): AdapterPage? {
+        val url = adapter.url(q, page)?.replace("{key}", java.net.URLEncoder.encode(key ?: "", "UTF-8")) ?: return null
         UrlGuard.check(url)?.let { throw BlockedUrlException(it) }
         adapter.capabilities.ratePerMinute?.let { rate ->
             val interval = 60_000L / rate
@@ -132,16 +138,21 @@ class SearchRepository(
             if (wait > 0) kotlinx.coroutines.delay(wait.coerceAtMost(PER_SOURCE_MS / 2))
         }
         lastCall[src.id] = System.currentTimeMillis()
-        val text = fetch(url, adapter.headers)
+        val headers = adapter.headers + listOfNotNull(src.auth.header(key)).toMap()
+        val text = fetch(url, headers, adapter.body(q, page), src.timeoutSec)
         return adapter.parse(text, src.id)
     }
 
     /** Chamada HTTP cancelável de verdade: ao cancelar a coroutine (saiu da tela), a conexão é abortada. */
-    suspend fun fetch(url: String, headers: Map<String, String> = emptyMap()): String {
+    suspend fun fetch(url: String, headers: Map<String, String> = emptyMap(), body: String? = null, timeoutSec: Int = UserSource.DEFAULT_TIMEOUT_S): String {
         val req = Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT)
             .header("Accept", "application/json, application/atom+xml, application/rss+xml;q=0.9, */*;q=0.5")
-            .apply { headers.forEach { (k, v) -> header(k, v) } }.build()
-        val call: Call = (if (headers.isEmpty()) client else authClient).newCall(req)
+            .apply { headers.forEach { (k, v) -> header(k, v) } }
+            .apply { if (body != null) post(body.toRequestBody("application/json; charset=utf-8".toMediaType())) }
+            .build()
+        val base = if (headers.isEmpty()) client else authClient
+        val c = if (timeoutSec * 1000L == PER_SOURCE_MS) base else base.newBuilder().callTimeout(timeoutSec.toLong(), TimeUnit.SECONDS).build()
+        val call: Call = c.newCall(req)
         val response = kotlinx.coroutines.suspendCancellableCoroutine<okhttp3.Response> { cont ->
             cont.invokeOnCancellation { call.cancel() }
             call.enqueue(object : okhttp3.Callback {

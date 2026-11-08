@@ -492,6 +492,7 @@ private fun SourceOptionsDialog(details: TitleDetails, onDismiss: () -> Unit, on
                         listOfNotNull(o.formats, o.qualityInfo, o.languageInfo, "${o.playables.size} vídeo(s)", o.health).joinToString(" • "),
                         color = BruColors.TextFaint, fontSize = 13.sp,
                     )
+                    if (o.reasons.isNotEmpty()) Text("Por que nesta posição: " + o.reasons.joinToString("; "), color = BruColors.TextDim, fontSize = 11.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, modifier = Modifier.testTag("option_reasons_$i"))
                 }
             }
             Spacer(Modifier.height(10.dp))

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caps>
+  <server version="1.3" title="BruDre Torznab de referencia (CI)" />
+  <limits max="3" default="3" />
+  <searching>
+    <search available="yes" supportedParams="q" />
+    <tv-search available="yes" supportedParams="q,season,ep,tmdbid" />
+    <movie-search available="yes" supportedParams="q,imdbid,tmdbid" />
+  </searching>
+  <categories>
+    <category id="2000" name="Movies"><subcat id="2030" name="Movies/SD" /></category>
+    <category id="5000" name="TV"><subcat id="5030" name="TV/SD" /><subcat id="5080" name="TV/Documentary" /></category>
+    <category id="4000" name="PC" />
+    <category id="6000" name="XXX" />
+  </categories>
+</caps>
