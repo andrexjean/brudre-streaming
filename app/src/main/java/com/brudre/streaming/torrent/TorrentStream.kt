@@ -26,6 +26,7 @@ class TorrentStream(
     @Volatile var subtitles: List<TorrentSubtitle> = emptyList()
     /** Servidor web do titular baixado pelo OkHttp protegido (null se o torrent não tem web seed). */
     @Volatile var webSeed: WebSeedFetcher? = null
+    @Volatile var httpsTrackers: HttpsTrackerBridge? = null
 
     /** Peças que o player precisa agora: janela à frente da leitura, fim do arquivo (índice do MP4) e legendas. */
     fun wantedPieces(): List<Int> {
@@ -137,6 +138,7 @@ class TorrentStream(
     fun close() {
         closed = true
         webSeed?.stop()
+        httpsTrackers?.stop()
     }
 
     private inline fun <T> safe(block: () -> T): T? = try {

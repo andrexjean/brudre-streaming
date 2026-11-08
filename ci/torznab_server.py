@@ -113,6 +113,13 @@ class Handler(BaseHTTPRequestHandler):
             if q.get("jackett_apikey", [""])[0] != self.apikey:
                 return self.send(401, b"unauthorized", "text/plain")
             return self.send(200, self.torrent, "application/x-bittorrent")
+        if u.path == "/announce":
+            # Tracker HTTPS mínimo (BEP 3/23) para o teste do anúncio pelo app: 2 participantes de exemplo (TEST-NET-3)
+            if "info_hash" not in q or "peer_id" not in q:
+                return self.send(200, b"d14:failure reason17:missing info_hashe", "text/plain")
+            peers = bytes([203, 0, 113, 5, 0x1A, 0xE1, 203, 0, 113, 6, 0xC8, 0xD5])
+            body = b"d8:completei3e10:incompletei1e8:intervali1800e5:peers12:" + peers + b"e"
+            return self.send(200, body, "text/plain")
         if u.path.endswith(".nzb"):
             return self.send(200, b"<nzb/>", "application/x-nzb")
         if u.path not in ("/api", "/torznab/api", "/vazio/api", "/semvideo/api"):

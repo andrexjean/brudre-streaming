@@ -185,6 +185,10 @@ class TorrentEngine(
         webSeedsOf(ref, meta).takeIf { it.isNotEmpty() }?.let { seeds ->
             stream.webSeed = WebSeedFetcher(stream, seeds, http) { err -> lastWebSeedError = err }.also { it.start() }
         }
+        // Trackers HTTPS pelo OkHttp protegido (o HTTPS interno do libtorrent não valida certificados no Android)
+        httpsTrackersOf(ref, meta).takeIf { it.isNotEmpty() }?.let { list ->
+            stream.httpsTrackers = HttpsTrackerBridge(http, th, meta?.infoHash ?: ti.infoHash().toHex(), list, (0 until ti.numFiles()).sumOf { ti.files().fileSize(it) }).also { it.start() }
+        }
         active[stream.key] = stream
         TorrentStreams.register(stream)
         Log.i(TAG, "Torrent pronto: ${files.fileName(index)} (${CacheManager.formatBytes(size)}), peças=${ti.numPieces()}, legendas=${subtitleStreams.size}")
@@ -200,6 +204,8 @@ class TorrentEngine(
         val name: String, val connected: Int, val known: Int, val swarm: Int,
         val viaUdp: Int = 0, val viaHttps: Int = 0, val viaHttp: Int = 0, val viaDht: Int = 0,
         val trackerReplies: List<String> = emptyList(), val trackerErrors: List<String> = emptyList(), val alertsSeen: Int = 0,
+        /** Participantes do tracker HTTPS entregues ao motor; alertas do motor recebidos no total (diagnóstico). */
+        val httpsConnected: Int = 0, val totalAlerts: Int = 0,
     ) {
         val best get() = maxOf(connected, known, swarm)
         /** "tracker HTTPS (12), DHT (40)" ou "nenhum". */
@@ -229,12 +235,17 @@ class TorrentEngine(
         val stats = infos.map { ProbeStats() }
         val byName = infos.mapIndexedNotNull { i, ti -> ti?.name()?.let { it to i } }.toMap()
         // Alertas de tracker e DHT, lidos por reflexão (nomes estáveis do libtorrent; ausentes = mecanismo "indeterminado")
+        val bridgesForProbe = ArrayList<HttpsTrackerBridge>()
+        val globalAlerts = java.util.concurrent.atomic.AtomicInteger()
         val listener = object : org.libtorrent4j.AlertListener {
             override fun types(): IntArray = listOf("TRACKER_REPLY", "TRACKER_ERROR", "TRACKER_WARNING", "DHT_REPLY")
                 .mapNotNull { n -> runCatching { org.libtorrent4j.alerts.AlertType.valueOf(n).swig() }.getOrNull() }.toIntArray()
             override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) {
+                globalAlerts.incrementAndGet()
                 val name = runCatching { alert.javaClass.getMethod("torrentName").invoke(alert) as? String }.getOrNull()
-                val st = name?.let { byName[it] }?.let { stats.getOrNull(it) } ?: return
+                // Nome não disponível: com um só torrent no teste, o alerta é dele
+                val idx = name?.let { byName[it] } ?: if (infos.size == 1) 0 else null
+                val st = idx?.let { stats.getOrNull(it) } ?: return
                 st.alerts++
                 val msg = com.brudre.streaming.sources.Secrets.redactText(alert.message()) ?: return
                 val type = runCatching { alert.type().name }.getOrDefault("")
@@ -263,6 +274,15 @@ class TorrentEngine(
                 while (h == null && System.currentTimeMillis() - t0 < 10_000) { h = s.find(ti.infoHash())?.takeIf { it.isValid }; if (h == null) delay(100) }
                 h?.also { th -> handles += th; extraTrackers.forEach { runCatching { th.addTracker(AnnounceEntry(it)) } }; runCatching { th.resume(); th.forceReannounce(); th.forceDHTAnnounce() } }
             }
+            // Trackers HTTPS: anunciados pelo OkHttp (contagem exata por mecanismo)
+            val bridges = found.mapIndexed { i, th ->
+                val ti = infos[i]
+                if (th == null || ti == null) null else {
+                    val list = (runCatching { TorrentContent.parse(torrents[i]).trackers }.getOrDefault(emptyList()) + extraTrackers).filter { it.startsWith("https://", true) }.distinct()
+                    list.takeIf { it.isNotEmpty() }?.let { HttpsTrackerBridge(http, th, ti.infoHash().toHex(), it, (0 until ti.numFiles()).sumOf { ti.files().fileSize(it) }).also { b -> b.start() } }
+                }
+            }
+            bridgesForProbe.addAll(bridges.filterNotNull())
             val best = IntArray(infos.size)
             val conn = IntArray(infos.size)
             val known = IntArray(infos.size)
@@ -279,11 +299,17 @@ class TorrentEngine(
             }
             infos.mapIndexed { i, ti ->
                 val p = stats[i]
+                val b = bridges.getOrNull(i)
                 if (ti == null) PeerProbe("(inválido)", -1, -1, -1)
-                else PeerProbe(ti.name(), conn[i], known[i], best[i], p.udp, p.https, p.http, p.dht, p.replies.toList(), p.errors.toList(), p.alerts)
+                else PeerProbe(
+                    ti.name(), conn[i], known[i], maxOf(best[i], b?.swarm ?: 0), p.udp, p.https + (b?.peersReceived?.get() ?: 0), p.http, p.dht,
+                    p.replies.toList() + b?.replies.orEmpty(), p.errors.toList() + b?.errors.orEmpty(), p.alerts + (b?.replies?.size ?: 0) + (b?.errors?.size ?: 0),
+                    httpsConnected = b?.peersConnected?.get() ?: 0, totalAlerts = globalAlerts.get(),
+                )
             }
         } finally {
             runCatching { s.removeListener(listener) }
+            bridgesForProbe.forEach { it.stop() }
             session?.let { ss -> handles.forEach { runCatching { ss.remove(it, SessionHandle.DELETE_FILES) } } }
             dir.deleteRecursively()
             opening.decrementAndGet()
@@ -353,6 +379,10 @@ class TorrentEngine(
         runCatching { th.forceReannounce() }
         Log.i(TAG, "Fontes adicionadas: ${trackers.size} trackers; web seeds pelo OkHttp: ${webSeedsOf(ref, meta).size}")
     }
+
+    /** Trackers HTTPS do magnet e do .torrent (announce/announce-list). */
+    private fun httpsTrackersOf(ref: TorrentRef, meta: TorrentMeta?): List<String> =
+        (ref.magnet?.let { MagnetLink.parse(it) }?.trackers.orEmpty() + meta?.trackers.orEmpty()).filter { it.startsWith("https://", true) }.distinct()
 
     /** Servidores web do titular (magnet ws= e url-list do .torrent): só https e permitidos pelo UrlGuard. */
     private fun webSeedsOf(ref: TorrentRef, meta: TorrentMeta?): List<String> =

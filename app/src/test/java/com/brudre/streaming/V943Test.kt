@@ -189,6 +189,23 @@ class V943Test {
         assertTrue("página com itens descartados: há resultados brutos, nenhum reproduzível", p2.raw > 0 && p2.items.isEmpty())
     }
 
+    // 13. Tracker HTTPS (anúncio pelo OkHttp): resposta compacta, IPv6, lista e recusa
+    @Test fun t13_httpsTrackerAnnounceParsing() {
+        val T = com.brudre.streaming.torrent.TrackerAnnounce
+        val compact = "d8:completei3e10:incompletei1e8:intervali900e5:peers12:".toByteArray(Charsets.ISO_8859_1) +
+            byteArrayOf(203.toByte(), 0, 113, 5, 0x1A, 0xE1.toByte(), 203.toByte(), 0, 113, 6, 0xC8.toByte(), 0xD5.toByte()) + "e".toByteArray()
+        val r = T.parse(compact)
+        assertEquals(listOf("203.0.113.5" to 6881, "203.0.113.6" to 51413), r.peers)
+        assertEquals(900, r.interval); assertEquals(3, r.complete); assertEquals(1, r.incomplete); assertNull(r.failure)
+        val list = T.parse("d8:intervali60e5:peersld2:ip9:192.0.2.14:porti6881eeee".toByteArray())
+        assertEquals(listOf("192.0.2.1" to 6881), list.peers)
+        val fail = T.parse("d14:failure reason26:unregistered passkey=abcdee".toByteArray())
+        assertTrue(fail.peers.isEmpty()); assertFalse(fail.failure!!.contains("abcd"))
+        val url = T.url("https://t.example.org/announce", T.hexToBytes("bf16e86e7636315da5c443296bee3dd58c051039"), "-BD0920-abcdefghijkl".toByteArray(), 6881, 1000, "started")
+        assertTrue(url.startsWith("https://t.example.org/announce?info_hash=%BF%16%E8nv61%5D%A5%C4C%29k%EE%3D%D5%8C%05%109"))
+        assertTrue(url.contains("&compact=1") && url.endsWith("&event=started"))
+    }
+
     // 15. Cancelamento de pesquisas
     @Test fun t15_cancellationStopsRetriesImmediately() = runBlocking {
         var calls = 0

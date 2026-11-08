@@ -120,7 +120,8 @@ class V943DeviceTest {
     /** 3: registros antigos com segredo (fonte, teste, histórico de torrent) são migrados e o endereço continua funcionando. */
     @Test fun t51_oldRecordsMigrated() {
         val secret = "TokenAntigo98765"
-        val url = "$raw/feeds/blender-open-movies.json?token=$secret"
+        // api_key: o servidor de arquivos do GitHub ignora (com "token" ele tentaria autenticar e responderia 404)
+        val url = "$raw/feeds/blender-open-movies.json?api_key=$secret"
         val old = UserSource(UserSource.idFor(SourceType.CATALOG_JSON, url), "Antiga com token", url, SourceType.CATALOG_JSON,
             lastTest = com.brudre.streaming.sources.SourceTest(false, 1, "Falhou em $url", 0, ErrorKind.HTTP.name, "GET $url"))
         services.sourceStore.put(old)
@@ -131,8 +132,8 @@ class V943DeviceTest {
         services.torrentLibrary.sanitizeStored()
         val now = services.sourceStore.current.single { it.name == "Antiga com token" }
         assertEquals(1, moved)
-        assertTrue(now.url.endsWith("token=${Secrets.REF}"))
-        assertEquals(secret, Secrets.valueFor(services.credentials.get(now.id)!!, "token"))
+        assertTrue(now.url.endsWith("api_key=${Secrets.REF}"))
+        assertEquals(secret, Secrets.valueFor(services.credentials.get(now.id)!!, "api_key"))
         Thread.sleep(500)
         assertFalse(prefs.readText().contains(secret))
         assertFalse(File(File(ctx.applicationInfo.dataDir, "shared_prefs"), "brudre_torrents.xml").readText().contains(secret))
@@ -190,32 +191,39 @@ class V943DeviceTest {
     /** 13, 14: trackers HTTPS e UDP, DHT e falhas de certificado e DNS de tracker, com o mecanismo que achou participantes. */
     @Test fun t53_trackersHttpsUdpDhtAndFailures() {
         fun bytes(u: String) = runCatching { services.guardedHttp.newCall(Request.Builder().url(u).header("User-Agent", "Mozilla/5.0").build()).execute().use { if (it.isSuccessful) it.body?.bytes() else null } }.getOrNull()
-        val ubuntuPage = bytes("https://releases.ubuntu.com/noble/")?.let { String(it) }
-        val ubuntuLink = ubuntuPage?.let { Regex("href=\"([^\"]*live-server-amd64\\.iso\\.torrent)\"").find(it)?.groupValues?.get(1) }?.let { java.net.URI("https://releases.ubuntu.com/noble/").resolve(it).toString() }
-        val ubuntu = ubuntuLink?.let { bytes(it) }
         val synthetic = bytes("$raw/test-torrent/brudre-teste-serie.torrent")!!
-        // A) torrents oficiais, só com os trackers deles (Ubuntu usa tracker HTTPS) + DHT
-        val a = if (ubuntu != null) runBlocking { services.torrent.probePeers(listOf(ubuntu), 45, extraTrackers = emptyList()) }.single() else null
-        a?.let { TestUtil.log("Ubuntu: ${it.mechanisms}; respostas=${it.trackerReplies}; erros=${it.trackerErrors}; alertas=${it.alertsSeen}; enxame=${it.swarm}") }
-        // B) tracker UDP público + tracker HTTPS com certificado vencido / host errado + tracker inexistente (DNS)
-        val bad = listOf("udp://tracker.opentrackr.org:1337/announce", "https://expired.badssl.com/announce", "https://wrong.host.badssl.com/announce", "https://brudre-nao-existe.invalid/announce")
-        val b = runBlocking { services.torrent.probePeers(listOf(synthetic), 30, extraTrackers = bad) }.single()
-        TestUtil.log("Sintético: ${b.mechanisms}; respostas=${b.trackerReplies}; erros=${b.trackerErrors}; alertas=${b.alertsSeen}")
-        services.torrent.shutdownIfIdle()
-        val seen = (a?.alertsSeen ?: 0) + b.alertsSeen
-        if (seen == 0) { survey("Trackers e DHT", "PARTIAL", "o motor não entregou alertas de tracker/DHT neste ambiente: mecanismo indeterminado"); return }
-        val https = a?.let { it.viaHttps > 0 || it.trackerReplies.any { r -> r.startsWith("https://") } } ?: false
-        survey("Tracker HTTPS", if (https) "PASS" else if (a == null) "BLOCKED" else "PARTIAL", a?.let { "Ubuntu: ${it.trackerReplies.filter { r -> r.startsWith("https") }}; via ${it.mechanisms}" } ?: "listagem do Ubuntu indisponível")
-        val udp = b.trackerReplies.any { it.startsWith("udp://") } || b.viaUdp > 0 || (a?.viaUdp ?: 0) > 0
-        survey("Tracker UDP", if (udp) "PASS" else "PARTIAL", "respostas UDP: ${b.trackerReplies.filter { it.startsWith("udp") }}")
-        val dht = (a?.viaDht ?: 0) > 0 || b.viaDht > 0
-        survey("DHT", if (dht) "PASS" else "PARTIAL", "participantes via DHT: Ubuntu=${a?.viaDht} sintético=${b.viaDht}")
-        val certFail = b.trackerErrors.any { it.contains("badssl") && Regex("(?i)certif|ssl|verify|handshake").containsMatchIn(it) }
-        survey("Tracker com certificado inválido", if (certFail) "PASS" else "PARTIAL", b.trackerErrors.filter { it.contains("badssl") }.joinToString(" | ").take(300))
-        val dnsFail = b.trackerErrors.any { it.contains("brudre-nao-existe") }
-        survey("Tracker com falha de DNS", if (dnsFail) "PASS" else "PARTIAL", b.trackerErrors.filter { it.contains("brudre-nao-existe") }.joinToString(" | ").take(200))
-        // Validação de certificado nunca é desligada: um tracker com certificado inválido não pode responder com participantes
+        // A) determinístico: tracker HTTPS local (certificado fixado), certificado vencido, host errado, DNS inexistente, tracker UDP público
+        val k = key
+        val local = if (k != null) "$lanHost/announce" else null
+        if (local != null) LocalServers.register(local, LocalServers.fetchCertificate(local).pin)
+        val extra = listOfNotNull(local, "https://expired.badssl.com/announce", "https://wrong.host.badssl.com/announce", "https://brudre-nao-existe.invalid/announce", "udp://tracker.opentrackr.org:1337/announce")
+        val b = runBlocking { services.torrent.probePeers(listOf(synthetic), 30, extraTrackers = extra) }.single()
+        TestUtil.log("Trackers (sintético): ${b.mechanisms}; respostas=${b.trackerReplies}; erros=${b.trackerErrors}; alertas do motor=${b.totalAlerts}; HTTPS entregues=${b.httpsConnected}")
+        if (local != null) {
+            assertTrue("tracker HTTPS local respondeu: ${b.trackerReplies}", b.trackerReplies.any { it.startsWith("$lanHost/announce: 2") })
+            survey("Tracker HTTPS (servidor local, certificado fixado)", "PASS", "anúncio pelo OkHttp: 2 participantes recebidos, ${b.httpsConnected} entregues ao motor")
+        } else survey("Tracker HTTPS (servidor local)", "BLOCKED", "servidor de referência ausente")
+        val cert = b.trackerErrors.filter { it.contains("badssl") }
+        assertTrue("certificado inválido recusado: $cert", cert.size >= 2 && cert.all { it.contains("Certificado", true) })
         assertFalse("tracker com certificado inválido aceito", b.trackerReplies.any { it.contains("badssl") })
+        survey("Tracker com certificado inválido", "PASS", "vencido e host errado recusados: ${cert.joinToString(" | ").take(220)}")
+        val dns = b.trackerErrors.filter { it.contains("brudre-nao-existe") }
+        assertTrue("falha de DNS identificada: $dns", dns.any { it.contains("DNS") })
+        survey("Tracker com falha de DNS", "PASS", dns.joinToString(" | ").take(200))
+        val udp = b.trackerReplies.any { it.startsWith("udp://") } || b.viaUdp > 0
+        survey("Tracker UDP", if (udp) "PASS" else "PARTIAL", if (udp) "respostas: ${b.trackerReplies.filter { it.startsWith("udp") }}" else "sem alerta de resposta UDP do motor (alertas recebidos: ${b.totalAlerts})")
+        // B) rede pública: Ubuntu (tracker HTTPS oficial) só com os trackers dele + DHT
+        val ubuntuLink = bytes("https://releases.ubuntu.com/noble/")?.let { String(it) }?.let { Regex("href=\"([^\"]*live-server-amd64\\.iso\\.torrent)\"").find(it)?.groupValues?.get(1) }
+            ?.let { java.net.URI("https://releases.ubuntu.com/noble/").resolve(it).toString() }
+        val ubuntu = ubuntuLink?.let { bytes(it) }
+        val a = ubuntu?.let { runBlocking { services.torrent.probePeers(listOf(it), 45, extraTrackers = emptyList()) }.single() }
+        a?.let { TestUtil.log("Ubuntu: ${it.mechanisms}; respostas=${it.trackerReplies}; erros=${it.trackerErrors}; conhecidos=${it.known}; enxame=${it.swarm}") }
+        val pubHttps = a?.trackerReplies?.any { it.startsWith("https://") } == true
+        survey("Tracker HTTPS público (Ubuntu)", if (pubHttps) "PASS" else if (a == null) "BLOCKED" else "PARTIAL",
+            a?.let { "via ${it.mechanisms}; respostas ${it.trackerReplies}; erros ${it.trackerErrors.take(2)}" } ?: "listagem do Ubuntu indisponível")
+        val dht = (a?.viaDht ?: 0) > 0 || b.viaDht > 0
+        survey("DHT", if (dht) "PASS" else "PARTIAL", if (dht) "participantes via DHT: Ubuntu=${a?.viaDht} sintético=${b.viaDht}" else "sem alerta de DHT do motor; participantes conhecidos (todas as origens): Ubuntu=${a?.known}")
+        services.torrent.shutdownIfIdle()
     }
 
     /** 16: memória — testar e pesquisar várias fontes, uma por vez, não pode inchar o processo. */
