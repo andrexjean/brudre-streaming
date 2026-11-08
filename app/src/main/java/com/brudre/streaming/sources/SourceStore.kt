@@ -240,7 +240,7 @@ class SourceInspector(
                     try { Torznab.parseCaps(search().fetch(Torznab.capsUrl(c, key)), c) } catch (e: ClassifiedException) { if (e.kind == ErrorKind.HTTP) throw e; lastError = e; null } catch (e: Exception) { lastError = e; null }
                 } ?: throw (lastError ?: ClassifiedException(ErrorKind.FORMAT, "Não respondeu às capacidades Torznab/Newznab"))
                 val adapter = TorznabAdapter(caps, key)
-                val sample = SearchTemplate.Query("night of the living dead", null, "1968", "movie", 1)
+                val sample = SearchTemplate.Query("night of the living dead", null, "1968", "movie")
                 val pg = adapter.parse(search().fetch(adapter.url(sample, 1)), "teste")
                 Inspection(type, SourceTest(true, now, "${caps.summary}. Pesquisa de teste: ${pg.items.size} resultado(s) reproduzíveis (magnet/.torrent)" + if (pg.hasMore) ", há mais páginas" else "", pg.items.size), caps.server ?: UrlGuard.hostOf(caps.base), caps.toConfig())
             }

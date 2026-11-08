@@ -156,7 +156,7 @@ class V92DeviceTest {
         TestUtil.log("Cadastro público: ${r.first} ${r.second}")
         assertTrue(r.second, r.first)
         val src = services.sourceStore.current.single { it.type == SourceType.TORZNAB }
-        assertTrue("…/torznab/ → …/torznab/api descoberto", src.config!!.contains("/torznab/api"))
+        assertTrue("…/torznab/ → …/torznab/api descoberto", com.brudre.streaming.sources.TorznabCaps.fromConfig(src.config!!).base.endsWith("/torznab/api"))
         val movie = runBlocking { services.searchRepo.page(SearchTemplate.Query("Night of the Living Dead", "movie:10331", "1968", "movie", category = "filmes"), 1) }.hits
         TestUtil.log("Filme: ${movie.map { it.item.title.name + " " + it.item.tmdbId + " " + it.item.sources.map { s -> s.url } }}")
         assertEquals("movie:10331", movie.single().item.tmdbId)
@@ -241,12 +241,12 @@ class V92DeviceTest {
             }
         }.getOrElse { -1 to null }
         data class Src(val name: String, val page: String, val pattern: Regex)
-        val iso = Regex("href=\"([^\"]+?\\.torrent)\"", RegexOption.IGNORE_CASE)
+        val iso = Regex("href\\s*=\\s*['\"]?([^'\" >]*\\.torrent)(?=['\" >])", RegexOption.IGNORE_CASE)
         val list = listOf(
             Src("Debian", "https://cdimage.debian.org/debian-cd/current/amd64/bt-cd/", Regex("href=\"([^\"]*netinst\\.iso\\.torrent)\"")),
             Src("Ubuntu", "https://releases.ubuntu.com/noble/", Regex("href=\"([^\"]*live-server-amd64\\.iso\\.torrent)\"")),
             Src("Fedora", "https://torrent.fedoraproject.org/", iso),
-            Src("Linux Mint", "https://linuxmint.com/torrents/", iso),
+            Src("Linux Mint", "https://www.linuxmint.com/torrents/", iso),
             Src("Arch Linux", "https://archlinux.org/releng/releases/", Regex("href=\"(/releng/releases/[0-9.]+/torrent/)\"")),
             Src("openSUSE", "https://download.opensuse.org/tumbleweed/iso/", iso),
             Src("FreeBSD", "https://download.freebsd.org/releases/ISO-IMAGES/", iso),
@@ -265,11 +265,18 @@ class V92DeviceTest {
         val obtained = ArrayList<Pair<String, ByteArray>>()
         for (s in list) {
             val (code, page) = get(s.page)
-            if (page == null) { survey(s.name, if (code == -1) "BLOCKED" else "FAIL", "listagem HTTPS: ${if (code == -1) "sem conexão/bloqueada pela segurança" else "HTTP $code"}"); continue }
+            if (page == null) {
+                val why = when (code) { -1 -> "sem conexão ou bloqueada pela segurança do app"; 403, 429, 503 -> "HTTP $code (servidor recusa cliente automatizado)"; else -> "HTTP $code" }
+                survey(s.name, if (code == -1 || code == 403 || code == 429 || code == 503) "BLOCKED" else "FAIL", "listagem HTTPS: $why"); continue
+            }
             val html = String(page, Charsets.UTF_8)
             val link = s.pattern.findAll(html).map { it.groupValues[1].replace("&amp;", "&") }.firstOrNull()
                 ?.let { java.net.URI(s.page).resolve(it).toString() }
-            if (link == null) { survey(s.name, "PARTIAL", "listagem respondeu, nenhum .torrent HTTPS encontrado na página"); continue }
+            if (link == null) {
+                val hints = Regex("(?i)href\\s*=\\s*['\"]?([^'\" >]*torrent[^'\" >]*)").findAll(html).map { it.groupValues[1] }.distinct().take(4).toList()
+                survey(s.name, "PARTIAL", "listagem respondeu (HTTP $code), nenhum .torrent direto na página; links com 'torrent': ${hints.ifEmpty { listOf("nenhum") }}"); continue
+            }
+            if (!link.startsWith("https://")) { survey(s.name, "BLOCKED", ".torrent só por HTTP sem criptografia (recusado pelo app): $link"); continue }
             val (tc, bytes) = get(link)
             val meta = bytes?.let { b -> runCatching { TorrentContent.parse(b) }.getOrNull() }
             if (meta == null) { survey(s.name, "FAIL", ".torrent ${if (bytes == null) "não baixou (HTTP $tc)" else "inválido"}: $link"); continue }

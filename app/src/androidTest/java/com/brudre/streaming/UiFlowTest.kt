@@ -356,7 +356,8 @@ class UiFlowTest {
         waitTag("source_manager")
         waitFocused("src_tab_mine")
         TestUtil.shot("fontes_minhas")
-        // Direita → Catálogos → BitTorrent, OK abre a seção
+        // Direita → Biblioteca (9.2) → Catálogos → BitTorrent, OK abre a seção
+        remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_library")
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_catalogs")
         remote(KeyEvent.KEYCODE_DPAD_RIGHT); waitFocused("src_tab_torrent")
         remote(KeyEvent.KEYCODE_DPAD_CENTER)

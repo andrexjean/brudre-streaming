@@ -259,9 +259,12 @@ class SourceEngineTest {
         assertEquals(ErrorKind.FORMAT.name, html.test.kind)
         val blocked = runBlocking { insp.inspect("http://example.com/a.json") }
         assertEquals(ErrorKind.BLOCKED.name, blocked.test.kind)
-        // Endereço sem rota (servidor inalcançável): tempo esgotado ou servidor indisponível
+        // 9.2: rede privada sem confirmação de servidor local é bloqueada antes de qualquer conexão
+        val lan = runBlocking { insp.inspect("https://10.255.255.1/catalogo.json") }
+        assertEquals(ErrorKind.BLOCKED.name, lan.test.kind)
+        // Endereço público sem rota (faixa de documentação TEST-NET-1): tempo esgotado ou servidor indisponível
         val t0 = System.currentTimeMillis()
-        val down = runBlocking { insp.inspect("https://10.255.255.1/catalogo.json") }
+        val down = runBlocking { insp.inspect("https://192.0.2.1/catalogo.json") }
         TestUtil.log("Inalcançável em ${System.currentTimeMillis() - t0} ms: ${down.test.message} | ${down.test.detail}")
         assertTrue(down.test.kind == ErrorKind.TIMEOUT.name || down.test.kind == ErrorKind.UNREACHABLE.name)
 
