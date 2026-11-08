@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.TmdbTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:37" hostname="runnervm7aw5e" time="0.03">
+  <properties/>
+  <testcase name="parsesTrendingMixedMedia" classname="com.brudre.streaming.TmdbTest" time="0.005"/>
+  <testcase name="ids" classname="com.brudre.streaming.TmdbTest" time="0.0"/>
+  <testcase name="tvRatingAndSeasons" classname="com.brudre.streaming.TmdbTest" time="0.014"/>
+  <testcase name="parsesDetailsRatingAndMatchingTitles" classname="com.brudre.streaming.TmdbTest" time="0.002"/>
+  <testcase name="onlyFreeProvidersAreKept" classname="com.brudre.streaming.TmdbTest" time="0.006"/>
+  <testcase name="invalidKeyIsReported" classname="com.brudre.streaming.TmdbTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

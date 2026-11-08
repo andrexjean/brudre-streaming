@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.ArchiveParserTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:36" hostname="runnervm7aw5e" time="0.256">
+  <properties/>
+  <testcase name="enrichTitleUsesMetadata" classname="com.brudre.streaming.ArchiveParserTest" time="0.113"/>
+  <testcase name="numberedPartsWithoutPatternUseNaturalOrder" classname="com.brudre.streaming.ArchiveParserTest" time="0.108"/>
+  <testcase name="parsesSearchDocsWithMixedTypes" classname="com.brudre.streaming.ArchiveParserTest" time="0.006"/>
+  <testcase name="rejectsNonMp4AndOversizedVideos" classname="com.brudre.streaming.ArchiveParserTest" time="0.001"/>
+  <testcase name="picksBestQualityH264AndTorrent" classname="com.brudre.streaming.ArchiveParserTest" time="0.006"/>
+  <testcase name="lightQualityPrefers512kb" classname="com.brudre.streaming.ArchiveParserTest" time="0.002"/>
+  <testcase name="searchErrorIsReported" classname="com.brudre.streaming.ArchiveParserTest" time="0.001"/>
+  <testcase name="seriesEpisodesAreGroupedAndOrdered" classname="com.brudre.streaming.ArchiveParserTest" time="0.003"/>
+  <testcase name="helpers" classname="com.brudre.streaming.ArchiveParserTest" time="0.001"/>
+  <testcase name="restrictedItemHasNoPlayables" classname="com.brudre.streaming.ArchiveParserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

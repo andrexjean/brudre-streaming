@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.V92Test" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:37" hostname="runnervm7aw5e" time="0.171">
+  <properties/>
+  <testcase name="rankingIsExplained" classname="com.brudre.streaming.V92Test" time="0.01"/>
+  <testcase name="graphQlBodyIsEscapedAndKeyGoesToHeader" classname="com.brudre.streaming.V92Test" time="0.001"/>
+  <testcase name="libraryHasThirtyPlusEntriesAndNoThirdPartyEndpoints" classname="com.brudre.streaming.V92Test" time="0.009"/>
+  <testcase name="importNeverBringsCertificatePins" classname="com.brudre.streaming.V92Test" time="0.001"/>
+  <testcase name="torznabReleaseNames" classname="com.brudre.streaming.V92Test" time="0.008"/>
+  <testcase name="torznabProtocolErrorsAreClassified" classname="com.brudre.streaming.V92Test" time="0.005"/>
+  <testcase name="torznabCapabilities" classname="com.brudre.streaming.V92Test" time="0.008"/>
+  <testcase name="durationToleranceForFallback" classname="com.brudre.streaming.V92Test" time="0.049"/>
+  <testcase name="torznabKeyLeavesTheAddress" classname="com.brudre.streaming.V92Test" time="0.004"/>
+  <testcase name="authMethodsAndCategories" classname="com.brudre.streaming.V92Test" time="0.001"/>
+  <testcase name="torznabMovieByIdAndUrls" classname="com.brudre.streaming.V92Test" time="0.028"/>
+  <testcase name="torznabPaginationFiltersAndEpisodes" classname="com.brudre.streaming.V92Test" time="0.032"/>
+  <testcase name="localServersNeedPinnedHttps" classname="com.brudre.streaming.V92Test" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

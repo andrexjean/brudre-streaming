@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.ParentalTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:36" hostname="runnervm7aw5e" time="0.013">
+  <properties/>
+  <testcase name="explicitContentAlwaysBlocked" classname="com.brudre.streaming.ParentalTest" time="0.006"/>
+  <testcase name="explicitDetailsAreRefused" classname="com.brudre.streaming.ParentalTest" time="0.001"/>
+  <testcase name="ratingGateAndPin" classname="com.brudre.streaming.ParentalTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

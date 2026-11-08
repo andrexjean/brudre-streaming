@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.V91Test" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:37" hostname="runnervm7aw5e" time="0.081">
+  <properties/>
+  <testcase name="openSearchDescription" classname="com.brudre.streaming.V91Test" time="0.014"/>
+  <testcase name="seriesAndEpisodesAssociation" classname="com.brudre.streaming.V91Test" time="0.002"/>
+  <testcase name="preferencesRankKnownOverUnknownNeverInvent" classname="com.brudre.streaming.V91Test" time="0.011"/>
+  <testcase name="unconfirmedSourcesNeverJoinAutomatically" classname="com.brudre.streaming.V91Test" time="0.002"/>
+  <testcase name="restDescriptorSecurity" classname="com.brudre.streaming.V91Test" time="0.015"/>
+  <testcase name="duplicateSourcesAreDetected" classname="com.brudre.streaming.V91Test" time="0.0"/>
+  <testcase name="cleartextRedirectIsBlocked" classname="com.brudre.streaming.V91Test" time="0.009"/>
+  <testcase name="capabilitiesAndConfigRoundTrip" classname="com.brudre.streaming.V91Test" time="0.001"/>
+  <testcase name="restDescriptorMapsMoviesAndEpisodes" classname="com.brudre.streaming.V91Test" time="0.008"/>
+  <testcase name="movieAssociationAvoidsLookalikes" classname="com.brudre.streaming.V91Test" time="0.001"/>
+  <testcase name="paginationMarkersAndFlags" classname="com.brudre.streaming.V91Test" time="0.004"/>
+  <testcase name="languageCodesFromTracks" classname="com.brudre.streaming.V91Test" time="0.001"/>
+  <testcase name="atomFeedWithEnclosureAndNextPage" classname="com.brudre.streaming.V91Test" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.FeedTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:36" hostname="runnervm7aw5e" time="0.045">
+  <properties/>
+  <testcase name="bestSourceIsChosenAutomatically" classname="com.brudre.streaming.FeedTest" time="0.017"/>
+  <testcase name="manualLinks" classname="com.brudre.streaming.FeedTest" time="0.005"/>
+  <testcase name="parsesSampleJsonFeedWithAllSourceTypes" classname="com.brudre.streaming.FeedTest" time="0.004"/>
+  <testcase name="seriesEpisodesBecomePlayables" classname="com.brudre.streaming.FeedTest" time="0.009"/>
+  <testcase name="unsafeSourcesAreRejected" classname="com.brudre.streaming.FeedTest" time="0.001"/>
+  <testcase name="parsesRssWithTorrentEnclosures" classname="com.brudre.streaming.FeedTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

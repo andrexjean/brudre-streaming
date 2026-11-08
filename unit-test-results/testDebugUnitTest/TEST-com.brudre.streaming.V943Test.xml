@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.brudre.streaming.V943Test" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-08T20:20:37" hostname="runnervm7aw5e" time="1.935">
+  <properties/>
+  <testcase name="t15_cancellationStopsRetriesImmediately" classname="com.brudre.streaming.V943Test" time="1.821"/>
+  <testcase name="t13_httpsTrackerAnnounceParsing" classname="com.brudre.streaming.V943Test" time="0.028"/>
+  <testcase name="t01_redactsKeysTokensAndPasswordsInAnyText" classname="com.brudre.streaming.V943Test" time="0.006"/>
+  <testcase name="t04b_torznabResultLinksNeverCarryTheKey" classname="com.brudre.streaming.V943Test" time="0.026"/>
+  <testcase name="t09_t10_dnsTlsAndAuthAreSeparated" classname="com.brudre.streaming.V943Test" time="0.002"/>
+  <testcase name="t12_paginationAndEmptyResponses" classname="com.brudre.streaming.V943Test" time="0.013"/>
+  <testcase name="t11_retriesTransientFailuresWithBackoffAndDeadline" classname="com.brudre.streaming.V943Test" time="0.015"/>
+  <testcase name="t03_oldRecordsAreCleanedWhenRead" classname="com.brudre.streaming.V943Test" time="0.005"/>
+  <testcase name="t02_persistedSourcesStatsAndExportsCarryNoSecrets" classname="com.brudre.streaming.V943Test" time="0.006"/>
+  <testcase name="t04_authenticatedLinksResolveOnlyAtRequestTimeAndOnlyForTheOwnerHost" classname="com.brudre.streaming.V943Test" time="0.003"/>
+  <testcase name="t05_t08_stagesSeparateRegisteredReachableSearchAndPlayback" classname="com.brudre.streaming.V943Test" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

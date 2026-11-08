@@ -1,0 +1,25 @@
+== aapt badging
+package: name='com.brudre.streaming' versionCode='92046' versionName='9.2.46' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+sdkVersion:'24'
+targetSdkVersion:'35'
+application-label:'BruDre Streaming'
+launchable-activity: name='com.brudre.streaming.ui.MainActivity'  label='' icon=''
+leanback-launchable-activity: name='com.brudre.streaming.ui.MainActivity'  label='' icon='' banner=''
+  uses-feature-not-required: name='android.hardware.touchscreen'
+  uses-feature-not-required: name='android.software.leanback'
+  uses-feature: name='android.hardware.screen.landscape'
+native-code: 'arm64-v8a' 'armeabi-v7a'
+== apksigner
+V2 Signer: certificate DN: CN=BruDre Streaming, O=Familia Oliveira, C=BR
+V2 Signer: certificate SHA-256 digest: b3289a20bef39b379e04b50946d62d2c34e01ef733e34122dcc46a49417cd664
+V2 Signer: certificate SHA-1 digest: b1387b1ca5f0d6a1abe6e485f1be77c6986c3c64
+V2 Signer: certificate MD5 digest: 9a842f50c3e0c6bb4d7aed8fc0687a01
+== bibliotecas nativas
+    10096  1981-01-01 01:01   lib/arm64-v8a/libandroidx.graphics.path.so
+ 16645560  1981-01-01 01:01   lib/arm64-v8a/libtorrent4j.so
+     7252  1981-01-01 01:01   lib/armeabi-v7a/libandroidx.graphics.path.so
+ 13858964  1981-01-01 01:01   lib/armeabi-v7a/libtorrent4j.so
+== tamanho
+-rw-r--r-- 1 runner runner 16047132 Nov  8 20:22 BruDre-Streaming.apk
+== sha256
+067bcbf93a9d1f1f4f72cbb96c05a0dd14dd34bd6fa3dba083eed9970cf59d08  BruDre-Streaming.apk
