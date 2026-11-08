@@ -1,5 +1,52 @@
 # Changelog — BruDre Streaming
 
+## 9.2.43 (novembro de 2026) — Correções de segurança, diagnóstico e homologação
+
+### Credenciais (correção crítica)
+- Links de download de indexadores Torznab (`/dl/…?jackett_apikey=…`, `…/download?apikey=…`) não carregam mais a chave. Ela vira o marcador `{cred}`.
+- O valor real só entra na requisição, no instante dela, por um interceptor do cliente protegido:
+  - só em HTTPS;
+  - só para o host:porta da fonte dona da credencial;
+  - o destino de um redirecionamento nunca recebe a chave.
+- Segredos colados em qualquer endereço de fonte (`token`, `password`, `apikey`, `passkey`…) saem para o armazenamento cifrado (Android Keystore). No endereço gravado e exportado fica `{cred}`.
+- Mensagens de erro, detalhes técnicos, histórico de testes, logs, relatório de homologação e histórico de torrents passam por uma limpeza de segredos.
+- Respostas de endereços com chave (ex.: `api_key` do TMDB) não vão mais para o cache HTTP em disco.
+- Migração automática de registros antigos:
+  - fontes, mensagens e histórico de torrents são regravados limpos;
+  - o cache HTTP antigo é descartado;
+  - caches de catálogo que continham segredos são apagados.
+
+### Diagnóstico de fontes
+- Etapas comprovadas: **Cadastrada → Acessível → Pesquisa funcional → Reprodução validada**. A última só vem de um vídeo que realmente tocou pela fonte.
+- Erros separados: DNS, tempo esgotado, HTTP, TLS, **autenticação**, formato, **sem resultados**, sem participantes, **conteúdo indisponível**, bloqueada.
+- Cada teste registra data, tempo de resposta, etapa alcançada e motivo.
+- **Painel Source Engine** (Fontes → Diagnóstico):
+  - totais: cadastradas, ativas, acessíveis, com pesquisa validada, com reprodução comprovada e com erro;
+  - última verificação, tempo médio de resposta e histórico dos últimos 40 testes;
+  - **Testar fontes** (uma por vez) e teste individual por fonte.
+
+### Confiabilidade
+- Novas tentativas para falhas transitórias: tempo esgotado, conexão recusada, HTTP 408/429/502/503/504.
+  - Espera de 1 s e depois 2 s, no máximo 3 tentativas.
+  - Respeita `Retry-After` (até 8 s).
+  - Prazo total = dobro do tempo-limite da fonte, até 60 s.
+  - Cancelável: sair da tela interrompe a espera.
+- Uma fonte lenta ou fora do ar não segura as outras: cada uma tem seu prazo, e a página informa quais falharam e quais vieram vazias.
+- **Causa da falha do Internet Archive no CI:** o teste de cadastro usava 12 s por consulta. Agora usa 20 s por tentativa, com novas tentativas.
+- `.torrent` remoto: novas tentativas e cache de metadados por endereço.
+
+### BitTorrent
+- O diagnóstico mostra **qual mecanismo achou participantes**: tracker UDP, tracker HTTPS, tracker HTTP ou DHT.
+- Também lista as falhas de tracker (certificado, DNS). A validação de certificado continua ligada.
+
+### Interface e homologação
+- O texto de Gerenciar fontes lista todos os protocolos.
+- O relatório de homologação inclui:
+  - versão do BruDre e motivos de erro de reprodução;
+  - saídas do app registradas pelo sistema (crash, ANR, falta de memória; Android 11 ou superior);
+  - tempo total assistido;
+  - situação "NÃO HOMOLOGADO" até o usuário marcar o resultado.
+
 ## 9.2 (novembro de 2026) — Source Engine 4.0
 
 ### Protocolos de indexação (adaptadores genéricos, nenhum indexador pré-cadastrado)

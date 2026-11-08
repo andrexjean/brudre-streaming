@@ -20,6 +20,7 @@ import com.brudre.streaming.torrent.TorrentEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
@@ -68,6 +69,13 @@ class Services(private val app: Context) {
         .callTimeout(60, TimeUnit.SECONDS)
         .retryOnConnectionFailure(true)
         .cache(Cache(File(app.cacheDir, "http"), 8L * 1024 * 1024))
+        // Respostas de endereços com chave/token (ex.: api_key do TMDB) não vão para o cache em disco,
+        // que grava o endereço completo junto da resposta.
+        .addInterceptor { chain ->
+            val r = chain.request()
+            if (r.url.queryParameterNames.any { com.brudre.streaming.sources.Secrets.isSensitive(it) }) chain.proceed(r.newBuilder().header("Cache-Control", "no-store").build())
+            else chain.proceed(r)
+        }
         .build()
 
     val settings = AppSettings(app)
@@ -105,6 +113,33 @@ class Services(private val app: Context) {
     val searchRepo: com.brudre.streaming.sources.SearchRepository by lazy { com.brudre.streaming.sources.SearchRepository(guardedHttp, sourceStore, credentials) }
     /** Credenciais das fontes, cifradas pelo Android Keystore. */
     val credentials: com.brudre.streaming.sources.CredentialStore by lazy { com.brudre.streaming.sources.CredentialStore(app) }
+
+    init {
+        // Credenciais só no instante da requisição, para o host:porta da fonte dona delas (9.2.43)
+        com.brudre.streaming.sources.CredentialRefs.lookup = { host, port ->
+            sourceStore.current.firstOrNull { s -> com.brudre.streaming.sources.LocalServers.keyOf(s.url) == "$host:$port" && credentials.has(s.id) }
+                ?.let { credentials.get(it.id) }
+        }
+        com.brudre.streaming.sources.Secrets.known = { sourceStore.current.flatMap { com.brudre.streaming.sources.Secrets.values(credentials.get(it.id)) } }
+        appScope.launch(Dispatchers.IO) { runCatching { migrateSecrets() }.onFailure { Log.w("BruDre", "Migração de segredos falhou: ${it.javaClass.simpleName}") } }
+    }
+
+    /** Registros antigos com segredos: fontes, histórico de torrents, homologação e caches (9.2.43). Idempotente. */
+    private suspend fun migrateSecrets() {
+        val moved = sourceStore.migrateSecrets(credentials)
+        torrentLibrary.sanitizeStored()
+        com.brudre.streaming.data.Homologation.sanitizeStored()
+        val prefs = app.getSharedPreferences("brudre_migrations", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("secrets_v1", false)) {
+            // Cache HTTP antigo pode guardar endereços com api_key; caches de catálogo com segredos são descartados.
+            runCatching { http.cache?.evictAll() }
+            val dropped = database.catalogCache().all().filter { com.brudre.streaming.sources.Secrets.containsSecret(it.json) || com.brudre.streaming.sources.Secrets.containsSecret(it.key) }
+            dropped.forEach { database.catalogCache().delete(it.key) }
+            listOf("feeds", "live").forEach { d -> File(app.cacheDir, d).listFiles()?.forEach { f -> if (f.isFile && f.length() < 8_000_000 && com.brudre.streaming.sources.Secrets.containsSecret(f.readText())) f.delete() } }
+            prefs.edit().putBoolean("secrets_v1", true).apply()
+            Log.i("BruDre", "Migração de segredos: $moved fonte(s) com credencial movida; ${dropped.size} cache(s) descartado(s)")
+        }
+    }
     val updater: com.brudre.streaming.update.UpdateManager by lazy { com.brudre.streaming.update.UpdateManager(app, http) }
 
     val imageCacheDir: File get() = File(app.cacheDir, "images")

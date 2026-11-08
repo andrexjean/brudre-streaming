@@ -109,10 +109,13 @@ class Handler(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         q = parse_qs(u.query)
         if u.path == "/dl/brudre-teste-serie.torrent":
+            # Como o Jackett: o link de download carrega a chave; sem ela, 401 (prova que o app a resolve na hora)
+            if q.get("jackett_apikey", [""])[0] != self.apikey:
+                return self.send(401, b"unauthorized", "text/plain")
             return self.send(200, self.torrent, "application/x-bittorrent")
         if u.path.endswith(".nzb"):
             return self.send(200, b"<nzb/>", "application/x-nzb")
-        if u.path not in ("/api", "/torznab/api"):
+        if u.path not in ("/api", "/torznab/api", "/vazio/api", "/semvideo/api"):
             return self.send(404, error(202, "Use /api"), "application/xml")
         if q.get("apikey", [""])[0] != self.apikey:
             return self.send(200, error(100, "Incorrect user credentials"), "application/xml")
@@ -127,13 +130,18 @@ class Handler(BaseHTTPRequestHandler):
         except ValueError:
             return self.send(200, error(201, "Incorrect parameter"), "application/xml")
         found = [c for c in CATALOG if matches(c[0], c[2], c[1], q)]
+        # Cenários de diagnóstico: /vazio = protocolo certo sem resultados; /semvideo = só itens não reproduzíveis
+        if u.path.startswith("/vazio"):
+            found = []
+        elif u.path.startswith("/semvideo"):
+            found = [c for c in CATALOG if c[3] == "nzb" or any(x // 1000 in (4, 6) for x in c[1])]
         page = found[offset:offset + limit]
         items = []
         for i, (title, cats, attrs, media) in enumerate(page):
             guid = "brudre-ci-%d-%s" % (offset + i, quote(title))
             link = enclosure = ""
             if media == "dl":
-                link = self.base() + "/dl/brudre-teste-serie.torrent"
+                link = self.base() + "/dl/brudre-teste-serie.torrent?jackett_apikey=" + quote(self.apikey)
                 enclosure = '<enclosure url="%s" length="%d" type="application/x-bittorrent" />' % (html.escape(link), len(self.torrent))
             elif media == "nzb":
                 link = self.base() + "/dl/brudre.nzb"

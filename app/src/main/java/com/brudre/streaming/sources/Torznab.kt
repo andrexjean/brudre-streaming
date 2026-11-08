@@ -116,7 +116,7 @@ object Torznab {
         val code = attr(m.groupValues[1], "code")?.toIntOrNull() ?: 0
         val desc = attr(m.groupValues[1], "description")?.replace(Regex("(?i)apikey=[^&\\s\"]+"), "apikey=***")?.take(200) ?: "sem descrição"
         throw when (code) {
-            in 100..199 -> ClassifiedException(ErrorKind.HTTP, "Credencial recusada pelo indexador (erro $code: $desc). Confira a chave em \"Credencial\".")
+            in 100..199 -> ClassifiedException(ErrorKind.AUTH, "Credencial recusada pelo indexador (erro $code: $desc). Confira a chave em \"Credencial\".")
             in 200..299 -> ClassifiedException(ErrorKind.FORMAT, "O indexador recusou os parâmetros (erro $code: $desc)")
             in 500..599 -> ClassifiedException(ErrorKind.HTTP, "Limite de consultas do indexador atingido (erro $code: $desc)")
             else -> ClassifiedException(ErrorKind.HTTP, "O indexador respondeu erro $code: $desc")
@@ -319,6 +319,9 @@ class TorznabAdapter(val caps: TorznabCaps, private val key: String?) : SearchAd
         val p = Torznab.parseResults(body, sourceId)
         if (p.rejected.isNotEmpty()) android.util.Log.i("BruDreSearch", "Torznab $sourceId: ${p.items.size} de ${p.rawCount} aceitos; descartados ${p.rejected}")
         val more = if (p.total != null) (p.offset ?: 0) + p.rawCount < p.total else p.rawCount >= limit
-        return AdapterPage(p.items, more && p.rawCount > 0)
+        // Links do próprio indexador (/dl/…?apikey=…): a chave vira o marcador {cred}, resolvido só na hora da requisição.
+        val items = p.items.map { it.copy(sources = it.sources.map { s -> s.copy(url = Secrets.referenceKnown(s.url, key)) },
+            episodes = it.episodes.map { e -> e.copy(sources = e.sources.map { s -> s.copy(url = Secrets.referenceKnown(s.url, key)) }) }) }
+        return AdapterPage(items, more && p.rawCount > 0, p.rawCount)
     }
 }

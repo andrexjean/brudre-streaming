@@ -65,7 +65,8 @@ object SearchTemplate {
 data class SearchHit(val source: UserSource, val item: FeedItem)
 
 /** Uma página de resultados; [moreFrom] = fontes que têm mais páginas. */
-data class SearchPage(val hits: List<SearchHit>, val moreFrom: Set<String>)
+/** [failed] = fonte → motivo (classificado, sem segredos); [empty] = fontes que responderam sem resultado. */
+data class SearchPage(val hits: List<SearchHit>, val moreFrom: Set<String>, val failed: Map<String, String> = emptyMap(), val empty: Set<String> = emptySet())
 
 /**
  * Pesquisa dinâmica nas fontes autorizadas que oferecem busca (API BruDre, OpenSearch, REST por descritor).
@@ -103,30 +104,42 @@ class SearchRepository(
             async {
                 semaphore.withPermit {
                     try {
-                        val key = credentials?.get(src.id)
+                        val key = credentials?.key(src.id)
                         val adapter = Adapters.forSource(src, key)
                         val t0 = System.currentTimeMillis()
-                        val r = withTimeout(src.timeoutSec * 1000L + 2_000) { query(src, adapter, q, page, key) } ?: return@withPermit null
+                        // Prazo total da fonte (com novas tentativas): uma fonte lenta não segura as outras.
+                        val r = (try {
+                            withTimeout(SourceHttp.deadlineMs(src.timeoutSec) + 2_000) { query(src, adapter, q, page, key) }
+                        } catch (e: kotlinx.coroutines.TimeoutCancellationException) {
+                            throw java.net.SocketTimeoutException("prazo total de ${SourceHttp.deadlineMs(src.timeoutSec) / 1000} s esgotado")
+                        }) ?: return@withPermit null
                         store.recordResult(src.id, true, latencyMs = (System.currentTimeMillis() - t0).toInt())
-                        src to r
+                        if (r.items.isEmpty()) Log.i(TAG, "${src.name}: respondeu sem resultados (${r.raw} itens brutos) para \"${q.text}\"")
+                        Outcome(src, r, null)
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
                         val f = ErrorClassifier.classify(e)
-                        Log.w(TAG, "Pesquisa em ${src.name} falhou: ${f.technical}")
+                        Log.w(TAG, "Pesquisa em ${src.name} falhou: ${f.kind} ${f.technical}")
                         store.recordResult(src.id, false, f.summary)
-                        null
+                        Outcome(src, null, f.summary)
                     }
                 }
             }
         }.awaitAll().filterNotNull()
-        val hits = results.flatMap { (src, r) -> r.items.take(src.resultLimit.coerceAtMost(MAX_RESULTS * 4)).map { SearchHit(src, it) } }
+        val failed = outcomes(results).filter { it.error != null }.associate { it.source.id to it.error!! }
+        val okResults = outcomes(results).filter { it.page != null }
+        val hits = okResults.flatMap { o -> o.page!!.items.take(o.source.resultLimit.coerceAtMost(MAX_RESULTS * 4)).map { SearchHit(o.source, it) } }
         // Mesma obra vinda de duas fontes fica nas duas (são alternativas); duplicatas da MESMA fonte saem.
         val dedup = hits.distinctBy { it.source.id + "|" + (it.item.tmdbId ?: TitleMatcher.normalize(it.item.title.name)) + "|" + it.item.title.year + "|" + it.item.episodes.firstOrNull()?.let { e -> "${e.season}x${e.number}" } }
-        val p = SearchPage(dedup, results.filter { it.second.hasMore }.map { it.first.id }.toSet())
+        val p = SearchPage(dedup, okResults.filter { it.page!!.hasMore }.map { it.source.id }.toSet(), failed, okResults.filter { it.page!!.items.isEmpty() }.map { it.source.id }.toSet())
         cache[key] = System.currentTimeMillis() to p
         p
     }
+
+    /** Resultado de uma fonte numa página: resposta ou motivo da falha. */
+    private data class Outcome(val source: UserSource, val page: AdapterPage?, val error: String?)
+    private fun outcomes(l: List<Outcome>) = l
 
     /** Uma consulta HTTP (cancelável) a uma fonte, com limite por minuto e resposta limitada a [MAX_BYTES]. */
     suspend fun query(src: UserSource, adapter: SearchAdapter, q: SearchTemplate.Query, page: Int, key: String? = null): AdapterPage? {
@@ -144,7 +157,13 @@ class SearchRepository(
     }
 
     /** Chamada HTTP cancelável de verdade: ao cancelar a coroutine (saiu da tela), a conexão é abortada. */
-    suspend fun fetch(url: String, headers: Map<String, String> = emptyMap(), body: String? = null, timeoutSec: Int = UserSource.DEFAULT_TIMEOUT_S): String {
+    /** Com novas tentativas para falhas transitórias (ver [SourceHttp]), dentro do prazo total da fonte. */
+    suspend fun fetch(url: String, headers: Map<String, String> = emptyMap(), body: String? = null, timeoutSec: Int = UserSource.DEFAULT_TIMEOUT_S): String =
+        SourceHttp.retrying(SourceHttp.deadlineMs(timeoutSec), onRetry = { a, e, w -> Log.i(TAG, "Nova tentativa ${a + 1} em $w ms (${ErrorClassifier.classify(e).kind})") }) {
+            fetchOnce(url, headers, body, timeoutSec)
+        }
+
+    private suspend fun fetchOnce(url: String, headers: Map<String, String>, body: String?, timeoutSec: Int): String {
         val req = Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT)
             .header("Accept", "application/json, application/atom+xml, application/rss+xml;q=0.9, */*;q=0.5")
             .apply { headers.forEach { (k, v) -> header(k, v) } }
@@ -165,7 +184,11 @@ class SearchRepository(
         return withContext(Dispatchers.IO) {
             response.use { r ->
                 if (r.isRedirect) throw ClassifiedException(ErrorKind.BLOCKED, "Fonte com autenticação tentou redirecionar para ${r.header("Location")?.let { UrlGuard.hostOf(it) } ?: "outro endereço"}: bloqueado")
-                if (!r.isSuccessful) throw HttpStatusException(r.code)
+                if (!r.isSuccessful) {
+                    val wait = SourceHttp.parseRetryAfter(r.header("Retry-After"))
+                    if ((r.code == 429 || r.code == 503) && wait != null) throw RetryAfterException(r.code, wait)
+                    throw HttpStatusException(r.code)
+                }
                 val src = r.body?.source() ?: throw ClassifiedException(ErrorKind.CATALOG, "Resposta vazia da fonte de pesquisa")
                 src.request(MAX_BYTES)
                 src.buffer.snapshot().utf8().take(MAX_BYTES.toInt())

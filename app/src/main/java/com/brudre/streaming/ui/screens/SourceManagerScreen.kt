@@ -110,8 +110,8 @@ fun SourceManagerScreen(vm: MainViewModel, onDismiss: () -> Unit) {
                 item(key = "head") {
                     Text("Gerenciar fontes", color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Bold)
                     Text(
-                        "Formatos: magnet, .torrent, vídeo HTTPS, HLS (.m3u8), playlist IPTV M3U, catálogo JSON do BruDre, RSS e API de pesquisa do BruDre " +
-                            "(endereço com {query}). O formato é identificado sozinho. A ordem da lista é a prioridade. " +
+                        "Protocolos: Torznab, Newznab, RSS/Atom, OpenSearch, REST, GraphQL, BruDre JSON, M3U/HLS, magnet e arquivos .torrent " +
+                            "(além de vídeo HTTPS e pesquisa com {query}). O formato é identificado sozinho e a ordem da lista é a prioridade. " +
                             "Use apenas fontes com distribuição autorizada; no BitTorrent seu IP fica visível aos outros participantes.",
                         color = BruColors.TextFaint, fontSize = 13.sp, modifier = Modifier.width(900.dp),
                     )
@@ -290,13 +290,13 @@ private fun SourceCard(
                 modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(Color(0xCC2F4C9C)).padding(horizontal = 8.dp, vertical = 3.dp).testTag("src_type_${s.id}"),
             )
         }
-        Text(s.url, color = BruColors.TextFaint, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(s.url.replace(com.brudre.streaming.sources.Secrets.REF, "{chave guardada}"), color = BruColors.TextFaint, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         val t = s.lastTest
         Text(
             when {
                 testing -> "Testando…"
                 t == null -> "Ainda não testada"
-                else -> "${if (t.ok) "✓" else "✗"} ${t.message} • verificada em ${dateOf(t.at)}"
+                else -> "${if (t.ok) "✓" else "✗"} ${s.statusLabel} — ${t.message} • verificada em ${dateOf(t.at)}" + (if (t.latencyMs > 0) " (${t.latencyMs} ms)" else "")
             },
             color = when { testing -> BruColors.Cyan; t?.ok == true -> Color(0xFF6BE3A1); t != null -> BruColors.Danger; else -> BruColors.TextDim },
             fontSize = 13.sp, modifier = Modifier.testTag("src_status_${s.id}"),
@@ -469,38 +469,92 @@ private fun DiagnosticsSection(vm: MainViewModel, sources: List<UserSource>, toa
     val online by vm.online.collectAsStateWithLifecycle()
     val cache by vm.cacheUsage.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { vm.refreshCacheUsage() }
-    val tested = sources.filter { it.lastTest != null }
     Column(Modifier.width(900.dp).testTag("diag")) {
         Text("Conectividade", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Text(if (online) "Internet: conectada" else "Internet: SEM CONEXÃO", color = if (online) Color(0xFF6BE3A1) else BruColors.Danger, fontSize = 14.sp)
         Text("Dados temporários (vídeo, imagens, listas): ${CacheManager.formatBytes(cache)}", color = BruColors.TextDim, fontSize = 13.sp)
         Text("Certificados HTTPS do BitTorrent: ${com.brudre.streaming.torrent.TlsTrust.status}", color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_tls"))
         Spacer(Modifier.height(10.dp))
+        SourceEnginePanel(vm, sources, toast)
+        Spacer(Modifier.height(16.dp))
         HomologationPanel(vm, toast)
-        Spacer(Modifier.height(10.dp))
-        Text("Validação e estatísticas", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(
-            "${sources.size} fontes • ${sources.count { it.enabled }} ativas • ${sources.count { it.pending }} aguardando validação • " +
-                "${tested.count { it.lastTest!!.ok }} OK e ${tested.count { !it.lastTest!!.ok }} com falha no último teste • ${vm.services.sourceStore.duplicates().size} duplicada(s)",
-            color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_summary"),
-        )
-        Spacer(Modifier.height(8.dp))
-        BruButton("Testar todas agora", icon = Icons.Filled.Refresh, primary = true, modifier = Modifier.testTag("diag_test_all")) { vm.testAllSources(toast) }
-        Spacer(Modifier.height(10.dp))
-        sources.forEach { s ->
-            val t = s.lastTest
-            Column(Modifier.padding(vertical = 4.dp).testTag("diag_${s.id}")) {
-                Text("${s.name} — ${s.type.label}", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+/**
+ * Painel de diagnóstico do Source Engine (9.2.43): conectividade, pesquisa e reprodução separadas.
+ * "Testar fontes" testa uma por vez (sem sobrecarregar a memória e sem baixar obras: só respostas da fonte).
+ */
+@Composable
+private fun SourceEnginePanel(vm: MainViewModel, sources: List<UserSource>, toast: (String) -> Unit) {
+    val testing by vm.testingSources.collectAsStateWithLifecycle()
+    val log = remember(sources) { vm.services.sourceStore.testLog() }
+    val tested = sources.filter { it.lastTest != null }
+    val reach = sources.count { !it.hasError && it.stage >= com.brudre.streaming.sources.SourceStage.REACHABLE }
+    val searchOk = sources.count { !it.hasError && it.stage >= com.brudre.streaming.sources.SourceStage.SEARCH_OK }
+    val playOk = sources.count { it.stage == com.brudre.streaming.sources.SourceStage.PLAYBACK_OK }
+    val lats = log.mapNotNull { it.test.latencyMs.takeIf { ms -> ms > 0 } }.take(20)
+    Text("Source Engine", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    Text(
+        "Etapas comprovadas: Cadastrada → Acessível (o servidor respondeu) → Pesquisa funcional (resultados válidos) → Reprodução validada (um vídeo tocou). " +
+            "Uma fonte só acessível nunca aparece como reproduzível.",
+        color = BruColors.TextFaint, fontSize = 12.sp,
+    )
+    val cells = listOf(
+        "Cadastradas" to sources.size, "Ativas" to sources.count { it.enabled }, "Acessíveis" to reach,
+        "Pesquisa validada" to searchOk, "Reprodução comprovada" to playOk, "Com erro" to sources.count { it.hasError },
+    )
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 8.dp), modifier = Modifier.testTag("diag_counts")) {
+        items(cells.size) { i ->
+            val (label, n) = cells[i]
+            Column(Modifier.clip(RoundedCornerShape(10.dp)).background(BruColors.Card).border(1.dp, BruColors.CardBorder, RoundedCornerShape(10.dp)).padding(horizontal = 14.dp, vertical = 8.dp).testTag("diag_count_$i")) {
+                Text("$n", color = if (label == "Com erro" && n > 0) BruColors.Danger else Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(label, color = BruColors.TextDim, fontSize = 12.sp)
+            }
+        }
+    }
+    Text(
+        listOfNotNull(
+            tested.maxOfOrNull { it.lastTest!!.at }?.let { "Última verificação: ${dateOf(it)}" } ?: "Nenhuma verificação ainda",
+            lats.takeIf { it.isNotEmpty() }?.let { "tempo médio de resposta: ${it.average().toInt()} ms (últimos ${it.size} testes)" },
+            "${vm.services.sourceStore.duplicates().size} duplicada(s)",
+        ).joinToString(" • "),
+        color = BruColors.TextDim, fontSize = 13.sp, modifier = Modifier.testTag("diag_summary"),
+    )
+    Spacer(Modifier.height(8.dp))
+    BruButton(if (testing.isNotEmpty()) "Testando ${testing.size}…" else "Testar fontes", icon = Icons.Filled.Refresh, primary = true, modifier = Modifier.testTag("diag_test_all")) {
+        if (testing.isEmpty()) vm.testAllSources(toast)
+    }
+    Spacer(Modifier.height(10.dp))
+    sources.forEach { s ->
+        val t = s.lastTest
+        Row(Modifier.padding(vertical = 4.dp).width(900.dp).testTag("diag_${s.id}"), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("${s.name} — ${s.type.label} • ${s.statusLabel}", color = if (s.hasError) BruColors.Danger else Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag("diag_status_${s.id}"))
                 Text(
                     listOfNotNull(
-                        t?.let { (if (it.ok) "✓ " else "✗ ") + it.message + " (${dateOf(it.at)})" } ?: "nunca testada",
+                        t?.let { it.message + " (${dateOf(it.at)}" + (if (it.latencyMs > 0) ", ${it.latencyMs} ms" else "") + ")" } ?: "nunca testada",
                         "uso real: ${s.stats.summary}",
+                        s.stats.playOkAt.takeIf { it > 0 }?.let { "tocou em ${dateOf(it)}" },
                         s.stats.lastError?.let { "último erro de uso: $it" },
                     ).joinToString(" • "),
-                    color = if (t?.ok == false) BruColors.Danger else BruColors.TextDim, fontSize = 12.sp,
+                    color = BruColors.TextDim, fontSize = 12.sp, maxLines = 3, overflow = TextOverflow.Ellipsis,
                 )
-                t?.detail?.takeIf { !t.ok }?.let { Text("Detalhes técnicos: $it", color = BruColors.TextFaint, fontSize = 11.sp, maxLines = 3, overflow = TextOverflow.Ellipsis) }
+                t?.detail?.takeIf { !t.ok }?.let { Text("Detalhes técnicos: $it", color = BruColors.TextFaint, fontSize = 11.sp, maxLines = 2, overflow = TextOverflow.Ellipsis) }
             }
+            Spacer(Modifier.width(12.dp))
+            BruButton(if (s.id in testing) "Testando…" else "Testar", modifier = Modifier.testTag("diag_test_${s.id}")) { if (s.id !in testing) vm.testSource(s.id, toast) }
+        }
+    }
+    if (log.isNotEmpty()) {
+        Text("Histórico de testes", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 12.dp))
+        log.take(15).forEach { e ->
+            val t = e.test
+            Text(
+                "${dateOf(t.at)} • ${e.name} • ${if (t.ok) t.stage.label else "Erro: " + (t.errorKind?.title ?: "falha") + " (etapa: ${t.stage.label})"}" +
+                    (if (t.latencyMs > 0) " • ${t.latencyMs} ms" else ""),
+                color = if (t.ok) BruColors.TextDim else BruColors.Danger, fontSize = 12.sp, modifier = Modifier.testTag("diag_log"),
+            )
         }
     }
 }
@@ -562,7 +616,7 @@ private fun HomologationPanel(vm: MainViewModel, toast: (String) -> Unit) {
                             if (bytes.isEmpty()) error("não foi possível baixar os .torrent de teste")
                             val r = vm.services.torrent.probePeers(bytes, 40)
                             vm.services.torrent.shutdownIfIdle()
-                            r.joinToString("; ") { "${it.name}: ${it.connected} conectados, ${it.known} conhecidos, enxame ${it.swarm}" }
+                            r.joinToString("; ") { "${it.name}: ${it.connected} conectados, ${it.known} conhecidos, enxame ${it.swarm}; achados por ${it.mechanisms}" + if (it.trackerErrors.isNotEmpty()) " • falhas de tracker: ${it.trackerErrors.size}" else "" }
                         }.getOrElse { "Falhou: ${it.message}" }
                     }
                 }

@@ -26,6 +26,9 @@ enum class ErrorKind(val title: String, val hint: String) {
     NO_PEERS("Sem participantes (peers)", "Ninguém está compartilhando esse torrent agora e não há servidor web de apoio."),
     NO_VIDEO("Sem vídeo reproduzível", "O conteúdo não tem um arquivo de vídeo compatível com o aparelho."),
     BLOCKED("Bloqueada pela segurança", "O endereço foi bloqueado pelas regras de segurança do BruDre (destino local, executável ou sem HTTPS)."),
+    AUTH("Autenticação recusada", "A fonte recusou a credencial (chave, token ou senha). Confira em Editar → Credencial."),
+    NO_RESULTS("Sem resultados", "A fonte respondeu no formato certo, mas não trouxe nenhum resultado para a pesquisa de teste."),
+    UNAVAILABLE("Conteúdo indisponível", "A fonte trouxe resultados, mas nenhum com vídeo, magnet ou .torrent utilizável."),
     STORAGE("Problema de armazenamento", "Falta espaço ou houve erro ao gravar no aparelho. Limpe o cache em Configurações."),
     UNKNOWN("Falha não identificada", "Veja os detalhes técnicos."),
 }
@@ -37,7 +40,7 @@ data class SourceFailure(val kind: ErrorKind, val message: String, val technical
 }
 
 /** Resposta HTTP sem sucesso (mantém o código para a classificação). */
-class HttpStatusException(val code: Int, message: String = "servidor respondeu $code") : IOException(message)
+open class HttpStatusException(val code: Int, message: String = "servidor respondeu $code") : IOException(message)
 
 /** Erro já classificado (ex.: magnet inválido, torrent sem vídeo). */
 open class ClassifiedException(val kind: ErrorKind, message: String, cause: Throwable? = null) : IOException(message, cause)
@@ -45,11 +48,12 @@ open class ClassifiedException(val kind: ErrorKind, message: String, cause: Thro
 object ErrorClassifier {
     fun classify(e: Throwable): SourceFailure {
         val chain = generateSequence(e) { it.cause }.take(8).toList()
-        val technical = chain.joinToString(" ← ") { "${it.javaClass.simpleName}: ${it.message ?: "-"}" }.take(600)
-        fun f(kind: ErrorKind, msg: String = kind.hint) = SourceFailure(kind, msg, technical)
+        // Diagnóstico gravado e exibido: nunca com segredos (chaves, tokens, senhas) que venham em mensagens de erro.
+        val technical = Secrets.redactText(chain.joinToString(" ← ") { "${it.javaClass.simpleName}: ${it.message ?: "-"}" })!!.take(600)
+        fun f(kind: ErrorKind, msg: String = kind.hint) = SourceFailure(kind, Secrets.redactText(msg)!!, technical)
         chain.firstOrNull { it is ClassifiedException && it.kind != ErrorKind.UNKNOWN }?.let { val c = it as ClassifiedException; return f(c.kind, c.message ?: c.kind.hint) }
         chain.firstOrNull { it is BlockedUrlException }?.let { return f(ErrorKind.BLOCKED, it.message ?: ErrorKind.BLOCKED.hint) }
-        chain.firstOrNull { it is HttpStatusException }?.let { return f(ErrorKind.HTTP, httpMessage((it as HttpStatusException).code)) }
+        chain.firstOrNull { it is HttpStatusException }?.let { val code = (it as HttpStatusException).code; return f(if (code == 401) ErrorKind.AUTH else ErrorKind.HTTP, httpMessage(code)) }
         for (c in chain) {
             when (c) {
                 is UnknownHostException -> return f(ErrorKind.DNS, "Não foi possível localizar ${hostIn(c.message) ?: "o servidor"}. ${ErrorKind.DNS.hint}")

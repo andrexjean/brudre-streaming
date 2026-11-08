@@ -24,7 +24,8 @@ interface SearchAdapter {
     fun parse(body: String, sourceId: String): AdapterPage
 }
 
-data class AdapterPage(val items: List<FeedItem>, val hasMore: Boolean)
+/** [raw] = itens que o protocolo devolveu antes dos filtros (0 = "sem resultados"; >0 sem [items] = nada reproduzível). */
+data class AdapterPage(val items: List<FeedItem>, val hasMore: Boolean, val raw: Int = items.size)
 
 object Adapters {
     const val PAGE_SIZE = 50
@@ -104,7 +105,7 @@ class OpenSearchAdapter(private val os: OpenSearch) : SearchAdapter {
         val feed = try { FeedParser.parse(t, sourceId.replace('_', '-')) } catch (e: IllegalArgumentException) { throw ClassifiedException(ErrorKind.CATALOG, e.message ?: "Resposta inválida") }
         val total = Regex("<(?:opensearch:)?totalResults>(\\d+)<", RegexOption.IGNORE_CASE).find(t)?.groupValues?.get(1)?.toIntOrNull()
         val more = feed.next != null || (capabilities.pagination && feed.items.isNotEmpty() && (total == null || total > feed.items.size))
-        return AdapterPage(feed.items, more && capabilities.pagination)
+        return AdapterPage(feed.items, more && capabilities.pagination, feed.items.size + feed.rejected)
     }
 }
 
@@ -279,7 +280,7 @@ class RestAdapter(private val d: RestDescriptor, private val key: String? = null
         val feed = SearchRepository.parse(JSONObject().put("name", d.name).put("items", items).toString(), sourceId)
         // hasMore: booleano, ou presença de um objeto de continuação (ex.: MediaWiki "continue")
         val more = d.hasMorePath?.let { p -> RestDescriptor.at(root, p).let { v -> if (v is Boolean) v else v != null } } ?: (capabilities.pagination && arr.length() >= Adapters.PAGE_SIZE)
-        return AdapterPage(feed.items, more && capabilities.pagination)
+        return AdapterPage(feed.items, more && capabilities.pagination, arr.length())
     }
 
 }

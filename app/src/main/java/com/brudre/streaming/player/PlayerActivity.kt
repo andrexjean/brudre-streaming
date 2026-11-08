@@ -103,6 +103,7 @@ class PlayerActivity : ComponentActivity() {
     private var fatalShown = false
     private var pssPeakKb = 0
     private var homologRecorded = false
+    private var attemptStartedAt = android.os.SystemClock.elapsedRealtime()
 
     /** Último estado observado, para testes instrumentados. */
     @Volatile var lastErrorMessage: String? = null
@@ -231,7 +232,8 @@ class PlayerActivity : ComponentActivity() {
                     stallJob?.cancel()
                     if (currentAttempt !is SourceAttempt.Torrent) showStatus(null)
                     if (isLive) services.live.markOnline(title.id.removePrefix(com.brudre.streaming.data.Title.LIVE_PREFIX))
-                    currentAttempt?.sourceId?.let { id -> if (recorded.add(id)) services.appScope.launch(Dispatchers.IO) { services.sourceStore.recordResult(id, true) } }
+                    // Tocou de verdade: prova da etapa "Reprodução validada" da fonte cadastrada
+                    currentAttempt?.sourceId?.let { id -> if (recorded.add(id)) { val ms = (nowMs - attemptStartedAt).toInt().takeIf { it > 0 }; services.appScope.launch(Dispatchers.IO) { services.sourceStore.recordPlayback(id, ms) } } }
                     com.brudre.streaming.torrent.TorrentLibrary.hashOf(title.id)?.let { h -> services.appScope.launch(Dispatchers.IO) { services.torrentLibrary.markPlayed(h) } }
                 }
                 if (state == Player.STATE_BUFFERING && hasBeenReady) {
@@ -304,6 +306,7 @@ class PlayerActivity : ComponentActivity() {
         val p = player ?: return
         if (!keepRetries) sameSourceRetries = 0
         attemptIndex = index
+        attemptStartedAt = android.os.SystemClock.elapsedRealtime()
         // Mantém o idioma de áudio/legenda que estava em uso ao trocar de fonte.
         if (keepAudio != null || keepText != null) {
             applyingTracks = true
@@ -622,6 +625,7 @@ class PlayerActivity : ComponentActivity() {
             com.brudre.streaming.data.Homologation.recordPlayback(com.brudre.streaming.data.Homologation.Playback(
                 kind, firstReadyAt.takeIf { it > 0 }?.let { it - openedAt }, rebuffers, rebufferMs,
                 if (firstReadyAt > 0) end - firstReadyAt - rebufferMs else 0L, fatalShown, switches, maxOf(pss, com.brudre.streaming.data.Homologation.pssKb()),
+                lastErrorMessage,
             ))
         }
     }

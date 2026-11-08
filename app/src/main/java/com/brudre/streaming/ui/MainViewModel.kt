@@ -642,14 +642,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             // Chave colada no endereço (…/api?apikey=…, comum em Torznab/Newznab): sai do endereço e vai cifrada.
             val (url, urlKey) = if (form.url.contains("apikey=", true) && !com.brudre.streaming.sources.SearchTemplate.isTemplate(form.url)) com.brudre.streaming.sources.Torznab.splitKey(form.url) else form.url to null
             val form = if (urlKey != null) form.copy(url = url, key = form.key?.ifBlank { null } ?: urlKey) else form
-            val key = form.key ?: oldId?.let { services.credentials.get(it) }
+            val key = form.key ?: oldId?.let { services.credentials.key(it) }
             val oldSrc = oldId?.let { services.sourceStore.get(it) }
             val pin = form.localPin ?: oldSrc?.localPin?.takeIf { com.brudre.streaming.sources.LocalServers.keyOf(oldSrc.url) == com.brudre.streaming.sources.LocalServers.keyOf(form.url) }
             // Servidor local: a fixação vale já para o teste; se não salvar, é desfeita.
             pin?.let { com.brudre.streaming.sources.LocalServers.register(form.url, it) }
             fun undoPin() { if (pin != null && services.sourceStore.current.none { it.localPin != null && com.brudre.streaming.sources.LocalServers.keyOf(it.url) == com.brudre.streaming.sources.LocalServers.keyOf(form.url) }) com.brudre.streaming.sources.LocalServers.unregister(form.url) }
             // Formato escolhido à mão: as mesmas validações de segurança e de estrutura valem.
-            val r = services.inspector.inspect(form.url, forcedType = form.type, key = key, auth = form.auth)
+            val r = services.inspector.inspect(form.url, forcedType = form.type, key = key, auth = form.auth,
+                timeoutSec = maxOf(form.timeoutSec, com.brudre.streaming.sources.DEFAULT_INSPECT_TIMEOUT_S))
             val type = r.type
             if (type == null || !r.test.ok) {
                 undoPin()
@@ -657,7 +658,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 onResult(false, (type?.let { "${it.label} — " } ?: "") + r.test.message + hint, r.test.detail)
                 return@launch
             }
-            val clean = form.url.trim()
+            // Segredos colados no endereço (token, senha, apikey…) saem dele: no endereço gravado fica o marcador {cred};
+            // o valor real vai cifrado para o CredentialStore e só entra na requisição na hora (9.2.43).
+            val (clean, urlSecrets) = if (type == com.brudre.streaming.sources.SourceType.TORZNAB || type == com.brudre.streaming.sources.SourceType.MAGNET) form.url.trim() to emptyMap<String, String>()
+                else com.brudre.streaming.sources.Secrets.extract(form.url.trim())
             if (!com.brudre.streaming.sources.UserSourcesJson.isSafe(type, clean)) {
                 undoPin()
                 onResult(false, "${com.brudre.streaming.sources.ErrorKind.BLOCKED.title}: endereço não permitido para ${type.label}", null)
@@ -679,8 +683,24 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             )
             try {
                 if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
-                if (form.key != null) services.credentials.put(src.id, form.key.ifBlank { null }) else if (oldId != null) services.credentials.move(oldId, src.id)
-                if (form.auth == com.brudre.streaming.sources.AuthMethod.NONE && type != com.brudre.streaming.sources.SourceType.TORZNAB && !(r.config?.contains("{key}") ?: false) && !clean.contains("{key}")) services.credentials.put(src.id, null)
+                val S = com.brudre.streaming.sources.Secrets
+                val oldStored = oldId?.let { services.credentials.get(it) }
+                var stored: String? = when {
+                    urlSecrets.isNotEmpty() -> S.encodeMap(urlSecrets, form.key?.ifBlank { null } ?: oldStored)
+                    form.key != null -> S.withKey(oldStored, form.key.ifBlank { null })
+                    else -> oldStored
+                }
+                // Sem autenticação: a chave sai; segredos do próprio endereço ({cred}) ficam.
+                if (form.auth == com.brudre.streaming.sources.AuthMethod.NONE && type != com.brudre.streaming.sources.SourceType.TORZNAB && !(r.config?.contains("{key}") ?: false) && !clean.contains("{key}")) {
+                    stored = when {
+                        !S.hasRef(clean) -> null
+                        stored?.trim()?.startsWith("{") == true -> S.withKey(stored, null)
+                        else -> stored // valor único usado pelo {cred} do endereço
+                    }
+                }
+                if (oldId != null && oldId != src.id) services.credentials.put(oldId, null)
+                services.credentials.put(src.id, stored)
+                services.sourceStore.logTest(src, r.test)
                 afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
                 onResult(true, "${type.label} salvo: ${r.test.message}", null)
             } catch (e: Exception) {
@@ -698,7 +718,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
      * O formato vem do endereço (extensão/marcadores); as regras de segurança continuam valendo.
      */
     fun saveSourceUnvalidated(oldId: String?, name: String, url: String, onResult: (Boolean, String, String?) -> Unit) {
-        val clean = url.trim()
+        // Segredos fora do endereço gravado, como no cadastro validado (9.2.43)
+        val raw = url.trim()
+        val type0 = com.brudre.streaming.sources.SourceDetector.guessByAddress(raw)
+        val (clean, urlSecrets) = when {
+            raw.startsWith("magnet:", true) -> raw to emptyMap<String, String>()
+            type0 == com.brudre.streaming.sources.SourceType.TORZNAB -> com.brudre.streaming.sources.Torznab.splitKey(raw).let { (b, k) -> b to (k?.let { mapOf("apikey" to it) } ?: emptyMap<String, String>()) }
+            else -> com.brudre.streaming.sources.Secrets.extract(raw)
+        }
         val type = com.brudre.streaming.sources.SourceDetector.guessByAddress(clean)
             ?: return onResult(false, "Não dá para saber o formato só pelo endereço. Use um endereço terminado em .json, .rss, .m3u, .m3u8, .torrent, .mp4 ou um modelo com {query}.", null)
         services.sourceStore.duplicateOf(clean, oldId)?.let { d ->
@@ -715,6 +742,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         )
         try {
             if (oldId != null) services.sourceStore.replace(oldId, src) else services.sourceStore.put(src)
+            if (urlSecrets.isNotEmpty()) services.credentials.put(src.id, com.brudre.streaming.sources.Secrets.encodeMap(urlSecrets, oldId?.let { services.credentials.get(it) }))
+            else if (oldId != null) services.credentials.move(oldId, src.id)
+            if (oldId != null && oldId != src.id) services.credentials.put(oldId, null)
+            services.sourceStore.logTest(src, src.lastTest!!)
             afterSourcesChanged(*listOfNotNull(oldId, src.id).toTypedArray())
             onResult(true, "${type.label} salva sem validar (desativada: teste e depois ative)", null)
         } catch (e: Exception) {
@@ -738,7 +769,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private suspend fun runTest(src: com.brudre.streaming.sources.UserSource): String {
         val store = services.sourceStore
         if (src.pending) {
-            val r = services.inspector.inspect(src.url, key = services.credentials.get(src.id), auth = src.auth)
+            val r = services.inspector.inspect(src.url, key = services.credentials.key(src.id), auth = src.auth, timeoutSec = maxOf(src.timeoutSec, com.brudre.streaming.sources.DEFAULT_INSPECT_TIMEOUT_S))
             return when {
                 r.type == null || !r.test.ok -> { store.saveTest(src.id, r.test); "${src.name}: ainda não validada — ${r.test.message}" }
                 r.type != src.type -> {
@@ -749,7 +780,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 else -> { store.markValidated(src.id, r.test, r.config); afterSourcesChanged(src.id); "${src.name}: validada (${r.type.label}, ${r.test.message}). Ative quando quiser." }
             }
         }
-        val r = services.inspector.inspect(src.url, forcedType = src.type, key = services.credentials.get(src.id), auth = src.auth)
+        val r = services.inspector.inspect(src.url, forcedType = src.type, key = services.credentials.key(src.id), auth = src.auth, timeoutSec = maxOf(src.timeoutSec, com.brudre.streaming.sources.DEFAULT_INSPECT_TIMEOUT_S))
         store.saveTest(src.id, r.test, r.config)
         return "${src.name}: ${if (r.test.ok) "OK" else "falhou"} — ${r.test.message}"
     }
@@ -764,7 +795,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _testingSources.value = _testingSources.value + id
         viewModelScope.launch {
             try {
-                val key = services.credentials.get(src.id)
+                val key = services.credentials.key(src.id)
                 // Formato escolhido à mão é respeitado; senão, identifica de novo.
                 val r = services.inspector.inspect(src.url, forcedType = if (src.manualType) src.type else null, key = key, auth = src.auth)
                 val t = r.type
@@ -789,15 +820,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun testAllSources(onResult: (String) -> Unit) {
         viewModelScope.launch {
+            // Uma fonte por vez: memória do Mi Stick preservada; o teste só lê respostas da fonte, não baixa obras.
             val list = services.sourceStore.current
-            var ok = 0
             list.forEach { s ->
                 _testingSources.value = _testingSources.value + s.id
-                val msg = runCatching { runTest(s) }.getOrNull()
-                if (services.sourceStore.get(s.id)?.lastTest?.ok == true && msg != null) ok++
-                _testingSources.value = _testingSources.value - s.id
+                try { runTest(s) } catch (e: kotlinx.coroutines.CancellationException) { throw e } catch (e: Exception) { }
+                finally { _testingSources.value = _testingSources.value - s.id }
             }
-            onResult("$ok de ${list.size} fontes funcionando")
+            val now = services.sourceStore.current
+            val S = com.brudre.streaming.sources.SourceStage
+            onResult("${now.size} fontes: ${now.count { !it.hasError && it.stage >= S.REACHABLE }} acessíveis, " +
+                "${now.count { !it.hasError && it.stage >= S.SEARCH_OK }} com pesquisa funcional, ${now.count { it.stage == S.PLAYBACK_OK }} com reprodução comprovada, " +
+                "${now.count { it.hasError }} com erro")
         }
     }
 

@@ -57,6 +57,9 @@ class CredentialStore(context: Context) {
 
     fun has(sourceId: String) = prefs.contains(sourceId)
 
+    /** Só a chave de autenticação ({key}, cabeçalho, apikey do Torznab), sem os demais segredos do endereço. */
+    fun key(sourceId: String): String? = Secrets.keyPart(get(sourceId))
+
     /** Move a credencial quando o id da fonte muda (edição ou redetecção de formato). */
     fun move(from: String, to: String) { if (from != to) get(from)?.let { put(to, it); put(from, null) } }
 

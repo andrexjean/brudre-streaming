@@ -395,6 +395,45 @@ class UiFlowTest {
         rule.onNodeWithTag("src_close").performClick()
     }
 
+    /** 9.2.43: painel do Source Engine pelo controle remoto — contagens por etapa, "Testar fontes" e teste individual. */
+    @Test fun t12_sourceEngineDiagnosticsWithDpad() {
+        val store = TestUtil.services.sourceStore
+        store.current.forEach { store.remove(it.id) }
+        val cat = "https://raw.githubusercontent.com/andrexjean/brudre-streaming/main/samples/feeds/blender-open-movies.json"
+        val src = com.brudre.streaming.sources.UserSource(com.brudre.streaming.sources.UserSource.idFor(com.brudre.streaming.sources.SourceType.CATALOG_JSON, cat), "Blender (teste)", cat, com.brudre.streaming.sources.SourceType.CATALOG_JSON)
+        store.put(src)
+        try {
+            waitTag("hero_play")
+            rule.onNodeWithTag("nav_SETTINGS").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            waitTag("manage_sources")
+            rule.onNodeWithTag("manage_sources").requestFocus(); remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            waitTag("source_manager")
+            // Texto do topo lista todos os protocolos
+            org.junit.Assert.assertTrue(rule.onAllNodes(androidx.compose.ui.test.hasText("Torznab, Newznab, RSS/Atom, OpenSearch, REST, GraphQL, BruDre JSON, M3U/HLS, magnet e arquivos .torrent", substring = true)).fetchSemanticsNodes().isNotEmpty())
+            rule.waitUntil(10_000) { runCatching { rule.onNodeWithTag("src_tab_diag").requestFocus(); rule.onNodeWithTag("src_tab_diag").assertIsFocused(); true }.getOrDefault(false) }
+            remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            waitTag("diag_counts")
+            fun focused(tag: String) = runCatching { rule.onNodeWithTag(tag).assertIsFocused(); true }.getOrDefault(false)
+            var g = 0
+            while (!focused("diag_test_all") && g++ < 12) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+            org.junit.Assert.assertTrue("D-pad chegou a Testar fontes", focused("diag_test_all"))
+            var vm: MainViewModel? = null
+            rule.runOnUiThread { vm = ViewModelProvider(rule.activity)[MainViewModel::class.java] }
+            remote(KeyEvent.KEYCODE_DPAD_CENTER)
+            TestUtil.waitFor(90_000, "teste das fontes") { store.get(src.id)?.lastTest != null && vm!!.testingSources.value.isEmpty() }
+            val tested = store.get(src.id)!!
+            TestUtil.log("Diagnóstico pelo controle: ${tested.statusLabel} — ${tested.lastTest?.message} (${tested.lastTest?.latencyMs} ms)")
+            org.junit.Assert.assertEquals(com.brudre.streaming.sources.SourceStage.SEARCH_OK, tested.stage)
+            g = 0
+            while (!focused("diag_test_${src.id}") && g++ < 12) remote(KeyEvent.KEYCODE_DPAD_DOWN)
+            org.junit.Assert.assertTrue("D-pad chegou ao teste individual", focused("diag_test_${src.id}"))
+            Thread.sleep(800); TestUtil.shot("fontes_diagnostico_source_engine")
+            rule.onNodeWithTag("src_close").performClick()
+        } finally {
+            store.current.forEach { store.remove(it.id) }
+        }
+    }
+
     /** Validação visual: conteúdo do mundo separado por idioma (TV ao vivo e Cinema Brasileiro). */
     @Test fun t11_worldContentSeparatedByLanguage() {
         waitTag("hero_play")

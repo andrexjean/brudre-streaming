@@ -43,16 +43,43 @@ enum class SourceType(val label: String) {
 }
 
 /** Resultado do último teste. [kind] = [ErrorKind] da falha; [detail] = erro original (Detalhes técnicos). */
-data class SourceTest(val ok: Boolean, val at: Long, val message: String, val items: Int = 0, val kind: String? = null, val detail: String? = null) {
+/**
+ * Etapa COMPROVADA de uma fonte (9.2.43): conectividade, pesquisa e reprodução são coisas diferentes.
+ * Uma fonte só acessível nunca é apresentada como reproduzível.
+ */
+enum class SourceStage(val label: String) {
+    REGISTERED("Cadastrada"),
+    REACHABLE("Acessível"),
+    SEARCH_OK("Pesquisa funcional"),
+    PLAYBACK_OK("Reprodução validada");
+
+    companion object { fun parse(s: String?) = entries.firstOrNull { it.name == s } }
+}
+
+/**
+ * Resultado de um teste: data, etapa concluída, tempo de resposta e motivo da falha (classificado).
+ * [stage] = até onde o teste comprovou; numa falha, a etapa alcançada antes dela.
+ */
+data class SourceTest(
+    val ok: Boolean, val at: Long, val message: String, val items: Int = 0, val kind: String? = null, val detail: String? = null,
+    val stage: SourceStage = if (ok) SourceStage.REACHABLE else SourceStage.REGISTERED, val latencyMs: Int = 0,
+) {
     val errorKind: ErrorKind? get() = kind?.let { k -> ErrorKind.entries.firstOrNull { it.name == k } }
 
-    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("at", at).put("msg", message).put("items", items)
-        .put("kind", kind ?: JSONObject.NULL).put("detail", detail ?: JSONObject.NULL)
+    // Nada de segredo no que é gravado ou exportado
+    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("at", at).put("msg", Secrets.redactText(message)).put("items", items)
+        .put("kind", kind ?: JSONObject.NULL).put("detail", Secrets.redactText(detail) ?: JSONObject.NULL)
+        .put("stage", stage.name).put("lat", latencyMs)
 
     companion object {
-        fun fromJson(o: JSONObject) = SourceTest(o.optBoolean("ok"), o.optLong("at"), o.optString("msg"), o.optInt("items"), o.optStringOrNull("kind"), o.optStringOrNull("detail"))
+        fun fromJson(o: JSONObject) = SourceTest(
+            o.optBoolean("ok"), o.optLong("at"), Secrets.redactText(o.optString("msg"))!!, o.optInt("items"), o.optStringOrNull("kind"),
+            Secrets.redactText(o.optStringOrNull("detail")),
+            SourceStage.parse(o.optStringOrNull("stage")) ?: if (o.optBoolean("ok")) SourceStage.REACHABLE else SourceStage.REGISTERED, o.optInt("lat"),
+        )
 
-        fun failure(f: SourceFailure, at: Long = System.currentTimeMillis()) = SourceTest(false, at, f.summary, 0, f.kind.name, f.technical)
+        fun failure(f: SourceFailure, at: Long = System.currentTimeMillis(), stage: SourceStage = SourceStage.REGISTERED, latencyMs: Int = 0) =
+            SourceTest(false, at, f.summary, 0, f.kind.name, f.technical, stage, latencyMs)
     }
 }
 
@@ -73,7 +100,11 @@ enum class AuthMethod(val label: String) {
 }
 
 /** Histórico de uso real (reprodução e pesquisa): ordena as fontes e rebaixa as que falham seguidamente. */
-data class SourceStats(val ok: Int = 0, val fail: Int = 0, val streak: Int = 0, val lastAt: Long = 0, val lastError: String? = null, val avgLatencyMs: Int = 0) {
+data class SourceStats(
+    val ok: Int = 0, val fail: Int = 0, val streak: Int = 0, val lastAt: Long = 0, val lastError: String? = null, val avgLatencyMs: Int = 0,
+    /** Última reprodução que chegou a tocar por esta fonte (prova de "Reprodução validada"). */
+    val playOkAt: Long = 0,
+) {
     /** 3 falhas seguidas: a fonte vai para o fim da fila automática (continua disponível na escolha manual). */
     val unreliable: Boolean get() = streak >= 3
     val summary: String get() = when {
@@ -88,10 +119,13 @@ data class SourceStats(val ok: Int = 0, val fail: Int = 0, val streak: Int = 0, 
         else copy(fail = fail + 1, streak = streak + 1, lastAt = now, lastError = error ?: lastError)
     }
 
-    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("fail", fail).put("streak", streak).put("at", lastAt).put("err", lastError ?: JSONObject.NULL).put("lat", avgLatencyMs)
+    fun toJson(): JSONObject = JSONObject().put("ok", ok).put("fail", fail).put("streak", streak).put("at", lastAt)
+        .put("err", Secrets.redactText(lastError) ?: JSONObject.NULL).put("lat", avgLatencyMs).put("play", playOkAt)
 
     companion object {
-        fun fromJson(o: JSONObject?) = if (o == null) SourceStats() else SourceStats(o.optInt("ok"), o.optInt("fail"), o.optInt("streak"), o.optLong("at"), o.optStringOrNull("err"), o.optInt("lat"))
+        fun fromJson(o: JSONObject?) = if (o == null) SourceStats() else SourceStats(
+            o.optInt("ok"), o.optInt("fail"), o.optInt("streak"), o.optLong("at"), Secrets.redactText(o.optStringOrNull("err")), o.optInt("lat"), o.optLong("play"),
+        )
     }
 }
 
@@ -126,6 +160,18 @@ data class UserSource(
 ) {
     /** A fonte deve ser consultada para títulos desta categoria? */
     fun serves(category: String?): Boolean = categories.isEmpty() || category == null || category in categories || "livre" in categories
+
+    /** Etapa comprovada: a reprodução real vale mais que o teste; um teste que falhou mostra o erro, não a etapa. */
+    val stage: SourceStage get() = when {
+        stats.playOkAt > 0 && lastTest?.ok != false -> SourceStage.PLAYBACK_OK
+        else -> lastTest?.stage ?: SourceStage.REGISTERED
+    }
+    /** Salva sem validar e ainda não testada: é só "cadastrada", não um erro. */
+    private val awaitingValidation: Boolean get() = pending && lastTest?.kind == null
+    val hasError: Boolean get() = lastTest?.ok == false && !awaitingValidation
+    /** "Pesquisa funcional", "Erro: Tempo esgotado"… */
+    val statusLabel: String get() = if (awaitingValidation) "${SourceStage.REGISTERED.label} — aguardando validação" else lastTest?.takeIf { !it.ok }?.let { "Erro: " + (it.errorKind?.title ?: "falha") }
+        ?: (stage.label + (lastTest?.takeIf { it.ok && stage != SourceStage.PLAYBACK_OK }?.errorKind?.let { " — ${it.title.lowercase()}" } ?: ""))
     val capabilities: SourceCapabilities get() = SourceCapabilities.of(this)
 
     fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("url", url).put("type", type.name)

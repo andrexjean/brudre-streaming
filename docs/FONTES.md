@@ -199,3 +199,21 @@ Em Fontes → Diagnóstico → **Homologação do aparelho**:
 - Use o app normalmente: abrir, assistir filmes e episódios por HTTP e BitTorrent, e fazer uma sessão longa.
 - Marque o D-pad.
 - Toque em **Gerar relatório**. O arquivo `brudre-homologacao.txt` fica na pasta do app (Android/data/com.brudre.streaming/files) e pode ser compartilhado.
+
+
+## Credenciais nos endereços (9.2.43)
+
+Chaves, tokens e senhas nunca ficam gravados no endereço:
+- Ao salvar uma fonte cujo endereço tem `token=`, `password=`, `apikey=`, `passkey=` etc., o valor vai cifrado para o aparelho (Android Keystore). No endereço gravado e exportado fica `{cred}`.
+- Links de download devolvidos pelo indexador (`/dl/…?jackett_apikey=…`) recebem o mesmo marcador.
+- Na hora da requisição, o app troca `{cred}` pelo valor real, só em HTTPS e só para o mesmo host:porta da fonte. Um redirecionamento para outro servidor não recebe o segredo.
+- Limite conhecido: segredo no **caminho** do endereço (ex.: `/live/usuario/senha/1.m3u8`) não tem como ser referenciado com segurança. Nas listas em cache, ele é mantido no armazenamento privado do app; em links de indexador, é mascarado.
+
+## Diagnóstico por etapas (9.2.43)
+
+| Etapa | O que comprova |
+|---|---|
+| Cadastrada | Configuração salva, sem teste |
+| Acessível | O servidor respondeu (mesmo que a pesquisa venha vazia ou com erro de autenticação) |
+| Pesquisa funcional | O protocolo devolveu resultados válidos (com aviso "conteúdo indisponível" se nenhum tem mídia utilizável) |
+| Reprodução validada | Um vídeo da fonte começou a tocar no player |

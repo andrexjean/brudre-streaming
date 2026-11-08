@@ -75,14 +75,23 @@ class TorrentEngine(
             pack.setBoolean((field.get(null) as org.libtorrent4j.swig.settings_pack.bool_types).swigValue(), true)
         }.onFailure { Log.w(TAG, "validate_https_trackers indisponível nesta versão", it) }
         if (!caReady) Log.e(TAG, "Sem CAs: web seeds HTTPS vão falhar com segurança (não há conexão sem validação)")
+        // Categorias de alerta de tracker e DHT (diagnóstico de qual mecanismo achou participantes), somadas às atuais
+        runCatching {
+            val f = org.libtorrent4j.swig.settings_pack.int_types::class.java.getField("alert_mask")
+            val id = (f.get(null) as org.libtorrent4j.swig.settings_pack.int_types).swigValue()
+            val get = pack.javaClass.getMethod("getInteger", Int::class.javaPrimitiveType)
+            val set = pack.javaClass.getMethod("setInteger", Int::class.javaPrimitiveType, Int::class.javaPrimitiveType)
+            val cur = get.invoke(pack, id) as Int
+            set.invoke(pack, id, cur or ALERT_ERROR or ALERT_TRACKER or ALERT_STATUS or ALERT_DHT)
+        }.onFailure { Log.w(TAG, "Máscara de alertas não ajustada: ${it.javaClass.simpleName}") }
         val s = SessionManager(false)
         // Diagnóstico: falhas de web seed (servidor HTTPS do titular) aparecem no log.
         runCatching {
             s.addListener(object : org.libtorrent4j.AlertListener {
                 override fun types(): IntArray = intArrayOf(org.libtorrent4j.alerts.AlertType.URL_SEED.swig())
                 override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) {
-                    lastWebSeedError = alert.message()
-                    Log.w(TAG, "Web seed: ${alert.message()}")
+                    lastWebSeedError = com.brudre.streaming.sources.Secrets.redactText(alert.message())
+                    Log.w(TAG, "Web seed: $lastWebSeedError")
                 }
             })
         }
@@ -183,21 +192,67 @@ class TorrentEngine(
     }
 
     /** Resultado do diagnóstico de rede: participantes vistos por torrent (−1 = .torrent inválido). */
-    data class PeerProbe(val name: String, val connected: Int, val known: Int, val swarm: Int) {
+    /**
+     * Resultado do diagnóstico de rede por torrent: participantes vistos e QUAL mecanismo os encontrou
+     * (tracker UDP, tracker HTTPS, tracker HTTP, DHT), mais as falhas de tracker (certificado, DNS…) sem segredos.
+     */
+    data class PeerProbe(
+        val name: String, val connected: Int, val known: Int, val swarm: Int,
+        val viaUdp: Int = 0, val viaHttps: Int = 0, val viaHttp: Int = 0, val viaDht: Int = 0,
+        val trackerReplies: List<String> = emptyList(), val trackerErrors: List<String> = emptyList(), val alertsSeen: Int = 0,
+    ) {
         val best get() = maxOf(connected, known, swarm)
+        /** "tracker HTTPS (12), DHT (40)" ou "nenhum". */
+        val mechanisms: String get() = listOfNotNull(
+            "tracker UDP ($viaUdp)".takeIf { viaUdp > 0 }, "tracker HTTPS ($viaHttps)".takeIf { viaHttps > 0 },
+            "tracker HTTP ($viaHttp)".takeIf { viaHttp > 0 }, "DHT ($viaDht)".takeIf { viaDht > 0 },
+        ).joinToString(", ").ifEmpty { if (alertsSeen == 0) "indeterminado (sem alertas do motor)" else "nenhum" }
+    }
+
+    private class ProbeStats {
+        @Volatile var udp = 0; @Volatile var https = 0; @Volatile var http = 0; @Volatile var dht = 0; @Volatile var alerts = 0
+        val replies = java.util.concurrent.CopyOnWriteArrayList<String>()
+        val errors = java.util.concurrent.CopyOnWriteArrayList<String>()
     }
 
     /**
      * Diagnóstico da rede BitTorrent (DHT, trackers, participantes): adiciona os torrents SEM baixar nenhum arquivo
      * (todas as prioridades IGNORE), observa por [seconds] e remove tudo (inclusive a pasta de teste).
+     * [extraTrackers] = trackers acrescentados a cada torrent (padrão: os públicos de apoio). A validação TLS dos
+     * trackers HTTPS continua ligada: um certificado inválido aparece em [PeerProbe.trackerErrors].
      */
-    suspend fun probePeers(torrents: List<ByteArray>, seconds: Int): List<PeerProbe> = withContext(Dispatchers.IO) {
+    suspend fun probePeers(torrents: List<ByteArray>, seconds: Int, extraTrackers: List<String> = FALLBACK_TRACKERS): List<PeerProbe> = withContext(Dispatchers.IO) {
         opening.incrementAndGet()
         val dir = File(context.cacheDir, "torrent-probe").apply { mkdirs() }
         val handles = ArrayList<TorrentHandle>()
+        val infos = torrents.map { b -> runCatching { TorrentInfo(b) }.getOrNull() }
+        val stats = infos.map { ProbeStats() }
+        val byName = infos.mapIndexedNotNull { i, ti -> ti?.name()?.let { it to i } }.toMap()
+        // Alertas de tracker e DHT, lidos por reflexão (nomes estáveis do libtorrent; ausentes = mecanismo "indeterminado")
+        val listener = object : org.libtorrent4j.AlertListener {
+            override fun types(): IntArray = listOf("TRACKER_REPLY", "TRACKER_ERROR", "TRACKER_WARNING", "DHT_REPLY")
+                .mapNotNull { n -> runCatching { org.libtorrent4j.alerts.AlertType.valueOf(n).swig() }.getOrNull() }.toIntArray()
+            override fun alert(alert: org.libtorrent4j.alerts.Alert<*>) {
+                val name = runCatching { alert.javaClass.getMethod("torrentName").invoke(alert) as? String }.getOrNull()
+                val st = name?.let { byName[it] }?.let { stats.getOrNull(it) } ?: return
+                st.alerts++
+                val msg = com.brudre.streaming.sources.Secrets.redactText(alert.message()) ?: return
+                val type = runCatching { alert.type().name }.getOrDefault("")
+                val n = Regex("received (?:DHT )?peers: (\\d+)").find(msg)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                val tracker = Regex("\\(((?:udp|https?)://[^)\\s]+)\\)").find(msg)?.groupValues?.get(1).orEmpty()
+                when {
+                    type == "DHT_REPLY" -> st.dht += n
+                    type == "TRACKER_REPLY" -> {
+                        when { tracker.startsWith("udp://") -> st.udp += n; tracker.startsWith("https://") -> st.https += n; else -> st.http += n }
+                        if (st.replies.size < 10) st.replies += "${tracker.substringBefore('?')}: $n"
+                    }
+                    else -> if (st.errors.size < 10) st.errors += msg.take(240)
+                }
+            }
+        }
+        val s = ensureSession()
+        runCatching { s.addListener(listener) }
         try {
-            val s = ensureSession()
-            val infos = torrents.map { b -> runCatching { TorrentInfo(b) }.getOrNull() }
             infos.filterNotNull().forEach { ti ->
                 s.download(ti, dir, null, Priority.array(Priority.IGNORE, ti.numFiles()), null, TorrentFlags.UPLOAD_MODE)
             }
@@ -206,7 +261,7 @@ class TorrentEngine(
                 var h: TorrentHandle? = null
                 val t0 = System.currentTimeMillis()
                 while (h == null && System.currentTimeMillis() - t0 < 10_000) { h = s.find(ti.infoHash())?.takeIf { it.isValid }; if (h == null) delay(100) }
-                h?.also { th -> handles += th; FALLBACK_TRACKERS.forEach { runCatching { th.addTracker(AnnounceEntry(it)) } }; runCatching { th.resume(); th.forceReannounce(); th.forceDHTAnnounce() } }
+                h?.also { th -> handles += th; extraTrackers.forEach { runCatching { th.addTracker(AnnounceEntry(it)) } }; runCatching { th.resume(); th.forceReannounce(); th.forceDHTAnnounce() } }
             }
             val best = IntArray(infos.size)
             val conn = IntArray(infos.size)
@@ -222,9 +277,14 @@ class TorrentEngine(
                 }
                 delay(1_000)
             }
-            infos.mapIndexed { i, ti -> if (ti == null) PeerProbe("(inválido)", -1, -1, -1) else PeerProbe(ti.name(), conn[i], known[i], best[i]) }
+            infos.mapIndexed { i, ti ->
+                val p = stats[i]
+                if (ti == null) PeerProbe("(inválido)", -1, -1, -1)
+                else PeerProbe(ti.name(), conn[i], known[i], best[i], p.udp, p.https, p.http, p.dht, p.replies.toList(), p.errors.toList(), p.alerts)
+            }
         } finally {
-            session?.let { s -> handles.forEach { runCatching { s.remove(it, SessionHandle.DELETE_FILES) } } }
+            runCatching { s.removeListener(listener) }
+            session?.let { ss -> handles.forEach { runCatching { ss.remove(it, SessionHandle.DELETE_FILES) } } }
             dir.deleteRecursively()
             opening.decrementAndGet()
         }
@@ -247,6 +307,13 @@ class TorrentEngine(
         }
     }
 
+    /** Cache de metadados por endereço do .torrent (nome = hash do endereço sem segredos): evita baixar de novo. */
+    private fun urlIndex(url: String) = File(metaDir, "url-" + com.brudre.streaming.live.M3uParser.stableId("torrent-url", com.brudre.streaming.sources.Secrets.sanitizeUrl(url) ?: url) + ".hash")
+
+    private fun rememberUrl(url: String, bytes: ByteArray) {
+        runCatching { urlIndex(url).writeText(TorrentContent.parse(bytes).infoHash) }
+    }
+
     private fun cachedBytes(ref: TorrentRef): ByteArray? {
         ref.localFile?.let { path ->
             val f = File(path).canonicalFile
@@ -255,7 +322,9 @@ class TorrentEngine(
             if (f.length() > TorrentContent.MAX_TORRENT_BYTES) throw TorrentException("Arquivo .torrent grande demais", kind = ErrorKind.FORMAT)
             return f.readBytes()
         }
-        val hash = ref.magnet?.let { TorrentContent.magnetHash(it) } ?: return null
+        val hash = ref.magnet?.let { TorrentContent.magnetHash(it) }
+            ?: ref.torrentUrl?.let { u -> runCatching { urlIndex(u).takeIf { it.exists() }?.readText()?.trim() }.getOrNull()?.takeIf { Regex("[a-f0-9]{40}").matches(it) } }
+            ?: return null
         val f = File(metaDir, "$hash.torrent")
         return if (f.exists() && f.length() in 1..TorrentContent.MAX_TORRENT_BYTES.toLong()) f.readBytes() else null
     }
@@ -295,10 +364,13 @@ class TorrentEngine(
         var lastError: Throwable? = null
         ref.torrentUrl?.let { url ->
             try {
-                return downloadTorrentFile(url).also { remember(it) }
+                // Falhas transitórias (tempo esgotado, 429/503 com Retry-After) têm novas tentativas com prazo máximo
+                val bytes = com.brudre.streaming.sources.SourceHttp.retrying(com.brudre.streaming.sources.SourceHttp.deadlineMs(30)) { downloadTorrentFile(url) }
+                return bytes.also { remember(it); rememberUrl(url, it) }
             } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
                 lastError = e
-                Log.w(TAG, "Falha ao baixar .torrent, tentando magnet", e)
+                Log.w(TAG, "Falha ao baixar .torrent, tentando magnet: ${com.brudre.streaming.sources.ErrorClassifier.classify(e).summary}")
             }
         }
         ref.magnet?.let { magnet ->
@@ -323,7 +395,11 @@ class TorrentEngine(
         val req = Request.Builder().url(url).header("User-Agent", CatalogRepository.USER_AGENT).build()
         com.brudre.streaming.sources.UrlGuard.check(url)?.let { throw com.brudre.streaming.sources.BlockedUrlException(it) }
         http.newCall(req).execute().use { resp ->
-            if (!resp.isSuccessful) throw com.brudre.streaming.sources.HttpStatusException(resp.code, "Servidor do .torrent respondeu ${resp.code}")
+            if (!resp.isSuccessful) {
+                val wait = com.brudre.streaming.sources.SourceHttp.parseRetryAfter(resp.header("Retry-After"))
+                if ((resp.code == 429 || resp.code == 503) && wait != null) throw com.brudre.streaming.sources.RetryAfterException(resp.code, wait)
+                throw com.brudre.streaming.sources.HttpStatusException(resp.code, "Servidor do .torrent respondeu ${resp.code}")
+            }
             val body = resp.body ?: throw TorrentException("Resposta vazia")
             if (body.contentLength() > MAX_TORRENT_BYTES) throw TorrentException("Arquivo .torrent grande demais", kind = ErrorKind.FORMAT)
             val bytes = body.bytes()
@@ -375,7 +451,12 @@ class TorrentEngine(
         private const val FREE_SPACE_MARGIN = 64L * 1024 * 1024
         private const val DHT_BOOTSTRAP =
             "dht.libtorrent.org:25401,router.bittorrent.com:6881,router.utorrent.com:6881,dht.transmissionbt.com:6881"
-        private val FALLBACK_TRACKERS = listOf(
+        // Bits de alert_category do libtorrent 2.0
+        private const val ALERT_ERROR = 1
+        private const val ALERT_TRACKER = 16
+        private const val ALERT_STATUS = 64
+        private const val ALERT_DHT = 1024
+        val FALLBACK_TRACKERS = listOf(
             "udp://tracker.opentrackr.org:1337/announce",
             "udp://open.stealth.si:80/announce",
             "udp://tracker.torrent.eu.org:451/announce",

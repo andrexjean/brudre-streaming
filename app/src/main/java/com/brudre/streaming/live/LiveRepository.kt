@@ -102,14 +102,14 @@ class LiveRepository(
             Log.i(TAG, "Lista ${l.id}: ${result.channels.size} canais de ${result.total} (removidos: ${result.rejected})")
             board.success(statusId, System.currentTimeMillis() - t0)
             keep(l.id, result.channels)
-            runCatching { file.writeText(LiveChannel.listToJson(result.channels)) }
+            runCatching { file.writeText(com.brudre.streaming.sources.Secrets.protectKnown(LiveChannel.listToJson(result.channels))) }
             result.channels
         } catch (e: Exception) {
             val fallback = l.fallbackUrl?.takeIf { e !is BlockedUrlException }?.let { runCatching { fetch(it, l.id) }.getOrNull() }
             if (fallback != null) {
                 board.success(statusId, System.currentTimeMillis() - t0)
                 keep(l.id, fallback.channels)
-                runCatching { file.writeText(LiveChannel.listToJson(fallback.channels)) }
+                runCatching { file.writeText(com.brudre.streaming.sources.Secrets.protectKnown(LiveChannel.listToJson(fallback.channels))) }
                 return fallback.channels
             }
             board.failure(statusId, e.message ?: "Falha ao baixar a lista")

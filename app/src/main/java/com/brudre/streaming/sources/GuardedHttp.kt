@@ -6,6 +6,7 @@ import com.brudre.streaming.torrent.MagnetLink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Dns
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -32,6 +33,23 @@ class GuardInterceptor : Interceptor {
     }
 }
 
+/**
+ * Credenciais no instante da requisição: o endereço gravado leva o marcador {cred}; aqui ele vira o valor real,
+ * só em HTTPS e só para o host:porta da fonte dona da credencial. Seguimentos de redirecionamento não passam por aqui
+ * (interceptor de aplicação roda uma vez por chamada): o destino de um redirecionamento nunca recebe o segredo.
+ */
+class CredentialInterceptor : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val req = chain.request()
+        val raw = req.url.toString()
+        if (!Secrets.hasRef(raw) || !req.url.isHttps) return chain.proceed(req)
+        val resolved = CredentialRefs.resolveFor(raw, req.url.host, req.url.port) ?: return chain.proceed(req)
+        val url = resolved.toHttpUrlOrNull() ?: return chain.proceed(req)
+        if (url.host != req.url.host || url.port != req.url.port) return chain.proceed(req)
+        return chain.proceed(req.newBuilder().url(url).build())
+    }
+}
+
 /** DNS que não resolve para loopback/link-local (evita que listas externas apontem para o próprio aparelho). */
 object GuardDns : Dns {
     override fun lookup(hostname: String): List<InetAddress> {
@@ -49,6 +67,7 @@ object GuardedHttp {
     fun client(base: OkHttpClient): OkHttpClient = base.newBuilder()
         .cache(null)
         .dns(GuardDns)
+        .addInterceptor(CredentialInterceptor())
         // Validação padrão do Android; certificado fixado só para servidores locais confirmados pelo usuário.
         .sslSocketFactory(LocalServers.socketFactory, LocalServers.trustManager)
         .hostnameVerifier(LocalServers.hostnameVerifier)

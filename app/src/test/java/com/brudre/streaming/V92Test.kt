@@ -57,7 +57,7 @@ class V92Test {
         try {
             Torznab.parseCaps(res("error100.xml"), "x"); fail()
         } catch (e: ClassifiedException) {
-            assertEquals(ErrorKind.HTTP, e.kind)
+            assertEquals(ErrorKind.AUTH, e.kind) // 9.2.43: autenticação separada de erro HTTP
             assertTrue(e.message!!.contains("Credencial"))
         }
         try {

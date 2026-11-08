@@ -117,6 +117,12 @@ interface CatalogCacheDao {
 
     @Query("DELETE FROM catalog_cache")
     suspend fun clear()
+
+    @Query("SELECT * FROM catalog_cache")
+    suspend fun all(): List<CatalogCacheEntity>
+
+    @Query("DELETE FROM catalog_cache WHERE `key` = :key")
+    suspend fun delete(key: String)
 }
 
 @Database(

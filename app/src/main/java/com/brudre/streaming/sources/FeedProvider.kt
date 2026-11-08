@@ -94,7 +94,7 @@ class FeedRepository(
             saveNext(f.id, feed.next)
             board.success(f.id, System.currentTimeMillis() - t0)
             memory[f.id] = feed.items
-            runCatching { file.writeText(FeedParser.itemsToJson(feed.items)); indexFile(f.id).writeText(FeedParser.indexOf(feed.items)) }
+            runCatching { file.writeText(com.brudre.streaming.sources.Secrets.protectKnown(FeedParser.itemsToJson(feed.items))); indexFile(f.id).writeText(FeedParser.indexOf(feed.items)) }
             Log.i(TAG, "Catálogo ${f.name}: ${feed.items.size} títulos (${feed.rejected} descartados)")
             feed.items
         } catch (e: Exception) {
@@ -127,7 +127,7 @@ class FeedRepository(
         val merged = (current + page.items).distinctBy { it.title.id }.take(MAX_TOTAL)
         memory[feedId] = merged
         saveNext(feedId, page.next?.takeIf { it != next && merged.size > current.size })
-        runCatching { File(dir, "$feedId.json").writeText(FeedParser.itemsToJson(merged)); indexFile(feedId).writeText(FeedParser.indexOf(merged)) }
+        runCatching { File(dir, "$feedId.json").writeText(com.brudre.streaming.sources.Secrets.protectKnown(FeedParser.itemsToJson(merged))); indexFile(feedId).writeText(FeedParser.indexOf(merged)) }
         Log.i(TAG, "Catálogo $feedId: +${merged.size - current.size} títulos (página seguinte)")
         merged
     }

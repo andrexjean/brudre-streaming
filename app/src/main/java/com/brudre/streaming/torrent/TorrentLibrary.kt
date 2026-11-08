@@ -41,8 +41,10 @@ data class TorrentEntry(
     val ref: TorrentRef get() = TorrentRef(torrentUrl, magnet, null, null, localFile)
     val displayName: String get() = linkedName ?: name
 
+    // Gravado sem segredos: passkey/token em trackers ou no endereço do .torrent viram "***" (marcador {cred} fica).
     fun toJson(): JSONObject = JSONObject().put("hash", hash).put("name", name)
-        .put("magnet", magnet ?: JSONObject.NULL).put("url", torrentUrl ?: JSONObject.NULL).put("local", localFile ?: JSONObject.NULL)
+        .put("magnet", com.brudre.streaming.sources.Secrets.sanitizeUrl(magnet) ?: JSONObject.NULL)
+        .put("url", com.brudre.streaming.sources.Secrets.sanitizeUrl(torrentUrl) ?: JSONObject.NULL).put("local", localFile ?: JSONObject.NULL)
         .put("added", addedAt).put("played", lastPlayedAt).put("videos", videoCount).put("size", totalSize)
         .put("linkName", linkedName ?: JSONObject.NULL).put("linkYear", linkedYear ?: JSONObject.NULL).put("linkTmdb", linkedTmdb ?: JSONObject.NULL)
 
@@ -79,6 +81,14 @@ class TorrentLibrary(context: Context, private val engine: TorrentEngine) {
     }
 
     fun get(hash: String) = current.firstOrNull { it.hash == hash }
+
+    /** Registros antigos gravados com segredos são regravados limpos (9.2.43). */
+    @Synchronized
+    fun sanitizeStored() {
+        val raw = prefs.getString(KEY, null) ?: return
+        if (!com.brudre.streaming.sources.Secrets.containsSecret(raw)) return
+        save(current)
+    }
 
     private fun upsert(e: TorrentEntry): TorrentEntry {
         val old = get(e.hash)
